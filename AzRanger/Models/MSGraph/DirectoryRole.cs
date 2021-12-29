@@ -1,21 +1,14 @@
 ﻿using AzRanger.Models.Generic;
-using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Models.MSGraph
 {
     public class DirectoryRole : IEntity
     {
-        [JsonProperty(PropertyName = "@odata.nextLink")]
-        public String odatanextLink;
         public string displayName { get; }
         public Guid id { get; }
-        private List<AzurePrincipal> members { get; set; }
+        public List<AzurePrincipal> members { get; set; }
         public object deletedDateTime { get; set; }
         public string description { get; set; }
         public string roleTemplateId { get; set; }

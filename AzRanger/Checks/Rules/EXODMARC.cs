@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleInfo("EXODMARC", Scope.EXO, MaturityLevel.Mature)]
-    [RuleScore("Not all of your Exchange Online Domains seems to have DMARC", "DMARC tells a receiver how to deal with a mail, that he receives from you", 5)]
+    [RuleScore("Not all of your Exchange Online Domains seems to have DMARC", "DMARC tells a receiver how to deal with a mail.", 5)]
     class EXODMARC : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

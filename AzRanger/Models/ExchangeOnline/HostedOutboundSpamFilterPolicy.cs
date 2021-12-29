@@ -28,9 +28,9 @@ namespace AzRanger.Models.ExchangeOnline
         public string OrganizationalUnitRoot { get; set; }
         public string OrganizationId { get; set; }
         public string OriginatingServer { get; set; }
-        public string RecipientLimitExternalPerHour { get; set; }
-        public string RecipientLimitInternalPerHour { get; set; }
-        public string RecipientLimitPerDay { get; set; }
+        public int RecipientLimitExternalPerHour { get; set; }
+        public int RecipientLimitInternalPerHour { get; set; }
+        public int RecipientLimitPerDay { get; set; }
         public string RecommendedPolicyType { get; set; }
         public DateTime WhenChanged { get; set; }
         public DateTime WhenChangedUTC { get; set; }

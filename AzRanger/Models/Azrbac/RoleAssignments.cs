@@ -1,15 +1,15 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AzRanger.Models.Azrbac
 {
     public class RoleAssignments
     {
-        [JsonProperty(PropertyName = "@odata.id")]
+        [JsonPropertyName("@odata.id")]
         public string odataid { get; set; }
         public string id { get; set; }
         public Guid resourceId { get; set; }
@@ -19,7 +19,7 @@ namespace AzRanger.Models.Azrbac
         public object linkedEligibleRoleAssignmentId { get; set; }
         public string externalId { get; set; }
         public bool isPermanent { get; set; }
-        public DateTime startDateTime { get; set; }
+        public object startDateTime { get; set; }
         public object endDateTime { get; set; }
         public string memberType { get; set; }
         public string assignmentState { get; set; }

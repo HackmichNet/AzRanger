@@ -26,10 +26,11 @@ namespace AzRanger.Checks.Rules
                 {
                     continue;
                 }
-                foreach (string adressToRedirectTo in rule.RedirectMessageTo)
+                foreach (object adressToRedirectTo in rule.RedirectMessageTo)
                 {
+                    string addressToRedirectToStr = (String)adressToRedirectTo.ToString();
                     bool domainIsInAzDomains = false;
-                    string maildomain = adressToRedirectTo.Split("@")[1];
+                    string maildomain = addressToRedirectToStr.Split("@")[1];
                     foreach (String AZDomain in domainsToCheck)
                     {
                         if(maildomain == AZDomain)

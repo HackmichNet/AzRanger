@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace AzRanger.Models.WinGraph
 {
     public class RoleDefinition
     {
-        [JsonProperty(PropertyName = "@odata.type")]
+        [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }
         public string inheritsPermissionsFromodatanavigationLinkUrl { get; set; }
         public Inheritspermissionsfrom[] inheritsPermissionsFrom { get; set; }
@@ -19,7 +19,7 @@ namespace AzRanger.Models.WinGraph
 
     public class Inheritspermissionsfrom
     {
-        [JsonProperty(PropertyName = "@odata.type")]
+        [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }
         public string objectId { get; set; }
     }

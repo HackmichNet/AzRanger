@@ -1,10 +1,6 @@
 ﻿using AzRanger.Models.Generic;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Models.MSGraph
 {
@@ -20,7 +16,20 @@ namespace AzRanger.Models.MSGraph
         public Oauth2permissionscopes[] oauth2PermissionScopes { get; set; }
         public IDTypeResponse[] owners { get; set; }
         public Approleassignment[] appRoleAssignments { get; set; }
-        public List<AzurePrincipal> userAbleToAddCreds = new List<AzurePrincipal>();
+        public List<AzurePrincipal> UserAbleToAddCreds = new List<AzurePrincipal>();
+
+        public void AddUserAbleToAddCreds(AzurePrincipal p)
+        {
+            if (!UserAbleToAddCreds.Contains(p))
+            {
+                this.UserAbleToAddCreds.Add(p);
+            }
+        }
+
+        public List<AzurePrincipal> GetUserAbleToAddCreds()
+        {
+            return this.UserAbleToAddCreds;
+        }
 
         public bool CanAddCredentials(Guid id)
         {
@@ -31,7 +40,7 @@ namespace AzRanger.Models.MSGraph
                     return true;
                 }
             }
-            foreach(AzurePrincipal user in this.userAbleToAddCreds)
+            foreach(AzurePrincipal user in this.UserAbleToAddCreds)
             {
                 if(user.id == id)
                 {

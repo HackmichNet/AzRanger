@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +9,13 @@ namespace AzRanger.Models.SharePoint
 {
     public class SPOInternalUseOnly
     {
-        [JsonProperty(PropertyName = "@odata.context")]
+        [JsonPropertyName("@odata.context")]
         public string odatacontext { get; set; }
-        [JsonProperty(PropertyName = "@odata.type")]
+        [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }
-        [JsonProperty(PropertyName = "@odata.id")]
+        [JsonPropertyName("@odata.id")]
         public string odataid { get; set; }
-        [JsonProperty(PropertyName = "@odata.editLink")]
+        [JsonPropertyName("@odata.editLink")]
         public string odataeditLink { get; set; }
         public string AIBuilderDefaultPowerAppsEnvironment { get; set; }
         public bool AIBuilderEnabled { get; set; }

@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AzRanger.Models.Generic
 {
     public class GenResponse
     {
-        [JsonProperty(PropertyName = "@odata.context")]
+        [JsonPropertyName("@odata.context")]
         public string odatacontext { get; set; }
-        [JsonProperty(PropertyName = "@odata.nextLink")]
+        [JsonPropertyName("@odata.nextLink")]
         public string odatanextLink { get; set; }
         public object[] value { get; set; }
     }

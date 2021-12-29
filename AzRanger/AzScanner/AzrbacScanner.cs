@@ -18,9 +18,9 @@ namespace AzRanger.AzScanner
         }
 
 
-        public List<RoleAssignments> GetRoleAssignemtsForApp(Guid roleDefinition)
+        public List<RoleAssignments> GetRoleAssignemtsForApp(Guid tenantID, Guid roleDefinition)
         {
-            String query = String.Format(@"$filter=(roleDefinition/resource/id eq '{0}') and (roleDefinition/id eq '{1}') and (assignmentState eq 'Active')&$expand=subject,scopedResource", this.Scanner.TenantId.ToString(), roleDefinition.ToString());
+            String query = String.Format(@"$filter=(roleDefinition/resource/id eq '{0}') and (roleDefinition/id eq '{1}')&$expand=subject,scopedResource", tenantID.ToString(), roleDefinition.ToString());
             return GetAllOf<RoleAssignments>(RoleAssignemtsForApp, query); ;
         }
     }

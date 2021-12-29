@@ -1,10 +1,5 @@
-﻿using AzRanger.Models;
-using AzRanger.Models.MainIAM;
+﻿using AzRanger.Models.MainIAM;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {

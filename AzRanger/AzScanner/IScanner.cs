@@ -1,11 +1,11 @@
 ﻿using AzRanger.Models.Generic;
-using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace AzRanger.AzScanner
 {
@@ -65,7 +65,7 @@ namespace AzRanger.AzScanner
                     try
                     {
                         manipulatedResponse = this.ManipulateResponse(result);
-                        return JsonConvert.DeserializeObject<T>(manipulatedResponse, new JsonSerializerSettings());
+                        return JsonSerializer.Deserialize<T>(manipulatedResponse);
                     }
                     catch (Exception e)
                     {
@@ -130,7 +130,7 @@ namespace AzRanger.AzScanner
 
                     /// Parse the result in GenericObjects
                     var result = response.Content.ReadAsStringAsync().Result;
-                    GenResponse genericAnswer = JsonConvert.DeserializeObject<GenResponse>(result);
+                    GenResponse genericAnswer = JsonSerializer.Deserialize<GenResponse>(result);
                     logger.Debug("IScanner.GetAllOf: " + genericAnswer.value.Length + " elements in generic response");
 
                     /// Go throuththe generic object and parse the value field
@@ -138,7 +138,7 @@ namespace AzRanger.AzScanner
                     {
                         try
                         {
-                            var resultParsed = JsonConvert.DeserializeObject<T>(entry.ToString());
+                            var resultParsed = JsonSerializer.Deserialize<T>(entry.ToString());
                             r.Add(resultParsed);
                         }
                         catch (Exception e)

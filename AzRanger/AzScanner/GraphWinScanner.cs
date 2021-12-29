@@ -1,10 +1,10 @@
-﻿using AzRanger.Models.MSGraph;
-using AzRanger.Models.WinGraph;
-using Newtonsoft.Json;
+﻿using AzRanger.Models.WinGraph;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AzRanger.AzScanner
 {
@@ -71,7 +71,7 @@ namespace AzRanger.AzScanner
 
                     /// Parse the result in GenericObjects
                     var result = response.Content.ReadAsStringAsync().Result;
-                    WinGraphGernericResponse genericAnswer = JsonConvert.DeserializeObject<WinGraphGernericResponse>(result);
+                    WinGraphGernericResponse genericAnswer = JsonSerializer.Deserialize<WinGraphGernericResponse>(result);
                     logger.Debug("GraphWinScanner.GetAllOf: " + genericAnswer.value.Length + " elements in generic response");
 
                     /// Go throuththe geneirc object and parse the value field
@@ -79,7 +79,7 @@ namespace AzRanger.AzScanner
                     {
                         try
                         {
-                            var resultParsed = JsonConvert.DeserializeObject<T>(entry.ToString());
+                            var resultParsed = JsonSerializer.Deserialize<T>(entry.ToString());
                             r.Add(resultParsed);
                         }
                         catch (Exception e)
@@ -140,9 +140,9 @@ namespace AzRanger.AzScanner
 
     public class WinGraphGernericResponse
     {
-        [JsonProperty(PropertyName = "odata.metadata")]
+        [JsonPropertyName("odata.metadata")]
         public string odatametadata { get; set; }
-        [JsonProperty(PropertyName = "odata.nextLink")]
+        [JsonPropertyName("odata.nextLink")]
         public string odatanextLink { get; set; }
         public object[] value { get; set; }
     }
@@ -150,7 +150,7 @@ namespace AzRanger.AzScanner
 
     public class StrongAuthenticationDetailAndObjectId
     {
-        [JsonProperty(PropertyName = "odata.type")]
+        [JsonPropertyName("odata.type")]
         public string odatatype { get; set; }
         public Guid objectId { get; set; }
         public StrongAuthenticationDetail strongAuthenticationDetail { get; set; }

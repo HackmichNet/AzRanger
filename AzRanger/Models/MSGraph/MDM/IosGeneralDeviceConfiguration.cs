@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace AzRanger.Models.MSGraph.MDM
 {
     public class IosGeneralDeviceConfiguration : IEntity
     {
-        [JsonProperty(PropertyName = "@odata.type")]
+        [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }
         public string id { get; set; }
         public DateTime lastModifiedDateTime { get; set; }

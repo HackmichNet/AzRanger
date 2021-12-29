@@ -17,7 +17,7 @@ namespace AzRanger.Checks.Rules
             bool passed = true;
             foreach (Group group in tenant.AllGroups.Values.ToList())
             {
-                if(group.visibility != null && (string)group.visibility == "Public")
+                if((group.visibility != null && (string)group.visibility.ToString() == "Public") & (group.securityEnabled))
                 {
                     passed = false;
                     this.AddAffectedEntity(group);

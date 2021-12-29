@@ -32,20 +32,20 @@ namespace AzRanger.Output
 
                 
                 
-                Console.WriteLine("[-] {0} - {1} ", ruleScore.Description, ruleScore.Rational);
+                Console.WriteLine("     [-] {0} - {1} ", ruleScore.Description, ruleScore.Rational);
                 if(ruleInfo.PortalUrl != null)
                 {
-                    Console.WriteLine("    You can lookup the setting here: {0}", ruleInfo.PortalUrl);
+                    Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
                 }
                 if(ruleScore.Link != null)
                 {
-                    Console.WriteLine("    You can find more information here: {0}", ruleScore.Link);
+                    Console.WriteLine("         You can find more information here: {0}", ruleScore.Link);
                 }
                 
 
                 if(result.GetAffectedEntity().Count > 0)
                 {
-                    Console.WriteLine("     - The following objects are affected: ");
+                    Console.WriteLine("          - The following objects are affected: ");
                     int maxOutput = 9;
                     int counter = 0;
                     foreach (IEntity entity in result.GetAffectedEntity())
@@ -54,12 +54,12 @@ namespace AzRanger.Output
                         {
                             break;
                         }
-                        Console.WriteLine("         - " + entity.PrintConsole());
+                        Console.WriteLine("              - " + entity.PrintConsole());
                         counter++;
                     }
                     if(result.GetAffectedEntity().Count > 10)
                     {
-                        Console.WriteLine("     - For more output set parameter <TBD> ");
+                        Console.WriteLine("          - For more output set parameter <TBD> ");
                     }
                 }
                 Console.WriteLine();
@@ -77,7 +77,7 @@ namespace AzRanger.Output
             }
             if(tentantiveChecks.Count > 0)
             {
-                Console.WriteLine("[+] You may haved passed the following checks. Anyway I recommend to look it up in the portal:");
+                Console.WriteLine("[+] You may have passed the following checks. Anyway I recommend to look it up in the portal:");
                 Console.WriteLine();
                 foreach (BaseCheck check in tentantiveChecks)
                 {
@@ -85,10 +85,10 @@ namespace AzRanger.Output
                     RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
                     RuleScoreAttribute ruleScore = (RuleScoreAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleScoreAttribute));
                     
-                    Console.WriteLine("[-] {0}", ruleScore.Description);
+                    Console.WriteLine("     [-] {0}", ruleScore.Description);
                     if (ruleInfo.PortalUrl != null)
                     {
-                        Console.WriteLine("    You can lookup the setting here: {0}", ruleInfo.PortalUrl);
+                        Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
                     }
                 }
 
@@ -101,7 +101,7 @@ namespace AzRanger.Output
                 foreach(BaseCheck error in auditor.Error)
                 {
                     RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(error.GetType(), typeof(RuleInfoAttribute));
-                    Console.WriteLine("     - {0}", ruleInfo.ShortName);
+                    Console.WriteLine("          - {0}", ruleInfo.ShortName);
                 }
 
                 Console.WriteLine();

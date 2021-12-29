@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace AzRanger.Models.MSGraph.MDM
     // https://graph.microsoft.com/beta/deviceManagement/deviceConfigurations?$select=id,displayName&$expand=assignments
     public class GenericDeviceConfigurations
     {
-        [JsonProperty(PropertyName = "@odata.type")]
+        [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }
         public string id { get; set; }
         public string displayName { get; set; }

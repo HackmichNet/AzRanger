@@ -1,17 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace AzRanger.Models.MSGraph.MDM
 {
     public class AndroidDeviceOwnerCompliancePolicy
     {
-        [JsonProperty(PropertyName = "@odata.context")]
+        [JsonPropertyName("@odata.context")]
         public string odatacontext { get; set; }
-        [JsonProperty(PropertyName = "@odata.type")]
+        [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }
         public string[] roleScopeTagIds { get; set; }
         public string id { get; set; }

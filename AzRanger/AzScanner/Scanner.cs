@@ -1,16 +1,12 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.Azrbac;
-using AzRanger.Models.ExchangeOnline;
 using AzRanger.Models.Generic;
 using AzRanger.Models.MSGraph;
-using AzRanger.Models.WinGraph;
 using AzRanger.Utilities;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
@@ -24,6 +20,8 @@ namespace AzRanger.AzScanner
         internal Authenticator Authenticator;
         internal String Domain;
         internal String TenantId;
+        internal bool HasP1License = false;
+        internal bool HasP2License = false;
 
 
         internal AdminCenterScanner AdminCenterScanner;
@@ -61,6 +59,15 @@ namespace AzRanger.AzScanner
             {
                 this.Authenticator = new Authenticator(this.TenantId, username, password);
             }
+            AdminCenterScanner = new AdminCenterScanner(this);
+            MsGraphScanner = new MSGraphScanner(this);
+            ProvisionAPIScanner = new ProvisionAPIScanner(this);
+            ExchangeOnlineScanner = new ExchangeOnlineScanner(this);
+            MainIamScanner = new MainIamScanner(this);
+            ComplianceCenterScanner = new ComplianceCenterScanner(this);
+            GraphWinScanner = new GraphWinScanner(this);
+            TeamsScanner = new TeamsScanner(this);
+            AzrbacScanner = new AzrbacScanner(this);
         }
 
         public Scanner(String proxy, String tenant = null)
@@ -72,15 +79,6 @@ namespace AzRanger.AzScanner
             {
                 this.TenantId = this.Authenticator.GetTenantId();
             }
-        }
-
-        public Tenant ScanTenant()
-        {
-            if(this.TenantId == null)
-            {
-                logger.Warn("Scanner.ScanTenant: Cannot retrieve TenantId. Aborting!");
-                return null;
-            }
             AdminCenterScanner = new AdminCenterScanner(this);
             MsGraphScanner = new MSGraphScanner(this);
             ProvisionAPIScanner = new ProvisionAPIScanner(this);
@@ -90,6 +88,15 @@ namespace AzRanger.AzScanner
             GraphWinScanner = new GraphWinScanner(this);
             TeamsScanner = new TeamsScanner(this);
             AzrbacScanner = new AzrbacScanner(this);
+        }
+
+        public Tenant ScanTenant()
+        {
+            if(this.TenantId == null)
+            {
+                logger.Warn("Scanner.ScanTenant: Cannot retrieve TenantId. Aborting!");
+                return null;
+            }
                 
             Tenant Result = new Tenant();
             Result.TenantId = this.TenantId;
@@ -138,6 +145,30 @@ namespace AzRanger.AzScanner
                 Console.WriteLine("[+] Current user has sufficient rights, continue...");
             }
 
+            List<LicenseDetails> licenseList = MsGraphScanner.GetLicenses();
+            this.HasP1License = this.CheckP1License(licenseList);
+            this.HasP2License = this.CheckP2License(licenseList);
+
+            if (HasP1License)
+            {
+                Console.WriteLine("[+] User has a P1 license");
+            }
+            else
+            {
+                Console.WriteLine("[-] User has no P1 license. Not all data can be gathered");
+            }
+
+            if (HasP2License)
+            {
+                Console.WriteLine("[+] User has a P2 license");
+            }
+            else
+            {
+                Console.WriteLine("[-] User has no P2 license. Not all data can be gathered");
+            }
+
+
+
             Result.domains = MsGraphScanner.GetAzDomains();
             Console.WriteLine("[+] Scanning the tenant: {0}", this.TenantId);
 
@@ -147,7 +178,7 @@ namespace AzRanger.AzScanner
             Console.WriteLine("[+] Found {0} roles.", Result.AllDirectoryRoles.Count);
 
             Result.AllGuests = MsGraphScanner.GetAllGuests();
-            Console.WriteLine("[+] Found {0} users.", Result.AllGuests.Count);
+            Console.WriteLine("[+] Found {0} guests.", Result.AllGuests.Count);
 
             Result.AllApplications = MsGraphScanner.GetAllApplications();
             Console.WriteLine("[+] Found {0} applications.", Result.AllApplications.Count);
@@ -160,26 +191,119 @@ namespace AzRanger.AzScanner
 
             Result.RoleDefinitions = GraphWinScanner.GetRoleDefinitons();
 
-            
 
-            foreach (String roleTemplateId in DirectoryRoleTemplateID.RolesAllowingAddCreds)
+            if (HasP2License)
             {
-                RoleDefinition roleToCheck = null;
-                foreach (RoleDefinition role in Result.RoleDefinitions)
+                foreach(DirectoryRole role in Result.AllDirectoryRoles.Values)
                 {
-                    if (role.objectId.ToString() == roleTemplateId)
+                    List<RoleAssignments> roleAssignments = AzrbacScanner.GetRoleAssignemtsForApp(Guid.Parse(this.TenantId), Guid.Parse(role.roleTemplateId));
+                    foreach(RoleAssignments assignment in roleAssignments)
                     {
-                        roleToCheck = role;
+                        List<AzurePrincipal> principalsToAssigne = new List<AzurePrincipal>();
+                        AzurePrincipalType aztype;
+                        switch (assignment.subject.type)
+                        {
+                            case "User":
+                                aztype = AzurePrincipalType.User;
+                                break;
+                            case "ServicePrincipal":
+                                aztype = AzurePrincipalType.ServicePrincipal;
+                                break;
+                            case "Application":
+                                aztype = AzurePrincipalType.Application;
+                                break;
+                            case "Group":
+                                aztype = AzurePrincipalType.Group;
+                                break;
+                            default:
+                                continue;
+                        }
+                        if (aztype == AzurePrincipalType.Group)
+                        {
+                            List<AzurePrincipal> members = MsGraphScanner.GetAllGroupMember(assignment.subjectId);
+                            foreach (AzurePrincipal member in members)
+                            {
+                                principalsToAssigne.Add(member);
+                            }
+                        }
+                        else
+                        {
+                            principalsToAssigne.Add(new AzurePrincipal(assignment.subjectId, aztype));
+                        }
+                        // Global resourese
+                        if (assignment.scopedResourceId == null)
+                        {                   
+                            // Assigne user to role
+                            foreach(AzurePrincipal p in principalsToAssigne)
+                            {
+                                role.AddMember(p);
+                            }
+                            // If a user can add creds, assign to applications and service principal
+                            if (DirectoryRoleTemplateID.RolesAllowingAddCreds.Contains(role.roleTemplateId))
+                            {
+                                foreach(ServicePrincipal s in Result.AllServicePrincipals.Values)
+                                {
+                                    if(s.appOwnerOrganizationId == this.TenantId)
+                                    {
+                                        s.AddUserAbleToAddCreds(new AzurePrincipal(assignment.subjectId, aztype));
+                                    }
+                                }
+                                foreach(Application a in Result.AllApplications.Values)
+                                {
+                                    a.AddUserAbleToAddCreds(new AzurePrincipal(assignment.subjectId, aztype));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if(assignment.scopedResource.type == "Application")
+                            {
+                                foreach (AzurePrincipal p in principalsToAssigne) {
+                                    Result.AllApplications[Guid.Parse(assignment.scopedResource.id)].AddUserAbleToAddCreds(p);
+                                }
+                            }
+                            if (assignment.scopedResource.type == "ServicePrincipal")
+                            {
+                                foreach (AzurePrincipal p in principalsToAssigne)
+                                {
+                                    Result.AllServicePrincipals[Guid.Parse(assignment.scopedResource.id)].AddUserAbleToAddCreds(p);
+                                }
+                            }
+                        }
                     }
                 }
-
-                if (roleToCheck != null)
+            }
+            else
+            {
+                foreach(DirectoryRole role in Result.AllDirectoryRoles.Values)
                 {
-                    AddUserToAppsAbleAddCreds(roleToCheck.objectId, Result.AllApplications, Result.AllServicePrincipals);
-                }
-                else
-                {
-                    logger.Warn("[-] Role definition for {0} not found...", roleTemplateId);
+                    if(DirectoryRoleTemplateID.RolesAllowingAddCreds.Contains(role.roleTemplateId))
+                    {
+                        List<AzurePrincipal> cloudAdmins = new List<AzurePrincipal>();
+                        foreach(AzurePrincipal user in role.GetMembers())
+                        {
+                            AzurePrincipal u = new AzurePrincipal(user.id, user.PrincipalType);
+                            cloudAdmins.Add(u);
+                        }
+                        foreach(Application app in Result.AllApplications.Values)
+                        {
+                            foreach(AzurePrincipal a in cloudAdmins)
+                            {
+                                app.AddUserAbleToAddCreds(a);
+                            }
+                        }
+                        foreach(ServicePrincipal principal in Result.AllServicePrincipals.Values)
+                        {
+                            if(principal.appOwnerOrganizationId == this.TenantId)
+                            {
+                                foreach (AzurePrincipal a in cloudAdmins)
+                                {
+                                    principal.AddUserAbleToAddCreds(a);
+                                }
+                            }
+                        }
+                        break;
+                    }
                 }
             }
 
@@ -354,62 +478,30 @@ namespace AzRanger.AzScanner
             return Result;
 
         }
-        public void AddUserToAppsAbleAddCreds(Guid roleId, Dictionary<Guid, Application> applications, Dictionary<Guid, ServicePrincipal> servicePrincipals)
+        
+        private bool CheckP1License(List<LicenseDetails> licenses)
         {
-            List<RoleAssignments> roleAssignments = AzrbacScanner.GetRoleAssignemtsForApp(roleId);
-            if(roleAssignments == null){
-                logger.Debug("Scanner.AddUserToAppsAbleAddCreds: RoleId {0} not found", roleId);
-                return;
-            }
-            foreach (RoleAssignments assignment in roleAssignments)
+            return CheckLicense(licenses, "AAD_PREMIUM");
+        }
+
+        private bool CheckP2License(List<LicenseDetails> licenses)
+        {
+            return CheckLicense(licenses, "AAD_PREMIUM_P2");
+        }
+
+        private bool CheckLicense(List<LicenseDetails> licenses, String licenseName)
+        {
+            foreach (LicenseDetails detail in licenses)
             {
-                AzurePrincipal currentUser = null;
-                if (assignment.subject.type == "User")
+                foreach (Serviceplan plan in detail.servicePlans)
                 {
-                    currentUser = new AzurePrincipal(assignment.subjectId, AzurePrincipalType.User);
-                }
-                else if (assignment.subject.type == "ServicePrincipal")
-                {
-                    currentUser = new AzurePrincipal(assignment.subjectId, AzurePrincipalType.ServicePrincipal);
-                }
-                else
-                {
-                    logger.Debug("Scanner.AddUserToAppsAbleAddCreds: Role {0} has no known type {1}!", assignment.subject.displayName, assignment.subject.type);
-                    continue;
-                }
-                // Is assigned to the "global" CloudAppAdmins => Assign it to every app and servicePrincipal
-                if (assignment.scopedResourceId == null)
-                {
-
-                    foreach (Application app in applications.Values)
+                    if (plan.servicePlanName == licenseName & plan.provisioningStatus == "Success" & plan.appliesTo == "User")
                     {
-                        app.userAbleToAddCreds.Add(currentUser);
-                    }
-                    foreach(ServicePrincipal principal in servicePrincipals.Values)
-                    {
-                        principal.userAbleToAddCreds.Add(currentUser);
-                    }
-
-                }
-                else
-                {
-                    Guid objectId = Guid.Parse((String)assignment.scopedResourceId);
-                    if (assignment.scopedResource.type == "ServicePrincipal")
-                    {
-                        servicePrincipals[objectId].userAbleToAddCreds.Add(currentUser);
-                    }
-                    else if (assignment.scopedResource.type == "Application")
-                    {
-                        applications[objectId].userAbleToAddCreds.Add(currentUser);
-
-                    }
-                    else
-                    {
-                        logger.Warn("Scanner.AddUserToAppsAbleAddCreds: Failed to find scopedResource");
-                        logger.Debug(assignment.scopedResource.ToString());
+                        return true;
                     }
                 }
             }
+            return false;
         }
     }
 }

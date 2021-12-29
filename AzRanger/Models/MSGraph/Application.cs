@@ -19,8 +19,20 @@ namespace AzRanger.Models.MSGraph
         public KeyCredentials[] keyCredentials { get; set; }
         public IDTypeResponse[] owners { get; set; }
         public List<AzurePrincipal> users { get; set; }
-        public List<AzurePrincipal> userAbleToAddCreds = new List<AzurePrincipal>();
+        public List<AzurePrincipal> UserAbleToAddCreds = new List<AzurePrincipal>();
 
+        public void AddUserAbleToAddCreds(AzurePrincipal p)
+        {
+            if (!UserAbleToAddCreds.Contains(p))
+            {
+                this.UserAbleToAddCreds.Add(p);
+            }
+        }
+
+        public List<AzurePrincipal> GetUserAbleToAddCreds()
+        {
+            return this.UserAbleToAddCreds;
+        }
         public string PrintConsole()
         {
             return String.Format("{0} - {1}", this.displayName, id);
@@ -35,7 +47,7 @@ namespace AzRanger.Models.MSGraph
                     return true;
                 }
             }
-            foreach (AzurePrincipal user in this.userAbleToAddCreds)
+            foreach (AzurePrincipal user in this.UserAbleToAddCreds)
             {
                 if (user.id == id)
                 {

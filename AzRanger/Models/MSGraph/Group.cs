@@ -1,15 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace AzRanger.Models
 {
     public class Group : IEntity
     {
-        [JsonProperty(PropertyName = "@odata.nextLink")]
+        [JsonPropertyName("@odata.nextLink")]
         public String odatanextLink;
         public Guid id { get; set; }
         public string displayName { get; set; }

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace AzRanger.Models.MSGraph.MDM
 
     public class Target
     {
-        [JsonProperty(PropertyName = "@odata.type")]
+        [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }
         public object deviceAndAppManagementAssignmentFilterId { get; set; }
         public string deviceAndAppManagementAssignmentFilterType { get; set; }

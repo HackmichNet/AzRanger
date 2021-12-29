@@ -1,7 +1,6 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.Generic;
 using AzRanger.Models.MSGraph;
-using AzRanger.Models.MSGraph.MDM;
 using System.Collections.Generic;
 using System;
 
@@ -10,15 +9,16 @@ namespace AzRanger.AzScanner
 
     public class MSGraphScanner : IScanner
     {
-        public const String ConditionalAccessPolicies = "/beta/identity/conditionalAccess/policies";
-        public const String SecureScore = "/beta/security/secureScores";
+        public const String ConditionalAccessPoliciesBeta = "/beta/identity/conditionalAccess/policies";
+        public const String SecureScoreBeta = "/beta/security/secureScores";
         public const String UsersBeta = "/beta/users";
-        public const String DirectoryRolesV1 = "/v1.0/directoryRoles";
-        public const String DirectoryRoleTemplateV1 = "/v1.0/directoryRoleTemplates";
+        public const String Users = "/v1.0/users";
+        public const String DirectoryRoles = "/v1.0/directoryRoles";
+        public const String DirectoryRoleTemplate = "/v1.0/directoryRoleTemplates";
         public const String DirectoryRolesMembersUsers = "/v1.0/directoryRoles/{0}/members/microsoft.graph.user";
         public const String DirectoryRolesMembersAll = "/beta/directoryRoles/{0}/members";
         public const String DirectoryRolesMembersGroups = "/v1.0/directoryRoles/{0}/members/microsoft.graph.group";
-        public const String CredentialUserRegistrationDetails = "/beta/reports/credentialUserRegistrationDetails";
+        public const String CredentialUserRegistrationDetailsBeta = "/beta/reports/credentialUserRegistrationDetails";
         public const String GroupsBeta = "/beta/groups";
         public const String GroupMemberTransitiv = "/beta/groups/{0}/transitiveMembers";
         public const String Applications = "/v1.0/applications";
@@ -27,8 +27,9 @@ namespace AzRanger.AzScanner
         public const String ServicePrincipalsOwners = "/v1.0/servicePrincipals/{0}/owners";
         public const String GetDomains = "/beta/domains";
         public const String ServiceConfigurationRecords = "/v1.0/domains/{0}/serviceConfigurationRecords";
-        public const String Settings = "/beta/settings";
-        public const String Devices = "/beta/devices";
+        public const String SettingsBeta = "/beta/settings";
+        public const String DevicesBeta = "/beta/devices";
+        public const String LicenseDetailBeta = "/beta/me/licenseDetails";
 
         public MSGraphScanner(Scanner scanner)
         {
@@ -37,9 +38,14 @@ namespace AzRanger.AzScanner
             this.Scope = new String[] { "https://graph.microsoft.com/.default", "offline_access" };
         }
 
+        public List<LicenseDetails> GetLicenses()
+        {
+            return GetAllOf<LicenseDetails>(LicenseDetailBeta);
+        }
+
         public Dictionary<Guid, Device> GetAllDevices()
         {
-            List<Device> allDevices = GetAllOf<Device>(MSGraphScanner.Devices, "$select=id,displayname,isCompliant,isManaged,operatingSystem,enrollmentType,profileType,deviceId,deviceOwnership,onPremisesSyncEnabled&$expand=registeredOwners($select=id)");
+            List<Device> allDevices = GetAllOf<Device>(MSGraphScanner.DevicesBeta, "$select=id,displayname,isCompliant,isManaged,operatingSystem,enrollmentType,profileType,deviceId,deviceOwnership,onPremisesSyncEnabled&$expand=registeredOwners($select=id)");
             Dictionary<Guid, Device> Result = new Dictionary<Guid, Device>();
             foreach(Device device in allDevices)
             {
@@ -49,7 +55,19 @@ namespace AzRanger.AzScanner
         }
         public Dictionary<Guid, User> GetAllUsers()
         {
-            List<User> allUsers = GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,signInActivity");
+            List<User> allUsers;
+            if (this.Scanner.HasP1License)
+            {
+                allUsers = GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,signInActivity");
+            }
+            else
+            {
+                allUsers = GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled");
+            }
+            if(allUsers == null)
+            {
+                return null;
+            }
             Dictionary<Guid, User> Result = new Dictionary<Guid, User>();
             foreach (User user in allUsers)
             {
@@ -61,7 +79,19 @@ namespace AzRanger.AzScanner
 
         public Dictionary<Guid, User> GetAllGuests()
         {
-            List<User> allUsers = GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Guest'&$select=id,userPrincipalName,displayName,userType,ExternalUserState,ExternalUserStateChangeDateTime,CreatedDateTime,CreationType,AccountEnabled,signInActivity");
+            List<User> allUsers;
+            if (this.Scanner.HasP1License)
+            {
+                allUsers = GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Guest'&$select=id,userPrincipalName,displayName,userType,ExternalUserState,ExternalUserStateChangeDateTime,CreatedDateTime,CreationType,AccountEnabled,signInActivity");
+            }
+            else
+            {
+                allUsers = GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Guest'&$select=id,userPrincipalName,displayName,userType,ExternalUserState,ExternalUserStateChangeDateTime,CreatedDateTime,CreationType,AccountEnabled");
+            }
+            if(allUsers == null)
+            {
+                return null;
+            }
             Dictionary<Guid, User> Result = new Dictionary<Guid, User>();
             foreach (User user in allUsers)
             { 
@@ -78,11 +108,11 @@ namespace AzRanger.AzScanner
 
         public List<EnterpriseApplicationUserSettings> GetSettings()
         {
-            return GetAllOf<EnterpriseApplicationUserSettings>(Settings);
+            return GetAllOf<EnterpriseApplicationUserSettings>(SettingsBeta);
         }
         public Dictionary<Guid, DirectoryRole> GetAllDirectoryRoles(bool includeMember)
         {
-            List<DirectoryRole> roles = base.GetAllOf<DirectoryRole>(MSGraphScanner.DirectoryRolesV1);
+            List<DirectoryRole> roles = base.GetAllOf<DirectoryRole>(MSGraphScanner.DirectoryRoles);
             Dictionary<Guid, DirectoryRole> Result = new Dictionary<Guid, DirectoryRole>();
             foreach (DirectoryRole role in roles)
             {
@@ -92,6 +122,36 @@ namespace AzRanger.AzScanner
                 }
 
                 Result.Add(role.id, role);
+            }
+            return Result;
+        }
+
+        public List<AzurePrincipal> GetAllMemberOf(Guid groupId)
+        {
+            List<AzurePrincipal> Result = new List<AzurePrincipal>();
+            List<IDTypeResponse> All = GetAllOf<IDTypeResponse>(string.Format(MSGraphScanner.GroupMemberTransitiv, groupId.ToString()), "?$select=id");
+            foreach (IDTypeResponse member in All)
+            {
+                if (member.odatatype == "#microsoft.graph.user")
+                {
+                    AzurePrincipal p = new AzurePrincipal(member.id, AzurePrincipalType.User);
+                    if (!Result.Contains(p))
+                    {
+                        Result.Add(p);
+                    }
+                }
+                else if (member.odatatype == "#microsoft.graph.servicePrincipal")
+                {
+                    AzurePrincipal p = new AzurePrincipal(member.id, AzurePrincipalType.ServicePrincipal);
+                    if (!Result.Contains(p))
+                    {
+                        Result.Add(p);
+                    }
+                }
+                else
+                {
+                    logger.Debug("MSGraphScanner.GetAllRoleMember: Find unknown type of member: {}", member.odatatype);
+                }
             }
             return Result;
         }
@@ -160,7 +220,7 @@ namespace AzRanger.AzScanner
 
         public Dictionary<Guid, ConditionalAccessPolicy> GetAllCondtionalAccessPolicies()
         {
-            List< ConditionalAccessPolicy> policies = GetAllOf<ConditionalAccessPolicy>(MSGraphScanner.ConditionalAccessPolicies);
+            List< ConditionalAccessPolicy> policies = GetAllOf<ConditionalAccessPolicy>(MSGraphScanner.ConditionalAccessPoliciesBeta);
             if(policies == null)
             {
                 logger.Warn("MSGraphScanner.GetAllCondtionalAccessPolicies: Connot find Conditional Access Policies. Do you have th correct rights?");

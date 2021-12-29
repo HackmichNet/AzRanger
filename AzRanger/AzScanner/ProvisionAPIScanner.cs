@@ -1,14 +1,10 @@
 ﻿using AzRanger.Models;
-using AzRanger.Models.Generic;
 using AzRanger.Models.Provision;
 using System;
 using System.Collections;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace AzRanger.AzScanner
 {
@@ -25,8 +21,7 @@ namespace AzRanger.AzScanner
 
 		public SharepointInformation GetSharepointInformation()
 		{
-			GetCompanyInformationResponse response = (GetCompanyInformationResponse)PostToProvisioninApi<GetCompanyInformationResponse>("GetCompanyInformation", @"<b:ReturnValue i:nil=""true""/>");
-			return GetSharepointInfos(response);
+			return (SharepointInformation)PostToProvisioninApi<GetCompanyInformationResponse>("GetCompanyInformation", @"<b:ReturnValue i:nil=""true""/>");
 		}
 
 		internal object PostToProvisioninApi<T>(string command, string requestElement)
@@ -51,22 +46,37 @@ namespace AzRanger.AzScanner
 					var result = response.Content.ReadAsStringAsync().Result;
 					XmlDocument doc = new XmlDocument();
 					doc.LoadXml(result);
-					var nsmgr = new XmlNamespaceManager(doc.NameTable);
-					nsmgr.AddNamespace("s", "http://www.w3.org/2003/05/soap-envelope");
-					nsmgr.AddNamespace("a", "http://www.w3.org/2005/08/addressing");
-					XmlNode node = doc.DocumentElement.SelectSingleNode("/s:Envelope/s:Body", nsmgr);
-					string text = node.InnerXml;
-
-					var serializer = new XmlSerializer(typeof(T));
-					StringReader stringReader = new StringReader(text);
 					try
 					{
-						return (T)serializer.Deserialize(stringReader);
+						string SharePointAdminUrl = null;
+						string SharePointUrl = null;
+						XmlNodeList nodeList = doc.GetElementsByTagName("ServiceParameter");
+						foreach (XmlNode n in nodeList)
+						{
+							if (n.ChildNodes.Count == 2) { 
+								XmlNode curentFirstChild = n.FirstChild;
+								if (curentFirstChild.Name == "Name")
+								{
+									if (curentFirstChild.InnerText == "RootAdminUrl")
+									{
+										XmlNode currentValue = n.LastChild;
+										SharePointAdminUrl = currentValue.InnerText;
+									}
+									if (curentFirstChild.InnerText == "SPO_RootSiteUrl")
+									{
+										XmlNode currentValue = n.LastChild;
+										SharePointUrl = currentValue.InnerText;
+									}
+								}
+							}
+						}
+						return new SharepointInformation(SharePointAdminUrl, SharePointUrl);
+						// return (T)serializer.Deserialize(stringReader);
 					}catch(Exception e)
                     {
 						logger.Debug("ProvisionApiScanner.PostToProvisionApi: Deserialization failed.");
 						logger.Debug(e.Message);
-						logger.Debug(stringReader.ToString());
+						logger.Debug(result);
 						return null;
 					}
 				}
@@ -77,7 +87,6 @@ namespace AzRanger.AzScanner
 					logger.Debug(response.Content.ReadAsStringAsync().Result);
 				}
 			}
-
 			return null;
 		}
 

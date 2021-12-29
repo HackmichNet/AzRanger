@@ -1,15 +1,11 @@
-﻿using AzRanger.Checks;
-using AzRanger.Models;
-using AzRanger.Models.Generic;
-using AzRanger.Models.Provision;
-using AzRanger.Utilities;
-using Newtonsoft.Json;
+﻿using AzRanger.Models.Generic;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading;
 
 namespace AzRanger
@@ -26,7 +22,7 @@ namespace AzRanger
             {
                 return null;
             }
-            var resultParsed = JsonConvert.DeserializeObject<OpenIDConfiguration>(result);
+            var resultParsed = JsonSerializer.Deserialize<OpenIDConfiguration>(result);
             if (resultParsed.authorization_endpoint != null)
             {
                 result = resultParsed.authorization_endpoint.Split("/")[3];

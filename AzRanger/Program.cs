@@ -31,7 +31,7 @@ namespace AzRanger
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "AzRanger 0.0.1"; //change header
+                h.Heading = "AzRanger 0.0.2"; //change header
                 h.Copyright = ""; 
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
@@ -154,7 +154,7 @@ namespace AzRanger
                 if (opts.DumpAll)
                 {
                     Dumper.DumpTenant(tenant, opts.OutFile);
-                    Console.WriteLine("[+] Successfully writen to " + opts.OutFile);
+                    Console.WriteLine("[+] Successfully written to " + opts.OutFile);
                 }
                 return;
             }
@@ -163,7 +163,7 @@ namespace AzRanger
             {
                 TenantSettings settings = scanner.ScanSettings();
                 Dumper.DumpTenantSettings(settings, opts.OutFile);
-                Console.WriteLine("[+] Successfully writen to " + opts.OutFile);
+                Console.WriteLine("[+] Successfully written to " + opts.OutFile);
             }
 
             Console.WriteLine("[+] AzRanger finished... Press any key to exit!");

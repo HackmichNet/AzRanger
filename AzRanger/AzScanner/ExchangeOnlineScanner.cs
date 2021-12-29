@@ -1,15 +1,11 @@
-﻿using AzRanger.Models;
-using AzRanger.Models.ExchangeOnline;
+﻿using AzRanger.Models.ExchangeOnline;
 using AzRanger.Models.Generic;
-using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace AzRanger.AzScanner
 {
@@ -185,7 +181,7 @@ namespace AzRanger.AzScanner
                     GenResponse genericAnswer = null;
                     try
                     {
-                        genericAnswer = JsonConvert.DeserializeObject<GenResponse>(result);
+                        genericAnswer = JsonSerializer.Deserialize<GenResponse>(result);
                     }catch(Exception e)
                     {
                         logger.Debug("ExchangeOnlineScanner.GetAllOf.GenReponse: Failed to parse response.");
@@ -202,7 +198,7 @@ namespace AzRanger.AzScanner
                     {
                         try
                         {
-                            var resultParsed = JsonConvert.DeserializeObject<T>(entry.ToString());
+                            var resultParsed = JsonSerializer.Deserialize<T>(entry.ToString());
                             r.Add(resultParsed);
                         }
                         catch(Exception e)

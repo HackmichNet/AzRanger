@@ -56,7 +56,7 @@ namespace AzRanger.Checks.Rules
                     {
                         if(app.appId == servicePrincipal.appId)
                         {
-                            foreach (AzurePrincipal principal in app.userAbleToAddCreds)
+                            foreach (AzurePrincipal principal in app.GetUserAbleToAddCreds())
                             {
                                 if (!globalAdminEntity.Contains(principal.id))
                                 {

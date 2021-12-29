@@ -12,6 +12,7 @@ namespace AzRanger.AzScanner
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private string Authority = "https://login.microsoftonline.com";
         IPublicClientApplication App;
+        //  1950a258-227b-4e31-a9cf-717495945fc2
         private const String ClientId = "1b730954-1685-4b74-9bfd-dac224a7b894";
         private String Username;
         private SecureString Password;

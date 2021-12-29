@@ -18,7 +18,7 @@ namespace AzRanger.Models.MSGraph
         public bool isVerified { get; set; }
         public string[] supportedServices { get; set; }
         public object passwordValidityPeriodInDays { get; set; }
-        public int passwordNotificationWindowInDays { get; set; }
+        public object passwordNotificationWindowInDays { get; set; }
         public object state { get; set; }
     }
 

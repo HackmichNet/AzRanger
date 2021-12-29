@@ -1,11 +1,7 @@
 ﻿using AzRanger.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+using System.Text.Json;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AzRanger.Output
 {
@@ -16,8 +12,14 @@ namespace AzRanger.Output
            
             using (StreamWriter file = File.CreateText(outFile))
             {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, tenant);
+                var options = new JsonSerializerOptions
+                {
+                    MaxDepth = 16,
+                    IncludeFields = true,
+                    WriteIndented = true
+                };
+                var json = JsonSerializer.Serialize(tenant, options);
+                file.Write(json);
             }
         }
 
@@ -25,8 +27,14 @@ namespace AzRanger.Output
         {
             using (StreamWriter file = File.CreateText(outFile))
             {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, tenant);
+                var options = new JsonSerializerOptions
+                {
+                    MaxDepth = 16,
+                    IncludeFields = true,
+                    WriteIndented = true
+                };
+                var json = JsonSerializer.Serialize(tenant, options);
+                file.Write(json);
             }
         }
     }

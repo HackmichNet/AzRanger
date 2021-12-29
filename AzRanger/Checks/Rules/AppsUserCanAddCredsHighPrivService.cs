@@ -49,7 +49,7 @@ namespace AzRanger.Checks.Rules
             // Check if userAbleToAddCreds is in Global Admin group for servicePrincipals
             foreach (ServicePrincipal servicePrincipal in serviceWithGlobalAdminRole)
             {
-                foreach (AzurePrincipal principal in servicePrincipal.userAbleToAddCreds)
+                foreach (AzurePrincipal principal in servicePrincipal.GetUserAbleToAddCreds())
                 {
                     if (!globalAdminEntities.Contains(principal.id))
                     {
