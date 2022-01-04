@@ -47,7 +47,7 @@ namespace AzRanger.Checks.Rules
                     foreach (AuthenticationPolicy policy in tenant.ExchangeOnlineSettings.AuthenticationPolicies)
                     {
                         // Default policy
-                        if (policy.Name == (string)user.AuthenticationPolicy)
+                        if (policy.Name == (string)user.AuthenticationPolicy.ToString())
                         {
                             if (IsPolicySafe(policy))
                             {

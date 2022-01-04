@@ -31,7 +31,7 @@ namespace AzRanger
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "AzRanger 0.0.2"; //change header
+                h.Heading = "AzRanger 0.0.1"; //change header
                 h.Copyright = ""; 
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);

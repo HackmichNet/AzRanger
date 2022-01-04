@@ -126,9 +126,15 @@ namespace AzRanger.Models.SharePoint
         public bool NotifyOwnersWhenItemsReshared { get; set; }
         public int ODBAccessRequests { get; set; }
         public int ODBMembersCanShare { get; set; }
+        // OneDrive
+        // 0 => Only people in your organisation
+        // 1 => New and Existing Guests
+        // 2 => Anyone
+        // 3 => Existing Guests
         public int ODBSharingCapability { get; set; }
         public bool OfficeClientADALDisabled { get; set; }
         public bool OneDriveForGuestsEnabled { get; set; }
+        public int OneDriveLoopSharingCapability { get; set; }
         public int OneDriveStorageQuota { get; set; }
         public bool OptOutOfGrooveBlock { get; set; }
         public bool OptOutOfGrooveSoftBlock { get; set; }
@@ -136,6 +142,7 @@ namespace AzRanger.Models.SharePoint
         public int OrphanedPersonalSitesRetentionPeriod { get; set; }
         public bool OwnerAnonymousNotification { get; set; }
         public bool PermissiveBrowserFileHandlingOverride { get; set; }
+        // Allow guests to share items they don't own
         public bool PreventExternalUsersFromResharing { get; set; }
         public bool ProvisionSharedWithEveryoneFolder { get; set; }
         public string PublicCdnAllowedFileTypes { get; set; }
@@ -150,6 +157,11 @@ namespace AzRanger.Models.SharePoint
         public bool SearchResolveExactEmailOrUPN { get; set; }
         public object SharingAllowedDomainList { get; set; }
         public object SharingBlockedDomainList { get; set; }
+        // SharePoint
+        // 0 => Only people in your organisation
+        // 1 => New and Existing Guests
+        // 2 => Anyone
+        // 3 => Existing Guests
         public int SharingCapability { get; set; }
 
         // 0 => Shareing is allowed to everyone

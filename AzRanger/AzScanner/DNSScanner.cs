@@ -1,4 +1,5 @@
 ﻿using DnsClient;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace AzRanger.AzScanner
 {
     public static class DNSScanner
     {
+        internal static Logger logger = LogManager.GetCurrentClassLogger();
         public static bool hasSPF(String domains)
         {
             var lookup = new LookupClient();
@@ -17,6 +19,7 @@ namespace AzRanger.AzScanner
                 var result = lookup.Query(domains, QueryType.TXT);
                 foreach (var record in result.Answers)
                 {
+                    logger.Debug("DNSScanner.hasSPF: Checking record: {0}", record.ToString());
                     if (record.ToString().Contains("include:spf.protection.outlook.com"))
                     {
                         return true;
@@ -38,6 +41,7 @@ namespace AzRanger.AzScanner
                 var result = lookup.Query("_dmarc." + domains, QueryType.TXT);
                 foreach (var record in result.Answers)
                 {
+                    logger.Debug("DNSScanner.Query: Checking record: {0}", record.ToString());
                     if (record.ToString().Contains("v=DMARC1"))
                     {
                         return true;

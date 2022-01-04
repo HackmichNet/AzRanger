@@ -13,6 +13,10 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
+            if(tenant.SharepointInformation.SharepointInternalInfos.SharingCapability == 0)
+            {
+                return CheckResult.Passed;
+            }
             if(tenant.SharepointInformation.SharepointInternalInfos.SharingDomainRestrictionMode != 0)
             {
                 return CheckResult.Passed;

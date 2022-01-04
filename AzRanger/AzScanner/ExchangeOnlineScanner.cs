@@ -94,7 +94,9 @@ namespace AzRanger.AzScanner
 
         public List<Mailbox> GetMailboxes()
         {
-            return GetAllOf<Mailbox>(Mailbox, null, null);
+            List<Tuple<String, String>> parameters = new List<Tuple<String, String>>();
+            parameters.Add(new Tuple<String,String>("ResultSize","unlimited"));
+            return GetAllOf<Mailbox>(Mailbox, null, parameters);
         }
 
         public List<MalwareFilterRule> GetMalwareFilterRules()
@@ -155,7 +157,7 @@ namespace AzRanger.AzScanner
             return GetAllOf<TransportRule>(ExchangeOnlineScanner.TransportRule);
         }
 
-        internal List<T> GetAllOf<T>(string command, List<T> alreadyCollectedItems = null, List<Tuple<string, string>> parameters = null)
+        internal List<T> GetAllOf<T>(string command, List<T> alreadyCollectedItems = null, List<Tuple<string, string>> parameters = null, String skiptoken = null)
         {
             logger.Debug("ExchangeOnlineScanner.GetAllOf: {0}|{1}", typeof(T).ToString(), command );
             String accessToken = this.Scanner.Authenticator.GetAccessToken(this.Scope);
@@ -164,9 +166,15 @@ namespace AzRanger.AzScanner
                 logger.Warn("ExchangeOnlineScanner.GetAllOf: Failed fetching access token!");
                 return null;
             }
+            String apiEndpoint = this.EndPoint;
+            if(skiptoken != null)
+            {
+                apiEndpoint = apiEndpoint + skiptoken;
+                logger.Debug("ExchangeOnlineScanner.GetAllOf: APIEndpoint: {0})", apiEndpoint);
+            }
             AuthenticationHeaderValue authenticationHeader = new AuthenticationHeaderValue("Bearer", accessToken);
             using (var client = Helper.GetDefaultClient(BaseAdresse, false, null, this.Scanner.Proxy))
-            using (var message = new HttpRequestMessage(HttpMethod.Post, this.EndPoint))
+            using (var message = new HttpRequestMessage(HttpMethod.Post, apiEndpoint))
             {
                 message.Headers.Authorization = authenticationHeader;
                 message.Content = this.CreateMessage(command, parameters);
@@ -193,6 +201,7 @@ namespace AzRanger.AzScanner
                     {
                         return null;
                     }
+                    logger.Debug("ExchangeOnlineScanner.GetAllOf: Response has {0} entries.", genericAnswer.value.Length);
                     /// Go through the generic object and parse the value field
                     foreach (var entry in genericAnswer.value)
                     {
@@ -213,32 +222,34 @@ namespace AzRanger.AzScanner
                     /// If the generic Answer has a nextLink, we have more items then responded in the first answer
                     if (genericAnswer.odatanextLink != null)
                     {
+                        logger.Debug("ExchangeOnlineScanner.GetAllOf: Odatanextlink is: {0}", genericAnswer.odatanextLink);
+                    
                         /// Create the next endpoint => Endpoint + nextLink Attribute
-                        string NewQuery = genericAnswer.odatanextLink.Split(this.EndPoint)[1];
+                            string sktiptoken = genericAnswer.odatanextLink.Split(this.EndPoint)[1];
 
-                        /// If the function was called already, we hand over some values
-                        if (alreadyCollectedItems != null)
-                        {
-                            foreach (var item in alreadyCollectedItems)
+                            /// If the function was called already, we hand over some values
+                            if (alreadyCollectedItems != null)
                             {
-                                r.Add(item);
+                                foreach (var item in alreadyCollectedItems)
+                                {
+                                    r.Add(item);
+                                }
+                            }
+
+                            /// Call the function again with the already collected items and the nextLink
+                            return GetAllOf<T>(command, r, parameters, sktiptoken);
+                        }
+                        else /// No next link anymore, just check if we have some items and concat them with the current result
+                        {
+                            if (alreadyCollectedItems != null)
+                            {
+                                foreach (var item in alreadyCollectedItems)
+                                {
+                                    r.Add(item);
+                                }
                             }
                         }
-
-                        /// Call the function again with the already collected items and the nextLink
-                        return GetAllOf<T>(command, r, null);
-                    }
-                    else /// No next link anymore, just check if we have some items and concat them with the current result
-                    {
-                        if (alreadyCollectedItems != null)
-                        {
-                            foreach (var item in alreadyCollectedItems)
-                            {
-                                r.Add(item);
-                            }
-                        }
-                    }
-                    return r;
+                        return r;
                 }
                 else
                 {

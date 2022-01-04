@@ -3,11 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5-windows10.0.17763.0</TargetFramework>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Authors>Constantin Wenz</Authors>
     <Platforms>AnyCPU</Platforms>
     <Nullable>enable</Nullable>
-    <DebugType>none</DebugType>
+    <DebugType>full</DebugType>
     <StartupObject>AzRanger.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -22,16 +22,17 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <NoWarn>1701;1702; 8600, 8625; 8602; 8618; 8603; 8604;</NoWarn>
+    <NoWarn>1701;1702; 8600, 8625; 8602; 8618; 8603; 8604</NoWarn>
     <Deterministic>True</Deterministic>
-	<Optimize>False</Optimize>
+    <Optimize>False</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="CsvHelper" Version="27.2.1" />
     <PackageReference Include="DnsClient" Version="1.5.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.39.0" />
-    <PackageReference Include="NLog" Version="4.7.13" />
+    <PackageReference Include="NLog" Version="4.7.11" />
   </ItemGroup>
 
 </Project>

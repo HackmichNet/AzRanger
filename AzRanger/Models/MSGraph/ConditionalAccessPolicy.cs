@@ -10,7 +10,8 @@ namespace AzRanger.Models
     {
         public string id { get; set; }
         public string displayName { get; set; }
-        public DateTime createdDateTime { get; set; }
+        // DateTime
+        public object createdDateTime { get; set; }
         public object modifiedDateTime { get; set; }
         public string state { get; set; }
         public Conditions conditions { get; set; }

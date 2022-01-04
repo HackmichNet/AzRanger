@@ -77,7 +77,7 @@ namespace AzRanger.Output
             }
             if(tentantiveChecks.Count > 0)
             {
-                Console.WriteLine("[+] You may have passed the following checks. Anyway I recommend to look it up in the portal:");
+                Console.WriteLine("[+] You may haved passed the following checks. Anyway I recommend to look it up in the portal:");
                 Console.WriteLine();
                 foreach (BaseCheck check in tentantiveChecks)
                 {

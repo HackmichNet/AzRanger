@@ -3,6 +3,7 @@ using AzRanger.Models.Generic;
 using AzRanger.Models.MSGraph;
 using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
@@ -69,11 +70,14 @@ namespace AzRanger.AzScanner
                 return null;
             }
             Dictionary<Guid, User> Result = new Dictionary<Guid, User>();
+            //List<Task<bool>> tasks = new List<Task<bool>>();
             foreach (User user in allUsers)
             {
-                 user.isMFAEnabled = this.Scanner.GraphWinScanner.HasMFA(user.id);              
+                //tasks.Add(Task.Run(() => user.isMFAEnabled = this.Scanner.GraphWinScanner.HasMFA(user.id)));
+                user.isMFAEnabled = this.Scanner.GraphWinScanner.HasMFA(user.id);              
                 Result.Add(user.id, user);
             }
+            //Task.WaitAll(tasks.ToArray());
             return Result;
         }
 

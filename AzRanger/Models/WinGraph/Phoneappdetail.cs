@@ -16,7 +16,8 @@ namespace AzRanger.Models.WinGraph
         public string deviceTag { get; set; }
         public object hashFunction { get; set; }
         public string id { get; set; }
-        public DateTime lastAuthenticatedTimestamp { get; set; }
+        // DateTime
+        public object lastAuthenticatedTimestamp { get; set; }
         public object oathSecretKey { get; set; }
         public int oathTokenTimeDrift { get; set; }
         public object tenantDeviceId { get; set; }

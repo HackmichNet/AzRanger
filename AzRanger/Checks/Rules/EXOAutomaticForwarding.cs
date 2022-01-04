@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleInfo("EXOAutomaticForwarding", Scope.EXO, MaturityLevel.Mature)]
-    [RuleScore("Auto forwarding is not enabled", "Attack can use auto forwarding exfiltrade data", 5, "https://docs.microsoft.com/en-us/archive/blogs/exovoice/disable-automatic-forwarding-in-office-365-and-exchange-server-to-prevent-information-leakage ")]
+    [RuleScore("Auto forwarding is not disabled", "Attack can use auto forwarding exfiltrade data", 5, "https://docs.microsoft.com/en-us/archive/blogs/exovoice/disable-automatic-forwarding-in-office-365-and-exchange-server-to-prevent-information-leakage ")]
     class EXOAutomaticForwarding : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

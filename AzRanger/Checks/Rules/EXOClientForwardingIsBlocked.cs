@@ -13,10 +13,10 @@ namespace AzRanger.Checks.Rules
             {
                 if (rule.State == "Enabled" & rule.Mode == "Enforce")
                 {
-                    if ((rule.FromScope != null && (string) rule.FromScope =="InOrganization" ) &&
-                        (rule.SentTo != null && (string)rule.SentToScope == "NotInOrganization") &&
-                        (rule.MessageTypeMatches != null && (string) rule.MessageTypeMatches == "AutoForward") &&
-                        (rule.State != null && (string) rule.State == "Enabled"))
+                    if ((rule.FromScope != null && (string) rule.FromScope.ToString() == "InOrganization" ) &&
+                        (rule.SentTo != null && (string)rule.SentToScope.ToString() == "NotInOrganization") &&
+                        (rule.MessageTypeMatches != null && (string) rule.MessageTypeMatches.ToString() == "AutoForward") &&
+                        (rule.State != null && (string) rule.State.ToString() == "Enabled"))
                     {
                         foreach (string action in rule.Actions)
                         {
