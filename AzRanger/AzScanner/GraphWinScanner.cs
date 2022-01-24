@@ -72,7 +72,7 @@ namespace AzRanger.AzScanner
                     /// Parse the result in GenericObjects
                     var result = response.Content.ReadAsStringAsync().Result;
                     WinGraphGernericResponse genericAnswer = JsonSerializer.Deserialize<WinGraphGernericResponse>(result);
-                    logger.Debug("GraphWinScanner.GetAllOf: " + genericAnswer.value.Length + " elements in generic response");
+                    logger.Debug("GraphWinScanner.GetAllOf: {0} elements in response", genericAnswer.value.Length);
 
                     /// Go throuththe geneirc object and parse the value field
                     foreach (var entry in genericAnswer.value)

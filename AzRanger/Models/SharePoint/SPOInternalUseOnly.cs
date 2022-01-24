@@ -126,7 +126,7 @@ namespace AzRanger.Models.SharePoint
         public bool NotifyOwnersWhenItemsReshared { get; set; }
         public int ODBAccessRequests { get; set; }
         public int ODBMembersCanShare { get; set; }
-        // OneDrive
+        // OnDrive ODBSharingCapability
         // 0 => Only people in your organisation
         // 1 => New and Existing Guests
         // 2 => Anyone

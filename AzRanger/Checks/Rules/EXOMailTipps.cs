@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleInfo("EXOMailTipps", Scope.EXO, MaturityLevel.Mature)]
-    [RuleScore("Mailbox Tips are not enabled", "Mailbox can prevent a user to sent mails to too many recipients", 1)]
+    [RuleScore("Not all Mailbox Tips are enabled", "Mailbox can prevent a user to sent mails to too many recipients or sending mails outside of the organisation", 1)]
     class EXOMailTipps : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

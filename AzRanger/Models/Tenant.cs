@@ -47,5 +47,6 @@ namespace AzRanger.Models
         public AdminCenterSettings AdminCenterSettings { get; set; }
         public TeamsSettings TeamsSettings { get; set; }
         public List<RoleDefinition> RoleDefinitions { get; set; }
+        public TenantSkuInfo TenantSkuInfo { get; set; }
     }
 }

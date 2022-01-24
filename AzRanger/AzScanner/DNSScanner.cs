@@ -19,8 +19,9 @@ namespace AzRanger.AzScanner
                 var result = lookup.Query(domains, QueryType.TXT);
                 foreach (var record in result.Answers)
                 {
-                    logger.Debug("DNSScanner.hasSPF: Checking record: {0}", record.ToString());
-                    if (record.ToString().Contains("include:spf.protection.outlook.com"))
+                    String rawDate = record.ToString();
+                    logger.Debug("DNSScanner.hasSPF: Checking record: {0}", rawDate);
+                    if (rawDate.Contains("spf.protection.outlook.com"))
                     {
                         return true;
                     }
@@ -41,8 +42,9 @@ namespace AzRanger.AzScanner
                 var result = lookup.Query("_dmarc." + domains, QueryType.TXT);
                 foreach (var record in result.Answers)
                 {
-                    logger.Debug("DNSScanner.Query: Checking record: {0}", record.ToString());
-                    if (record.ToString().Contains("v=DMARC1"))
+                    String rawDate = record.ToString();
+                    logger.Debug("DNSScanner.Query: Checking record: {0}", rawDate);
+                    if (rawDate.Contains("DMARC1"))
                     {
                         return true;
                     }

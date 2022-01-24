@@ -15,5 +15,6 @@ namespace AzRanger.Models
         public O365PasswordPolicy O365PasswordPolicy { get; set; }
         public OfficeFormsSettings OfficeFormsSettings { get; set; }
         public OfficeStoreSettings OfficeStoreSettings { get; set; }
+        public DirsyncManagement DirsyncManagement { get; set; }
     }
 }

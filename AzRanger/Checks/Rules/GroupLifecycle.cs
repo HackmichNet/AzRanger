@@ -13,24 +13,25 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            // It is not set
+            // Policy is not set
             if(tenant.LCMSettings.policyIdentifier == "00000000-0000-0000-0000-000000000000")
             {
                 return CheckResult.Failed;
             }
 
-            // No group is selected
-            if(tenant.LCMSettings.groupIdsToMonitorExpirations.Length == 0)
+            // Enable expiration for these Microsoft 365 groups => None = 2
+            // Enable expiration for these Microsoft 365 groups => Selected = 1
+            // Enable expiration for these Microsoft 365 groups => All = 0
+            if (tenant.LCMSettings.managedGroupTypes == 2)
             {
                 return CheckResult.Failed;
             }
 
             // No admin will be notified
-            if(tenant.LCMSettings.adminNotificationEmails == null)
+            if(tenant.LCMSettings.adminNotificationEmails == null || tenant.LCMSettings.adminNotificationEmails == "")
             {
                 return CheckResult.Failed;
             }
-
             return CheckResult.Passed;
         }
     }

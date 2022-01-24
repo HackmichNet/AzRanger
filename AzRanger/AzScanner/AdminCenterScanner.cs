@@ -36,6 +36,9 @@ namespace AzRanger.AzScanner
         // https://admin.microsoft.com/Adminportal/Home#/Settings/Services/:/Settings/L1/Calendar
         public const String Calendarsharing = "/admin/api/settings/apps/calendarsharing";
 
+        // https://admin.microsoft.com/#/dirsyncmanagement
+        public const String DirsyncManagement = "/admin/api/DirsyncManagement/manage";
+
         public AdminCenterScanner(Scanner scanner)
         {
             this.Scanner = scanner;
@@ -59,6 +62,10 @@ namespace AzRanger.AzScanner
             return (SwaySettings)Get<SwaySettings>(AdminCenterScanner.SwaySettings);
         }
 
+        public DirsyncManagement GetDirsyncManagement()
+        {
+            return (DirsyncManagement)Get<DirsyncManagement>(AdminCenterScanner.DirsyncManagement);
+        }
 
         public O365PasswordPolicy GetO365PasswordPolicy()
         {

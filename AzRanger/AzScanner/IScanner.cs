@@ -131,7 +131,7 @@ namespace AzRanger.AzScanner
                     /// Parse the result in GenericObjects
                     var result = response.Content.ReadAsStringAsync().Result;
                     GenResponse genericAnswer = JsonSerializer.Deserialize<GenResponse>(result);
-                    logger.Debug("IScanner.GetAllOf: " + genericAnswer.value.Length + " elements in generic response");
+                    logger.Debug("IScanner.GetAllOf: {0} elements in response", genericAnswer.value.Length);
 
                     /// Go throuththe generic object and parse the value field
                     foreach (var entry in genericAnswer.value)

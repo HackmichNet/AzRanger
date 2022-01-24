@@ -99,13 +99,13 @@ namespace AzRanger.AzScanner
             }
                 
             Tenant Result = new Tenant();
-            Result.TenantId = this.TenantId;
-
-            Result.AllDirectoryRoles = MsGraphScanner.GetAllDirectoryRoles(true);
-            
+            Result.TenantId = this.TenantId;         
             String currentUserId = this.Authenticator.GetUserId();
             bool sufficientRights = false;
-            if(currentUserId != null)
+            Result.AllDirectoryRoles = MsGraphScanner.GetAllDirectoryRoles(true);
+            Result.TenantSkuInfo = MainIamScanner.GetTenantSkuInfo();
+
+            if (currentUserId != null)
             {
                 List<DirectoryRole> neededRoles = new List<DirectoryRole>();
                 foreach(DirectoryRole role in Result.AllDirectoryRoles.Values)
@@ -145,29 +145,33 @@ namespace AzRanger.AzScanner
                 Console.WriteLine("[+] Current user has sufficient rights, continue...");
             }
 
-            List<LicenseDetails> licenseList = MsGraphScanner.GetLicenses();
-            this.HasP1License = this.CheckP1License(licenseList);
-            this.HasP2License = this.CheckP2License(licenseList);
-
-            if (HasP1License)
+            if (Result.TenantSkuInfo != null)
             {
-                Console.WriteLine("[+] User has a P1 license");
+                if (Result.TenantSkuInfo.aadPremium)
+                {
+                    Console.WriteLine("[+] Tenant has a P1 license");
+                    this.HasP1License = true;
+                }
+                else
+                {
+                    Console.WriteLine("[-] Tenant has no P1 license. Not all data can be gathered");
+                }
+
+                if (Result.TenantSkuInfo.aadPremiumP2)
+                {
+                    Console.WriteLine("[+] Tenant has a P2 license");
+                    this.HasP2License = true;
+                }
+                else
+                {
+                    Console.WriteLine("[-] Tenant has no P2 license. Not all data can be gathered");
+                }
             }
             else
             {
-                Console.WriteLine("[-] User has no P1 license. Not all data can be gathered");
+                logger.Warn("Scanner.ScanTenant: Cannot get Tenant License. This should not happen");
+                return null;
             }
-
-            if (HasP2License)
-            {
-                Console.WriteLine("[+] User has a P2 license");
-            }
-            else
-            {
-                Console.WriteLine("[-] User has no P2 license. Not all data can be gathered");
-            }
-
-
 
             Result.domains = MsGraphScanner.GetAzDomains();
             Console.WriteLine("[+] Scanning the tenant: {0}", this.TenantId);
@@ -333,6 +337,7 @@ namespace AzRanger.AzScanner
             Result.AdminCenterSettings.O365PasswordPolicy = AdminCenterScanner.GetO365PasswordPolicy();
             Result.AdminCenterSettings.SwaySettings = AdminCenterScanner.GetSwaySettings();
             Result.AdminCenterSettings.Calendarsharing = AdminCenterScanner.GetCalendarsharing();
+            Result.AdminCenterSettings.DirsyncManagement = AdminCenterScanner.GetDirsyncManagement();
 
             Result.ExchangeOnlineSettings.AdminAuditLogConfig = ExchangeOnlineScanner.GetAdminAuditLogConfig();
             Result.ExchangeOnlineSettings.HostedOutboundSpamFilterPolicy = ExchangeOnlineScanner.GetHostedOutboundSpamFilterPolicies();
@@ -457,6 +462,7 @@ namespace AzRanger.AzScanner
             Result.AdminCenterSettings.O365PasswordPolicy = AdminCenterScanner.GetO365PasswordPolicy();
             Result.AdminCenterSettings.SwaySettings = AdminCenterScanner.GetSwaySettings();
             Result.AdminCenterSettings.Calendarsharing = AdminCenterScanner.GetCalendarsharing();
+            Result.AdminCenterSettings.DirsyncManagement = AdminCenterScanner.GetDirsyncManagement();
 
             Result.ExchangeOnlineSettings.AdminAuditLogConfig = ExchangeOnlineScanner.GetAdminAuditLogConfig();
             Result.ExchangeOnlineSettings.HostedOutboundSpamFilterPolicy = ExchangeOnlineScanner.GetHostedOutboundSpamFilterPolicies();
@@ -472,7 +478,6 @@ namespace AzRanger.AzScanner
             Result.ExchangeOnlineSettings.OrganizationConfig = ExchangeOnlineScanner.GetOrganizationConfig();
             Result.ExchangeOnlineSettings.AuthenticationPolicies = ExchangeOnlineScanner.GetAuthenticationPolicies();
             Result.ExchangeOnlineSettings.OwaMailboxPolicy = ExchangeOnlineScanner.GetOwaMailboxPolicy();
-
             Result.OfficeDLPPolicies = ComplianceCenterScanner.GetDLPPolicies();
             Console.WriteLine("[+] Finished collecting infos");
             return Result;
