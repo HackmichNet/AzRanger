@@ -37,5 +37,6 @@ namespace AzRanger.Models
         public ExchangeOnlineSettings ExchangeOnlineSettings { get; set; }
         public AdminCenterSettings AdminCenterSettings { get; set; }
         public TeamsSettings TeamsSettings { get; set; }
+        public TenantSkuInfo TenantSkuInfo { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace AzRanger
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "AzRanger 0.0.4"; //change header
+                h.Heading = "AzRanger 0.0.5"; //change header
                 h.Copyright = ""; 
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
@@ -149,7 +149,7 @@ namespace AzRanger
                         Scope.O365, Scope.EXO, Scope.SPO
                     });
                     auditor.PerformAudit();
-                    ConsoleOutput.Print(auditor);
+                    ConsoleOutput.Print(auditor, opts.WriteAllResults);
                 }
                 if (opts.DumpAll)
                 {

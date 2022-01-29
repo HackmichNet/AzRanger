@@ -390,7 +390,6 @@ namespace AzRanger.AzScanner
             Result.TenantId = this.TenantId;
 
             Dictionary<Guid, DirectoryRole> AllRoles = MsGraphScanner.GetAllDirectoryRoles(true);
-
             String currentUserId = this.Authenticator.GetUserId();
             bool sufficientRights = false;
             if (currentUserId != null)
@@ -435,7 +434,8 @@ namespace AzRanger.AzScanner
 
             Result.domains = MsGraphScanner.GetAzDomains();
             Console.WriteLine("[+] Scanning the tenant: {0}", this.TenantId);
-
+            
+            Result.TenantSkuInfo = MainIamScanner.GetTenantSkuInfo();
             Result.EnterpriseApplicationUserSettings = MsGraphScanner.GetSettings();
 
             Result.AllCAPolicies = MsGraphScanner.GetAllCondtionalAccessPolicies();

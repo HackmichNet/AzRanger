@@ -13,7 +13,7 @@ namespace AzRanger.Output
 {
     public static class ConsoleOutput
     {
-        public static void Print(Auditor auditor)
+        public static void Print(Auditor auditor, bool WriteAllResults)
         {
             Console.WriteLine();
             Console.WriteLine("==========================================================");
@@ -30,8 +30,11 @@ namespace AzRanger.Output
                 RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(result.GetType(), typeof(RuleInfoAttribute));
                 RuleScoreAttribute ruleScore = (RuleScoreAttribute)Attribute.GetCustomAttribute(result.GetType(), typeof(RuleScoreAttribute));
 
-                
-                
+                if (ruleScore == null)
+                {
+                    continue;
+                }
+                               
                 Console.WriteLine("     [-] {0} - {1} ", ruleScore.Description, ruleScore.Rational);
                 if(ruleInfo.PortalUrl != null)
                 {
@@ -46,20 +49,32 @@ namespace AzRanger.Output
                 if(result.GetAffectedEntity().Count > 0)
                 {
                     Console.WriteLine("          - The following objects are affected: ");
-                    int maxOutput = 9;
-                    int counter = 0;
-                    foreach (IEntity entity in result.GetAffectedEntity())
+
+                    if (WriteAllResults)
                     {
-                        if(counter == maxOutput)
+                        foreach (IEntity entity in result.GetAffectedEntity())
                         {
-                            break;
+       
+                            Console.WriteLine("              - " + entity.PrintConsole());
                         }
-                        Console.WriteLine("              - " + entity.PrintConsole());
-                        counter++;
                     }
-                    if(result.GetAffectedEntity().Count > 10)
+                    else
                     {
-                        Console.WriteLine("          - For more output set parameter <TBD> ");
+                        int maxOutput = 9;
+                        int counter = 0;
+                        foreach (IEntity entity in result.GetAffectedEntity())
+                        {
+                            if (counter == maxOutput)
+                            {
+                                break;
+                            }
+                            Console.WriteLine("              - " + entity.PrintConsole());
+                            counter++;
+                        }
+                        if (result.GetAffectedEntity().Count > 10)
+                        {
+                            Console.WriteLine("          - For more output set parameter --writeallresults");
+                        }
                     }
                 }
                 Console.WriteLine();
@@ -68,8 +83,18 @@ namespace AzRanger.Output
             
             List<BaseCheck> tentantiveChecks = new List<BaseCheck>();
             foreach (BaseCheck check in auditor.Passed)
-            {             
+            {
+                RuleScoreAttribute ruleScore = (RuleScoreAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleScoreAttribute));
+
+                if (ruleScore == null)
+                {
+                    continue;
+                }
                 RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));  
+                if (ruleInfo == null)
+                {
+                    continue;
+                }
                 if (ruleInfo.MaturityLevel == MaturityLevel.Tentative)
                 {
                     tentantiveChecks.Add(check);
@@ -77,7 +102,7 @@ namespace AzRanger.Output
             }
             if(tentantiveChecks.Count > 0)
             {
-                Console.WriteLine("[+] You may haved passed the following checks. Anyway I recommend to look it up in the portal:");
+                Console.WriteLine("[+] You may haved passed the following checks (might be false positives). So I recommend to look them up in the portal:");
                 Console.WriteLine();
                 foreach (BaseCheck check in tentantiveChecks)
                 {
