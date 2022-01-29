@@ -17,21 +17,28 @@ Thank you for your work!
 ## Usage
 
 ```
-  -u, --username    Specify the Username.
-  -p, --password    Specifiy the password.
-  --proxy           Specifiy a proxy.
-  --debug           Enable verbose logging.
-  --logfile         Set the logfile path.
-  --audit           Perform an audit against your tenant.
-  --dumpall         Dump all information the tools gather into JSON.
-  --dumpsettings    Dump all the tenant settings the tool gathers into JSON.
-  --outfile         File to write.
-  --help            Display this help screen.
-  --version         Display version information.
+ -u, --username       Specify the username.
+  -p, --password       Specifiy the password.
+  --proxy              Specifiy a proxy.
+  --debug              Enable verbose logging.
+  --logfile            Set the logfile path.
+  --audit              Perform an audit against your tenant.
+  --dumpall            Dump all information the tools gather into JSON.
+  --dumpsettings       Dump all tenant settings the tool gathers into JSON.
+  --outfile            File to write.
+  --writeallresults    Write all results to console. Can result in a very large output.
+  --help               Display this help screen.
+  --version            Display version information.
 ```
 
 When you run it without --username and --password, then an interactive logon will be performed.
 
 ## Prerequisites
 
-The user should have the Role "Global Reader" assigned.
+The user must have the Role "Global Reader" or "Global Admin" assigned.
+
+## Future plans
+
+* Add more checks for M365
+* Crawl and check Azure Resources
+* Parallelize requests for crawling 
