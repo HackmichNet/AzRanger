@@ -42,3 +42,4 @@ The user must have the Role "Global Reader" or "Global Admin" assigned.
 * Add more checks for M365
 * Crawl and check Azure Resources
 * Parallelize requests for crawling 
+* Build a HTML reporting
