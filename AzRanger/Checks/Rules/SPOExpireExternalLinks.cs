@@ -3,7 +3,7 @@
 namespace AzRanger.Checks.Rules
 {
     [RuleInfo("SPOExpireExternalLinks", Scope.SPO, MaturityLevel.Mature, "https://<YOURDOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/sharing")]
-    [RuleScore("Anonymous shared link will not expire or the expire time is too long", "User or attack can persist access to data", 4, "https://docs.microsoft.com/en-us/sharepoint/turn-external-sharing-on-or-off")]
+    [RuleScore("Anonymous shared link will not expire or the expire time is too long", "User or attacker can persist access to data", 4, "https://docs.microsoft.com/en-us/sharepoint/turn-external-sharing-on-or-off")]
     class SPOExpireExternalLinks : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

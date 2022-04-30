@@ -4,7 +4,7 @@ using System;
 namespace AzRanger.Models.ComplianceCenter
 
 {
-    public class DlpCompliancePolicy : IEntity
+    public class DlpCompliancePolicy : IReporting
     {
         public string Identity { get; set; }
         public string Comment { get; set; }

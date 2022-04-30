@@ -32,12 +32,18 @@ namespace AzRanger.AzScanner
         public const String DevicesBeta = "/beta/devices";
         public const String LicenseDetailBeta = "/beta/me/licenseDetails";
         public const String DeviceRegistrationPolicy = "/beta/policies/deviceRegistrationPolicy";
+        public const String AuthorizationPolicy = "/beta/policies/authorizationPolicy/authorizationPolicy";
 
         public MSGraphScanner(Scanner scanner)
         {
             this.Scanner = scanner;
             this.BaseAdresse = "https://graph.microsoft.com";
             this.Scope = new String[] { "https://graph.microsoft.com/.default", "offline_access" };
+        }
+
+        public AuthorizationPolicy GetAuthorizationPolicy()
+        {
+            return (AuthorizationPolicy)Get<AuthorizationPolicy>(MSGraphScanner.AuthorizationPolicy);
         }
 
         public DeviceRegistrationPolicy GetDeviceRegistrationPolicy()

@@ -1,4 +1,5 @@
 ﻿using AzRanger.Models;
+using AzRanger.Models.AzMgmt;
 using AzRanger.Models.Azrbac;
 using AzRanger.Models.Generic;
 using AzRanger.Models.MSGraph;
@@ -34,6 +35,7 @@ namespace AzRanger.AzScanner
         internal TeamsScanner TeamsScanner;
         internal MDMScanner MDMScanner;
         internal AzrbacScanner AzrbacScanner;
+        internal AzMgmtScanner AzMgmtScanner;
 
 
         public Scanner(String username, String password, String proxy, String tenant = null)
@@ -68,6 +70,7 @@ namespace AzRanger.AzScanner
             GraphWinScanner = new GraphWinScanner(this);
             TeamsScanner = new TeamsScanner(this);
             AzrbacScanner = new AzrbacScanner(this);
+            AzMgmtScanner = new AzMgmtScanner(this);
         }
 
         public Scanner(String proxy, String tenant = null)
@@ -88,6 +91,7 @@ namespace AzRanger.AzScanner
             GraphWinScanner = new GraphWinScanner(this);
             TeamsScanner = new TeamsScanner(this);
             AzrbacScanner = new AzrbacScanner(this);
+            AzMgmtScanner = new AzMgmtScanner(this);
         }
 
         public Tenant ScanTenant()
@@ -102,6 +106,7 @@ namespace AzRanger.AzScanner
             Result.TenantId = this.TenantId;         
             String currentUserId = this.Authenticator.GetUserId();
             bool sufficientRights = false;
+
             Result.AllDirectoryRoles = MsGraphScanner.GetAllDirectoryRoles(true);
             Result.TenantSkuInfo = MainIamScanner.GetTenantSkuInfo();
 
@@ -172,7 +177,6 @@ namespace AzRanger.AzScanner
                 logger.Warn("Scanner.ScanTenant: Cannot get Tenant License. This should not happen");
                 return null;
             }
-
             Result.domains = MsGraphScanner.GetAzDomains();
             Console.WriteLine("[+] Scanning the tenant: {0}", this.TenantId);
 
@@ -312,6 +316,7 @@ namespace AzRanger.AzScanner
             }
 
             Result.EnterpriseApplicationUserSettings = MsGraphScanner.GetSettings();
+            Result.AuthorizationPolicy = MsGraphScanner.GetAuthorizationPolicy();
 
             Result.AllCAPolicies = MsGraphScanner.GetAllCondtionalAccessPolicies();
             Result.SecurityDefaults = MainIamScanner.GetSecurityDefaults();
@@ -322,15 +327,20 @@ namespace AzRanger.AzScanner
             Result.B2BPolicy = MainIamScanner.GetB2BPolicy();
             Result.LCMSettings = MainIamScanner.GetLCMSettings();
             Result.UserSettings = MainIamScanner.GetUserSettings();
+            Result.SsgmProperties = MainIamScanner.GetSsgmProperties();
 
             Result.TeamsSettings.TeamsClientConfiguration = TeamsScanner.GetTeamsClientConfiguration();
             Result.TeamsSettings.TenantFederationSettings = TeamsScanner.GetTenantFederationSettings();
 
-            SharepointInformation infos = ProvisionAPIScanner.GetSharepointInformation();
-            SharePointScanner sharePointScanner = new SharePointScanner(this, infos.AdminUrl);
-            infos.SharepointInternalInfos = sharePointScanner.GetSharepointSettings();
-            Result.SharepointInformation = infos;
-            
+            bool provisionAPIScannerInitSuccessfull = ProvisionAPIScanner.Init();
+            if (provisionAPIScannerInitSuccessfull)
+            {
+                Result.SharepointInformation = ProvisionAPIScanner.GetSharepointInformation();
+                Result.MSOLCompanyInformation = ProvisionAPIScanner.GetMsolCompanyInformation();
+            }
+            SharePointScanner sharePointScanner = new SharePointScanner(this, Result.SharepointInformation.AdminUrl);
+            Result.SharepointInformation.SharepointInternalInfos = sharePointScanner.GetSharepointSettings();
+
             Result.AdminCenterSettings.SkypeTeams = AdminCenterScanner.GetSkypeTeamsSettings();
             Result.AdminCenterSettings.OfficeFormsSettings = AdminCenterScanner.GetOfficeFormsSettings();
             Result.AdminCenterSettings.OfficeStoreSettings = AdminCenterScanner.GetOfficeStoreSettings();
@@ -356,6 +366,26 @@ namespace AzRanger.AzScanner
             Result.ExchangeOnlineSettings.OwaMailboxPolicy = ExchangeOnlineScanner.GetOwaMailboxPolicy();
 
             Result.OfficeDLPPolicies = ComplianceCenterScanner.GetDLPPolicies();
+
+            Console.WriteLine("[+] Start scanning Azure Resources");
+
+            Result.ManagementGroups = AzMgmtScanner.GetAllManagementGroups();
+            Result.ManagementGroupSettings = AzMgmtScanner.GetManagementGroupSettings();
+            Result.Subscriptions = AzMgmtScanner.GetAllSubscriptions();
+            foreach (Subscription sub in Result.Subscriptions.Values)
+            {
+                sub.Resources.StorageAccounts = AzMgmtScanner.GetStorageAccounts(sub.subscriptionId);
+                sub.Resources.KeyVaults = AzMgmtScanner.GetKeyVaults(sub.subscriptionId);
+                foreach (KeyVault vault in sub.Resources.KeyVaults)
+                {
+                    KeyVaultScanner vaultScanner = new KeyVaultScanner(this, vault.properties.vaultUri);
+                    vault.Keys = vaultScanner.GetKeyVaultKeys();
+                    vault.Secrets = vaultScanner.GetKeyVaultSecrets();
+                }
+                sub.Resources.ActivityLogAlerts = AzMgmtScanner.GetActivityLogAlerts(sub.subscriptionId);
+                sub.Resources.NetworkSecurityGroups = AzMgmtScanner.GetNetworkSecurityGroups(sub.subscriptionId);
+                sub.Resources.SQLServers = AzMgmtScanner.GetSQLServers(sub.subscriptionId);
+            }
 
             MDMScanner = new MDMScanner(this);
             if (MDMScanner.CheckIntunePowerShellAvailable())
@@ -432,11 +462,14 @@ namespace AzRanger.AzScanner
                 Console.WriteLine("[+] Current user has sufficient rights, continue...");
             }
 
-            Result.domains = MsGraphScanner.GetAzDomains();
             Console.WriteLine("[+] Scanning the tenant: {0}", this.TenantId);
+
+            Result.Domains = MsGraphScanner.GetAzDomains();
+            Result.AuthorizationPolicy = MsGraphScanner.GetAuthorizationPolicy();
             
             Result.TenantSkuInfo = MainIamScanner.GetTenantSkuInfo();
             Result.EnterpriseApplicationUserSettings = MsGraphScanner.GetSettings();
+            Result.AuthorizationPolicy = MsGraphScanner.GetAuthorizationPolicy();
 
             Result.AllCAPolicies = MsGraphScanner.GetAllCondtionalAccessPolicies();
             Result.SecurityDefaults = MainIamScanner.GetSecurityDefaults();
@@ -447,14 +480,19 @@ namespace AzRanger.AzScanner
             Result.B2BPolicy = MainIamScanner.GetB2BPolicy();
             Result.LCMSettings = MainIamScanner.GetLCMSettings();
             Result.UserSettings = MainIamScanner.GetUserSettings();
+            Result.SsgmProperties = MainIamScanner.GetSsgmProperties();
 
             Result.TeamsSettings.TeamsClientConfiguration = TeamsScanner.GetTeamsClientConfiguration();
             Result.TeamsSettings.TenantFederationSettings = TeamsScanner.GetTenantFederationSettings();
 
-            SharepointInformation infos = ProvisionAPIScanner.GetSharepointInformation();
-            SharePointScanner sharePointScanner = new SharePointScanner(this, infos.AdminUrl);
-            infos.SharepointInternalInfos = sharePointScanner.GetSharepointSettings();
-            Result.SharepointInformation = infos;
+            bool provisionAPIScannerInitSuccessfull = ProvisionAPIScanner.Init();
+            if (provisionAPIScannerInitSuccessfull)
+            {
+                Result.SharepointInformation = ProvisionAPIScanner.GetSharepointInformation();
+                Result.MSOLCompanyInformation = ProvisionAPIScanner.GetMsolCompanyInformation();
+            }
+            SharePointScanner sharePointScanner = new SharePointScanner(this, Result.SharepointInformation.AdminUrl);
+            Result.SharepointInformation.SharepointInternalInfos = sharePointScanner.GetSharepointSettings();
 
             Result.AdminCenterSettings.SkypeTeams = AdminCenterScanner.GetSkypeTeamsSettings();
             Result.AdminCenterSettings.OfficeFormsSettings = AdminCenterScanner.GetOfficeFormsSettings();
@@ -477,7 +515,9 @@ namespace AzRanger.AzScanner
             Result.ExchangeOnlineSettings.RoleAssignmentPolicies = ExchangeOnlineScanner.GeRoleAssignmentPolicies();
             Result.ExchangeOnlineSettings.OrganizationConfig = ExchangeOnlineScanner.GetOrganizationConfig();
             Result.ExchangeOnlineSettings.AuthenticationPolicies = ExchangeOnlineScanner.GetAuthenticationPolicies();
+            Result.ExchangeOnlineSettings.EXOUsers = ExchangeOnlineScanner.GetEXOUsers();
             Result.ExchangeOnlineSettings.OwaMailboxPolicy = ExchangeOnlineScanner.GetOwaMailboxPolicy();
+
             Result.OfficeDLPPolicies = ComplianceCenterScanner.GetDLPPolicies();
             Console.WriteLine("[+] Finished collecting infos");
             return Result;

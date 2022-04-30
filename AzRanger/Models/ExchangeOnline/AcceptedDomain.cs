@@ -2,7 +2,7 @@
 
 namespace AzRanger.Models.ExchangeOnline
 {
-    public class AcceptedDomain : IEntity
+    public class AcceptedDomain : IReporting
     {
         public string Identity { get; set; }
         public bool AddressBookEnabled { get; set; }

@@ -67,9 +67,25 @@ namespace AzRanger.AzScanner
             AuthenticationResult result = null;
             if (accounts.Any())
             {
-                result = App.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync().GetAwaiter().GetResult();
-                return result;
+                try
+                {
+                    result = App.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync().GetAwaiter().GetResult();
+                    return result;
+                }catch(MsalException ex)
+                {
+                    // May happen that we need do MFA again.
+                    if (this.Username == null && this.Password == null)
+                    {
+                        result = App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync().GetAwaiter().GetResult();
+                        return result;
+                    }
+
+                    logger.Warn(ex.ErrorCode);
+                    logger.Warn(ex.Message);
+                    return null;
+                }
             }
+
             try
             {
                 if (this.Username == null && this.Password == null)

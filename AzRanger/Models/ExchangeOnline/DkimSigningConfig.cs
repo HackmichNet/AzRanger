@@ -2,7 +2,7 @@
 
 namespace AzRanger.Models.ExchangeOnline
 {
-    public class DkimSigningConfig : IEntity
+    public class DkimSigningConfig : IReporting
     {
         public string Identity { get; set; }
         public string AdminDisplayName { get; set; }

@@ -12,7 +12,6 @@ namespace AzRanger.Checks.Rules
 {
     [RuleInfo("AppsAsGlobalAdmin", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps")]
     [RuleScore("These service principals are member of the Global Admin Role or Privileged Authentication Administrator", "This can lead to a potential privilege escalation in your tenant", 9)]
-
     class AppsAsGlobalAdmin : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

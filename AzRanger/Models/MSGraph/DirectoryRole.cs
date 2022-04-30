@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AzRanger.Models.MSGraph
 {
-    public class DirectoryRole : IEntity
+    public class DirectoryRole : IReporting
     {
         public string displayName { get; }
         public Guid id { get; }

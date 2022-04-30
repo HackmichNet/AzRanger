@@ -1,6 +1,6 @@
 ﻿namespace AzRanger.Models
 {
-    public interface IEntity
+    public interface IReporting
     {
         public string PrintConsole();
         public string PrintCSV();

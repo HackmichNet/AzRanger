@@ -2,7 +2,7 @@
 
 namespace AzRanger.Models.ExchangeOnline
 {
-    public class Mailbox : IEntity
+    public class Mailbox : IReporting
     {
         public string Database { get; set; }
         public string DatabaseGuiddatatype { get; set; }

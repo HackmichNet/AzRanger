@@ -8,6 +8,10 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
+            if(tenant.SecurityDefaults.securityDefaultsEnabled == true)
+            {
+                return CheckResult.NotApplicable;
+            }
             foreach(ConditionalAccessPolicy policy in tenant.AllCAPolicies.Values)
             {
                 if (policy.state == "enabled")

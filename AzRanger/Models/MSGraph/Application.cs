@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Models.MSGraph
 {
-    public class Application : IEntity
+    public class Application : IReporting
     {
         public Guid id { get; set; }
         public string displayName { get; set; }

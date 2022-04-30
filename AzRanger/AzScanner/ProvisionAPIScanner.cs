@@ -2,29 +2,46 @@
 using AzRanger.Models.Provision;
 using System;
 using System.Collections;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace AzRanger.AzScanner
 {
 	class ProvisionAPIScanner : IScanner
 	{
 		public const String Endpoint = "/provisioningwebservice.svc";
+		private GetCompanyInformationResponse CompanyInformation;
 
 		public ProvisionAPIScanner(Scanner scanner)
 		{
 			this.Scanner = scanner;
 			this.BaseAdresse = "https://provisioningapi.microsoftonline.com";
 			this.Scope = new String[] { "https://graph.windows.net/.default", "offline_access" };
+			
 		}
 
-		public SharepointInformation GetSharepointInformation()
+		public bool Init()
 		{
-			return (SharepointInformation)PostToProvisioninApi<GetCompanyInformationResponse>("GetCompanyInformation", @"<b:ReturnValue i:nil=""true""/>");
+			this.CompanyInformation = (GetCompanyInformationResponse)PostToProvisioninApi<GetCompanyInformationResponse>("GetCompanyInformation", @"<b:ReturnValue i:nil=""true""/>");
+			if(this.CompanyInformation == null)
+            {
+				return false;
+            }
+			return true;
 		}
 
-		internal object PostToProvisioninApi<T>(string command, string requestElement)
+		public MsolCompanyInformation GetMsolCompanyInformation()
+        {
+			MsolCompanyInformation infos = new MsolCompanyInformation();
+			infos.UsersPermissionToCreateGroupsEnabled = this.CompanyInformation.GetCompanyInformationResult.ReturnValue.UsersPermissionToCreateGroupsEnabled;
+			infos.UsersPermissionToReadOtherUsersEnabled = this.CompanyInformation.GetCompanyInformationResult.ReturnValue.UsersPermissionToReadOtherUsersEnabled;
+			return infos;
+        }
+
+		private object PostToProvisioninApi<T>(string command, string requestElement)
 		{
 			String accessToken = this.Scanner.Authenticator.GetAccessToken(this.Scope);
 			if(accessToken == null)
@@ -42,37 +59,23 @@ namespace AzRanger.AzScanner
 				var response = client.SendAsync(message).Result;
 				if (response.IsSuccessStatusCode)
 				{
-					ArrayList r = new ArrayList();
 					var result = response.Content.ReadAsStringAsync().Result;
-					XmlDocument doc = new XmlDocument();
-					doc.LoadXml(result);
 					try
 					{
-						string SharePointAdminUrl = null;
-						string SharePointUrl = null;
-						XmlNodeList nodeList = doc.GetElementsByTagName("ServiceParameter");
-						foreach (XmlNode n in nodeList)
-						{
-							if (n.ChildNodes.Count == 2) { 
-								XmlNode curentFirstChild = n.FirstChild;
-								if (curentFirstChild.Name == "Name")
-								{
-									if (curentFirstChild.InnerText == "RootAdminUrl")
-									{
-										XmlNode currentValue = n.LastChild;
-										SharePointAdminUrl = currentValue.InnerText;
-									}
-									if (curentFirstChild.InnerText == "SPO_RootSiteUrl")
-									{
-										XmlNode currentValue = n.LastChild;
-										SharePointUrl = currentValue.InnerText;
-									}
-								}
-							}
-						}
-						return new SharepointInformation(SharePointAdminUrl, SharePointUrl);
-						// return (T)serializer.Deserialize(stringReader);
-					}catch(Exception e)
+
+						XmlDocument doc = new XmlDocument();
+						doc.LoadXml(result);
+						var nsmgr = new XmlNamespaceManager(doc.NameTable);
+						nsmgr.AddNamespace("s", "http://www.w3.org/2003/05/soap-envelope");
+						nsmgr.AddNamespace("a", "http://www.w3.org/2005/08/addressing");
+						XmlNode node = doc.DocumentElement.SelectSingleNode("/s:Envelope/s:Body", nsmgr);
+						string text = node.InnerXml;
+
+						var serializer = new XmlSerializer(typeof(T));
+						StringReader stringReader = new StringReader(text);
+						return (T)serializer.Deserialize(stringReader);
+					}
+					catch(Exception e)
                     {
 						logger.Debug("ProvisionApiScanner.PostToProvisionApi: Deserialization failed.");
 						logger.Debug(e.Message);
@@ -90,9 +93,9 @@ namespace AzRanger.AzScanner
 			return null;
 		}
 
-		internal SharepointInformation GetSharepointInfos(GetCompanyInformationResponse response)
+		public SharepointInformation GetSharepointInformation()
 		{
-			foreach (var serviceInformation in response.GetCompanyInformationResult.ReturnValue.ServiceInformation)
+			foreach (var serviceInformation in this.CompanyInformation.GetCompanyInformationResult.ReturnValue.ServiceInformation)
 			{
 				string SharePointAdminUrl = null;
 				string SharePointUrl = null;

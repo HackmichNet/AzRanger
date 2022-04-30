@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Models.ExchangeOnline
 {
-    public class RoleAssignmentPolicy : IEntity
+    public class RoleAssignmentPolicy : IReporting
     {
         public bool IsDefault { get; set; }
         public string Description { get; set; }

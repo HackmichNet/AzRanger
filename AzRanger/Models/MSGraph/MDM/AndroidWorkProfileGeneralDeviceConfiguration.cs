@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Models.MSGraph.MDM
 {
     // Personally Owned Device with work profile
-    public class AndroidWorkProfileGeneralDeviceConfiguration : IEntity
+    public class AndroidWorkProfileGeneralDeviceConfiguration : IReporting
     {
         [JsonPropertyName("@odata.context")]
         public string odatacontext { get; set; }
