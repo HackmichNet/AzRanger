@@ -40,6 +40,7 @@ namespace AzRanger.Models.MainIAM
         public object objectIdForAllUserGroup { get; set; }
         public bool allowInvitations { get; set; }
         public bool isB2CTenant { get; set; }
+        //  Administration portal => Restrict access to Azure AD administration portal
         public bool restrictNonAdminUsers { get; set; }
         public int enableLinkedInAppFamily { get; set; } // 1 = Off no LinkedIn, 0 = On LinkedIn is allowed
         public object[] toEnableLinkedInUsers { get; set; }

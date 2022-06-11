@@ -14,6 +14,10 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
+            if(tenant.SecurityDefaults.securityDefaultsEnabled == true)
+            {
+                return CheckResult.NotApplicable;
+            }
             // Case 1: If no policy exist, not good => Check if Conditional Access applies
             if(tenant.ExchangeOnlineSettings.AuthenticationPolicies == null)
             {
@@ -72,7 +76,7 @@ namespace AzRanger.Checks.Rules
             {
                 return CheckResult.Passed;
             }
-            // User assigned policies are save and all users have a custom poliicy
+            // User assigned policies are secure and all users have a custom poliicy
             if(userPolicyPassed && !userWithNoPolicy)
             {
                 return CheckResult.Passed;

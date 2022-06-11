@@ -91,15 +91,19 @@ namespace AzRanger.AzScanner
                         }
                     }
 
-                    /// If the generic Answer has a nextLink, we have more items then responded in the first answer
+                    // If the generic Answer has a nextLink, we have more items then responded in the first answer
                     if (genericAnswer.odatanextLink != null)
                     {
                         if (query.Contains("$skiptoken="))
                         {
-                            query = query.Split("&$skiptoken")[0];
+                            string[] seperatorSkipToken = new string[] { "&$skiptoken=" };
+                            query = query.Split(seperatorSkipToken, StringSplitOptions.None)[0];
                         }
-                        /// Create the next endpoint => Endpoint + nextLink Attribute
-                        string nextLink = genericAnswer.odatanextLink.Split("$skiptoken=")[1];
+                        // Create the next endpoint => Endpoint + nextLink Attribute
+
+                        //string nextLink = genericAnswer.odatanextLink.Split("$skiptoken=".ToCharArray())[1];
+                        string[] seperator = new string[] { "$skiptoken=" };
+                        string nextLink = genericAnswer.odatanextLink.Split(seperator, StringSplitOptions.None)[1];
                         string newQuery = query + "&$skiptoken=" + nextLink;
 
                         /// If the function was called already, we hand over some values

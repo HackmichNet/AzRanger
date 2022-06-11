@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Models.MSGraph
 {
-    public class Guest : IEntity
+    public class Guest : IReporting
     {
         public string userPrincipalName { get; set; }
         public string displayName { get; set; }

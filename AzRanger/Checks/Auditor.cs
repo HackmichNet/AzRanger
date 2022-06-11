@@ -16,6 +16,7 @@ namespace AzRanger.Checks
         public List<BaseCheck> Failed;
         public List<BaseCheck> Passed;
         public List<BaseCheck> Error;
+        public List<BaseCheck> NotApplicable;
 
         private Tenant Tenant;
 
@@ -25,6 +26,7 @@ namespace AzRanger.Checks
             this.Failed = new List<BaseCheck>();
             this.Passed = new List<BaseCheck>();
             this.Error = new List<BaseCheck>();
+            this.NotApplicable = new List<BaseCheck>();
             this.Tenant = tenant;
         }
 
@@ -70,6 +72,9 @@ namespace AzRanger.Checks
                             break;
                         case CheckResult.Passed:
                             this.Passed.Add(check);
+                            break;
+                        case CheckResult.NotApplicable:
+                            this.NotApplicable.Add(check);
                             break;
                         default:
                             break;

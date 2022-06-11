@@ -8,6 +8,10 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
+            if(tenant.SecurityDefaults.securityDefaultsEnabled == true)
+            {
+                return CheckResult.NotApplicable;
+            }
             foreach(ConditionalAccessPolicy policy in tenant.AllCAPolicies.Values)
             {
                 if (policy.state == "enabled")
@@ -28,9 +32,12 @@ namespace AzRanger.Checks.Rules
                             }
                         }
                     }
-                    if (!(exchangeActiveSyncMissing | otherMissing | policy.grantControls.builtInControls[0] != "block"))
+                    if (!(exchangeActiveSyncMissing | otherMissing ))
                     {
-                        return CheckResult.Passed;
+                        if (policy.grantControls != null && policy.grantControls.builtInControls[0] == "block")
+                        {
+                            return CheckResult.Passed;
+                        }
                     }
                 }
             }

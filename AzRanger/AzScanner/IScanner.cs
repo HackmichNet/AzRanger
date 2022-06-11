@@ -149,11 +149,12 @@ namespace AzRanger.AzScanner
                         }
                     }
 
-                    /// If the generic Answer has a nextLink, we have more items then responded in the first answer
+                    // If the generic Answer has a nextLink, we have more items then responded in the first answer
                     if (genericAnswer.odatanextLink != null)
                     {
-                        /// Create the next endpoint => Endpoint + nextLink Attribute
-                        string NewQuery = genericAnswer.odatanextLink.Split(endPoint)[1];
+                        // Create the next endpoint => Endpoint + nextLink Attribute
+                        string[] seperator = new string[] { endPoint };  
+                        string NewQuery = genericAnswer.odatanextLink.Split(seperator, StringSplitOptions.None)[1];
 
                         /// If the function was called already, we hand over some values
                         if (alreadyCollectedItems != null)

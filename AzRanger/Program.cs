@@ -31,7 +31,7 @@ namespace AzRanger
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "AzRanger 0.0.5"; //change header
+                h.Heading = "AzRanger 0.0.1"; //change header
                 h.Copyright = ""; 
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
@@ -146,7 +146,7 @@ namespace AzRanger
                 {
                     Auditor auditor = new Auditor(tenant);
                     auditor.Init(new Scope[]{
-                        Scope.O365, Scope.EXO, Scope.SPO
+                        Scope.O365, Scope.EXO, Scope.SPO, Scope.Azure
                     });
                     auditor.PerformAudit();
                     ConsoleOutput.Print(auditor, opts.WriteAllResults);
@@ -156,7 +156,6 @@ namespace AzRanger
                     Dumper.DumpTenant(tenant, opts.OutFile);
                     Console.WriteLine("[+] Successfully written to " + opts.OutFile);
                 }
-                return;
             }
 
             if (opts.DumpSettings)

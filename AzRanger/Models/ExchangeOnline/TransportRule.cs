@@ -2,7 +2,7 @@
 
 namespace AzRanger.Models.ExchangeOnline
 {
-    public class TransportRule : IEntity
+    public class TransportRule : IReporting
     {
         public string Identity { get; set; }
         public string[] Actions { get; set; }

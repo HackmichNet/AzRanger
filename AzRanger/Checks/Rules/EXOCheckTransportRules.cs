@@ -30,7 +30,7 @@ namespace AzRanger.Checks.Rules
                 {
                     string addressToRedirectToStr = (String)adressToRedirectTo.ToString();
                     bool domainIsInAzDomains = false;
-                    string maildomain = addressToRedirectToStr.Split("@")[1];
+                    string maildomain = addressToRedirectToStr.Split('@')[1];
                     foreach (String AZDomain in domainsToCheck)
                     {
                         if(maildomain == AZDomain)

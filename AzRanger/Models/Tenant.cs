@@ -1,7 +1,9 @@
 ﻿using AzRanger.Models.AdminCenter;
+using AzRanger.Models.AzMgmt;
 using AzRanger.Models.ComplianceCenter;
 using AzRanger.Models.MainIAM;
 using AzRanger.Models.MSGraph;
+using AzRanger.Models.Provision;
 using AzRanger.Models.WinGraph;
 using System;
 using System.Collections.Generic;
@@ -21,9 +23,7 @@ namespace AzRanger.Models
             this.TeamsSettings = new TeamsSettings();
         }
         public string TenantId { get; set; }
-
         public List<Domain> domains;
-
         public Dictionary<Guid, User> AllUsers { get; set; }
         public Dictionary<Guid, User> AllGuests { get; set; }
         public Dictionary<Guid, MSGraph.DirectoryRole> AllDirectoryRoles { get; set; }
@@ -48,5 +48,12 @@ namespace AzRanger.Models
         public TeamsSettings TeamsSettings { get; set; }
         public List<RoleDefinition> RoleDefinitions { get; set; }
         public TenantSkuInfo TenantSkuInfo { get; set; }
+        public AuthorizationPolicy AuthorizationPolicy { get; set; }
+        public SsgmProperties SsgmProperties { get; set; }
+        public MsolCompanyInformation MSOLCompanyInformation { get; set; }
+        public Dictionary<String, ManagementGroup> ManagementGroups{ get; set; }
+        public ManagementGroupSettings ManagementGroupSettings { get; set; }
+        public Dictionary<Guid, Subscription> Subscriptions { get; set; }
+        public DeviceRegistrationPolicy DeviceRegistrationPolicy { get; set; }
     }
 }

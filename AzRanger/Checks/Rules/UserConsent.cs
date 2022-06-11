@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleInfo("UserConsent", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/UserSettings/menuId/")]
-    [RuleScore("User can consent to apps accessing data on their behalf", "App consent is often used in phishing scenarios and other attacks", 10, "https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/configure-user-consent?tabs=azure-portal")]
+    [RuleScore("Users can consent to apps accessing data on their behalf", "App consent is often used in phishing scenarios and other attacks", 10, "https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/configure-user-consent?tabs=azure-portal")]
     class UserConsent : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

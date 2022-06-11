@@ -8,7 +8,8 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if (tenant.PasswordResetPolicies.enablementType != 2)
+            // 0 => Self service password reset enabled = None
+            if (tenant.PasswordResetPolicies.enablementType == 0)
             {
                 return CheckResult.Failed;
             }

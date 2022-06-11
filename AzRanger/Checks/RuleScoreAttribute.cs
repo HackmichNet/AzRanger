@@ -8,19 +8,21 @@ namespace AzRanger.Checks
 {
     class RuleScoreAttribute : Attribute
     {
-        public string Description { get; }
-        public string Rational { get; }
+        public string Finding { get; }
+        public string Impact { get; }
         public string Link { get; }
+        public string Solution { get; }
 
         // Value between 0 and 10
         public int RiskScore { get; }
 
-        public RuleScoreAttribute(String description, string rational, int riskscore, string link = null)
+        public RuleScoreAttribute(String finding, string impact, int riskscore, string link = null, string solution = null)
         {
-            this.Description = description;
-            this.Rational = rational;
+            this.Finding = finding;
+            this.Impact = impact;
             this.RiskScore = riskscore;
             this.Link = link;
+            this.Solution = solution;
         }
     }
 }

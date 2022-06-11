@@ -6,7 +6,7 @@ namespace AzRanger.Models.MSGraph.MDM
 {
 
     //Android Enterprise - Device restrictions
-    public class AndroidDeviceOwnerGeneralDeviceConfiguration : IEntity
+    public class AndroidDeviceOwnerGeneralDeviceConfiguration : IReporting
     {
         [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }

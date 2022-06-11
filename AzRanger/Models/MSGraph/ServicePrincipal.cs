@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AzRanger.Models.MSGraph
 {
 
-    public class ServicePrincipal : IEntity
+    public class ServicePrincipal : IReporting
     {
         public Guid id { get; set; }
         public string appDisplayName { get; set; }

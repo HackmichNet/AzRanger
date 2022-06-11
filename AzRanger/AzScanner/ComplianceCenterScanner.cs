@@ -50,7 +50,8 @@ namespace AzRanger.AzScanner
                     logger.Debug("ComplianceCenterScanner.GetBaseAddress: Get base Url: {0}", response.Headers.Location.ToString());
                     if (response.Headers.Location.ToString().Contains(PowerShellLiveId))
                     {
-                        return response.Headers.Location.ToString().Split(PowerShellLiveId)[0];
+                        String[] seperator = new string[] { PowerShellLiveId };
+                        return response.Headers.Location.ToString().Split(seperator, StringSplitOptions.None)[0];
                     }
                     logger.Warn("ComplianceCenterScanner.GetBaseAddress: Failed to get Redirect URL!");
                     return null;

@@ -8,7 +8,7 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if (tenant.PasswordPolicy.bannedPasswordCheckOnPremisesMode == 1)
+            if (tenant.PasswordPolicy.enableBannedPasswordCheckOnPremises == true)
             {
                 return CheckResult.Passed;
             }

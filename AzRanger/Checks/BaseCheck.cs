@@ -8,10 +8,18 @@ namespace AzRanger.Checks
     public abstract class BaseCheck
     {
 
-        private List<IEntity> AffectedEntity = new List<IEntity>();
+        private List<IReporting> AffectedEntity = new List<IReporting>();
+        private String Reason = null;
         public abstract CheckResult Audit(Tenant tenant);
 
-        public void AddAffectedEntity(IEntity entity)
+        public void SetReason(String reason)
+        {
+            this.Reason = reason;
+        }
+
+        public string GetReason() { return this.Reason; }
+
+        public void AddAffectedEntity(IReporting entity)
         {
             if (!this.AffectedEntity.Contains(entity))
             {
@@ -19,7 +27,7 @@ namespace AzRanger.Checks
             }
         }
 
-        public List<IEntity> GetAffectedEntity()
+        public List<IReporting> GetAffectedEntity()
         {
             return this.AffectedEntity;
         }
@@ -28,6 +36,7 @@ namespace AzRanger.Checks
     public enum CheckResult
     {
         Passed,
-        Failed
+        Failed,
+        NotApplicable
     }
 }

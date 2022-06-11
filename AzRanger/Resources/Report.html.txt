@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AzRanger Report</title>
+</head>
+<body>
+
+Thank you for choosing AzRanger.
+
+<h1>Overview</h1>
+
+<p> You may have passed $numPassed$ from $numAllChecks$ </p>
+
+</body>
+</html>

@@ -15,6 +15,7 @@ namespace AzRanger.AzScanner
         public const String LCMSettings = "/api/Directories/LcmSettings";
         public const String UserSettings = "/api/EnterpriseApplications/UserSettings";
         public const String TenantSkuInfo = "/api/TenantSkuInfo";
+        public const String SsgmProperties = "/api/Directories/SsgmProperties";
 
 
         public MainIamScanner(Scanner scanner)
@@ -27,6 +28,11 @@ namespace AzRanger.AzScanner
         public SecurityDefaults GetSecurityDefaults()
         {
             return (SecurityDefaults)Get<SecurityDefaults>( MainIamScanner.SecurityDefaultsEndpoint);
+        }
+
+        public SsgmProperties GetSsgmProperties()
+        {
+            return (SsgmProperties)Get<SsgmProperties>(MainIamScanner.SsgmProperties);
         }
 
         public TenantSkuInfo GetTenantSkuInfo()

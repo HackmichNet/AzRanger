@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Models.ExchangeOnline
 {
-    public class EXOUser : IEntity
+    public class EXOUser : IReporting
     {
         public bool IsSecurityPrincipal { get; set; }
         public string SamAccountName { get; set; }

@@ -132,6 +132,8 @@ namespace AzRanger.Models.SharePoint
         // 2 => Anyone
         // 3 => Existing Guests
         public int ODBSharingCapability { get; set; }
+        // When set to true this will disable the ability to use Modern Authentication that leverages ADAL across the tenant.
+        // https://docs.microsoft.com/en-us/powershell/module/sharepoint-online/set-spotenant?view=sharepoint-ps
         public bool OfficeClientADALDisabled { get; set; }
         public bool OneDriveForGuestsEnabled { get; set; }
         public int OneDriveLoopSharingCapability { get; set; }

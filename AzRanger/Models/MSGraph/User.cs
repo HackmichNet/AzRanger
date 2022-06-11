@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Models.MSGraph
 {
-    public class User : IEntity
+    public class User : IReporting
     {
         public Guid id { get; set; }
         public String userPrincipalName { get; set; }
@@ -22,6 +22,7 @@ namespace AzRanger.Models.MSGraph
 
         // isRegistered => is Registered
         public bool isAbleTodoPasswordReset { get; set; }
+        public object onPremisesSyncEnabled { get; set; }
 
         public override string ToString()
         {

@@ -25,7 +25,7 @@ namespace AzRanger
             var resultParsed = JsonSerializer.Deserialize<OpenIDConfiguration>(result);
             if (resultParsed.authorization_endpoint != null)
             {
-                result = resultParsed.authorization_endpoint.Split("/")[3];
+                result = resultParsed.authorization_endpoint.Split('/')[3];
             }
             else
             {

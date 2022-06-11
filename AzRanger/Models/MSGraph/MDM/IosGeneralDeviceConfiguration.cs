@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Models.MSGraph.MDM
 {
-    public class IosGeneralDeviceConfiguration : IEntity
+    public class IosGeneralDeviceConfiguration : IReporting
     {
         [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }

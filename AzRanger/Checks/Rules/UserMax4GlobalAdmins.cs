@@ -16,7 +16,7 @@ namespace AzRanger.Checks.Rules
             {
                 if(role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
                 {
-                    if(role.GetMembers().Count >= MaxGA | role.GetMembers().Count <= MinGA)
+                    if(role.GetMembers().Count > MaxGA | role.GetMembers().Count < MinGA)
                     {
                         return CheckResult.Failed;
                     }

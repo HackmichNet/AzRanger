@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace AzRanger.Models
 {
-    public class Group : IEntity
+    public class Group : IReporting
     {
         [JsonPropertyName("@odata.nextLink")]
         public String odatanextLink;

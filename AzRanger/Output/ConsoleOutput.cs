@@ -35,7 +35,7 @@ namespace AzRanger.Output
                     continue;
                 }
                                
-                Console.WriteLine("     [-] {0} - {1} ", ruleScore.Description, ruleScore.Rational);
+                Console.WriteLine("     [-] {0} - {1} ", ruleScore.Finding, ruleScore.Impact);
                 if(ruleInfo.PortalUrl != null)
                 {
                     Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
@@ -52,7 +52,7 @@ namespace AzRanger.Output
 
                     if (WriteAllResults)
                     {
-                        foreach (IEntity entity in result.GetAffectedEntity())
+                        foreach (IReporting entity in result.GetAffectedEntity())
                         {
        
                             Console.WriteLine("              - " + entity.PrintConsole());
@@ -62,7 +62,7 @@ namespace AzRanger.Output
                     {
                         int maxOutput = 9;
                         int counter = 0;
-                        foreach (IEntity entity in result.GetAffectedEntity())
+                        foreach (IReporting entity in result.GetAffectedEntity())
                         {
                             if (counter == maxOutput)
                             {
@@ -73,7 +73,7 @@ namespace AzRanger.Output
                         }
                         if (result.GetAffectedEntity().Count > 10)
                         {
-                            Console.WriteLine("          - For more output set parameter --writeallresults");
+                            Console.WriteLine("          - For more output set parameter --WriteAllResults ");
                         }
                     }
                 }
@@ -102,7 +102,8 @@ namespace AzRanger.Output
             }
             if(tentantiveChecks.Count > 0)
             {
-                Console.WriteLine("[+] You may haved passed the following checks (might be false positives). So I recommend to look them up in the portal:");
+                Console.WriteLine();
+                Console.WriteLine("[+] You may haved passed the following checks. Anyway I recommend to look it up in the portal:");
                 Console.WriteLine();
                 foreach (BaseCheck check in tentantiveChecks)
                 {
@@ -110,7 +111,7 @@ namespace AzRanger.Output
                     RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
                     RuleScoreAttribute ruleScore = (RuleScoreAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleScoreAttribute));
                     
-                    Console.WriteLine("     [-] {0}", ruleScore.Description);
+                    Console.WriteLine("     [-] {0}", ruleScore.Finding);
                     if (ruleInfo.PortalUrl != null)
                     {
                         Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
@@ -119,14 +120,39 @@ namespace AzRanger.Output
 
             }
 
+            if (auditor.NotApplicable.Count > 0)
+            {
+                foreach (BaseCheck check in auditor.NotApplicable)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("[+] The following checks were not applicable to your tenant:");
+                    RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
+                    RuleScoreAttribute ruleScore = (RuleScoreAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleScoreAttribute));
+
+                    Console.WriteLine("     [+] {0}", ruleScore.Finding);
+                    if(check.GetReason() != null && check.GetReason().Length > 0)
+                    {
+                        Console.WriteLine("         Reason: {0}", check.GetReason());
+                    }
+                    if (ruleInfo.PortalUrl != null)
+                    {
+                        Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
+                    }
+                }
+            }
             Console.WriteLine();
             if (auditor.Error.Count > 0)
             {
+                Console.WriteLine();
                 Console.WriteLine("[+] The following checks failed for unknown reason - maybe you have not enough permissions:");
                 foreach(BaseCheck error in auditor.Error)
                 {
                     RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(error.GetType(), typeof(RuleInfoAttribute));
                     Console.WriteLine("          - {0}", ruleInfo.ShortName);
+                    if (ruleInfo.PortalUrl != null)
+                    {
+                        Console.WriteLine("         You can lookup the setting manually here: {0}", ruleInfo.PortalUrl);
+                    }
                 }
 
                 Console.WriteLine();

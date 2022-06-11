@@ -219,16 +219,19 @@ namespace AzRanger.AzScanner
                         }
                     }
 
-                    /// If the generic Answer has a nextLink, we have more items then responded in the first answer
+                    // If the generic Answer has a nextLink, we have more items then responded in the first answer
                     if (genericAnswer.odatanextLink != null)
                     {
                         logger.Debug("ExchangeOnlineScanner.GetAllOf: Odatanextlink is: {0}", genericAnswer.odatanextLink);
-                    
-                        /// Create the next endpoint => Endpoint + nextLink Attribute
-                            string sktiptoken = genericAnswer.odatanextLink.Split(this.EndPoint)[1];
 
-                            /// If the function was called already, we hand over some values
-                            if (alreadyCollectedItems != null)
+                        // Create the next endpoint => Endpoint + nextLink Attribute
+
+                        //string sktiptoken = genericAnswer.odatanextLink.Split(this.EndPoint.ToCharArray())[1];
+                        string[] seperator = new string[] { this.EndPoint };
+                        string sktiptoken = genericAnswer.odatanextLink.Split(seperator, StringSplitOptions.None)[1];
+
+                        /// If the function was called already, we hand over some values
+                        if (alreadyCollectedItems != null)
                             {
                                 foreach (var item in alreadyCollectedItems)
                                 {
