@@ -102,7 +102,6 @@ namespace AzRanger.Output
             }
             if(tentantiveChecks.Count > 0)
             {
-                Console.WriteLine();
                 Console.WriteLine("[+] You may haved passed the following checks. Anyway I recommend to look it up in the portal:");
                 Console.WriteLine();
                 foreach (BaseCheck check in tentantiveChecks)
@@ -124,7 +123,6 @@ namespace AzRanger.Output
             {
                 foreach (BaseCheck check in auditor.NotApplicable)
                 {
-                    Console.WriteLine();
                     Console.WriteLine("[+] The following checks were not applicable to your tenant:");
                     RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
                     RuleScoreAttribute ruleScore = (RuleScoreAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleScoreAttribute));
@@ -143,7 +141,6 @@ namespace AzRanger.Output
             Console.WriteLine();
             if (auditor.Error.Count > 0)
             {
-                Console.WriteLine();
                 Console.WriteLine("[+] The following checks failed for unknown reason - maybe you have not enough permissions:");
                 foreach(BaseCheck error in auditor.Error)
                 {

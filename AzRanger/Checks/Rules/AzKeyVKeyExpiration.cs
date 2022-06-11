@@ -20,14 +20,13 @@ namespace AzRanger.Checks.Rules
             {
                 foreach(KeyVault vault in sub.Resources.KeyVaults)
                 {
-                        foreach (KeyVaultKey key in vault.Keys)
+                    foreach (KeyVaultKey key in vault.Keys)
+                    {
                         {
-                            if (key.attributes.exp == null)
-                            {
-                                passed = false;
-                                this.AddAffectedEntity(key);
-                            }
-                        } 
+                            passed = false;
+                            this.AddAffectedEntity(key);
+                        }
+                    }
                 }
             }
             

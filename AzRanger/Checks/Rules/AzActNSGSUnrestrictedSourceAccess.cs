@@ -15,13 +15,13 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            
-            foreach(Subscription sub in tenant.Subscriptions.Values)
+
+            foreach (Subscription sub in tenant.Subscriptions.Values)
             {
-                
+
                 foreach (NetworkSecurityGroup nsg in sub.Resources.NetworkSecurityGroups)
                 {
-                    foreach(NetworkSecurityGroupSecurityrule rule in nsg.properties.securityRules)
+                    foreach (NetworkSecurityGroupSecurityrule rule in nsg.properties.securityRules)
                     {
                         if (rule.properties.direction == "Inbound")
                         {
@@ -29,11 +29,11 @@ namespace AzRanger.Checks.Rules
                             {
 
                                 if (rule.properties.sourceAddressPrefix == "*" ||
-                                    rule.properties.sourceAddressPrefix == "0.0.0.0" ||
-                                    rule.properties.sourceAddressPrefix == "/0" ||
-                                    rule.properties.sourceAddressPrefix == "internet" ||
-                                    rule.properties.sourceAddressPrefix == "any" ||
-                                    rule.properties.sourceAddressPrefix.EndsWith("/0"))
+                                rule.properties.sourceAddressPrefix == "0.0.0.0" ||
+                                rule.properties.sourceAddressPrefix == "/0" ||
+                                rule.properties.sourceAddressPrefix == "internet" ||
+                                rule.properties.sourceAddressPrefix == "any" ||
+                                rule.properties.sourceAddressPrefix.EndsWith("/0"))
                                 {
                                     passed = false;
                                     this.AddAffectedEntity(nsg);
@@ -41,10 +41,9 @@ namespace AzRanger.Checks.Rules
                             }
                         }
                     }
+
                 }
-                
             }
-            
             if (passed)
             {
                 return CheckResult.Passed;
