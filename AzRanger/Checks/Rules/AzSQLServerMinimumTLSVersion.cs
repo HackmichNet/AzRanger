@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzSQLServerMinimumTLSVersion", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", Service.SQLServer)]
-    [RuleScore("These SQL Server allows connections with TLS 1.1 or TLS 1.0", "There exist some theoretical attacks on TLS 1.0 and TLS 1.1", 1)]
+    [RuleMeta("AzSQLServerMinimumTLSVersion", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", Service.SQLServer)]
+    [RuleInfo("SQL Server allows connections with TLS 1.1 or TLS 1.0", "There exist some theoretical attacks on TLS 1.0 and TLS 1.1.", 1, null, "There is no need nowadays to offer TLS ciphers lower than 1.2.", @"For each SQLServer go to Security->Networking->Connectivity and set ""Minimum TLS version"" to ""TLS1.2"".")]
     internal class AzSQLServerMinimumTLSVersion : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -35,9 +35,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzGuestRestrictions", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/CompanyRelationshipsMenuBlade/Settings")]
-    [RuleScore("Guest are not maximal restricted", "When guests are not restricted a Gues can enumerate the whole tenant", 2, "https://danielchronlund.com/2021/11/18/scary-azure-ad-tenant-enumeration-using-regular-b2b-guest-accounts/")]
+    [RuleMeta("AzGuestRestrictions", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/CompanyRelationshipsMenuBlade/Settings")]
+    [CISAZ("1.12", "", Level.L2, "v1.4")]
+    [RuleInfo("Guest are not maximal restricted", "Currently guests can enumerate the whole tenant.", 2, "https://danielchronlund.com/2021/11/18/scary-azure-ad-tenant-enumeration-using-regular-b2b-guest-accounts/", null, @"Go to ""External Identities | External collaboration settings"" and set ""Guest user access restrictions"" to ""Guest user access is restricted to properties and memberships of their own directory objects (most restrictive).""")]
     internal class AzGuestRestrictions : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -18,9 +19,9 @@ namespace AzRanger.Checks.Rules
             // "User" => Template ID: a0b1b346-4d3e-4e8b-98f8-753987be4970
             if (tenant.AuthorizationPolicy.guestUserRoleId == "2af84b1e-32c8-42b7-82bc-daa82404023b")
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

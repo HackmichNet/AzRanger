@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzSQLServerInboundTraffic", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", Service.SQLServer)]
-    [RuleScore("Arbitrary ingress traffic is allowed to this SQL Server", "Currently everyone can connect to this SQL Server and bruteforce the login", 1)]
+    [RuleMeta("AzSQLServerInboundTraffic", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", Service.SQLServer)]
+    [CISAZ("6.3", "", Level.L1, "v1.4")]
+    [RuleInfo("SQL Server is exposed to the internet", "This could be an addtional risk to the SQL Server. It eases attacks like password bruteforce.", 1, null, null, "Use the SQL Server Firewall to limit the traffic to the SQL Server for your needs.")]
     internal class AzSQLServerInboundTraffic : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -43,9 +44,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

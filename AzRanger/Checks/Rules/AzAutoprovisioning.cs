@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzAutoprovisioning", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings")]
-    [RuleScore("LogAnalytics Agents are not automatically deployed on VMs in the following subscriptions:", "A good monitoring is key in IR", 2)]
+    [RuleMeta("AzAutoprovisioning", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings")]
+    [CISAZ("2.11", "", Level.L1, "v1.4")]
+    [RuleInfo("LogAnalytics Agent is not automatically deployed on VMs", "If no logAnalytics Agent is deployed on a VM a lot of security related events can go unoticed.", 2)]
     internal class AzAutoprovisioning : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -32,9 +33,9 @@ namespace AzRanger.Checks.Rules
 
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;  
+            return CheckResult.Finding;  
         }
     }
 }

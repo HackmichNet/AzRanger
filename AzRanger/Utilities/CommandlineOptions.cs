@@ -34,10 +34,13 @@ namespace AzRanger.Utilities
         [Option(Required = false, HelpText = "Dump all tenant settings the tool gathers into JSON.")]
         public bool DumpSettings { get; set; }
 
-        [Option(Required = false, HelpText = "File to write.")]
+        [Option(Required = false, HelpText = "File to write results.")]
         public String OutFile { get; set; }
 
         [Option(Required = false, HelpText = "Write all results to console. Can result in a very large output.")]
         public bool WriteAllResults { get; set; }
+
+        [Option(Required = false, HelpText = "Only for audit. Specify 'console' (standard) or 'html'.")]
+        public string Output { get; set; }
     }
 }

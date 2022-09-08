@@ -24,7 +24,12 @@ namespace AzRanger.AzScanner
 
 		public MsolCompanyInformation GetMsolCompanyInformation()
         {
-			GetCompanyInformationResponse response = this.GetCompanyInformationResponse();
+			GetCompanyInformationResponse response = null;
+			try
+			{
+				response = this.GetCompanyInformationResponse();
+            }
+            catch { }
 			if(response != null)
             {
 				MsolCompanyInformation infos = new MsolCompanyInformation();
@@ -204,32 +209,36 @@ namespace AzRanger.AzScanner
 
 			if (getCompanyInformationResponse != null)
 			{
-				foreach (var serviceInformation in getCompanyInformationResponse.GetCompanyInformationResult.ReturnValue.ServiceInformation)
+				try
 				{
-					for (int i = 0; i < serviceInformation.ServiceElements.XElement.ServiceExtension.ServiceParameters.ServiceParameter.Length - 1; i++)
+					foreach (var serviceInformation in getCompanyInformationResponse.GetCompanyInformationResult.ReturnValue.ServiceInformation)
 					{
-						if (serviceInformation.ServiceElements.XElement.ServiceExtension.ServiceParameters.ServiceParameter[i].Name == "RootAdminUrl")
+						for (int i = 0; i < serviceInformation.ServiceElements.XElement.ServiceExtension.ServiceParameters.ServiceParameter.Length - 1; i++)
 						{
-							SharePointAdminUrl = serviceInformation.ServiceElements.XElement.ServiceExtension.ServiceParameters.ServiceParameter[i].Value;
-							if (SharePointAdminUrl.EndsWith("/"))
+							if (serviceInformation.ServiceElements.XElement.ServiceExtension.ServiceParameters.ServiceParameter[i].Name == "RootAdminUrl")
 							{
-								SharePointAdminUrl = SharePointAdminUrl.Remove(SharePointAdminUrl.Length - 1);
+								SharePointAdminUrl = serviceInformation.ServiceElements.XElement.ServiceExtension.ServiceParameters.ServiceParameter[i].Value;
+								if (SharePointAdminUrl.EndsWith("/"))
+								{
+									SharePointAdminUrl = SharePointAdminUrl.Remove(SharePointAdminUrl.Length - 1);
+								}
 							}
-						}
-						if (serviceInformation.ServiceElements.XElement.ServiceExtension.ServiceParameters.ServiceParameter[i].Name == "RootIWSPOUrl")
-						{
-							SharePointUrl = serviceInformation.ServiceElements.XElement.ServiceExtension.ServiceParameters.ServiceParameter[i].Value;
-							if (SharePointUrl.EndsWith("/"))
+							if (serviceInformation.ServiceElements.XElement.ServiceExtension.ServiceParameters.ServiceParameter[i].Name == "RootIWSPOUrl")
 							{
-								SharePointUrl = SharePointUrl.Remove(SharePointUrl.Length - 1);
+								SharePointUrl = serviceInformation.ServiceElements.XElement.ServiceExtension.ServiceParameters.ServiceParameter[i].Value;
+								if (SharePointUrl.EndsWith("/"))
+								{
+									SharePointUrl = SharePointUrl.Remove(SharePointUrl.Length - 1);
+								}
 							}
-						}
-						if (SharePointAdminUrl != null & SharePointUrl != null)
-						{
-							return new SharepointInformation(SharePointAdminUrl, SharePointUrl);
+							if (SharePointAdminUrl != null & SharePointUrl != null)
+							{
+								return new SharepointInformation(SharePointAdminUrl, SharePointUrl);
+							}
 						}
 					}
-				}
+                }
+                catch { }
 			}
 
 			String response = PostToProvisioninApi("GetCompanyInformation", @"<b:ReturnValue i:nil=""true""/>");

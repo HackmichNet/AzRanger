@@ -2,8 +2,8 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("UserAllowAdHocSubscriptions", Scope.O365, MaturityLevel.Mature)]
-    [RuleScore("User can create trial subscriptions.", "Allowing user to create their own trial subscriptions can lead to numerous subscriptions without control", 1, "https://docs.microsoft.com/en-us/azure/active-directory/authentication/tutorial-enable-sspr")]
+    [RuleMeta("UserAllowAdHocSubscriptions", Scope.O365, MaturityLevel.Mature)]
+    [RuleInfo("User can create trial subscriptions.", "This can result in a high number of uncontrolled subscriptions.", 1, "https://docs.microsoft.com/en-us/azure/active-directory/authentication/tutorial-enable-sspr", null, @"See the link in the reference section.")]
     class UserAllowAdHocSubscriptions : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -11,9 +11,9 @@ namespace AzRanger.Checks.Rules
             // 0 => Self service password reset enabled = None
             if (tenant.MSOLCompanyInformation.AllowAdHocSubscriptions == false)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

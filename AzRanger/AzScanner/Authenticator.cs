@@ -12,7 +12,8 @@ namespace AzRanger.AzScanner
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private string Authority = "https://login.microsoftonline.com";
         IPublicClientApplication App;
-        //  1950a258-227b-4e31-a9cf-717495945fc2
+        // AzurePowerShell = "1950a258-227b-4e31-a9cf-717495945fc2"
+        // GlobalPowerShell = "1b730954-1685-4b74-9bfd-dac224a7b894"
         private const String ClientId = "1b730954-1685-4b74-9bfd-dac224a7b894";
         private String Username;
         private SecureString Password;
@@ -60,6 +61,11 @@ namespace AzRanger.AzScanner
         public String GetTenantId()
         {
             return GetAuthenticationResult(null).TenantId;
+        }
+
+        public String GetUsername()
+        {
+            return GetAuthenticationResult(null).Account.Username;
         }
         private AuthenticationResult GetAuthenticationResult(String[] scopes)
         {

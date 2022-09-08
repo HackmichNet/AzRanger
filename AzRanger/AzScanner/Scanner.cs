@@ -82,6 +82,7 @@ namespace AzRanger.AzScanner
             {
                 this.TenantId = this.Authenticator.GetTenantId();
             }
+            this.Username = this.Authenticator.GetUsername();
             AdminCenterScanner = new AdminCenterScanner(this);
             MsGraphScanner = new MSGraphScanner(this);
             ProvisionAPIScanner = new ProvisionAPIScanner(this);
@@ -103,34 +104,39 @@ namespace AzRanger.AzScanner
             }
                 
             Tenant Result = new Tenant();
-            Result.TenantId = this.TenantId;         
+            Result.TenantId = this.TenantId;   
+            Result.Username = this.Username;
             String currentUserId = this.Authenticator.GetUserId();
-            bool sufficientRights = false;
-
+            bool isGlobalAdmin = false;
+            bool isGlobalReader = false;
+            bool isSharePointAdmin = false;
             Result.AllDirectoryRoles = MsGraphScanner.GetAllDirectoryRoles(true);
             Result.TenantSkuInfo = MainIamScanner.GetTenantSkuInfo();
 
             if (currentUserId != null)
             {
-                List<DirectoryRole> neededRoles = new List<DirectoryRole>();
+
                 foreach(DirectoryRole role in Result.AllDirectoryRoles.Values)
                 {
-                    if(role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator | role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
+                    if(role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
                     {
-                        neededRoles.Add(role);
+                        if (role.Contains(Guid.Parse(currentUserId))) {
+                            isGlobalAdmin = true;
+                        }
                     }
-                }
-                if(neededRoles.Count == 0)
-                {
-                    logger.Warn("Scanner.ScanTenant: No roles found. This should not happen");
-                    return null;
-                }
-                foreach(DirectoryRole role in neededRoles)
-                {
-                    if (role.Contains(Guid.Parse(currentUserId)))
+
+                    if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
                     {
-                        sufficientRights = true;
-                        break;
+                        if (role.Contains(Guid.Parse(currentUserId))) {
+                            isGlobalReader = true;
+                        }
+                    }
+
+                    if (role.roleTemplateId == DirectoryRoleTemplateID.SharePointAdmin)
+                    {
+                        if (role.Contains(Guid.Parse(currentUserId))) {
+                            isSharePointAdmin = true;
+                        }
                     }
                 }
             }
@@ -140,7 +146,7 @@ namespace AzRanger.AzScanner
                 return null;
             }
 
-            if (!sufficientRights)
+            if (!isGlobalAdmin & !isGlobalReader)
             {
                 Console.WriteLine("[-] The current user has not sufficient rights, please choose another one.");
                 return null;
@@ -150,35 +156,43 @@ namespace AzRanger.AzScanner
                 Console.WriteLine("[+] Current user has sufficient rights, continue...");
             }
 
+            if (!isGlobalAdmin )
+            {
+                if (!isSharePointAdmin)
+                {
+                    Console.WriteLine("[-] The current user is no SharePointAdmin, so it cannot read data from SharePoint.");
+                }
+            }
+
             if (Result.TenantSkuInfo != null)
             {
                 if (Result.TenantSkuInfo.aadPremium)
                 {
-                    Console.WriteLine("[+] Tenant has a P1 license");
+                    Console.WriteLine("[+] Tenant has a P1 license.");
                     this.HasP1License = true;
                 }
                 else
                 {
-                    Console.WriteLine("[-] Tenant has no P1 license. Not all data can be gathered");
+                    Console.WriteLine("[-] Tenant has no P1 license. Not all data can be gathered.");
                 }
 
                 if (Result.TenantSkuInfo.aadPremiumP2)
                 {
-                    Console.WriteLine("[+] Tenant has a P2 license");
+                    Console.WriteLine("[+] Tenant has a P2 license.");
                     this.HasP2License = true;
                 }
                 else
                 {
-                    Console.WriteLine("[-] Tenant has no P2 license. Not all data can be gathered");
+                    Console.WriteLine("[-] Tenant has no P2 license. Not all data can be gathered.");
                 }
             }
             else
             {
-                logger.Warn("Scanner.ScanTenant: Cannot get Tenant License. This should not happen");
+                logger.Warn("Scanner.ScanTenant: Cannot get Tenant License. This should not happen.");
                 return null;
             }
             Result.domains = MsGraphScanner.GetAzDomains();
-            Console.WriteLine("[+] Scanning the tenant: {0}", this.TenantId);
+            Console.WriteLine("[+] Scanning the tenant: {0}.", this.TenantId);
 
             Result.AllUsers = MsGraphScanner.GetAllUsers();
             Console.WriteLine("[+] Found {0} users.", Result.AllUsers.Count);
@@ -228,7 +242,7 @@ namespace AzRanger.AzScanner
                         }
                         if (aztype == AzurePrincipalType.Group)
                         {
-                            List<AzurePrincipal> members = MsGraphScanner.GetAllGroupMember(assignment.subjectId);
+                            List<AzurePrincipal> members = MsGraphScanner.GetAllGroupMemberTransitiv(assignment.subjectId);
                             foreach (AzurePrincipal member in members)
                             {
                                 principalsToAssigne.Add(member);
@@ -333,15 +347,17 @@ namespace AzRanger.AzScanner
             Result.TeamsSettings.TeamsClientConfiguration = TeamsScanner.GetTeamsClientConfiguration();
             Result.TeamsSettings.TenantFederationSettings = TeamsScanner.GetTenantFederationSettings();
 
-
-            Result.SharepointInformation = ProvisionAPIScanner.GetSharepointInformation();
-            Result.MSOLCompanyInformation = ProvisionAPIScanner.GetMsolCompanyInformation();
-            if (Result.SharepointInformation != null)
+            if (isGlobalAdmin | isSharePointAdmin)
             {
-                Console.WriteLine("[+] Found SharePoint on: {0}", Result.SharepointInformation.SharepointUrl);
-                Console.WriteLine("[+] Found SharePoint-Admin on: {0}", Result.SharepointInformation.AdminUrl);
-                SharePointScanner sharePointScanner = new SharePointScanner(this, Result.SharepointInformation.AdminUrl);
-                Result.SharepointInformation.SharepointInternalInfos = sharePointScanner.GetSharepointSettings();
+                Result.SharepointInformation = ProvisionAPIScanner.GetSharepointInformation();
+                Result.MSOLCompanyInformation = ProvisionAPIScanner.GetMsolCompanyInformation();
+                if (Result.SharepointInformation != null)
+                {
+                    Console.WriteLine("[+] Found SharePoint on: {0}", Result.SharepointInformation.SharepointUrl);
+                    Console.WriteLine("[+] Found SharePoint-Admin on: {0}", Result.SharepointInformation.AdminUrl);
+                    SharePointScanner sharePointScanner = new SharePointScanner(this, Result.SharepointInformation.AdminUrl);
+                    Result.SharepointInformation.SharepointInternalInfos = sharePointScanner.GetSharepointSettings();
+                }
             }
             
             Result.AdminCenterSettings.SkypeTeams = AdminCenterScanner.GetSkypeTeamsSettings();
@@ -372,9 +388,12 @@ namespace AzRanger.AzScanner
             }
             Result.ExchangeOnlineSettings.OwaMailboxPolicy = ExchangeOnlineScanner.GetOwaMailboxPolicy();
 
-            Result.OfficeDLPPolicies = ComplianceCenterScanner.GetDLPPolicies();
 
-            Console.WriteLine("[+] Start scanning Azure Resources");
+            Result.OfficeDLPPolicies = ComplianceCenterScanner.GetDLPPolicies();
+            Result.DlpLabels = ComplianceCenterScanner.GetDLPLabels();
+            Result.AuthenticationMethodsPolicy = MsGraphScanner.GetAuthenticationMethodsPolicy();
+
+            Console.WriteLine("[+] Start scanning Azure Resources.");
 
             Result.ManagementGroups = AzMgmtScanner.GetAllManagementGroups();
             Result.ManagementGroupSettings = AzMgmtScanner.GetManagementGroupSettings();
@@ -393,6 +412,8 @@ namespace AzRanger.AzScanner
                 sub.Resources.NetworkSecurityGroups = AzMgmtScanner.GetNetworkSecurityGroups(sub.subscriptionId);
                 sub.Resources.SQLServers = AzMgmtScanner.GetSQLServers(sub.subscriptionId);
                 sub.AutoProvisioningSettings = AzMgmtScanner.GetProvisioningSettings(sub.subscriptionId);
+                sub.SecurityCenterBuiltIn = AzMgmtScanner.GetSecurityCenterBuiltIn(sub.subscriptionId);
+                sub.SecurityContact = AzMgmtScanner.GetSecurityContacts(sub.subscriptionId);
             }
 
             MDMScanner = new MDMScanner(this);
@@ -403,54 +424,51 @@ namespace AzRanger.AzScanner
                 Result.MDMSettings.MobileDeviceCompliancePolicies = MDMScanner.GetMobileDeviceCompliancePolicies();
             }
 
-            Console.WriteLine("[+] Finished collecting infos");
+            Console.WriteLine("[+] Finished collecting infos.");
             return Result;  
         }
 
-        public TenantSettings ScanSettings()
+        public M365Settings ScanSettings()
         {
             if (this.TenantId == null)
             {
                 logger.Warn("Scanner.ScanTenant: Cannot retrieve TenantId. Aborting!");
                 return null;
             }
-            AdminCenterScanner = new AdminCenterScanner(this);
-            MsGraphScanner = new MSGraphScanner(this);
-            ProvisionAPIScanner = new ProvisionAPIScanner(this);
-            ExchangeOnlineScanner = new ExchangeOnlineScanner(this);
-            MainIamScanner = new MainIamScanner(this);
-            ComplianceCenterScanner = new ComplianceCenterScanner(this);
-            GraphWinScanner = new GraphWinScanner(this);
-            TeamsScanner = new TeamsScanner(this);
-            AzrbacScanner = new AzrbacScanner(this);
-
-            TenantSettings Result = new TenantSettings();
+            M365Settings Result = new M365Settings();
             Result.TenantId = this.TenantId;
 
             Dictionary<Guid, DirectoryRole> AllRoles = MsGraphScanner.GetAllDirectoryRoles(true);
             String currentUserId = this.Authenticator.GetUserId();
-            bool sufficientRights = false;
+            bool isGlobalAdmin = false;
+            bool isGlobalReader = false;
+            bool isSharePointAdmin = false;
             if (currentUserId != null)
             {
-                List<DirectoryRole> neededRoles = new List<DirectoryRole>();
                 foreach (DirectoryRole role in AllRoles.Values)
                 {
-                    if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator | role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
+                    if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
                     {
-                        neededRoles.Add(role);
+                        if (role.Contains(Guid.Parse(currentUserId)))
+                        {
+                            isGlobalAdmin = true;
+                        }
                     }
-                }
-                if (neededRoles.Count == 0)
-                {
-                    logger.Warn("Scanner.ScanTenant: No roles found. This should not happen");
-                    return null;
-                }
-                foreach (DirectoryRole role in neededRoles)
-                {
-                    if (role.Contains(Guid.Parse(currentUserId)))
+
+                    if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
                     {
-                        sufficientRights = true;
-                        break;
+                        if (role.Contains(Guid.Parse(currentUserId)))
+                        {
+                            isGlobalReader = true;
+                        }
+                    }
+
+                    if (role.roleTemplateId == DirectoryRoleTemplateID.SharePointAdmin)
+                    {
+                        if (role.Contains(Guid.Parse(currentUserId)))
+                        {
+                            isSharePointAdmin = true;
+                        }
                     }
                 }
             }
@@ -460,7 +478,7 @@ namespace AzRanger.AzScanner
                 return null;
             }
 
-            if (!sufficientRights)
+            if (!isGlobalAdmin & !isGlobalReader)
             {
                 Console.WriteLine("[-] The current user has not sufficient rights, please choose another one.");
                 return null;
@@ -468,6 +486,11 @@ namespace AzRanger.AzScanner
             else
             {
                 Console.WriteLine("[+] Current user has sufficient rights, continue...");
+            }
+
+            if (!isGlobalAdmin & (!isSharePointAdmin & !isGlobalReader))
+            {
+                Console.WriteLine("[-] The current user has not sufficient rights to read SharePoint information.");
             }
 
             Console.WriteLine("[+] Scanning the tenant: {0}", this.TenantId);
@@ -526,6 +549,8 @@ namespace AzRanger.AzScanner
             Result.ExchangeOnlineSettings.OwaMailboxPolicy = ExchangeOnlineScanner.GetOwaMailboxPolicy();
 
             Result.OfficeDLPPolicies = ComplianceCenterScanner.GetDLPPolicies();
+            Result.DlpLabels = ComplianceCenterScanner.GetDLPLabels();
+            Result.AuthenticationMethodsPolicy = MsGraphScanner.GetAuthenticationMethodsPolicy();
             Console.WriteLine("[+] Finished collecting infos");
             return Result;
 

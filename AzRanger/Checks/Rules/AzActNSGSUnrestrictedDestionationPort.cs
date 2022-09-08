@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzActNSGSUnrestrictedDestionationPort", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", Service.NetworksSecurityGroup)]
-    [RuleScore("The follwoing NetworkSecurityGroups do not restrict the port", "This can result in an additional threat to the destination services.", 0)]
+    [RuleMeta("AzActNSGSUnrestrictedDestionationPort", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", Service.NetworksSecurityGroup)]
+    [RuleInfo("Network Security Group without inbpund port restriction", "The service protected by the Network Security Group is exposed to the internet.", 0, null, null, "Configure the Network Security Group that only needed inbound ports are allowed.")]
     internal class AzActNSGSUnrestrictedDestionationPort : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -37,9 +37,9 @@ namespace AzRanger.Checks.Rules
             
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

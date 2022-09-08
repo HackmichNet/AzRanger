@@ -2,14 +2,16 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("CABlockLegacyAuth", Scope.O365, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ConditionalAccessBlade/Policies")]
-    [RuleScore("No Conditional Access Policy blocking legacy authentication was detected (Might be false positiv)", "Legacy Authentication does not support features like MFA", 7)]
+    [RuleMeta("CABlockLegacyAuth", Scope.O365, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ConditionalAccessBlade/Policies")]
+    [CISM365("1.1.6", "", Level.L1, "v1.4")]
+    [RuleInfo("Legacy Authentication methods is not blocked by Conditional Access", "This can expose your tenant to password brute force or password spraying attacks.", 7, "Legacy authentication does not support techniques like MFA.")]
     class CABlockLegacyAuth : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
             if(tenant.SecurityDefaults.securityDefaultsEnabled == true)
             {
+                this.SetReason("Security Defaults are enabled.");
                 return CheckResult.NotApplicable;
             }
             foreach(ConditionalAccessPolicy policy in tenant.AllCAPolicies.Values)
@@ -36,12 +38,12 @@ namespace AzRanger.Checks.Rules
                     {
                         if (policy.grantControls != null && policy.grantControls.builtInControls[0] == "block")
                         {
-                            return CheckResult.Passed;
+                            return CheckResult.NoFinding;
                         }
                     }
                 }
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

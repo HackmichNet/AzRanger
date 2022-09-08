@@ -15,8 +15,11 @@ namespace AzRanger.Models.MSGraph
         public KeyCredentials[] keyCredentials { get; set; }
         public Oauth2permissionscopes[] oauth2PermissionScopes { get; set; }
         public IDTypeResponse[] owners { get; set; }
+        // Custom Properties
         public Approleassignment[] appRoleAssignments { get; set; }
         public List<AzurePrincipal> UserAbleToAddCreds = new List<AzurePrincipal>();
+        // Delegated permissions
+        public List<Oauth2PermissionGrant> oauth2PermissionGrants { get; set; }
 
         public void AddUserAbleToAddCreds(AzurePrincipal p)
         {

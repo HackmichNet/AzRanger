@@ -23,6 +23,7 @@ namespace AzRanger.Models
             this.TeamsSettings = new TeamsSettings();
         }
         public string TenantId { get; set; }
+        public string Username { get; set; }
         public List<Domain> domains;
         public Dictionary<Guid, User> AllUsers { get; set; }
         public Dictionary<Guid, User> AllGuests { get; set; }
@@ -55,5 +56,7 @@ namespace AzRanger.Models
         public ManagementGroupSettings ManagementGroupSettings { get; set; }
         public Dictionary<Guid, Subscription> Subscriptions { get; set; }
         public DeviceRegistrationPolicy DeviceRegistrationPolicy { get; set; }
+        public List<DlpLabel> DlpLabels { get; set; }  
+        public AuthenticationMethodsPolicy AuthenticationMethodsPolicy { get; set; }
     }
 }

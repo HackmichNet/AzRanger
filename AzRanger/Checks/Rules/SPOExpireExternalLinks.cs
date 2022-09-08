@@ -2,8 +2,9 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("SPOExpireExternalLinks", Scope.SPO, MaturityLevel.Mature, "https://<YOURDOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/sharing")]
-    [RuleScore("Anonymous shared link will not expire or the expire time is too long", "User or attacker can persist access to data", 4, "https://docs.microsoft.com/en-us/sharepoint/turn-external-sharing-on-or-off")]
+    [RuleMeta("SPOExpireExternalLinks", Scope.SPO, MaturityLevel.Mature, "https://<YOURDOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/sharing")]
+    [CISM365("6.3", "", Level.L1, "v1.4")]
+    [RuleInfo("Anonymous shared link will not expire, or the expiry time is too long", "Users with access to the link have unlimited access to the data.", 4, "https://docs.microsoft.com/en-us/sharepoint/turn-external-sharing-on-or-off", null, @"Go to the SharePoint Online Admin panel and mark under ""Choose expiration and permissions options for Anyone links."" the line ""These links must expire within this many days"". Set the value to your needs.")]
     class SPOExpireExternalLinks : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -13,9 +14,9 @@ namespace AzRanger.Checks.Rules
             if (tenant.SharepointInformation.SharepointInternalInfos.RequireAnonymousLinksExpireInDays > 0 && 
                 tenant.SharepointInformation.SharepointInternalInfos.RequireAnonymousLinksExpireInDays <= 30)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

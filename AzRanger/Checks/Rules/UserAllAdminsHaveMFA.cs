@@ -7,8 +7,10 @@ using System.Linq;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("UserAllAdminsHaveMFA", Scope.O365)]
-    [RuleScore("Not all priviledged accounts uses MFA", "MFA is a powerfull method to defend your users against phishing or password guessing attacks", 10, "https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-admin-mfa")]
+    [RuleMeta("UserAllAdminsHaveMFA", Scope.O365, MaturityLevel.Mature, null)]
+    [CISM365("1.1.1", "", Level.L1, "v1.4")]
+    [CISAZ("1.1", "", Level.L1, "v1.4")]
+    [RuleInfo("Not all priviledged accounts uses MFA", "This increases the risk, that one of your admins becomes a victim of a phishing attack.", 10, "https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-admin-mfa", null, "No discussion here. Force them to use MFA!")]
     class UserAllAdminsHaveMFA : BaseCheck
     {
         private readonly String[] InteresstingRoles = new String[] {
@@ -21,7 +23,8 @@ namespace AzRanger.Checks.Rules
                 "Skype for Business Administrator",
                 "User Administrator",
                 "Dynamics 365 Service Administrator",
-                "Power BI Administrator"};
+                "Power BI Administrator"
+        };
 
         public override CheckResult Audit(Tenant tenant)
         {
@@ -53,9 +56,9 @@ namespace AzRanger.Checks.Rules
 
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

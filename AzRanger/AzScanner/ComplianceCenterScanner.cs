@@ -14,6 +14,7 @@ namespace AzRanger.AzScanner
     class ComplianceCenterScanner : IScanner
     {
         public const String DLPPolicies = "/Psws/service.svc/DlpCompliancePolicy";
+        public const String DLPLabels = "/Psws/service.svc/Label";
         public const String PowerShellLiveId = "/Powershell-LiveId";
         public const String InitBaseAdress = "https://ps.compliance.protection.outlook.com";
         public ComplianceCenterScanner(Scanner scanner)
@@ -29,6 +30,12 @@ namespace AzRanger.AzScanner
         {
             if(BaseAdresse == null) return null;
             return GetAllOf<DlpCompliancePolicy>(DLPPolicies, null, null);
+        }
+
+        public List<DlpLabel> GetDLPLabels()
+        {
+            if (BaseAdresse == null) return null;
+            return GetAllOf<DlpLabel>(DLPLabels, null, null);
         }
 
         public String GetBaseAddress()

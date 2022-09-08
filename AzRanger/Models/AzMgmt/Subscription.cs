@@ -19,6 +19,8 @@ namespace AzRanger.Models.AzMgmt
         public Dictionary<String, String> tags { get; set; }
         public AzResources Resources = new AzResources();
         public List<AutoProvisioningSettings> AutoProvisioningSettings { get; set; }
+        public SecurityCenterBuiltIn SecurityCenterBuiltIn { get; set; }
+        public SecurityContact SecurityContact { get; set;  }
 
         public string PrintConsole()
         {

@@ -24,25 +24,25 @@ namespace AzRanger.Output
             Console.WriteLine();
 
 
-            foreach (BaseCheck result in auditor.Failed)
+            foreach (BaseCheck result in auditor.Finding)
             {
                 
-                RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(result.GetType(), typeof(RuleInfoAttribute));
-                RuleScoreAttribute ruleScore = (RuleScoreAttribute)Attribute.GetCustomAttribute(result.GetType(), typeof(RuleScoreAttribute));
+                RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(result.GetType(), typeof(RuleMetaAttribute));
+                RuleInfoAttribute ruleScore = (RuleInfoAttribute)Attribute.GetCustomAttribute(result.GetType(), typeof(RuleInfoAttribute));
 
                 if (ruleScore == null)
                 {
                     continue;
                 }
                                
-                Console.WriteLine("     [-] {0} - {1} ", ruleScore.Finding, ruleScore.Impact);
+                Console.WriteLine("     [-] {0} - {1} ", ruleScore.ShortDescription, ruleScore.Risk);
                 if(ruleInfo.PortalUrl != null)
                 {
                     Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
                 }
-                if(ruleScore.Link != null)
+                if(ruleScore.RefernceLink != null)
                 {
-                    Console.WriteLine("         You can find more information here: {0}", ruleScore.Link);
+                    Console.WriteLine("         You can find more information here: {0}", ruleScore.RefernceLink);
                 }
                 
 
@@ -82,15 +82,15 @@ namespace AzRanger.Output
             }
             
             List<BaseCheck> tentantiveChecks = new List<BaseCheck>();
-            foreach (BaseCheck check in auditor.Passed)
+            foreach (BaseCheck check in auditor.NoFinding)
             {
-                RuleScoreAttribute ruleScore = (RuleScoreAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleScoreAttribute));
+                RuleInfoAttribute ruleScore = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
 
                 if (ruleScore == null)
                 {
                     continue;
                 }
-                RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));  
+                RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));  
                 if (ruleInfo == null)
                 {
                     continue;
@@ -107,10 +107,10 @@ namespace AzRanger.Output
                 foreach (BaseCheck check in tentantiveChecks)
                 {
 
-                    RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
-                    RuleScoreAttribute ruleScore = (RuleScoreAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleScoreAttribute));
+                    RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
+                    RuleInfoAttribute ruleScore = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
                     
-                    Console.WriteLine("     [-] {0}", ruleScore.Finding);
+                    Console.WriteLine("     [-] {0}", ruleScore.ShortDescription);
                     if (ruleInfo.PortalUrl != null)
                     {
                         Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
@@ -124,10 +124,10 @@ namespace AzRanger.Output
                 foreach (BaseCheck check in auditor.NotApplicable)
                 {
                     Console.WriteLine("[+] The following checks were not applicable to your tenant:");
-                    RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
-                    RuleScoreAttribute ruleScore = (RuleScoreAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleScoreAttribute));
+                    RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
+                    RuleInfoAttribute ruleScore = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
 
-                    Console.WriteLine("     [+] {0}", ruleScore.Finding);
+                    Console.WriteLine("     [+] {0}", ruleScore.ShortDescription);
                     if(check.GetReason() != null && check.GetReason().Length > 0)
                     {
                         Console.WriteLine("         Reason: {0}", check.GetReason());
@@ -144,7 +144,7 @@ namespace AzRanger.Output
                 Console.WriteLine("[+] The following checks failed for unknown reason - maybe you have not enough permissions:");
                 foreach(BaseCheck error in auditor.Error)
                 {
-                    RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(error.GetType(), typeof(RuleInfoAttribute));
+                    RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(error.GetType(), typeof(RuleMetaAttribute));
                     Console.WriteLine("          - {0}", ruleInfo.ShortName);
                     if (ruleInfo.PortalUrl != null)
                     {
@@ -159,7 +159,7 @@ namespace AzRanger.Output
 
             int numPerformedChecks = auditor.AllChecks.Count - auditor.Error.Count;
             Console.WriteLine();
-            Console.WriteLine("[+] You have passed {0} from {1} checks.", auditor.Passed.Count, numPerformedChecks);
+            Console.WriteLine("[+] You have passed {0} from {1} checks.", auditor.NoFinding.Count, numPerformedChecks);
             Console.WriteLine();
 
         }

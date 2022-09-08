@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzStorAcContainerPublicAccess", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", Service.StorageAccount)]
-    [RuleScore("Some StorageAccount Container may allow public access", "This can lead to data loss, ensure that only public containerlisted below", 1)]
+    [RuleMeta("AzStorAcContainerPublicAccess", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", Service.StorageAccount)]
+    [CISAZ("3.5", "", Level.L1, "v1.4")]
+    [RuleInfo("StorageAccount Container with public access", "This can lead to data loss.", 1, null, null, "Ensure that only public container listed below.")]
     internal class AzStorAcContainerPublicAccess : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -35,9 +36,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

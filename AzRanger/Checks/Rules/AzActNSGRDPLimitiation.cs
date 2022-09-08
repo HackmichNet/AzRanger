@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzActNSGRDPLimitiation", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", Service.NetworksSecurityGroup)]
-    [RuleScore("The follwoing NetworkSecurityGroups allow unrestricted RDP Access", "This can result in an additional threat to the destination services.", 0)]
+    [RuleMeta("AzActNSGRDPLimitiation", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", Service.NetworksSecurityGroup)]
+    [CISAZ("6.1", "", Level.L1, "v1.4")]
+    [RuleInfo("Network Security Group allows unrestricted RDP access", "This increases the risk, that the service is exploited by a threat actor.", 0, null, null, "Configure the Network Security Group that at least access to the servie is IP restricted.")]
     internal class AzActNSGRDPLimitiation : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -46,9 +47,9 @@ namespace AzRanger.Checks.Rules
             
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

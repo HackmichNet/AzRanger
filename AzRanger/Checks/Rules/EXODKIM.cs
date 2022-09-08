@@ -3,20 +3,21 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("EXODKIM", Scope.EXO, MaturityLevel.Mature)]
-    [RuleScore("Not all of your Exchange Online Domains seems to have DKIM enabled", "DomainKeys Identified Mail (DKIM) helps a receiver to verify the origin of a mail", 5)]
+    [RuleMeta("EXODKIM", Scope.EXO, MaturityLevel.Mature)]
+    [CISM365("4.8", "", Level.L1, "v1.4")]
+    [RuleInfo("Not all of Exchange Online Domains have DKIM enabled", "This increases the risk, that an attacker can impersonate your domain.", 5, null, null, "Configure DKIM for all your domains.")]
     class EXODKIM : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
             if (tenant.ExchangeOnlineSettings.DkimSigningConfigs == null)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
             // I assume there is only the main domain and exchange online is not used
             if (tenant.ExchangeOnlineSettings.AcceptedDomains.Count == 1)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
             bool passed = true;
             foreach(DkimSigningConfig config in tenant.ExchangeOnlineSettings.DkimSigningConfigs)
@@ -36,11 +37,11 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
             else
             {
-                return CheckResult.Failed;
+                return CheckResult.Finding;
             }
         }
     }

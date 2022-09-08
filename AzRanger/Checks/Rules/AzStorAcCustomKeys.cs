@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzStorAcCustomKeys", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", Service.StorageAccount)]
-    [RuleScore("The following StorageAccounts are encrypted with Microsot managed keys", "If you want to have control over your keys, you should use custom keys", 1)]
+    [RuleMeta("AzStorAcCustomKeys", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", Service.StorageAccount)]
+    [CISAZ("3.9", "", Level.L2, "v1.4")]
+    [RuleInfo("StorageAccount is encrypted with Microsot managed keys", "Microsoft may have access to your encrypted data.", 1, null, null, "If you want to have control over your keys, you should use custom keys.")]
     internal class AzStorAcCustomKeys : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -29,9 +30,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

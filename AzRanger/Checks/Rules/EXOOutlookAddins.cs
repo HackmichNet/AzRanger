@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("EXOOutlookAddins", Scope.EXO, MaturityLevel.Tentative, "https://outlook.office365.com/ecp/?form=eac&mkt=en-US")]
-    [RuleScore("Users can install Outlook Add-Ins", "Outlook Add-Ins can contain malicius functions", 1, "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/add-ins-for-outlook/specify-who-can-install-and-manage-add-ins")]
+    [RuleMeta("EXOOutlookAddins", Scope.EXO, MaturityLevel.Tentative, "https://outlook.office365.com/ecp/?form=eac&mkt=en-US")]
+    [CISM365("2.8", "", Level.L2, "v1.4")]
+    [RuleInfo("Users can install Outlook Add-Ins", "Outlook Add-Ins can contain malicius functions.", 1, "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/add-ins-for-outlook/specify-who-can-install-and-manage-add-ins", null, "See reference.")]
     class EXOOutlookAddins : BaseCheck
     {
         private String Check1 = "My ReadWriteMailbox Apps";
@@ -36,9 +37,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

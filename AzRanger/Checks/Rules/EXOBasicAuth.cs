@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("EXOBasicAuth", Scope.EXO, MaturityLevel.Mature, "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/ModernAuthentication")]
-    [RuleScore("Either globaly or some users can use basic auth for ExchangeOnline", "Basic auth does not support secure authentication mechanism like MFA", 5, "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/disable-basic-authentication-in-exchange-online")]
+    [RuleMeta("EXOBasicAuth", Scope.EXO, MaturityLevel.Mature, "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/ModernAuthentication")]
+    [RuleInfo("Basic auth is enabled for ExchangeOnline", "This expose your tenant to attacks like Password brute force or Password Spray.", 5, "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/disable-basic-authentication-in-exchange-online", "Basic auth does not support secure authentication mechanism like MFA")]
     class EXOBasicAuth : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -21,7 +21,7 @@ namespace AzRanger.Checks.Rules
             // Case 1: If no policy exist, not good => Check if Conditional Access applies
             if(tenant.ExchangeOnlineSettings.AuthenticationPolicies == null)
             {
-                return CheckResult.Failed;
+                return CheckResult.Finding;
             }
 
             bool defaultPolicyPassed = false;
@@ -74,14 +74,14 @@ namespace AzRanger.Checks.Rules
             // Default policy is good and we have no user policy
             if(defaultPolicyPassed && userWithNoPolicy)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
             // User assigned policies are secure and all users have a custom poliicy
             if(userPolicyPassed && !userWithNoPolicy)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
             
         }
 

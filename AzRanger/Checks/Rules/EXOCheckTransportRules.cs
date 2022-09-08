@@ -6,8 +6,9 @@ using System.Collections.Generic;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("EXOCheckTransportRules", Scope.EXO, MaturityLevel.Mature, "https://admin.exchange.microsoft.com/#/transportrules")]
-    [RuleScore("Some transport rules seems to forward mails to external domains", "Data are automatically sent outside of the organization", 5)]
+    [RuleMeta("EXOCheckTransportRules", Scope.EXO, MaturityLevel.Mature, "https://admin.exchange.microsoft.com/#/transportrules")]
+    [CISM365("4.3", "", Level.L1, "v1.4")]
+    [RuleInfo("Transport rules seems to forward mails to external domains", "This can lead to unwanted data loss.", 5, null, "Data are automatically sent outside of the organization.", "Disabled the rules shown below.")]
     class EXOCheckTransportRules : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -51,9 +52,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

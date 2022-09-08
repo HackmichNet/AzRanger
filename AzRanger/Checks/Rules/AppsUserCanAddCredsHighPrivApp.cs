@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AppsUserCanAddCredsHighPrivApp", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/AllApps/menuId/")]
-    [RuleScore("Apps with global Admin role or a similar role where a low priv user/app can add credentials.", "This could lead privileges escalation within your tenant, please check 'Roles and administrators | Preview'.", 9, "https://posts.specterops.io/azure-privilege-escalation-via-azure-api-permissions-abuse-74aee1006f48")]
+    [RuleMeta("AppsUserCanAddCredsHighPrivApp", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/AllApps/menuId/")]
+    [RuleInfo("Low priv user can add credentials to apps with high privileged roles", "This could lead privileges escalation within your tenant, please check 'Roles and administrators | Preview'.", 9, "https://posts.specterops.io/azure-privilege-escalation-via-azure-api-permissions-abuse-74aee1006f48", "Users with low privileges can add credentials to apps with high privileges.", @"1. Check if the high privileges are required by the app </b> 2. Check if you can remove the rights from the user to add credentials.")]
     class AppsUserCanAddCredsHighPrivApp : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            // Get global admin roles
+            // Get global admin role
             List<DirectoryRole> globalAdminRoles = new List<DirectoryRole>();
             foreach (String highPrivRole in DirectoryRoleTemplateID.GlobalAdmins)
             {
@@ -80,9 +80,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

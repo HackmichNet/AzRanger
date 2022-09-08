@@ -33,6 +33,8 @@ namespace AzRanger.AzScanner
         public const String LicenseDetailBeta = "/beta/me/licenseDetails";
         public const String DeviceRegistrationPolicy = "/beta/policies/deviceRegistrationPolicy";
         public const String AuthorizationPolicy = "/beta/policies/authorizationPolicy/authorizationPolicy";
+        public const String AuthenticationMethodsPolicy = "/beta/policies/authenticationmethodspolicy";
+        public const String OAuth2PermissionGrants = "/beta/oauth2PermissionGrants";
 
         public MSGraphScanner(Scanner scanner)
         {
@@ -114,12 +116,6 @@ namespace AzRanger.AzScanner
                 Result.Add(user.id, user);
             }
             return Result;
-        }
-
-        public bool HasDomainSPF(string domain)
-        {
-            var result = Get<String>(String.Format(ServiceConfigurationRecords,domain));
-            return false;
         }
 
         public List<EnterpriseApplicationUserSettings> GetSettings()
@@ -281,6 +277,24 @@ namespace AzRanger.AzScanner
                 result[app.id].appRoleAssignments = app.appRoleAssignments;
             }
 
+            List<Oauth2PermissionGrant> grants = GetAllOf<Oauth2PermissionGrant>(OAuth2PermissionGrants);
+            foreach(Oauth2PermissionGrant grant in grants)
+            {
+                // I know not the best implementation....maybe think about later.
+                foreach(ServicePrincipal principal in result.Values)
+                {
+                    if(principal.id == grant.clientId)
+                    {
+                        if(principal.oauth2PermissionGrants == null)
+                        {
+                            principal.oauth2PermissionGrants = new List<Oauth2PermissionGrant>();
+                        }
+                        principal.oauth2PermissionGrants.Add(grant);
+                        break;
+                    }
+                }
+            }
+
             return result;
         }
 
@@ -295,7 +309,8 @@ namespace AzRanger.AzScanner
             return Result;
         }
 
-        internal List<AzurePrincipal> GetAllGroupMember(Guid groupId)
+        // Transitiv, gives only the User or Principals back, does not include other groups
+        internal List<AzurePrincipal> GetAllGroupMemberTransitiv(Guid groupId)
         {
             List<IDTypeResponse> groupMember = GetAllOf<IDTypeResponse>(string.Format(GroupMemberTransitiv, groupId.ToString()), "?$select=id");
             List<AzurePrincipal> result = new List<AzurePrincipal>();
@@ -307,6 +322,11 @@ namespace AzRanger.AzScanner
             return result;
         }
 
+        internal AuthenticationMethodsPolicy GetAuthenticationMethodsPolicy()
+        {
+            return (AuthenticationMethodsPolicy)Get<AuthenticationMethodsPolicy>(AuthenticationMethodsPolicy);
+
+        }
 
 
     }

@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
 
-    [RuleInfo("UserAllUserHaveMFA", Scope.O365)]
-    [RuleScore("Not all users using MFA", "MFA is a powerfull method to defend your users against phishing or password guessing attacks", 7, "https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa")]
+    [RuleMeta("UserAllUserHaveMFA", Scope.O365)]
+    [CISM365("1.1.2", "", Level.L2, "v1.4")]
+    [CISAZ("1.2", "", Level.L2, "v1.4")]
+    [RuleInfo("Not all users using MFA", "Users with MFA are way easier victims to phishing attacks.", 7, "https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa")]
     class UserAllUserHaveMFA : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -31,9 +33,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
 
         }
     }

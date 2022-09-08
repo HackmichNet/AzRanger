@@ -7,17 +7,19 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("UserConsent", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/UserSettings/menuId/")]
-    [RuleScore("Users can consent to apps accessing data on their behalf", "App consent is often used in phishing scenarios and other attacks", 10, "https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/configure-user-consent?tabs=azure-portal")]
+    [RuleMeta("UserConsent", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/UserSettings/menuId/")]
+    [CISM365("2.6", "", Level.L2, "v1.4")]
+    [CISAZ("1.9", "", Level.L2, "v1.4")]
+    [RuleInfo("User can consent to apps accessing data on their behalf", "Malicious apps are often used in phishing scenarios. Thus, allowing users to consent to applications increases the risk for a successful attack.", 10, "https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/configure-user-consent?tabs=azure-portal", null, @"Go to the Portal URL and set ""Users can request admin consent to apps they are unable to consent to""​ 'No' ")]
     class UserConsent : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
             if(tenant.UserSettings.usersCanAllowAppsToAccessData == false)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

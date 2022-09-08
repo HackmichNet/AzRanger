@@ -35,8 +35,8 @@ namespace AzRanger.Checks
 
     public enum CheckResult
     {
-        Passed,
-        Failed,
+        NoFinding,
+        Finding,
         NotApplicable
     }
 }

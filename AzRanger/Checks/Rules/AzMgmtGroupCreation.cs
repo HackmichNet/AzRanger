@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzMgmtGroupCreation", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_ManagementGroups/ManagementGroupBrowseBlade/MGBrowse_settingsItem")]
-    [RuleScore("Every user in the tenant can create Management Groups", "This may lead to an unwanted number of Management Groups in the tenant", 2, "", "It is recommended to toogle the button to off")]
+    [RuleMeta("AzMgmtGroupCreation", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_ManagementGroups/ManagementGroupBrowseBlade/MGBrowse_settingsItem")]
+    [RuleInfo("Everyone can create Management Groups", "This may lead to an unwanted number of Management Groups in the tenant.", 2, null, @"Go to <a href=""https://portal.azure.com/#view/Microsoft_Azure_ManagementGroups/ManagementGroupBrowseBlade/~/MGBrowse_settingsItem"">https://portal.azure.com/#view/Microsoft_Azure_ManagementGroups/ManagementGroupBrowseBlade/~/MGBrowse_settingsItem</a> and toogle ""Require write permissions for creating new management groups."" to Off.")]
     internal class AzMgmtGroupCreation : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -19,9 +19,9 @@ namespace AzRanger.Checks.Rules
             }
             if(tenant.ManagementGroupSettings.properties.requireAuthorizationForGroupCreation == true )
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

@@ -3,8 +3,8 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("EXOClientForwardingIsBlocked", Scope.EXO, MaturityLevel.Tentative, "https://admin.exchange.microsoft.com/#/transportrules")]
-    [RuleScore("No mail flow rule detected, that blocks auto forwarding on the client site", "User might be able automatically forward mails outside the organization", 4)]
+    [RuleMeta("EXOClientForwardingIsBlocked", Scope.EXO, MaturityLevel.Tentative, "https://admin.exchange.microsoft.com/#/transportrules")]
+    [RuleInfo("Autoforwarding on the client site is not prevent by Exchange Online", "This can lead to an unwanted data loss.", 4, null, "No mail flow rule detected, that blocks auto forwarding on the client site. User might be able automatically forward mails outside the organization")]
     class EXOClientForwardingIsBlocked : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -24,7 +24,7 @@ namespace AzRanger.Checks.Rules
                 {
                     if(policy.AutoForwardingMode == "Automatic" || policy.AutoForwardingMode == "Off")
                     {
-                        return CheckResult.Passed;
+                        return CheckResult.NoFinding;
                     }
                 }
             }
@@ -41,13 +41,13 @@ namespace AzRanger.Checks.Rules
                         {
                             if (action.Equals("Microsoft.Exchange.MessagingPolicies.Rules.Tasks.RejectMessageAction"))
                             {
-                                return CheckResult.Passed;
+                                return CheckResult.NoFinding;
                             }
                         }
                     }
                 }
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

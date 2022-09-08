@@ -32,15 +32,6 @@ namespace AzRanger.Models
         public Locations locations { get; set; }
         public Devices devices { get; set; }
     }
-
-    public class Applications
-    {
-        public string[] includeApplications { get; set; }
-        public object[] excludeApplications { get; set; }
-        public object[] includeUserActions { get; set; }
-        public object[] includeAuthenticationContextClassReferences { get; set; }
-    }
-
     public class Users
     {
         public string[] includeUsers { get; set; }
@@ -80,16 +71,6 @@ namespace AzRanger.Models
         public object[] termsOfUse { get; set; }
     }
 
-    public class Sessioncontrols
-    {
-        public bool disableResilienceDefaults { get; set; }
-        public object applicationEnforcedRestrictions { get; set; }
-        public object signInFrequency { get; set; }
-        public object continuousAccessEvaluation { get; set; }
-        public Cloudappsecurity cloudAppSecurity { get; set; }
-        public Persistentbrowser persistentBrowser { get; set; }
-    }
-
     public class Cloudappsecurity
     {
         public string cloudAppSecurityType { get; set; }
@@ -101,5 +82,31 @@ namespace AzRanger.Models
         public string mode { get; set; }
         public bool isEnabled { get; set; }
     }
+    public class Sessioncontrols
+    {
+        public object disableResilienceDefaults { get; set; }
+        public object cloudAppSecurity { get; set; }
+        public object signInFrequency { get; set; }
+        public object persistentBrowser { get; set; }
+        public object continuousAccessEvaluation { get; set; }
+        public object secureSignInSession { get; set; }
+        public object networkAccessSecurity { get; set; }
+        public Applicationenforcedrestrictions applicationEnforcedRestrictions { get; set; }
+    }
+
+    public class Applicationenforcedrestrictions
+    {
+        public bool isEnabled { get; set; }
+    }
+    public class Applications
+    {
+        public string[] includeApplications { get; set; }
+        public object[] excludeApplications { get; set; }
+        public object[] includeUserActions { get; set; }
+        public object[] includeAuthenticationContextClassReferences { get; set; }
+        public object applicationFilter { get; set; }
+        public object networkAccess { get; set; }
+    }
+
 
 }

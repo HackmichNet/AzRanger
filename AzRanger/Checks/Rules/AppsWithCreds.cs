@@ -3,8 +3,8 @@ using AzRanger.Models.MSGraph;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AppsWithCreds", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps")]
-    [RuleScore("These apps contain credentials, thus a user might be able to authenticate as this app", "If an app has higher privileges than the user created the credentials, then this can lead to privilege escalation. Additional this could be abused as backdoor.", 9, "https://posts.specterops.io/azure-privilege-escalation-via-service-principal-abuse-210ae2be2a5")]
+    [RuleMeta("AppsWithCreds", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps")]
+    [RuleInfo("Apps with credentials", "If an app has higher privileges than the user created the credentials, then this can lead to privilege escalation. Additional this could be abused as backdoor.", 3, "https://posts.specterops.io/azure-privilege-escalation-via-service-principal-abuse-210ae2be2a5", "If an apps contain credentials, a user who knows this credenitals is able to authenticate as this app", "Check and remove the credentials from the app if they are not needed by any application")]
     class AppsWithCreds : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -22,9 +22,9 @@ namespace AzRanger.Checks.Rules
 
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

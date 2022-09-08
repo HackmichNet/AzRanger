@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzActLogAlertCreatePolicyAssignment", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", Service.StorageAccount)]
-    [RuleScore("For this subscription exists no Activity Log Alert for 'Create Policy Assignment'", "Good monitoring can reduce the time it takes to detect unsolicited changes.", 0)]
+    [RuleMeta("AzActLogAlertCreatePolicyAssignment", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", Service.StorageAccount)]
+    [CISAZ("5.2.1", "", Level.L1, "v1.4")]
+    [RuleInfo("No Activity Log Alert for 'Create Policy Assignment'", @"Unwanted changes for ""Create Policy Assignment"" can go unnoticed.", 0)]
     internal class AzActLogAlertCreatePolicyAssignment : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -52,9 +53,9 @@ namespace AzRanger.Checks.Rules
             
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzKeyVLogging", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults", Service.KeyVault)]
-    [RuleScore("For this Key Vault is no logging active.", "Without proper logging incident response becomes much harder", 1)]
+    [RuleMeta("AzKeyVLogging", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults", Service.KeyVault)]
+    [CISAZ("5.1.5", "", Level.L1, "v1.4")]
+    [RuleInfo("Key Vault without acitve logging", "Without active logging and monitoring, incidence or unauthorized access to the Key Vault can go unnoticed.", 1)]
     internal class AzKeyVLogging : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -41,9 +42,9 @@ namespace AzRanger.Checks.Rules
             
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

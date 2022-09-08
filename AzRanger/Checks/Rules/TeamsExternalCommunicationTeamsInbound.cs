@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("TeamsExternalCommunicationInbound", Scope.O365, MaturityLevel.Mature, "https://admin.teams.microsoft.com/company-wide-settings/external-communications")]
-    [RuleScore("Teams inbound communication with users outside of your organisation is allowed", "Allowing user to communicate outside the organisation increases the risk of phishing and data leakage", 7, "https://danielchronlund.com/2021/02/22/manage-teams-external-access-for-allowed-domains-using-powershell-and-teams-approvals/")]
+    [RuleMeta("TeamsExternalCommunicationInbound", Scope.O365, MaturityLevel.Mature, "https://admin.teams.microsoft.com/company-wide-settings/external-communications")]
+    [RuleInfo("Teams inbound communication with users outside your organization is allowed", "Allowing user to communicate outside the organization increases the risk of phishing and data leakage.", 7, "https://danielchronlund.com/2021/02/22/manage-teams-external-access-for-allowed-domains-using-powershell-and-teams-approvals/", null, @"Go to the Portal Url and check the setting under ""Teams accounts not managed by an organization"".")]
     class TeamsExternalCommunicationInbound : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -17,14 +17,14 @@ namespace AzRanger.Checks.Rules
             {
                 if (tenant.TeamsSettings.TenantFederationSettings.AllowTeamsConsumerInbound == false)
                 {
-                    return CheckResult.Passed;
+                    return CheckResult.NoFinding;
                 }
             }
             else
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

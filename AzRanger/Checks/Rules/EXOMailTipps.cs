@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("EXOMailTipps", Scope.EXO, MaturityLevel.Mature)]
-    [RuleScore("Not all Mailbox Tips are enabled", "Mailbox Tips can prevent a user to sent mails to too many recipients or sending mails outside of the organisation", 1)]
+    [RuleMeta("EXOMailTipps", Scope.EXO, MaturityLevel.Mature)]
+    [CISM365("4.12", "", Level.L2, "v1.4")]
+    [RuleInfo("Not all Mailbox Tips are enabled", "Mailbox Tips can prevent a user to sent mails to too many recipients or sending mails outside the organization.", 1, null, null, @"Use the Exchange Online PowerShell Module to connect to Exchange Online. Then run the following code ""Set-OrganizationConfig -MailTipsAllTipsEnabled $true -MailTipsExternalRecipientsTipsEnabled $true -MailTipsGroupMetricsEnabled $true -MailTipsLargeAudienceThreshold '25'"".")]
     class EXOMailTipps : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -21,9 +22,9 @@ namespace AzRanger.Checks.Rules
                 config.MailTipsGroupMetricsEnabled &&
                 config.MailTipsLargeAudienceThreshold <= 25)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

@@ -4,8 +4,9 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("EXOMailboxAudit", Scope.EXO)]
-    [RuleScore("Not all mailboxes have audit enabled", "Logging and monitoring helps you to perfomr IR or to find malicious behaviour", 6, "https://docs.microsoft.com/en-us/microsoft-365/compliance/enable-mailbox-auditing?view=o365-worldwide")]
+    [RuleMeta("EXOMailboxAudit", Scope.EXO)]
+    [CISM365("5.2", "", Level.L1, "v1.4")]
+    [RuleInfo("Not all mailboxes have audit enabled", "Malicious behavior can go unnoticed.", 6, "https://docs.microsoft.com/en-us/microsoft-365/compliance/enable-mailbox-auditing?view=o365-worldwide", null, "To enable logging see reference link.")]
     class EXOMailboxAudit : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -21,9 +22,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

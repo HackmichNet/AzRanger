@@ -22,6 +22,8 @@ namespace AzRanger.AzScanner
         private const String SQLServers = "/subscriptions/{0}/resourceGroups/Test/providers/Microsoft.Sql/servers/?api-version=2021-11-01-preview";
         private const String SQLServerFirewall = "{0}/firewallRules?api-version=2015-05-01-preview";
         private const String AutoProvisioningSettings = "/subscriptions/{0}/providers/Microsoft.Security/autoProvisioningSettings/?api-version=2017-08-01-preview";
+        private const String SecurityCenterBuiltIn = "/subscriptions/{0}/providers/Microsoft.Authorization/policyAssignments/SecurityCenterBuiltIn?api-version=2022-06-01";
+        private const String SecurityContacts = "/subscriptions/{0}/providers/Microsoft.Security/securityContacts?api-version=2020-01-01-preview";
         public AzMgmtScanner(Scanner scanner)
         {
             this.Scanner = scanner;
@@ -131,6 +133,30 @@ namespace AzRanger.AzScanner
         public List<AutoProvisioningSettings> GetProvisioningSettings(String subscription)
         {
             return GetAllOf<AutoProvisioningSettings>(String.Format(AutoProvisioningSettings, subscription));
+        }
+
+        public SecurityContact GetSecurityContacts(String subscription)
+        {
+            return (SecurityContact)Get<SecurityContact>(String.Format(SecurityContacts, subscription));
+        }
+
+        internal override String ManipulateResponse(String response)
+        {
+            if (response.Contains("/providers/Microsoft.Security/securityContacts/default"))
+            {
+                String newResp = response.Substring(1);
+                newResp = newResp.Substring(0, newResp.Length - 1);
+                return newResp;
+            }
+            else
+            {
+                return response;
+            }
+        }
+
+        public SecurityCenterBuiltIn GetSecurityCenterBuiltIn(String subscription)
+        {
+            return (SecurityCenterBuiltIn)Get<SecurityCenterBuiltIn>(String.Format(SecurityCenterBuiltIn, subscription));
         }
     }
 }

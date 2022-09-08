@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzKeyVSecretExpiration", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults", Service.KeyVault)]
-    [RuleScore("This secret will never expire", "The secret can be used until it is manully deactivated", 1)]
+    [RuleMeta("AzKeyVSecretExpiration", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults", Service.KeyVault)]
+    [CISAZ("8.3", "", Level.L1, "v1.4")]
+    [RuleInfo("Key Vaul secret will never expire", "If the secret is lost or stolen, the attacker can use the secret as long as someone changes it. What can be a very long time.", 1)]
     internal class AzKeyVSecretExpiration : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -20,22 +21,22 @@ namespace AzRanger.Checks.Rules
             {
                 foreach(KeyVault vault in sub.Resources.KeyVaults)
                 {
-                    foreach (KeyVaultSecret secret in vault.Secrets)
-                    {
-                            if (secret.attributes.exp == null)
+                        foreach (KeyVaultSecret secret in vault.Secrets)
                         {
-                            passed = false;
-                            this.AddAffectedEntity(secret);
+                            if (secret.attributes.exp == null)
+                            {
+                                passed = false;
+                                this.AddAffectedEntity(secret);
+                            }
                         }
-                    }
                 }
             }
             
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

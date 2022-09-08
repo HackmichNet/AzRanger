@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("EXOAutomaticForwarding", Scope.EXO, MaturityLevel.Mature)]
-    [RuleScore("Auto forwarding is not disabled", "Attack can use auto forwarding exfiltrade data", 5, "https://docs.microsoft.com/en-us/archive/blogs/exovoice/disable-automatic-forwarding-in-office-365-and-exchange-server-to-prevent-information-leakage ")]
+    [RuleMeta("EXOAutomaticForwarding", Scope.EXO, MaturityLevel.Mature)]
+    [RuleInfo("Auto forwarding is not disabled", "Attack can use auto forwarding to exfiltrade data.", 5, "https://docs.microsoft.com/en-us/archive/blogs/exovoice/disable-automatic-forwarding-in-office-365-and-exchange-server-to-prevent-information-leakage ")]
     class EXOAutomaticForwarding : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -18,10 +18,10 @@ namespace AzRanger.Checks.Rules
             {
                 if(domain.Name == "Default" & domain.AutoForwardEnabled == false & domain.AllowedOOFType == "External")
                 {
-                    return CheckResult.Passed;
+                    return CheckResult.NoFinding;
                 }
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

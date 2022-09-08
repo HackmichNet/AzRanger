@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzActNSGSUnrestrictedSourceAccess", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", Service.NetworksSecurityGroup)]
-    [RuleScore("The follwoing NetworkSecurityGroups have no restricted source address", "This can result in an additional threat to the destination services.", 0)]
+    [RuleMeta("AzActNSGSUnrestrictedSourceAccess", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", Service.NetworksSecurityGroup)]
+    [RuleInfo("Network Security Group allows access from everywhere", "The service protected by the Network Security Group is exposed to the internet.", 0, null, null, "Check if the source address can be restriced.")]
     internal class AzActNSGSUnrestrictedSourceAccess : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-
-            foreach (Subscription sub in tenant.Subscriptions.Values)
+            
+            foreach(Subscription sub in tenant.Subscriptions.Values)
             {
-
+                
                 foreach (NetworkSecurityGroup nsg in sub.Resources.NetworkSecurityGroups)
                 {
-                    foreach (NetworkSecurityGroupSecurityrule rule in nsg.properties.securityRules)
+                    foreach(NetworkSecurityGroupSecurityrule rule in nsg.properties.securityRules)
                     {
                         if (rule.properties.direction == "Inbound")
                         {
@@ -29,11 +29,11 @@ namespace AzRanger.Checks.Rules
                             {
 
                                 if (rule.properties.sourceAddressPrefix == "*" ||
-                                rule.properties.sourceAddressPrefix == "0.0.0.0" ||
-                                rule.properties.sourceAddressPrefix == "/0" ||
-                                rule.properties.sourceAddressPrefix == "internet" ||
-                                rule.properties.sourceAddressPrefix == "any" ||
-                                rule.properties.sourceAddressPrefix.EndsWith("/0"))
+                                    rule.properties.sourceAddressPrefix == "0.0.0.0" ||
+                                    rule.properties.sourceAddressPrefix == "/0" ||
+                                    rule.properties.sourceAddressPrefix == "internet" ||
+                                    rule.properties.sourceAddressPrefix == "any" ||
+                                    rule.properties.sourceAddressPrefix.EndsWith("/0"))
                                 {
                                     passed = false;
                                     this.AddAffectedEntity(nsg);
@@ -41,14 +41,15 @@ namespace AzRanger.Checks.Rules
                             }
                         }
                     }
-
                 }
+                
             }
+            
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AppsUserCanAddCredsHighPrivService", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/AllApps/menuId/")]
-    [RuleScore("Service Principal with Global Admin role or similar role where a low priv user/app can add credentials.", "This could lead privileges escalation within your tenant, please check 'Roles and administrators | Preview'.", 9, "https://posts.specterops.io/azure-privilege-escalation-via-azure-api-permissions-abuse-74aee1006f48")]
+    [RuleMeta("AppsUserCanAddCredsHighPrivService", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/AllApps/menuId/")]
+    [RuleInfo("Low priv user can add credentials to service principals with high privileged roles", "This could lead privileges escalation within your tenant, please check 'Roles and administrators | Preview'.", 9, "https://posts.specterops.io/azure-privilege-escalation-via-azure-api-permissions-abuse-74aee1006f48", "Users with low privileges can add credentials to service principals with high privileges.", @"1. Check if the high privileges are required by the service principal </b> 2. Check if you can remove the rights from the user to add credentials.")]
     class AppsUserCanAddCredsHighPrivService : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -70,9 +70,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

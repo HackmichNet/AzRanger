@@ -4,8 +4,8 @@ using AzRanger.Models.ExchangeOnline;
 namespace AzRanger.Checks.Rules
 {
     // Credits to https://github.com/soteria-security/365Inspect/blob/main/Inspectors/BypassingSafeAttachments.ps1
-    [RuleInfo("EXOBypassSafeAttachments", Scope.EXO, MaturityLevel.Mature, "https://admin.exchange.microsoft.com/#/transportrules")]
-    [RuleScore("There exist Transport Rules in EXO, that may bypass SafeAttachment checking", "This expose your organisation an additional riks", 3, "https://www.undocumented-features.com/2018/05/10/atp-safe-attachments-safe-links-and-anti-phishing-policies-or-all-the-policies-you-can-shake-a-stick-at/#Bypass_Safe_Attachments_Processing")]
+    [RuleMeta("EXOBypassSafeAttachments", Scope.EXO, MaturityLevel.Mature, "https://admin.exchange.microsoft.com/#/transportrules")]
+    [RuleInfo("Transport Rules in EXO bypasses SafeAttachment checking", "This expose your organisation an additional riks.", 3, "https://www.undocumented-features.com/2018/05/10/atp-safe-attachments-safe-links-and-anti-phishing-policies-or-all-the-policies-you-can-shake-a-stick-at/#Bypass_Safe_Attachments_Processing")]
     class EXOBypassSafeAttachments : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -25,9 +25,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

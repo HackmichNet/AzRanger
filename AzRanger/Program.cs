@@ -10,6 +10,8 @@ using NLog.Config;
 using NLog.Targets;
 using NLog;
 using CommandLine.Text;
+using System.Reflection;
+using System.Resources;
 
 namespace AzRanger
 {
@@ -31,7 +33,7 @@ namespace AzRanger
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "AzRanger 0.0.7"; //change header
+                h.Heading = "AzRanger 0.0.8"; //change header
                 h.Copyright = ""; 
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
@@ -121,6 +123,15 @@ namespace AzRanger
                 }
             }
 
+            if(opts.Audit && (opts.Output != null && opts.Output.ToLower() == "html"))
+            {
+                if(opts.OutFile == null || opts.OutFile.Length == 0)
+                {
+                    Console.WriteLine("[-] Please specify an outfile with --outfile.");
+                    return;
+                }
+            }
+
             Console.WriteLine("[+] AzRanger started.");
             Scanner scanner = null;
             if (opts.Username != null && opts.Password != null)
@@ -149,7 +160,20 @@ namespace AzRanger
                         Scope.O365, Scope.EXO, Scope.SPO, Scope.Azure
                     });
                     auditor.PerformAudit();
-                    ConsoleOutput.Print(auditor, opts.WriteAllResults);
+                    if (opts.Output == null || opts.Output.ToLower() == "console")
+                    {
+                        ConsoleOutput.Print(auditor, opts.WriteAllResults);
+                    }
+                    else if(opts.Output != null && opts.Output.ToLower() == "html")
+                    {
+                        HTMLReportingOutput.Print(auditor, tenant, opts.OutFile);
+                        Console.WriteLine("[+] Report written to: " + opts.OutFile);
+                    }
+                    else
+                    {
+                        Console.WriteLine("[-] Should not happen =)");
+                        return;
+                    }
                 }
                 if (opts.DumpAll)
                 {
@@ -160,7 +184,7 @@ namespace AzRanger
 
             if (opts.DumpSettings)
             {
-                TenantSettings settings = scanner.ScanSettings();
+                M365Settings settings = scanner.ScanSettings();
                 Dumper.DumpTenantSettings(settings, opts.OutFile);
                 Console.WriteLine("[+] Successfully written to " + opts.OutFile);
             }

@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzStorAcNetworkAccess", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", Service.StorageAccount)]
-    [RuleScore("StorageAccount allow access from arbitrary networks", "Network access should be limited to prevent data loss", 1)]
+    [RuleMeta("AzStorAcNetworkAccess", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", Service.StorageAccount)]
+    [CISAZ("3.6", "", Level.L2, "v1.4")]
+    [RuleInfo("Storage Account allows access from arbitrary networks", "This can be lead to unwanted data loss.", 1, null, null, "Enforce the usage on TLS1.2 for each Storage Account.")]
     internal class AzStorAcNetworkAccess : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -29,9 +30,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

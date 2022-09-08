@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("GroupPublic", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupsManagementMenuBlade/AllGroups")]
-    [RuleScore("There exist public groups in your tenant", "Every user in your tenant can add himself into a public group and access all data associated with this group", 3, "https://www.dummies.com/software/microsoft-office/office-365-groups/")]
+    [RuleMeta("GroupPublic", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupsManagementMenuBlade/AllGroups")]
+    [RuleInfo("The tenant contains public groups", "This can bypass some security controls for group protected data, if every user can add himself to a group.", 3, "https://www.dummies.com/software/microsoft-office/office-365-groups/", null, @"Go to the Protal URL and delete all Public Groups.")]
     class GroupPublic : BaseCheck
     {
        
@@ -25,9 +25,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AppsDangerousPerms", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/AllApps/menuId/")]
-    [RuleScore("These service principals contain dangerous permissions like: RoleManagement.ReadWrite.Directory or AppRoleAssignment.ReadWrite.All", "These permissions can be used to elevate privileges within your tenant", 9, "https://posts.specterops.io/azure-privilege-escalation-via-azure-api-permissions-abuse-74aee1006f48")]
+    [RuleMeta("AppsDangerousPerms", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/AllApps/menuId/")]
+    [RuleInfo("Some service principals have dangerous permissions", @"A user with ""owner"" rights to the service principal or with the role ""Application administrator"" or ""Cloud application administrator"" can use this configuration to elevate its privileges.", 9, "https://posts.specterops.io/azure-privilege-escalation-via-azure-api-permissions-abuse-74aee1006f48", @"In your tenant exists Service principals with dangerous permissions like: RoleManagement.ReadWrite.Directory or AppRoleAssignment.ReadWrite.All", "Check if these permissions are really needed by the application.")]
     class AppsDangerousPerms : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -36,9 +36,9 @@ namespace AzRanger.Checks.Rules
             }
 
             if(passed){
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
 
         }
     }

@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzRestrictUserAccessGroupFeature", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupsManagementMenuBlade/General")]
-    [RuleScore("Guest are not maximal restricted", "When guests are not restricted a Gues can enumerate the whole tenant", 2)]
+    [RuleMeta("AzRestrictUserAccessGroupFeature", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupsManagementMenuBlade/General")]
+    [CISAZ("1.15", "", Level.L2, "v1.4")]
+    [RuleInfo("User can do self-service group management", "In the current configuration users can perform self-service for their groups. This can result in an unwanted configuration.", 2)]
     internal class AzRestrictUserAccessGroupFeature : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
             if(tenant.SsgmProperties.groupsInAccessPanelEnabled == true)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzB2BPolicy", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/AllowlistPolicyBlade")]
-    [RuleScore("Collaboration restrictions is not set to \"Allow invitations only to the specified domains (most restrictive)\"", "It is possible to invite users from arbitrary domains", 5)]
+    [RuleMeta("AzB2BPolicy", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/AllowlistPolicyBlade")]
+    [CISM365("1.1.13", "", Level.L2, "v1.4")]
+    [RuleInfo("Guest users are not restricted to spcific domains", "Guest users can be invited from all tenants. This could lead to an unwanted data loss.", 5, null, null, @"Go to the Portal URL and set check ""Allow invitations only to the specified domains (most restrictive)"".")]
     class AzB2BPolicy : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -16,13 +17,13 @@ namespace AzRanger.Checks.Rules
             // If not set it can be null
             if(tenant.B2BPolicy == null)
             {
-                return CheckResult.Failed;
+                return CheckResult.Finding;
             }
             if (tenant.B2BPolicy.isAllowlist)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

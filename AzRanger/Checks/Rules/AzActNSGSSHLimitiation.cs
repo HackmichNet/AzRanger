@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzActNSGSSHLimitiation", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", Service.NetworksSecurityGroup)]
-    [RuleScore("The follwoing NetworkSecurityGroups allow unrestricted SSH Access", "This can result in an additional threat to the destination services.", 0)]
+    [RuleMeta("AzActNSGSSHLimitiation", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", Service.NetworksSecurityGroup)]
+    [CISAZ("6.2", "", Level.L1, "v1.4")]
+    [RuleInfo("Network Security Group allows unrestricted SSH access", "This increases the risk, that the service is exploited by a threat actor.", 0, null, null, "Configure the Network Security Group that at least access to the servie is IP restricted.")]
     internal class AzActNSGSSHLimitiation : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -44,28 +45,29 @@ namespace AzRanger.Checks.Rules
                             {
                                 if (rule.properties.sourceAddressPrefix != null)
                                 {
-                                   if(rule.properties.sourceAddressPrefix == "0.0.0.0" ||
-                                   rule.properties.sourceAddressPrefix == "/0" ||
-                                   rule.properties.sourceAddressPrefix == "internet" ||
-                                   rule.properties.sourceAddressPrefix == "any" ||
-                                   rule.properties.sourceAddressPrefix.EndsWith("/0"))
-                                {
-                                    passed = false;
-                                    this.AddAffectedEntity(nsg);
+                                    if (rule.properties.sourceAddressPrefix == "*" ||
+                                       rule.properties.sourceAddressPrefix == "0.0.0.0" ||
+                                       rule.properties.sourceAddressPrefix == "/0" ||
+                                       rule.properties.sourceAddressPrefix == "internet" ||
+                                       rule.properties.sourceAddressPrefix == "any" ||
+                                       rule.properties.sourceAddressPrefix.EndsWith("/0"))
+                                    {
+                                        passed = false;
+                                        this.AddAffectedEntity(nsg);
+                                    }
                                 }
                             }
                         }
                     }
-                }
                 }
                 
             }
             
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

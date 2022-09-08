@@ -26,6 +26,7 @@ namespace AzRanger.Utilities
         public static String PasswordAdministrator = "966707d0-3269-4727-9be2-8c3a10f19b9d";
         public static String UserAdministrator = "fe930be7-5e62-47db-91af-98c3a49a38b1";
         public static String GlobalReader = "f2ef992c-3afb-46b9-b7cf-a126ee74c451";
+        public static String SharePointAdmin = "f28a1f50-f6e7-4571-818b-6a12f2af6b6c";
 
         //https://posts.specterops.io/azure-privilege-escalation-via-service-principal-abuse-210ae2be2a5
         public static string[] RolesAllowingAddCreds = {
@@ -46,7 +47,9 @@ namespace AzRanger.Utilities
             DirectoryRoleTemplateID.HybridIdentityAdministrator,
             DirectoryRoleTemplateID.IntuneAdministrator,
             DirectoryRoleTemplateID.PasswordAdministrator,
-            DirectoryRoleTemplateID.UserAdministrator};
+            DirectoryRoleTemplateID.UserAdministrator,
+            DirectoryRoleTemplateID.SharePointAdmin
+        };
 
         // Roles which are Global Admin or can become Global Admins
         public static String[] GlobalAdmins =

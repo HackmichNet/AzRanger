@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("UserGuestWithHighPrivRole", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RolesAndAdministrators")]
-    [RuleScore("These guests are member of Global Admin/Privileged Authentication Administrator role", "Because you cannot control how a guest authenticates and how the security state of a guest is, this is not recommended", 9)]
+    [RuleMeta("UserGuestWithHighPrivRole", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RolesAndAdministrators")]
+    [RuleInfo("Guests are member of Global Admin/Privileged Authentication Admini role", "Having guests with these roles increases the risk that you lose control over your tenant.", 9, null, null, @"Check if you could assign other roles to these guest accounts.")]
     class UserGuestWithHighPrivRole : BaseCheck
     {
         bool passed = true;
@@ -46,9 +46,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

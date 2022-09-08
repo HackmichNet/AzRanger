@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("EXODMARC", Scope.EXO, MaturityLevel.Mature)]
-    [RuleScore("Not all of your Exchange Online Domains seems to have DMARC", "DMARC tells a receiver how to deal with a mail.", 5)]
+    [RuleMeta("EXODMARC", Scope.EXO, MaturityLevel.Mature)]
+    [CISM365("4.10", "", Level.L1, "v1.4")]
+    [RuleInfo("Not all of Exchange Online Domains have DMARC enabled", "This increases the risk, that an attacker can impersonate your domain.", 5, null, null, "Enable DMARC for all your domains.")]
     class EXODMARC : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -25,9 +26,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

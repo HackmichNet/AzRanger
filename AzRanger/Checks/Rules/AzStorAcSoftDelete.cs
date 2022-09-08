@@ -1,15 +1,11 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.AzMgmt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("AzStorAcSoftDelete", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", Service.StorageAccount)]
-    [RuleScore("For this Storage Accounts is soft delete disabled.", "When soft delete is disabled, data cannot be recovered if they are accidentially deleted", 1)]
+    [RuleMeta("AzStorAcSoftDelete", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", Service.StorageAccount)]
+    [CISAZ("3.8", "", Level.L1, "v1.4")]
+    [RuleInfo("Storage Accounts without soft delete", "This can lead to unwanted data loss, if someone accidentally deletes data.", 1, null, "When soft delete is disabled, data cannot be recovered if they are accidentally deleted.", @"Enable ""Soft Delete"" for all Sotrage Accounts.")]
     internal class AzStorAcSoftDelete : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -36,9 +32,9 @@ namespace AzRanger.Checks.Rules
             }
             if (passed)
             {
-                return CheckResult.Passed;
+                return CheckResult.NoFinding;
             }
-            return CheckResult.Failed;
+            return CheckResult.Finding;
         }
     }
 }

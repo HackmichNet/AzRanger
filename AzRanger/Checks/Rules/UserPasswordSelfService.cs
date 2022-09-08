@@ -2,8 +2,9 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleInfo("UserPasswordSelfService", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/PasswordResetMenuBlade/Properties")]
-    [RuleScore("Password Self-Service is disabled", "Allowing to use a secure password reset mechanism reduces the amount of calls in your self service.", 1, "https://docs.microsoft.com/en-us/azure/active-directory/authentication/tutorial-enable-sspr")]
+    [RuleMeta("UserPasswordSelfService", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/PasswordResetMenuBlade/Properties")]
+    [CISM365("1.1.4", "", Level.L1, "v1.4")]
+    [RuleInfo("Password Self-Service is disabled", "No risk at all. But this can help to reduce calls to the Helpdesk.", 1, "https://docs.microsoft.com/en-us/azure/active-directory/authentication/tutorial-enable-sspr", "Allowing to use a secure password reset mechanism reduces the number of calls in your self-service.", "Use the link in the reference below.")]
     class UserPasswordSelfService : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -11,9 +12,9 @@ namespace AzRanger.Checks.Rules
             // 0 => Self service password reset enabled = None
             if (tenant.PasswordResetPolicies.enablementType == 0)
             {
-                return CheckResult.Failed;
+                return CheckResult.Finding;
             }
-            return CheckResult.Passed;
+            return CheckResult.NoFinding;
         }
     }
 }
