@@ -317,6 +317,7 @@
     <Compile Include="Checks\Rules\AzActNSGSUnrestrictedSourceAccess.cs" />
     <Compile Include="Checks\Rules\AzAppRegistration.cs" />
     <Compile Include="Checks\Rules\AzAutoprovisioning.cs" />
+    <Compile Include="Checks\Rules\DirSyncSoftMatch.cs" />
     <Compile Include="Checks\Rules\AzB2BPolicy.cs" />
     <Compile Include="Checks\Rules\AzGuestInvite.cs" />
     <Compile Include="Checks\Rules\AzGuestRestrictions.cs" />
