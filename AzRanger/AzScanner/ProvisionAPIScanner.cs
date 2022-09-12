@@ -22,6 +22,40 @@ namespace AzRanger.AzScanner
 			
 		}
 
+		public DirSyncFeatures GetDirSyncFeatures()
+        {
+			GetCompanyDirSyncFeaturesResponse response = null;
+            try
+            {
+				String responseString = PostToProvisioninApi("GetCompanyDirSyncFeatures", @"<b:ReturnValue i:nil=""true""/>");
+				XmlDocument doc = new XmlDocument();
+				doc.LoadXml(responseString);
+				var nsmgr = new XmlNamespaceManager(doc.NameTable);
+				nsmgr.AddNamespace("s", "http://www.w3.org/2003/05/soap-envelope");
+				nsmgr.AddNamespace("a", "http://www.w3.org/2005/08/addressing");
+				XmlNode node = doc.DocumentElement.SelectSingleNode("/s:Envelope/s:Body", nsmgr);
+				string text = node.InnerXml;
+
+				var serializer = new XmlSerializer(typeof(GetCompanyDirSyncFeaturesResponse));
+				StringReader stringReader = new StringReader(text);
+				response = (GetCompanyDirSyncFeaturesResponse)serializer.Deserialize(stringReader);
+				DirSyncFeatures features = new DirSyncFeatures();
+				foreach(DirSyncFeatureDetails feature in response.GetCompanyDirSyncFeaturesResult.ReturnValue)
+                {
+					if(feature.DirSyncFeature == "BlockSoftMatch")
+                    {
+						features.BlockSoftMatch = feature.Enabled;
+                    }
+                }
+				return features;
+			}
+            catch
+            {
+				logger.Debug("ProvisionApiScanner.GetDirSyncFeatures: Failed");
+				return null;
+            }
+        }
+
 		public MsolCompanyInformation GetMsolCompanyInformation()
         {
 			GetCompanyInformationResponse response = null;

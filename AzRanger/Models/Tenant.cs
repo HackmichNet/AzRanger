@@ -58,5 +58,6 @@ namespace AzRanger.Models
         public DeviceRegistrationPolicy DeviceRegistrationPolicy { get; set; }
         public List<DlpLabel> DlpLabels { get; set; }  
         public AuthenticationMethodsPolicy AuthenticationMethodsPolicy { get; set; }
+        public DirSyncFeatures DirSyncFeatures { get; set; }
     }
 }

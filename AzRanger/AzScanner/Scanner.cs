@@ -359,6 +359,8 @@ namespace AzRanger.AzScanner
                     Result.SharepointInformation.SharepointInternalInfos = sharePointScanner.GetSharepointSettings();
                 }
             }
+
+            Result.DirSyncFeatures = ProvisionAPIScanner.GetDirSyncFeatures();
             
             Result.AdminCenterSettings.SkypeTeams = AdminCenterScanner.GetSkypeTeamsSettings();
             Result.AdminCenterSettings.OfficeFormsSettings = AdminCenterScanner.GetOfficeFormsSettings();

@@ -46,5 +46,6 @@ namespace AzRanger.Models
         public List<ManagementGroup> ManagementGroups { get; set; }
         public List<Subscription> Subscriptions { get; set; }
         public DeviceRegistrationPolicy DeviceRegistrationPolicy { get; set; }
+        public DirSyncFeatures DirSyncFeatures { get; set; }
     }
 }

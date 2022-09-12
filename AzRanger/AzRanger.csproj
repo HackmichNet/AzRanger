@@ -389,6 +389,7 @@
     <Compile Include="Checks\Rules\UserNotifyAdminOnPasswordReset.cs" />
     <Compile Include="Checks\Rules\UserNotifyUserOnPasswordReset.cs" />
     <Compile Include="Checks\Rules\UserPasswordResetRequires2Methods.cs" />
+    <Compile Include="Checks\Rules\UserBitLockerSelfService.cs" />
     <Compile Include="Checks\Rules\UserPasswordSelfService.cs" />
     <Compile Include="Checks\Rules\UserReconfirmAuthenticationInformation.cs" />
     <Compile Include="Checks\Rules\UserRequireMFADevJoin.cs" />
@@ -496,6 +497,8 @@
     <Compile Include="Models\MSGraph\ServicePrincipal.cs" />
     <Compile Include="Models\MSGraph\Signinactivity.cs" />
     <Compile Include="Models\MSGraph\User.cs" />
+    <Compile Include="Models\Provision\DirSyncFeatures.cs" />
+    <Compile Include="Models\Provision\GetCompanyDirSyncFeaturesResponse.cs" />
     <Compile Include="Models\Provision\GetCompanyInformationResponse.cs" />
     <Compile Include="Models\Provision\MsolCompanyInformation.cs" />
     <Compile Include="Models\Provision\ServiceParameter.cs" />
