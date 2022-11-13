@@ -14,7 +14,7 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.UserSettings.usersCanAddGalleryApps == false)
+            if(tenant.UserSettings.usersCanAddGalleryApps != null && tenant.UserSettings.usersCanAddGalleryApps == false)
             {
                 return CheckResult.NoFinding;
             }

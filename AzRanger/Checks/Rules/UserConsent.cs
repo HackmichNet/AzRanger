@@ -15,7 +15,7 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.UserSettings.usersCanAllowAppsToAccessData == false)
+            if(tenant.UserSettings.usersCanAllowAppsToAccessData != null && tenant.UserSettings.usersCanAllowAppsToAccessData == false)
             {
                 return CheckResult.NoFinding;
             }
