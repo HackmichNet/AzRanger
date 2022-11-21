@@ -94,9 +94,9 @@ namespace AzRanger.AzScanner
             return (OfficeFormsSettings)Get<OfficeFormsSettings>(AdminCenterScanner.OfficeFormsSettings);
         }
 
-        public ExchangeModernAutheSettings GetExchangeModernAuthSettings()
+        public ExchangeModernAuthSettings GetExchangeModernAuthSettings()
         {
-            return (ExchangeModernAutheSettings)Get<ExchangeModernAutheSettings>(AdminCenterScanner.ExchangeModernAuthSettings);
+            return (ExchangeModernAuthSettings)Get<ExchangeModernAuthSettings>(AdminCenterScanner.ExchangeModernAuthSettings);
         }
 
 

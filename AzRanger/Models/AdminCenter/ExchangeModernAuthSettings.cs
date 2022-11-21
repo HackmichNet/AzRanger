@@ -1,7 +1,7 @@
 ﻿
 namespace AzRanger.Models.AdminCenter
 {
-    public class ExchangeModernAutheSettings
+    public class ExchangeModernAuthSettings
     {
         public bool ShowBasicAuthSettings { get; set; }
         public bool EnableModernAuth { get; set; }

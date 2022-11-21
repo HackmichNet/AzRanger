@@ -31,13 +31,12 @@ namespace AzRanger.Models.MSGraph
         public object[] permissionGrantPolicyIdsAssignedToDefaultUserRole { get; set; }
         public Defaultuserrolepermissions defaultUserRolePermissions { get; set; }
     }
-
     public class Defaultuserrolepermissions
     {
         public bool allowedToCreateApps { get; set; }
         public bool allowedToCreateSecurityGroups { get; set; }
+        public bool allowedToCreateTenants { get; set; }
         public bool allowedToReadBitlockerKeysForOwnedDevice { get; set; }
         public bool allowedToReadOtherUsers { get; set; }
     }
-
 }

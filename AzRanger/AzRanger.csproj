@@ -381,6 +381,7 @@
     <Compile Include="Checks\Rules\UserAllAdminsHaveMFA.cs" />
     <Compile Include="Checks\Rules\UserAllowAdHocSubscriptions.cs" />
     <Compile Include="Checks\Rules\UserAllUserHaveMFA.cs" />
+    <Compile Include="Checks\Rules\UserAllowCreationOfAzureTenants.cs" />
     <Compile Include="Checks\Rules\UserCanAddGalleryApps.cs" />
     <Compile Include="Checks\Rules\UserCanViewOtherUsersProfile.cs" />
     <Compile Include="Checks\Rules\UserConsent.cs" />
@@ -399,7 +400,7 @@
     <Compile Include="Models\AdminCenterSettings.cs" />
     <Compile Include="Models\AdminCenter\Calendarsharing.cs" />
     <Compile Include="Models\AdminCenter\DirsyncManagement.cs" />
-    <Compile Include="Models\AdminCenter\ExchangeModernAutheSettings.cs" />
+    <Compile Include="Models\AdminCenter\ExchangeModernAuthSettings.cs" />
     <Compile Include="Models\AdminCenter\O365PasswordPolicy.cs" />
     <Compile Include="Models\AdminCenter\OfficeFormsSettings.cs" />
     <Compile Include="Models\AdminCenter\OfficeStoreSettings.cs" />

@@ -15,7 +15,7 @@ namespace AzRanger.Models
         public List<TransportRule> TransportRules { get; set; }
         public List<AcceptedDomain> AcceptedDomains { get; set; }
         public List<DkimSigningConfig> DkimSigningConfigs { get; set; }
-        public ExchangeModernAutheSettings ExchangeModernAutheSettings { get; set; }
+        public ExchangeModernAuthSettings ExchangeModernAutheSettings { get; set; }
         public List<MalwareFilterRule> MalwareFilterRule { get; set; }
         public AdminAuditLogConfig AdminAuditLogConfig { get; set; }
         public List<Mailbox> Mailboxes { get; set; }
