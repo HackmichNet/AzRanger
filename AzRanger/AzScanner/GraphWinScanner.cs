@@ -24,24 +24,10 @@ namespace AzRanger.AzScanner
         {
             return GetAllOf<RoleDefinition>(RoleDefinitions, "?api-version=1.61-internal&$select=objectId,displayName,isBuilt,InisEnabled");
         }
-
-        public bool HasMFA(Guid objectId)
+        public StrongAuthenticationDetail GetStrongAuthenticationDetail(Guid objectId)
         {
             String endPoint = string.Format(UsersInternal, this.Scanner.TenantId, objectId);
-            StrongAuthenticationDetailAndObjectId details = (StrongAuthenticationDetailAndObjectId)Get<StrongAuthenticationDetailAndObjectId>(endPoint, "?api-version=1.61-internal&$select=objectId,strongAuthenticationDetail");
-            if (details == null)
-            {
-                return false;
-            }
-            if(details.strongAuthenticationDetail.methods != null && details.strongAuthenticationDetail.methods.Length > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
+            return (StrongAuthenticationDetail)Get<StrongAuthenticationDetail>(endPoint, "?api-version=1.61-internal&$select=strongAuthenticationDetail");
         }
 
         internal override List<T> GetAllOf<T>(AuthenticationHeaderValue authenticationHeader, string endPoint, string query = null, List<T> alreadyCollectedItems = null, List<Tuple<string, string>> additionalHeaders = null)
@@ -158,34 +144,5 @@ namespace AzRanger.AzScanner
         public string odatatype { get; set; }
         public Guid objectId { get; set; }
         public StrongAuthenticationDetail strongAuthenticationDetail { get; set; }
-    }
-
-   
-    public class StrongAuthenticationDetail
-    {
-        public object encryptedPinHash { get; set; }
-        public object encryptedPinHashHistory { get; set; }
-        public Method[] methods { get; set; }
-        public Oathtokenmetadata[] oathTokenMetadata { get; set; }
-        public object[] requirements { get; set; }
-        public Phoneappdetail[] phoneAppDetails { get; set; }
-        public object proofupTime { get; set; }
-        public object verificationDetail { get; set; }
-    }
-
-    public class Method
-    {
-        public string methodType { get; set; }
-        public bool isDefault { get; set; }
-    }
-
-    public class Oathtokenmetadata
-    {
-        public string id { get; set; }
-        public object enabled { get; set; }
-        public string tokenType { get; set; }
-        public string manufacturer { get; set; }
-        public object[] manufacturerProperties { get; set; }
-        public string serialNumber { get; set; }
     }
 }

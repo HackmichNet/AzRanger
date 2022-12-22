@@ -1,9 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using AzRanger.Models.WinGraph;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Models.MSGraph
 {
@@ -23,6 +19,7 @@ namespace AzRanger.Models.MSGraph
         // isRegistered => is Registered
         public bool isAbleTodoPasswordReset { get; set; }
         public object onPremisesSyncEnabled { get; set; }
+        public StrongAuthenticationDetailDetails strongAuthenticationDetail { get; set; }
 
         public override string ToString()
         {

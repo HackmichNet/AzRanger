@@ -514,6 +514,7 @@
     <Compile Include="Models\TenantSettings.cs" />
     <Compile Include="Models\WinGraph\Phoneappdetail.cs" />
     <Compile Include="Models\WinGraph\RoleDefinition.cs" />
+    <Compile Include="Models\WinGraph\StrongAuthenticationDetail.cs" />
     <Compile Include="Output\ConsoleOutput.cs" />
     <Compile Include="Output\Dumper.cs" />
     <Compile Include="Output\HTMLReportingOutput.cs" />
