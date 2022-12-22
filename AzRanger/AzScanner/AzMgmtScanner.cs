@@ -78,32 +78,43 @@ namespace AzRanger.AzScanner
         public Dictionary<Guid, Subscription> GetAllSubscriptions()
         {
             var subs = GetAllOf<Subscription>(Subscriptions);
-            Dictionary<Guid, Subscription> Result = new Dictionary<Guid, Subscription>();
-            foreach(Subscription sub in subs)
+            if (subs != null)
             {
-                Result.Add(Guid.Parse(sub.subscriptionId), sub);
+                Dictionary<Guid, Subscription> Result = new Dictionary<Guid, Subscription>();
+                foreach (Subscription sub in subs)
+                {
+                    Result.Add(Guid.Parse(sub.subscriptionId), sub);
+                }
+                return Result;
             }
-            return Result;
+            return null;
         }
 
         public List<StorageAccount> GetStorageAccounts(String subscription)
         {
             List<StorageAccount> Result = GetAllOf<StorageAccount>(String.Format(StorageAccounts, subscription));
-            foreach(StorageAccount account in Result)
+            if (Result != null)
             {
-                account.StorageContainers = GetAllOf<StorageContainer>(String.Format(StorageContainers, account.id));
-                account.Default = (StorageAccountDefault)Get<StorageAccountDefault>(String.Format(StorageDefault, account.id));
-                account.Subscription = Guid.Parse(subscription);
+                foreach (StorageAccount account in Result)
+                {
+                    account.StorageContainers = GetAllOf<StorageContainer>(String.Format(StorageContainers, account.id));
+                    account.Default = (StorageAccountDefault)Get<StorageAccountDefault>(String.Format(StorageDefault, account.id));
+                    account.Subscription = Guid.Parse(subscription);
+                }
             }
             return Result;
+
         }
 
         public List<KeyVault> GetKeyVaults (String subscription)
         {
             List<KeyVault> Result = GetAllOf<KeyVault>(String.Format(KeyVaults, subscription));
-            foreach(KeyVault keyVault in Result)
+            if (Result != null)
             {
-                keyVault.DiagnosticSettings = GetAllOf<DiagnosticSettings>(String.Format(DiagnosticSettings, keyVault.id));
+                foreach (KeyVault keyVault in Result)
+                {
+                    keyVault.DiagnosticSettings = GetAllOf<DiagnosticSettings>(String.Format(DiagnosticSettings, keyVault.id));
+                }
             }
             return Result;
         }

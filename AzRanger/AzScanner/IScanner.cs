@@ -184,7 +184,12 @@ namespace AzRanger.AzScanner
                 {
                     logger.Debug("IScanner.GetAllOf: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
                     logger.Debug("IScanner.GetAllOf: Status Code {0}", response.StatusCode);
-                    logger.Debug(response.Content.ReadAsStringAsync().Result);
+                    try
+                    {
+                        logger.Debug(response.Content.ReadAsStringAsync().Result);
+                    }
+                    catch (Exception) { }
+                    
                 }
             }
             return null;

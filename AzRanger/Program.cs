@@ -145,8 +145,10 @@ namespace AzRanger
 
             if (opts.DumpAll | opts.Audit)
             {
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 Tenant tenant = scanner.ScanTenant();
-
+                watch.Stop();
+                Console.WriteLine($"[+] Scan Time: {watch.ElapsedMilliseconds} ms");
                 if (tenant == null)
                 {
                     Console.WriteLine("[-] Something went wrong. Please run the tool with --debug and notify me.");
@@ -184,7 +186,10 @@ namespace AzRanger
 
             if (opts.DumpSettings)
             {
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 M365Settings settings = scanner.ScanSettings();
+                watch.Stop();
+                Console.WriteLine($"[+] Scan Time: {watch.ElapsedMilliseconds} ms");
                 Dumper.DumpTenantSettings(settings, opts.OutFile);
                 Console.WriteLine("[+] Successfully written to " + opts.OutFile);
             }
