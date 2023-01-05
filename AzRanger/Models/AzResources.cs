@@ -14,5 +14,6 @@ namespace AzRanger.Models
         public List<ActivityLogAlert> ActivityLogAlerts;
         public List<NetworkSecurityGroup> NetworkSecurityGroups;
         public List<SQLServer> SQLServers;
+        public List<VirtualMachine> VirtualMachines;
     }
 }

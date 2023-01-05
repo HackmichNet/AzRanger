@@ -461,6 +461,7 @@ namespace AzRanger.AzScanner
                     sub.AutoProvisioningSettings = AzMgmtScanner.GetProvisioningSettings(sub.subscriptionId);
                     sub.SecurityCenterBuiltIn = AzMgmtScanner.GetSecurityCenterBuiltIn(sub.subscriptionId);
                     sub.SecurityContact = AzMgmtScanner.GetSecurityContacts(sub.subscriptionId);
+                    sub.Resources.VirtualMachines = AzMgmtScanner.GetVirtualMachines(sub.subscriptionId);
                 }
             }
 

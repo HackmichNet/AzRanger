@@ -17,6 +17,9 @@ namespace AzRanger.Utilities
         [Option('p', "password", HelpText = "Specifiy the password.")]
         public String Password { get; set; }
 
+        [Option('t', "tenant", HelpText = "Specifiy a tenand.")]
+        public String TenantId { get; set; }
+
         [Option(Required = false, HelpText = "Specifiy a proxy.")]
         public String Proxy { get; set; }
 

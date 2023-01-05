@@ -155,11 +155,11 @@ namespace AzRanger
             Scanner scanner = null;
             if (opts.Username != null && opts.Password != null)
             {
-                scanner = new Scanner(opts.Username, opts.Password, opts.Proxy);
+                scanner = new Scanner(opts.Username, opts.Password, opts.Proxy, opts.TenantId);
             }
             else
             {
-                scanner = new Scanner(opts.Proxy);
+                scanner = new Scanner(opts.Proxy, opts.TenantId);
             }
 
             if (opts.DumpAll | opts.Audit)

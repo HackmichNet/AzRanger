@@ -422,6 +422,7 @@
     <Compile Include="Models\AzMgmt\StorageAccountDefault.cs" />
     <Compile Include="Models\AzMgmt\StorageContainer.cs" />
     <Compile Include="Models\AzMgmt\Subscription.cs" />
+    <Compile Include="Models\AzMgmt\VirtualMachine.cs" />
     <Compile Include="Models\Azrbac\RoleAssignments.cs" />
     <Compile Include="Models\Azrbac\Scopedresource.cs" />
     <Compile Include="Models\Azrbac\Subject.cs" />
