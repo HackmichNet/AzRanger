@@ -32,12 +32,13 @@ namespace AzRanger.Checks
 
     public enum ServiceEnum
     {
-        None = 0,
-        StorageAccount = 1,
-        KeyVault = 2,
-        Monitoring = 3,
-        NetworksSecurityGroup = 4,
-        SQLServer = 5
+        None,
+        StorageAccount,
+        KeyVault,
+        Monitoring,
+        NetworksSecurityGroup,
+        SQLServer,
+        VirtualMachine
     }
 
     public enum MaturityLevel

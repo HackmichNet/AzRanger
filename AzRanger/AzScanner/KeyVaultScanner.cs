@@ -20,12 +20,12 @@ namespace AzRanger.AzScanner
 
         public List<KeyVaultKey> GetKeyVaultKeys()
         {
-            return GetAllOf<KeyVaultKey>(String.Format(Keys, this.Scanner.TenantId));
+            return GetAllOf<KeyVaultKey>(Keys);
         }
 
         public List<KeyVaultSecret> GetKeyVaultSecrets()
         {
-            return GetAllOf<KeyVaultSecret>(String.Format(Secrets, this.Scanner.TenantId));
+            return GetAllOf<KeyVaultSecret>(Secrets);
         }
     }
 }

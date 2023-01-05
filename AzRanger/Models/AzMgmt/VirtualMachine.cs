@@ -6,15 +6,25 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Models.AzMgmt
 {
-    public class VirtualMachine
+    public class VirtualMachine : IReporting
     {
         public string name { get; set; }
         public string id { get; set; }
         public string type { get; set; }
         public string location { get; set; }
-        public Identity identity { get; set; }
-        public Properties properties { get; set; }
+        public VirtualMachineIdentity identity { get; set; }
+        public VirtualMachineProperties properties { get; set; }
         public VirtualMachineResource[] resources { get; set; }
+
+        public string PrintConsole()
+        {
+            return String.Format("{0} - {1}", name, id);
+        }
+
+        public string PrintCSV()
+        {
+            return String.Format("{0};{1}", name, id);
+        }
     }
 
     public class VirtualMachineIdentity
