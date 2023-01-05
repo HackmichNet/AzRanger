@@ -2,7 +2,7 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserCanViewOtherUsersProfile", Scope.O365, MaturityLevel.Mature)]
+    [RuleMeta("UserCanViewOtherUsersProfile", ScopeEnum.AAD, MaturityLevel.Mature)]
     [RuleInfo("User can see profile information about other users", "This can help to perform further phishing attacks or to collect other relevant data.", 1, "https://docs.microsoft.com/en-us/powershell/module/msonline/set-msolcompanysettings?view=azureadps-1.0")]
     class UserCanViewOtherUsersProfile : BaseCheck
     {

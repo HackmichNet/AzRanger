@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserAllAdminsHaveMFA", Scope.O365, MaturityLevel.Mature, null)]
+    [RuleMeta("UserAllAdminsHaveMFA", ScopeEnum.AAD, MaturityLevel.Mature, null)]
     [CISM365("1.1.1", "", Level.L1, "v1.4")]
     [CISAZ("1.1", "", Level.L1, "v1.4")]
     [RuleInfo("Not all priviledged accounts uses MFA", "This increases the risk, that one of your admins becomes a victim of a phishing attack.", 10, "https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-admin-mfa", null, "No discussion here. Force them to use MFA!")]
@@ -22,7 +22,7 @@ namespace AzRanger.Checks.Rules
                 "Skype for Business Administrator",
                 "Skype for Business Administrator",
                 "User Administrator",
-                "Dynamics 365 Service Administrator",
+                "Dynamics 365 ServiceEnum Administrator",
                 "Power BI Administrator"
         };
 

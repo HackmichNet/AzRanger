@@ -256,9 +256,13 @@ namespace AzRanger.AzScanner
                 }
                 else
                 {
-                    logger.Debug("ExchangeOnlineScanner.GetAllOf: {0} was not successfull", typeof(T).ToString());
-                    logger.Debug("ExchangeOnlineScanner.GetAllOf: Status Code {0}", response.StatusCode);
-                    logger.Debug(response.Content.ReadAsStringAsync().Result);
+                    try
+                    {
+                        logger.Debug("ExchangeOnlineScanner.GetAllOf: {0} was not successfull", typeof(T).ToString());
+                        logger.Debug("ExchangeOnlineScanner.GetAllOf: Status Code {0}", response.StatusCode);
+                        logger.Debug(response.Content.ReadAsStringAsync().Result);
+                    }
+                    catch { }
                 }
             }
             return null;

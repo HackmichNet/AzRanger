@@ -3,7 +3,7 @@ using AzRanger.Models.ComplianceCenter;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("OfficeDLPPolicies", Scope.O365, MaturityLevel.Tentative, "https://compliance.microsoft.com/datalossprevention?viewid=policies")]
+    [RuleMeta("OfficeDLPPolicies", ScopeEnum.AAD, MaturityLevel.Tentative, "https://compliance.microsoft.com/datalossprevention?viewid=policies")]
     [CISM365("3.4", "", Level.L1, "v1.4")]
     [RuleInfo("The tenant has no DLP Policies", "This increases the risk of unwanted data loss.", 0, "https://docs.microsoft.com/en-us/microsoft-365/compliance/dlp-learn-about-dlp?view=o365-worldwide#deploy-your-policies-in-production", null, "Configure DLP policies according to your needs.")]
     class OfficeDLPPolicies : BaseCheck
@@ -11,9 +11,9 @@ namespace AzRanger.Checks.Rules
         // TODO: Maybe we can check if they makes sense
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.OfficeDLPPolicies != null)
+            if(tenant.TenantSettings.OfficeDLPPolicies != null)
             {
-                foreach(DlpCompliancePolicy policy in tenant.OfficeDLPPolicies)
+                foreach(DlpCompliancePolicy policy in tenant.TenantSettings.OfficeDLPPolicies)
                 {
                     if (policy.Enabled)
                     {

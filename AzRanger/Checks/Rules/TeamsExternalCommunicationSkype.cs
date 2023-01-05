@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("TeamsExternalCommunicationSkype", Scope.O365, MaturityLevel.Mature, "https://admin.teams.microsoft.com/company-wide-settings/external-communications")]
+    [RuleMeta("TeamsExternalCommunicationSkype", ScopeEnum.Teams, MaturityLevel.Mature, "https://admin.teams.microsoft.com/company-wide-settings/external-communications")]
     [RuleInfo("Teams communication with skype users outside your organization is allowed", "Allowing user to communicate outside the organization increases the risk of phishing and data leakage.", 7, "https://danielchronlund.com/2021/02/22/manage-teams-external-access-for-allowed-domains-using-powershell-and-teams-approvals/")]
     class TeamsExternalCommunicationSkype : BaseCheck
     {

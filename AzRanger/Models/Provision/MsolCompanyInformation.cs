@@ -19,7 +19,7 @@ namespace AzRanger.Models.Provision
          */
         public bool UsersPermissionToReadOtherUsersEnabled;
 
-        // Indicates if a user can create security groups, not M365 Groups https://techcommunity.microsoft.com/t5/microsoft-365-groups/users-can-create-office-365-groups-again/m-p/94979
+        // Indicates if a user can create security groups, not AAD Groups https://techcommunity.microsoft.com/t5/microsoft-365-groups/users-can-create-office-365-groups-again/m-p/94979
         public bool UsersPermissionToCreateGroupsEnabled;
 
         // https://docs.microsoft.com/en-us/azure/active-directory/enterprise-users/directory-self-service-signup

@@ -77,9 +77,13 @@ namespace AzRanger.AzScanner
                 }
                 else
                 {
-                    logger.Debug("IScanner.Get: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
-                    logger.Debug("IScanner.Get: Status Code {0}", response.StatusCode);
-                    logger.Debug(response.Content.ReadAsStringAsync().Result);
+                    try
+                    {
+                        logger.Debug("IScanner.Get: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
+                        logger.Debug("IScanner.Get: Status Code {0}", response.StatusCode);
+                        logger.Debug(response.Content.ReadAsStringAsync().Result);
+                    }
+                    catch { }
                 }
             }            
             return null;

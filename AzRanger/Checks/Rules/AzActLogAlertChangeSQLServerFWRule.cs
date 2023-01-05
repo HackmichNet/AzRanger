@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertChangeSQLServerFWRule", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", Service.StorageAccount)]
+    [RuleMeta("AzActLogAlertChangeSQLServerFWRule", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
     [CISAZ("5.2.9", "", Level.L1, "v1.4")]
     [RuleInfo("No Activity Log Alert for 'Create or Update or Delete SQL Server Firewall Rule'", @"Unwanted changes for ""Create or Update or Delete SQL Server Firewall Rule"" can go unnoticed.", 0)]
     internal class AzActLogAlertChangeSQLServerFWRule : BaseCheck

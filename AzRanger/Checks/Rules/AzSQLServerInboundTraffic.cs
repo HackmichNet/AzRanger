@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzSQLServerInboundTraffic", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", Service.SQLServer)]
+    [RuleMeta("AzSQLServerInboundTraffic", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", ServiceEnum.SQLServer)]
     [CISAZ("6.3", "", Level.L1, "v1.4")]
     [RuleInfo("SQL Server is exposed to the internet", "This could be an addtional risk to the SQL Server. It eases attacks like password bruteforce.", 1, null, null, "Use the SQL Server Firewall to limit the traffic to the SQL Server for your needs.")]
     internal class AzSQLServerInboundTraffic : BaseCheck

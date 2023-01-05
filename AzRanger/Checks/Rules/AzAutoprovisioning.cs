@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzAutoprovisioning", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings")]
+    [RuleMeta("AzAutoprovisioning", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings")]
     [CISAZ("2.11", "", Level.L1, "v1.4")]
     [RuleInfo("LogAnalytics Agent is not automatically deployed on VMs", "If no logAnalytics Agent is deployed on a VM a lot of security related events can go unoticed.", 2)]
     internal class AzAutoprovisioning : BaseCheck

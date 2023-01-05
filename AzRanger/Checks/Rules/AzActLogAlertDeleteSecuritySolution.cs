@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertDeleteSecuritySolution", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", Service.StorageAccount)]
+    [RuleMeta("AzActLogAlertDeleteSecuritySolution", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
     [CISAZ("5.2.8", "", Level.L1, "v1.4")]
     [RuleInfo("No Activity Log Alert for 'Deleting Security Solution'", @"Unwanted changes for ""Deleting Security Solution"" can go unnoticed.", 0)]
     internal class AzActLogAlertDeleteSecuritySolution : BaseCheck

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserGuestWithHighPrivRole", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RolesAndAdministrators")]
+    [RuleMeta("UserGuestWithHighPrivRole", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RolesAndAdministrators")]
     [RuleInfo("Guests are member of Global Admin/Privileged Authentication Admini role", "Having guests with these roles increases the risk that you lose control over your tenant.", 9, null, null, @"Check if you could assign other roles to these guest accounts.")]
     class UserGuestWithHighPrivRole : BaseCheck
     {

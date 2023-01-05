@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserRequireMFADevJoin", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_AAD_Devices/DevicesMenuBlade/~/DeviceSettings/menuId~/null")]
+    [RuleMeta("UserRequireMFADevJoin", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_AAD_Devices/DevicesMenuBlade/~/DeviceSettings/menuId~/null")]
     [CISAZ("1.19", "", Level.L1, "v1.4")]
     [RuleInfo("Users do not require MFA to join devices", "Joining a device is often used by threat actors to persist its access.", 0, null, null, @"1. Go to Azure Active Directory</br> 2. Go to Devices</br> 3. Go to Device settings</br> 4. Set Require Multi-Factor Authentication to register or join devices with Azure AD to Yes")]
     internal class UserRequireMFADevJoin : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            SetReason("Data not be collected currently");
+            SetReason("Data collection is not possible at the moment");
             return CheckResult.NotApplicable;
             /**
             if(tenant.DeviceRegistrationPolicy.azureADJoin.appliesTo == "0")

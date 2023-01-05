@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertDeletePolicyAssignment", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", Service.StorageAccount)]
+    [RuleMeta("AzActLogAlertDeletePolicyAssignment", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
     [CISAZ("5.2.2", "", Level.L1, "v1.4")]
     [RuleInfo("No Activity Log Alert for 'Delete Policy Assignment'", @"Unwanted changes for ""Delete Policy Assignment"" can go unnoticed.", 0)]
     internal class AzActLogAlertDeletePolicyAssignment : BaseCheck

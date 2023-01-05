@@ -5,13 +5,13 @@ namespace AzRanger.Checks
     internal class RuleMetaAttribute : Attribute
     {
         public String ShortName { get; }
-        public Scope Scope { get; }
+        public ScopeEnum Scope { get; }
         // Indicates How good a rule is
         public MaturityLevel MaturityLevel { get; }
         public string PortalUrl { get; }
-        public Service Service { get; }
+        public ServiceEnum Service { get; }
 
-        public RuleMetaAttribute(String shortName, Scope scope, MaturityLevel maturityLevel = MaturityLevel.Mature, string portalUrl = null, Service service = Service.None)
+        public RuleMetaAttribute(String shortName, ScopeEnum scope, MaturityLevel maturityLevel = MaturityLevel.Mature, string portalUrl = null, ServiceEnum service = ServiceEnum.None)
         {
             this.ShortName = shortName;
             this.Scope = scope;
@@ -20,17 +20,17 @@ namespace AzRanger.Checks
             this.Service = service;
         }
     }
-
-    public enum Scope
+    public enum ScopeEnum
     {
-        O365 = 1,
-        Azure = 2,
-        MDM = 3, 
-        EXO = 4, 
-        SPO = 5
+        AAD,
+        Azure,
+        MDM, 
+        EXO, 
+        SPO,
+        Teams
     }
 
-    public enum Service
+    public enum ServiceEnum
     {
         None = 0,
         StorageAccount = 1,

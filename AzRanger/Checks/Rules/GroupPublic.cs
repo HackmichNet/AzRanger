@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("GroupPublic", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupsManagementMenuBlade/AllGroups")]
+    [RuleMeta("GroupPublic", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupsManagementMenuBlade/AllGroups")]
     [RuleInfo("The tenant contains public groups", "This can bypass some security controls for group protected data, if every user can add himself to a group.", 3, "https://www.dummies.com/software/microsoft-office/office-365-groups/", null, @"Go to the Protal URL and delete all Public Groups.")]
     class GroupPublic : BaseCheck
     {

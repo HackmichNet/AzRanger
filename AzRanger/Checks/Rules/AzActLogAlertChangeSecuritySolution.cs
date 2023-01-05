@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertChangeSecuritySolution", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", Service.StorageAccount)]
+    [RuleMeta("AzActLogAlertChangeSecuritySolution", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
     [CISAZ("5.2.7", "", Level.L1, "v1.4")]
     [RuleInfo("No Activity Log Alert for 'Changing Security Solution'", @"Unwanted changes for ""Changing Security Solution"" can go unnoticed.", 0)]
     internal class AzActLogAlertChangeSecuritySolution : BaseCheck

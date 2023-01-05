@@ -3,7 +3,7 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOCommonAttachmentFilter", Scope.EXO, MaturityLevel.Tentative, "https://security.microsoft.com/antimalwarev2")]
+    [RuleMeta("EXOCommonAttachmentFilter", ScopeEnum.EXO, MaturityLevel.Tentative, "https://security.microsoft.com/antimalwarev2")]
     [CISM365("4.1", "", Level.L1, "v1.4")]
     [RuleInfo("Common Attachment filter is not active", "This increases the risk that your company is compromised with malicious attachments.", 3)]
     class EXOCommonAttachmentFilter : BaseCheck

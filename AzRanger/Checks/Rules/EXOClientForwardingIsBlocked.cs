@@ -3,7 +3,7 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOClientForwardingIsBlocked", Scope.EXO, MaturityLevel.Tentative, "https://admin.exchange.microsoft.com/#/transportrules")]
+    [RuleMeta("EXOClientForwardingIsBlocked", ScopeEnum.EXO, MaturityLevel.Tentative, "https://admin.exchange.microsoft.com/#/transportrules")]
     [RuleInfo("Autoforwarding on the client site is not prevent by Exchange Online", "This can lead to an unwanted data loss.", 4, null, "No mail flow rule detected, that blocks auto forwarding on the client site. User might be able automatically forward mails outside the organization")]
     class EXOClientForwardingIsBlocked : BaseCheck
     {

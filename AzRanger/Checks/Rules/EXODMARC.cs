@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXODMARC", Scope.EXO, MaturityLevel.Mature)]
+    [RuleMeta("EXODMARC", ScopeEnum.EXO, MaturityLevel.Mature)]
     [CISM365("4.10", "", Level.L1, "v1.4")]
     [RuleInfo("Not all of Exchange Online Domains have DMARC enabled", "This increases the risk, that an attacker can impersonate your domain.", 5, null, null, "Enable DMARC for all your domains.")]
     class EXODMARC : BaseCheck

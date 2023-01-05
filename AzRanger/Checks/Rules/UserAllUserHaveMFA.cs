@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
 
-    [RuleMeta("UserAllUserHaveMFA", Scope.O365)]
+    [RuleMeta("UserAllUserHaveMFA", ScopeEnum.AAD)]
     [CISM365("1.1.2", "", Level.L2, "v1.4")]
     [CISAZ("1.2", "", Level.L2, "v1.4")]
     [RuleInfo("Not all users using MFA", "Users with MFA are way easier victims to phishing attacks.", 7, "https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa")]

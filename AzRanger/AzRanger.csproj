@@ -511,7 +511,6 @@
     <Compile Include="Models\Teams\TeamsGernerics.cs" />
     <Compile Include="Models\Teams\TenantFederationSettings.cs" />
     <Compile Include="Models\Tenant.cs" />
-    <Compile Include="Models\TenantSettings.cs" />
     <Compile Include="Models\WinGraph\Phoneappdetail.cs" />
     <Compile Include="Models\WinGraph\RoleDefinition.cs" />
     <Compile Include="Models\WinGraph\StrongAuthenticationDetail.cs" />

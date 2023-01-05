@@ -118,9 +118,13 @@ namespace AzRanger.AzScanner
                 }
                 else
                 {
-                    logger.Debug("GraphWinScanner.GetAllOf: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
-                    logger.Debug("GraphWinScanner.GetAllOf: Status Code {0}", response.StatusCode);
-                    logger.Debug(response.Content.ReadAsStringAsync().Result);  
+                    try
+                    {
+                        logger.Debug("GraphWinScanner.GetAllOf: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
+                        logger.Debug("GraphWinScanner.GetAllOf: Status Code {0}", response.StatusCode);
+                        logger.Debug(response.Content.ReadAsStringAsync().Result);
+                    }
+                    catch { }
                 }
             }
             return null;

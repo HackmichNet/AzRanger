@@ -62,6 +62,12 @@ namespace AzRanger.Output
             int none = 0;
             string criticality = "";
 
+            int numOfFindingsInReoprt = 0;
+            int numOfOkInReport = 0;
+            int numOfErrorInReport = 0;
+
+            List<BaseCheck> checksToRemove = new List<BaseCheck>();
+
             foreach (BaseCheck check in auditor.Finding)
             {
                 RuleInfoAttribute ruleScore = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
@@ -110,7 +116,8 @@ namespace AzRanger.Output
                 html = html.Replace("{{Description}}", CreateDescription(ruleScore, ruleInfo, cisM365Rule, cisAzRule, ruleInfo.MaturityLevel, check.GetAffectedEntity()));
                 html = html.Replace("{{CardID}}", cardCounter.ToString());
                 cardCounter++;
-                if (ruleInfo.Scope == Scope.O365 | ruleInfo.Scope == Scope.EXO | ruleInfo.Scope == Scope.SPO)
+                numOfFindingsInReoprt++;
+                if (ruleInfo.Scope == ScopeEnum.AAD | ruleInfo.Scope == ScopeEnum.EXO | ruleInfo.Scope == ScopeEnum.SPO | ruleInfo.Scope == ScopeEnum.Teams)
                 {
                     m365Findings.Append(html);
                 }
@@ -149,7 +156,8 @@ namespace AzRanger.Output
                 html = html.Replace("{{Description}}", CreateDescription(ruleScore, ruleInfo, cisM365Rule, cisAzRule, ruleInfo.MaturityLevel));
                 html = html.Replace("{{CardID}}", cardCounter.ToString());
                 cardCounter++;
-                if (ruleInfo.Scope == Scope.O365 | ruleInfo.Scope == Scope.EXO | ruleInfo.Scope == Scope.SPO)
+                numOfOkInReport++;
+                if (ruleInfo.Scope == ScopeEnum.AAD | ruleInfo.Scope == ScopeEnum.EXO | ruleInfo.Scope == ScopeEnum.SPO | ruleInfo.Scope == ScopeEnum.Teams)
                 {
                     m365NoFindings.Append(html);
                 }
@@ -181,7 +189,8 @@ namespace AzRanger.Output
                 html = html.Replace("{{Description}}", CreateDescription(ruleScore, ruleInfo, cisM365Rule, cisAzRule, ruleInfo.MaturityLevel));
                 html = html.Replace("{{CardID}}", cardCounter.ToString());
                 cardCounter++;
-                if (ruleInfo.Scope == Scope.O365 | ruleInfo.Scope == Scope.EXO | ruleInfo.Scope == Scope.SPO)
+                numOfErrorInReport++;
+                if (ruleInfo.Scope == ScopeEnum.AAD | ruleInfo.Scope == ScopeEnum.EXO | ruleInfo.Scope == ScopeEnum.SPO)
                 {
                     m365Error.Append(html);
                 }
@@ -222,9 +231,9 @@ namespace AzRanger.Output
 
 
             // Ratings for PieChart
-            template = template.Replace("{{NumNoFindings}}", auditor.NoFinding.Count.ToString());
-            template = template.Replace("{{NumFindings}}", auditor.Finding.Count.ToString());
-            template = template.Replace("{{NumError}}", auditor.Error.Count.ToString());
+            template = template.Replace("{{NumNoFindings}}", numOfOkInReport.ToString());
+            template = template.Replace("{{NumFindings}}", numOfFindingsInReoprt.ToString());
+            template = template.Replace("{{NumError}}", numOfErrorInReport.ToString());
 
             File.WriteAllText(outFile, template);
 

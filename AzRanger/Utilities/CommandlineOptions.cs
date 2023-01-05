@@ -1,4 +1,5 @@
-﻿using CommandLine;
+﻿using AzRanger.Checks;
+using CommandLine;
 using CommandLine.Text;
 using System;
 using System.Collections.Generic;
@@ -42,5 +43,7 @@ namespace AzRanger.Utilities
 
         [Option(Required = false, HelpText = "Only for audit. Specify 'console' (standard) or 'html'.")]
         public string Output { get; set; }
+        [Option(Required = false, HelpText = "Set ScopeEnum AAD, Teams, SharePoint(SPO), ExchangeOnline(EXO) or Azure. If not set all scopes will be used.", Separator = ',')]
+        public IEnumerable<ScopeEnum> Scope { get; set; }
     }
 }

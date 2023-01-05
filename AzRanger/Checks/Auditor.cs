@@ -30,7 +30,7 @@ namespace AzRanger.Checks
             this.Tenant = tenant;
         }
 
-        public void Init(Scope[] scopes)
+        public void Init(List<ScopeEnum> scopes)
         {
             string RuleNamepace = "AzRanger.Checks.Rules";
             foreach (var t in Assembly.GetExecutingAssembly().GetTypes())
@@ -41,7 +41,7 @@ namespace AzRanger.Checks
                     {
                         BaseCheck check = GetInstance(t);
                         RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                        foreach (Scope scope in scopes) {
+                        foreach (ScopeEnum scope in scopes) {
                             if (ruleInfo.Scope.Equals(scope)){
                                 logger.Debug("Auditor.Init: {0} successfull instatiated and added", ruleInfo.ShortName);
                                 AllChecks.Add(check);

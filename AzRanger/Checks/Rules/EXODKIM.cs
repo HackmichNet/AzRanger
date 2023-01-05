@@ -3,7 +3,7 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXODKIM", Scope.EXO, MaturityLevel.Mature)]
+    [RuleMeta("EXODKIM", ScopeEnum.EXO, MaturityLevel.Mature)]
     [CISM365("4.8", "", Level.L1, "v1.4")]
     [RuleInfo("Not all of Exchange Online Domains have DKIM enabled", "This increases the risk, that an attacker can impersonate your domain.", 5, null, null, "Configure DKIM for all your domains.")]
     class EXODKIM : BaseCheck

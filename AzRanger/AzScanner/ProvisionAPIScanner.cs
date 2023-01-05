@@ -199,9 +199,13 @@ namespace AzRanger.AzScanner
 				}
 				else
 				{
-					logger.Debug("ProvisionApiScanner.PostToProvisionApi: was not successfull");
-					logger.Debug("ProvisionApiScanner.PostToProvisionApi: Status Code {0}", response.StatusCode);
-					logger.Debug(response.Content.ReadAsStringAsync().Result);
+					try
+					{
+						logger.Debug("ProvisionApiScanner.PostToProvisionApi: was not successfull");
+						logger.Debug("ProvisionApiScanner.PostToProvisionApi: Status Code {0}", response.StatusCode);
+						logger.Debug(response.Content.ReadAsStringAsync().Result);
+                    }
+                    catch { }
 				}
 			}
 			return null;

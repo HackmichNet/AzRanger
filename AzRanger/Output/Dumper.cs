@@ -23,7 +23,7 @@ namespace AzRanger.Output
             }
         }
 
-        public static void DumpTenantSettings(M365Settings tenant, string outFile)
+        public static void DumpTenantSettings(Tenant tenant, string outFile)
         {
             using (StreamWriter file = File.CreateText(outFile))
             {

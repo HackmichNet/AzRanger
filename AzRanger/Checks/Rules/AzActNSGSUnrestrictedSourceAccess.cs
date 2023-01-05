@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActNSGSUnrestrictedSourceAccess", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", Service.NetworksSecurityGroup)]
+    [RuleMeta("AzActNSGSUnrestrictedSourceAccess", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", ServiceEnum.NetworksSecurityGroup)]
     [RuleInfo("Network Security Group allows access from everywhere", "The service protected by the Network Security Group is exposed to the internet.", 0, null, null, "Check if the source address can be restriced.")]
     internal class AzActNSGSUnrestrictedSourceAccess : BaseCheck
     {

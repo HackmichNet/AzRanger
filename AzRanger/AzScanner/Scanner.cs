@@ -1,4 +1,5 @@
-﻿using AzRanger.Models;
+﻿using AzRanger.Checks;
+using AzRanger.Models;
 using AzRanger.Models.AzMgmt;
 using AzRanger.Models.Azrbac;
 using AzRanger.Models.Generic;
@@ -95,7 +96,7 @@ namespace AzRanger.AzScanner
             AzMgmtScanner = new AzMgmtScanner(this);
         }
 
-        public Tenant ScanTenant()
+        public Tenant ScanTenant(List<ScopeEnum> scopes)
         {
             if(this.TenantId == null)
             {
@@ -110,452 +111,375 @@ namespace AzRanger.AzScanner
             bool isGlobalAdmin = false;
             bool isGlobalReader = false;
             bool isSharePointAdmin = false;
-            Result.AllDirectoryRoles = MsGraphScanner.GetAllDirectoryRoles(true);
-            Result.TenantSkuInfo = MainIamScanner.GetTenantSkuInfo();
+            bool scanAzureOnly = false;
 
-            if (currentUserId != null)
+            if(scopes.Count == 1 & scopes.Contains(ScopeEnum.Azure))
             {
+                scanAzureOnly = true;
+            }
 
-                foreach(DirectoryRole role in Result.AllDirectoryRoles.Values)
+            if (!scanAzureOnly)
+            {
+                Result.AllDirectoryRoles = MsGraphScanner.GetAllDirectoryRoles(true);
+                Result.TenantSettings = new M365Settings();
+                Result.TenantSettings.TenantSkuInfo = MainIamScanner.GetTenantSkuInfo();
+
+
+                if (currentUserId != null)
                 {
-                    if(role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
+
+                    foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
                     {
-                        if (role.Contains(Guid.Parse(currentUserId))) {
-                            isGlobalAdmin = true;
+                        if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
+                        {
+                            if (role.Contains(Guid.Parse(currentUserId)))
+                            {
+                                isGlobalAdmin = true;
+                            }
+                        }
+
+                        if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
+                        {
+                            if (role.Contains(Guid.Parse(currentUserId)))
+                            {
+                                isGlobalReader = true;
+                            }
+                        }
+
+                        if (role.roleTemplateId == DirectoryRoleTemplateID.SharePointAdmin)
+                        {
+                            if (role.Contains(Guid.Parse(currentUserId)))
+                            {
+                                isSharePointAdmin = true;
+                            }
                         }
                     }
-
-                    if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
-                    {
-                        if (role.Contains(Guid.Parse(currentUserId))) {
-                            isGlobalReader = true;
-                        }
-                    }
-
-                    if (role.roleTemplateId == DirectoryRoleTemplateID.SharePointAdmin)
-                    {
-                        if (role.Contains(Guid.Parse(currentUserId))) {
-                            isSharePointAdmin = true;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                logger.Warn("Scanner.ScanTenant: Cannot get User Id.should not happen");
-                return null;
-            }
-
-            if (!isGlobalAdmin & !isGlobalReader)
-            {
-                Console.WriteLine("[-] The current user has not sufficient rights, please choose another one.");
-                return null;
-            }
-            else
-            {
-                Console.WriteLine("[+] Current user has sufficient rights, continue...");
-            }
-
-            if (!isGlobalAdmin )
-            {
-                if (!isSharePointAdmin)
-                {
-                    Console.WriteLine("[-] The current user is no SharePointAdmin, so it cannot read data from SharePoint.");
-                }
-            }
-
-            if (Result.TenantSkuInfo != null)
-            {
-                if (Result.TenantSkuInfo.aadPremium)
-                {
-                    Console.WriteLine("[+] Tenant has a P1 license.");
-                    this.HasP1License = true;
                 }
                 else
                 {
-                    Console.WriteLine("[-] Tenant has no P1 license. Not all data can be gathered.");
+                    logger.Warn("Scanner.ScanTenant: Cannot get User Id.should not happen");
+                    return null;
                 }
 
-                if (Result.TenantSkuInfo.aadPremiumP2)
+                if (!isGlobalAdmin & !isGlobalReader)
                 {
-                    Console.WriteLine("[+] Tenant has a P2 license.");
-                    this.HasP2License = true;
+                    Console.WriteLine("[-] The current user has not sufficient rights, please choose another one.");
+                    return null;
                 }
                 else
                 {
-                    Console.WriteLine("[-] Tenant has no P2 license. Not all data can be gathered.");
+                    Console.WriteLine("[+] Current user has sufficient rights, continue...");
+                }
+
+                if (!isGlobalAdmin)
+                {
+                    if (!isSharePointAdmin)
+                    {
+                        Console.WriteLine("[-] The current user is no SharePointAdmin, so it cannot read data from SharePoint.");
+                    }
                 }
             }
-            else
+            
+            if (scopes.Contains(ScopeEnum.AAD))
             {
-                logger.Warn("Scanner.ScanTenant: Cannot get Tenant License. This should not happen.");
-                return null;
-            }
-            Result.domains = MsGraphScanner.GetAzDomains();
-            Console.WriteLine("[+] Scanning the tenant: {0}.", this.TenantId);
+                
 
-            Result.AllUsers = MsGraphScanner.GetAllUsers();
-            Console.WriteLine("[+] Found {0} users.", Result.AllUsers.Count);
-
-            Console.WriteLine("[+] Found {0} roles.", Result.AllDirectoryRoles.Count);
-
-            Result.AllGuests = MsGraphScanner.GetAllGuests();
-            Console.WriteLine("[+] Found {0} guests.", Result.AllGuests.Count);
-
-            Result.AllApplications = MsGraphScanner.GetAllApplications();
-            Console.WriteLine("[+] Found {0} applications.", Result.AllApplications.Count);
-
-            Result.AllServicePrincipals = MsGraphScanner.GetAllServicePrincipals();
-            Console.WriteLine("[+] Found {0} serviceprincipals.", Result.AllServicePrincipals.Count);
-
-            Result.AllGroups = MsGraphScanner.GetAllGroups();
-            Console.WriteLine("[+] Found {0} groups.", Result.AllGroups.Count);
-
-            Result.RoleDefinitions = GraphWinScanner.GetRoleDefinitons();
-
-
-            if (HasP2License)
-            {
-                foreach(DirectoryRole role in Result.AllDirectoryRoles.Values)
+                if (Result.TenantSettings.TenantSkuInfo != null)
                 {
-                    List<RoleAssignments> roleAssignments = AzrbacScanner.GetRoleAssignemtsForApp(Guid.Parse(this.TenantId), Guid.Parse(role.roleTemplateId));
-                    foreach(RoleAssignments assignment in roleAssignments)
+                    if (Result.TenantSettings.TenantSkuInfo.aadPremium)
                     {
-                        List<AzurePrincipal> principalsToAssigne = new List<AzurePrincipal>();
-                        AzurePrincipalType aztype;
-                        switch (assignment.subject.type)
+                        Console.WriteLine("[+] Tenant has a P1 license.");
+                        this.HasP1License = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("[-] Tenant has no P1 license. Not all data can be gathered.");
+                    }
+
+                    if (Result.TenantSettings.TenantSkuInfo.aadPremiumP2)
+                    {
+                        Console.WriteLine("[+] Tenant has a P2 license.");
+                        this.HasP2License = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("[-] Tenant has no P2 license. Not all data can be gathered.");
+                    }
+                }
+                else
+                {
+                    logger.Warn("Scanner.ScanTenant: Cannot get Tenant License. This should not happen.");
+                    return null;
+                }
+
+                Result.domains = MsGraphScanner.GetAzDomains();
+                Console.WriteLine("[+] Scanning the tenant: {0}.", this.TenantId);
+
+                Result.AllUsers = MsGraphScanner.GetAllUsers();
+                Console.WriteLine("[+] Found {0} users.", Result.AllUsers.Count);
+
+                Console.WriteLine("[+] Found {0} roles.", Result.AllDirectoryRoles.Count);
+
+                Result.AllGuests = MsGraphScanner.GetAllGuests();
+                Console.WriteLine("[+] Found {0} guests.", Result.AllGuests.Count);
+
+                Result.AllApplications = MsGraphScanner.GetAllApplications();
+                Console.WriteLine("[+] Found {0} applications.", Result.AllApplications.Count);
+
+                Result.AllServicePrincipals = MsGraphScanner.GetAllServicePrincipals();
+                Console.WriteLine("[+] Found {0} serviceprincipals.", Result.AllServicePrincipals.Count);
+
+                Result.AllGroups = MsGraphScanner.GetAllGroups();
+                Console.WriteLine("[+] Found {0} groups.", Result.AllGroups.Count);
+
+                Result.RoleDefinitions = GraphWinScanner.GetRoleDefinitons();
+
+
+                if (HasP2License)
+                {
+                    foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
+                    {
+                        List<RoleAssignments> roleAssignments = AzrbacScanner.GetRoleAssignemtsForApp(Guid.Parse(this.TenantId), Guid.Parse(role.roleTemplateId));
+                        foreach (RoleAssignments assignment in roleAssignments)
                         {
-                            case "User":
-                                aztype = AzurePrincipalType.User;
-                                break;
-                            case "ServicePrincipal":
-                                aztype = AzurePrincipalType.ServicePrincipal;
-                                break;
-                            case "Application":
-                                aztype = AzurePrincipalType.Application;
-                                break;
-                            case "Group":
-                                aztype = AzurePrincipalType.Group;
-                                break;
-                            default:
-                                continue;
-                        }
-                        if (aztype == AzurePrincipalType.Group)
-                        {
-                            List<AzurePrincipal> members = MsGraphScanner.GetAllGroupMemberTransitiv(assignment.subjectId);
-                            foreach (AzurePrincipal member in members)
+                            List<AzurePrincipal> principalsToAssigne = new List<AzurePrincipal>();
+                            AzurePrincipalType aztype;
+                            switch (assignment.subject.type)
                             {
-                                principalsToAssigne.Add(member);
+                                case "User":
+                                    aztype = AzurePrincipalType.User;
+                                    break;
+                                case "ServicePrincipal":
+                                    aztype = AzurePrincipalType.ServicePrincipal;
+                                    break;
+                                case "Application":
+                                    aztype = AzurePrincipalType.Application;
+                                    break;
+                                case "Group":
+                                    aztype = AzurePrincipalType.Group;
+                                    break;
+                                default:
+                                    continue;
                             }
-                        }
-                        else
-                        {
-                            principalsToAssigne.Add(new AzurePrincipal(assignment.subjectId, aztype));
-                        }
-                        // Global resourese
-                        if (assignment.scopedResourceId == null)
-                        {                   
-                            // Assigne user to role
-                            foreach(AzurePrincipal p in principalsToAssigne)
+                            if (aztype == AzurePrincipalType.Group)
                             {
-                                role.AddMember(p);
-                            }
-                            // If a user can add creds, assign to applications and service principal
-                            if (DirectoryRoleTemplateID.RolesAllowingAddCreds.Contains(role.roleTemplateId))
-                            {
-                                foreach(ServicePrincipal s in Result.AllServicePrincipals.Values)
+                                List<AzurePrincipal> members = MsGraphScanner.GetAllGroupMemberTransitiv(assignment.subjectId);
+                                foreach (AzurePrincipal member in members)
                                 {
-                                    if(s.appOwnerOrganizationId == this.TenantId)
-                                    {
-                                        s.AddUserAbleToAddCreds(new AzurePrincipal(assignment.subjectId, aztype));
-                                    }
-                                }
-                                foreach(Application a in Result.AllApplications.Values)
-                                {
-                                    a.AddUserAbleToAddCreds(new AzurePrincipal(assignment.subjectId, aztype));
+                                    principalsToAssigne.Add(member);
                                 }
                             }
-                        }
-                        else
-                        {
-                            if(assignment.scopedResource.type == "Application")
+                            else
                             {
-                                foreach (AzurePrincipal p in principalsToAssigne) {
-                                    Result.AllApplications[Guid.Parse(assignment.scopedResource.id)].AddUserAbleToAddCreds(p);
-                                }
+                                principalsToAssigne.Add(new AzurePrincipal(assignment.subjectId, aztype));
                             }
-                            if (assignment.scopedResource.type == "ServicePrincipal")
+                            // Global resourese
+                            if (assignment.scopedResourceId == null)
                             {
+                                // Assigne user to role
                                 foreach (AzurePrincipal p in principalsToAssigne)
                                 {
-                                    Result.AllServicePrincipals[Guid.Parse(assignment.scopedResource.id)].AddUserAbleToAddCreds(p);
+                                    role.AddMember(p);
+                                }
+                                // If a user can add creds, assign to applications and service principal
+                                if (DirectoryRoleTemplateID.RolesAllowingAddCreds.Contains(role.roleTemplateId))
+                                {
+                                    foreach (ServicePrincipal s in Result.AllServicePrincipals.Values)
+                                    {
+                                        if (s.appOwnerOrganizationId == this.TenantId)
+                                        {
+                                            s.AddUserAbleToAddCreds(new AzurePrincipal(assignment.subjectId, aztype));
+                                        }
+                                    }
+                                    foreach (Application a in Result.AllApplications.Values)
+                                    {
+                                        a.AddUserAbleToAddCreds(new AzurePrincipal(assignment.subjectId, aztype));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (assignment.scopedResource.type == "Application")
+                                {
+                                    foreach (AzurePrincipal p in principalsToAssigne)
+                                    {
+                                        Result.AllApplications[Guid.Parse(assignment.scopedResource.id)].AddUserAbleToAddCreds(p);
+                                    }
+                                }
+                                if (assignment.scopedResource.type == "ServicePrincipal")
+                                {
+                                    foreach (AzurePrincipal p in principalsToAssigne)
+                                    {
+                                        Result.AllServicePrincipals[Guid.Parse(assignment.scopedResource.id)].AddUserAbleToAddCreds(p);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            else
-            {
-                foreach(DirectoryRole role in Result.AllDirectoryRoles.Values)
+                else
                 {
-                    if(DirectoryRoleTemplateID.RolesAllowingAddCreds.Contains(role.roleTemplateId))
+                    foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
                     {
-                        List<AzurePrincipal> cloudAdmins = new List<AzurePrincipal>();
-                        foreach(AzurePrincipal user in role.GetMembers())
+                        if (DirectoryRoleTemplateID.RolesAllowingAddCreds.Contains(role.roleTemplateId))
                         {
-                            AzurePrincipal u = new AzurePrincipal(user.id, user.PrincipalType);
-                            cloudAdmins.Add(u);
-                        }
-                        foreach(Application app in Result.AllApplications.Values)
-                        {
-                            foreach(AzurePrincipal a in cloudAdmins)
+                            List<AzurePrincipal> cloudAdmins = new List<AzurePrincipal>();
+                            foreach (AzurePrincipal user in role.GetMembers())
                             {
-                                app.AddUserAbleToAddCreds(a);
+                                AzurePrincipal u = new AzurePrincipal(user.id, user.PrincipalType);
+                                cloudAdmins.Add(u);
                             }
-                        }
-                        foreach(ServicePrincipal principal in Result.AllServicePrincipals.Values)
-                        {
-                            if(principal.appOwnerOrganizationId == this.TenantId)
+                            foreach (Application app in Result.AllApplications.Values)
                             {
                                 foreach (AzurePrincipal a in cloudAdmins)
                                 {
-                                    principal.AddUserAbleToAddCreds(a);
+                                    app.AddUserAbleToAddCreds(a);
                                 }
                             }
+                            foreach (ServicePrincipal principal in Result.AllServicePrincipals.Values)
+                            {
+                                if (principal.appOwnerOrganizationId == this.TenantId)
+                                {
+                                    foreach (AzurePrincipal a in cloudAdmins)
+                                    {
+                                        principal.AddUserAbleToAddCreds(a);
+                                    }
+                                }
+                            }
+                            break;
                         }
-                        break;
+                    }
+                }
+
+                Result.EnterpriseApplicationUserSettings = MsGraphScanner.GetSettings();
+                Result.TenantSettings.AuthorizationPolicy = MsGraphScanner.GetAuthorizationPolicy();
+                Result.TenantSettings.DeviceRegistrationPolicy = MsGraphScanner.GetDeviceRegistrationPolicy();
+
+                Result.AllCAPolicies = MsGraphScanner.GetAllCondtionalAccessPolicies();
+                Result.TenantSettings.SecurityDefaults = MainIamScanner.GetSecurityDefaults();
+                Result.TenantSettings.DirectoryProperties = MainIamScanner.GetDirectoryProperties();
+                Result.TenantSettings.PasswordResetPolicies = MainIamScanner.GetPasswordResetPolicies();
+                Result.TenantSettings.PasswordPolicy = MainIamScanner.GetPasswordPolicy();
+                Result.TenantSettings.ADConnectStatus = MainIamScanner.GetADConnectStatus();
+                Result.TenantSettings.B2BPolicy = MainIamScanner.GetB2BPolicy();
+                Result.TenantSettings.LCMSettings = MainIamScanner.GetLCMSettings();
+                Result.TenantSettings.UserSettings = MainIamScanner.GetUserSettings();
+                Result.TenantSettings.SsgmProperties = MainIamScanner.GetSsgmProperties();
+                Result.TenantSettings.DirSyncFeatures = ProvisionAPIScanner.GetDirSyncFeatures();
+                Result.TenantSettings.AdminCenterSettings = new AdminCenterSettings();
+                Result.TenantSettings.AdminCenterSettings.SkypeTeams = AdminCenterScanner.GetSkypeTeamsSettings();
+                Result.TenantSettings.AdminCenterSettings.OfficeFormsSettings = AdminCenterScanner.GetOfficeFormsSettings();
+                Result.TenantSettings.AdminCenterSettings.OfficeStoreSettings = AdminCenterScanner.GetOfficeStoreSettings();
+                Result.TenantSettings.AdminCenterSettings.O365PasswordPolicy = AdminCenterScanner.GetO365PasswordPolicy();
+                Result.TenantSettings.AdminCenterSettings.SwaySettings = AdminCenterScanner.GetSwaySettings();
+                Result.TenantSettings.AdminCenterSettings.Calendarsharing = AdminCenterScanner.GetCalendarsharing();
+                Result.TenantSettings.AdminCenterSettings.DirsyncManagement = AdminCenterScanner.GetDirsyncManagement();
+                Result.TenantSettings.OfficeDLPPolicies = ComplianceCenterScanner.GetDLPPolicies();
+                Result.TenantSettings.DlpLabels = ComplianceCenterScanner.GetDLPLabels();
+                Result.TenantSettings.AuthenticationMethodsPolicy = MsGraphScanner.GetAuthenticationMethodsPolicy();
+                Result.TenantSettings.MSOLCompanyInformation = ProvisionAPIScanner.GetMsolCompanyInformation();
+            }
+            if (scopes.Contains(ScopeEnum.Teams))
+            {
+                TeamsSettings settings = new TeamsSettings();
+                settings.TeamsClientConfiguration = TeamsScanner.GetTeamsClientConfiguration();
+                settings.TenantFederationSettings = TeamsScanner.GetTenantFederationSettings();
+                Result.TeamsSettings = settings;
+            }
+
+            if (scopes.Contains(ScopeEnum.SPO))
+            {
+                if(Result.TenantSettings.SecurityDefaults == null)
+                {
+                    Result.TenantSettings.SecurityDefaults = MainIamScanner.GetSecurityDefaults();
+                }
+                if (isGlobalAdmin | isSharePointAdmin)
+                {
+                    Result.SharepointInformation = ProvisionAPIScanner.GetSharepointInformation();
+                    if (Result.SharepointInformation != null)
+                    {
+                        Console.WriteLine("[+] Found SharePoint on: {0}", Result.SharepointInformation.SharepointUrl);
+                        Console.WriteLine("[+] Found SharePoint-Admin on: {0}", Result.SharepointInformation.AdminUrl);
+                        SharePointScanner sharePointScanner = new SharePointScanner(this, Result.SharepointInformation.AdminUrl);
+                        Result.SharepointInformation.SharepointInternalInfos = sharePointScanner.GetSharepointSettings();
                     }
                 }
             }
 
-            Result.EnterpriseApplicationUserSettings = MsGraphScanner.GetSettings();
-            Result.AuthorizationPolicy = MsGraphScanner.GetAuthorizationPolicy();
-            Result.DeviceRegistrationPolicy = MsGraphScanner.GetDeviceRegistrationPolicy();
-
-            Result.AllCAPolicies = MsGraphScanner.GetAllCondtionalAccessPolicies();
-            Result.SecurityDefaults = MainIamScanner.GetSecurityDefaults();
-            Result.DirectoryProperties = MainIamScanner.GetDirectoryProperties();
-            Result.PasswordResetPolicies = MainIamScanner.GetPasswordResetPolicies();
-            Result.PasswordPolicy = MainIamScanner.GetPasswordPolicy();
-            Result.ADConnectStatus = MainIamScanner.GetADConnectStatus();
-            Result.B2BPolicy = MainIamScanner.GetB2BPolicy();
-            Result.LCMSettings = MainIamScanner.GetLCMSettings();
-            Result.UserSettings = MainIamScanner.GetUserSettings();
-            Result.SsgmProperties = MainIamScanner.GetSsgmProperties();
-
-            Result.TeamsSettings.TeamsClientConfiguration = TeamsScanner.GetTeamsClientConfiguration();
-            Result.TeamsSettings.TenantFederationSettings = TeamsScanner.GetTenantFederationSettings();
-
-            if (isGlobalAdmin | isSharePointAdmin)
+            if (scopes.Contains(ScopeEnum.EXO))
             {
-                Result.SharepointInformation = ProvisionAPIScanner.GetSharepointInformation();
-                Result.MSOLCompanyInformation = ProvisionAPIScanner.GetMsolCompanyInformation();
-                if (Result.SharepointInformation != null)
+                if (Result.TenantSettings.SecurityDefaults == null)
                 {
-                    Console.WriteLine("[+] Found SharePoint on: {0}", Result.SharepointInformation.SharepointUrl);
-                    Console.WriteLine("[+] Found SharePoint-Admin on: {0}", Result.SharepointInformation.AdminUrl);
-                    SharePointScanner sharePointScanner = new SharePointScanner(this, Result.SharepointInformation.AdminUrl);
-                    Result.SharepointInformation.SharepointInternalInfos = sharePointScanner.GetSharepointSettings();
+                    Result.TenantSettings.SecurityDefaults = MainIamScanner.GetSecurityDefaults();
+                }
+                if(Result.domains == null)
+                {
+                    Result.domains = MsGraphScanner.GetAzDomains();
+                }
+                Result.ExchangeOnlineSettings = new ExchangeOnlineSettings();
+                Result.ExchangeOnlineSettings.AdminAuditLogConfig = ExchangeOnlineScanner.GetAdminAuditLogConfig();
+                Result.ExchangeOnlineSettings.HostedOutboundSpamFilterPolicy = ExchangeOnlineScanner.GetHostedOutboundSpamFilterPolicies();
+                Result.ExchangeOnlineSettings.MalwareFilterPolicy = ExchangeOnlineScanner.GetMalwareFilterPolicies();
+                Result.ExchangeOnlineSettings.TransportRules = ExchangeOnlineScanner.GetTransportRules();
+                Result.ExchangeOnlineSettings.AcceptedDomains = ExchangeOnlineScanner.GetAcceptedDomains();
+                Result.ExchangeOnlineSettings.DkimSigningConfigs = ExchangeOnlineScanner.GetDkimSigningConfig();
+                Result.ExchangeOnlineSettings.ExchangeModernAutheSettings = AdminCenterScanner.GetExchangeModernAuthSettings();
+                Result.ExchangeOnlineSettings.MalwareFilterRule = ExchangeOnlineScanner.GetMalwareFilterRules();
+                Result.ExchangeOnlineSettings.Mailboxes = ExchangeOnlineScanner.GetMailboxes();
+                Result.ExchangeOnlineSettings.RemoteDomains = ExchangeOnlineScanner.GetRemoteDomains();
+                Result.ExchangeOnlineSettings.RoleAssignmentPolicies = ExchangeOnlineScanner.GeRoleAssignmentPolicies();
+                Result.ExchangeOnlineSettings.OrganizationConfig = ExchangeOnlineScanner.GetOrganizationConfig();
+                Result.ExchangeOnlineSettings.AuthenticationPolicies = ExchangeOnlineScanner.GetAuthenticationPolicies();
+                Result.ExchangeOnlineSettings.EXOUsers = ExchangeOnlineScanner.GetEXOUsers();
+                if (Result.ExchangeOnlineSettings.EXOUsers != null)
+                {
+                    Console.WriteLine("[+] Found {0} Exchange-User.", Result.ExchangeOnlineSettings.EXOUsers.Count);
+                }
+                Result.ExchangeOnlineSettings.OwaMailboxPolicy = ExchangeOnlineScanner.GetOwaMailboxPolicy();
+
+                Console.WriteLine("[+] Start scanning Azure Resources.");
+            }
+
+            if (scopes.Contains(ScopeEnum.Azure))
+            {
+                Result.ManagementGroups = AzMgmtScanner.GetAllManagementGroups();
+                Result.ManagementGroupSettings = AzMgmtScanner.GetManagementGroupSettings();
+                Result.Subscriptions = AzMgmtScanner.GetAllSubscriptions();
+                foreach (Subscription sub in Result.Subscriptions.Values)
+                {
+                    sub.Resources.StorageAccounts = AzMgmtScanner.GetStorageAccounts(sub.subscriptionId);
+                    sub.Resources.KeyVaults = AzMgmtScanner.GetKeyVaults(sub.subscriptionId);
+                    foreach (KeyVault vault in sub.Resources.KeyVaults)
+                    {
+                        KeyVaultScanner vaultScanner = new KeyVaultScanner(this, vault.properties.vaultUri);
+                        vault.Keys = vaultScanner.GetKeyVaultKeys();
+                        vault.Secrets = vaultScanner.GetKeyVaultSecrets();
+                    }
+                    sub.Resources.ActivityLogAlerts = AzMgmtScanner.GetActivityLogAlerts(sub.subscriptionId);
+                    sub.Resources.NetworkSecurityGroups = AzMgmtScanner.GetNetworkSecurityGroups(sub.subscriptionId);
+                    sub.Resources.SQLServers = AzMgmtScanner.GetSQLServers(sub.subscriptionId);
+                    sub.AutoProvisioningSettings = AzMgmtScanner.GetProvisioningSettings(sub.subscriptionId);
+                    sub.SecurityCenterBuiltIn = AzMgmtScanner.GetSecurityCenterBuiltIn(sub.subscriptionId);
+                    sub.SecurityContact = AzMgmtScanner.GetSecurityContacts(sub.subscriptionId);
                 }
             }
 
-            Result.DirSyncFeatures = ProvisionAPIScanner.GetDirSyncFeatures();
-            
-            Result.AdminCenterSettings.SkypeTeams = AdminCenterScanner.GetSkypeTeamsSettings();
-            Result.AdminCenterSettings.OfficeFormsSettings = AdminCenterScanner.GetOfficeFormsSettings();
-            Result.AdminCenterSettings.OfficeStoreSettings = AdminCenterScanner.GetOfficeStoreSettings();
-            Result.AdminCenterSettings.O365PasswordPolicy = AdminCenterScanner.GetO365PasswordPolicy();
-            Result.AdminCenterSettings.SwaySettings = AdminCenterScanner.GetSwaySettings();
-            Result.AdminCenterSettings.Calendarsharing = AdminCenterScanner.GetCalendarsharing();
-            Result.AdminCenterSettings.DirsyncManagement = AdminCenterScanner.GetDirsyncManagement();
-
-            Result.ExchangeOnlineSettings.AdminAuditLogConfig = ExchangeOnlineScanner.GetAdminAuditLogConfig();
-            Result.ExchangeOnlineSettings.HostedOutboundSpamFilterPolicy = ExchangeOnlineScanner.GetHostedOutboundSpamFilterPolicies();
-            Result.ExchangeOnlineSettings.MalwareFilterPolicy = ExchangeOnlineScanner.GetMalwareFilterPolicies();
-            Result.ExchangeOnlineSettings.TransportRules = ExchangeOnlineScanner.GetTransportRules();
-            Result.ExchangeOnlineSettings.AcceptedDomains = ExchangeOnlineScanner.GetAcceptedDomains();
-            Result.ExchangeOnlineSettings.DkimSigningConfigs = ExchangeOnlineScanner.GetDkimSigningConfig();
-            Result.ExchangeOnlineSettings.ExchangeModernAutheSettings = AdminCenterScanner.GetExchangeModernAuthSettings();
-            Result.ExchangeOnlineSettings.MalwareFilterRule = ExchangeOnlineScanner.GetMalwareFilterRules();
-            Result.ExchangeOnlineSettings.Mailboxes = ExchangeOnlineScanner.GetMailboxes();
-            Result.ExchangeOnlineSettings.RemoteDomains = ExchangeOnlineScanner.GetRemoteDomains();
-            Result.ExchangeOnlineSettings.RoleAssignmentPolicies = ExchangeOnlineScanner.GeRoleAssignmentPolicies();
-            Result.ExchangeOnlineSettings.OrganizationConfig = ExchangeOnlineScanner.GetOrganizationConfig();
-            Result.ExchangeOnlineSettings.AuthenticationPolicies = ExchangeOnlineScanner.GetAuthenticationPolicies();
-            Result.ExchangeOnlineSettings.EXOUsers = ExchangeOnlineScanner.GetEXOUsers();
-            if (Result.ExchangeOnlineSettings.EXOUsers != null)
+            if (scopes.Contains(ScopeEnum.MDM))
             {
-                Console.WriteLine("[+] Found {0} Exchange-User.", Result.ExchangeOnlineSettings.EXOUsers.Count);
-            }
-            Result.ExchangeOnlineSettings.OwaMailboxPolicy = ExchangeOnlineScanner.GetOwaMailboxPolicy();
-
-
-            Result.OfficeDLPPolicies = ComplianceCenterScanner.GetDLPPolicies();
-            Result.DlpLabels = ComplianceCenterScanner.GetDLPLabels();
-            Result.AuthenticationMethodsPolicy = MsGraphScanner.GetAuthenticationMethodsPolicy();
-
-            Console.WriteLine("[+] Start scanning Azure Resources.");
-
-            Result.ManagementGroups = AzMgmtScanner.GetAllManagementGroups();
-            Result.ManagementGroupSettings = AzMgmtScanner.GetManagementGroupSettings();
-            Result.Subscriptions = AzMgmtScanner.GetAllSubscriptions();
-            foreach (Subscription sub in Result.Subscriptions.Values)
-            {
-                sub.Resources.StorageAccounts = AzMgmtScanner.GetStorageAccounts(sub.subscriptionId);
-                sub.Resources.KeyVaults = AzMgmtScanner.GetKeyVaults(sub.subscriptionId);
-                foreach (KeyVault vault in sub.Resources.KeyVaults)
+                MDMScanner = new MDMScanner(this);
+                if (MDMScanner.CheckIntunePowerShellAvailable())
                 {
-                    KeyVaultScanner vaultScanner = new KeyVaultScanner(this, vault.properties.vaultUri);
-                    vault.Keys = vaultScanner.GetKeyVaultKeys();
-                    vault.Secrets = vaultScanner.GetKeyVaultSecrets();
-                }
-                sub.Resources.ActivityLogAlerts = AzMgmtScanner.GetActivityLogAlerts(sub.subscriptionId);
-                sub.Resources.NetworkSecurityGroups = AzMgmtScanner.GetNetworkSecurityGroups(sub.subscriptionId);
-                sub.Resources.SQLServers = AzMgmtScanner.GetSQLServers(sub.subscriptionId);
-                sub.AutoProvisioningSettings = AzMgmtScanner.GetProvisioningSettings(sub.subscriptionId);
-                sub.SecurityCenterBuiltIn = AzMgmtScanner.GetSecurityCenterBuiltIn(sub.subscriptionId);
-                sub.SecurityContact = AzMgmtScanner.GetSecurityContacts(sub.subscriptionId);
-            }
+                    MDMSettings mdmSettings = new MDMSettings();
+                    mdmSettings.MobileDeviceConfigurations = MDMScanner.GetMobileDeviceConfigurations();
+                    mdmSettings.ConfigurationPolicies = MDMScanner.GetConfigurationPolicies();
+                    mdmSettings.MobileDeviceCompliancePolicies = MDMScanner.GetMobileDeviceCompliancePolicies();
+                    Result.MDMSettings = mdmSettings;
 
-            MDMScanner = new MDMScanner(this);
-            if (MDMScanner.CheckIntunePowerShellAvailable())
-            {
-                Result.MDMSettings.MobileDeviceConfigurations = MDMScanner.GetMobileDeviceConfigurations();
-                Result.MDMSettings.ConfigurationPolicies = MDMScanner.GetConfigurationPolicies();
-                Result.MDMSettings.MobileDeviceCompliancePolicies = MDMScanner.GetMobileDeviceCompliancePolicies();
+                }
             }
 
             Console.WriteLine("[+] Finished collecting infos.");
             return Result;  
-        }
-
-        public M365Settings ScanSettings()
-        {
-            if (this.TenantId == null)
-            {
-                logger.Warn("Scanner.ScanTenant: Cannot retrieve TenantId. Aborting!");
-                return null;
-            }
-            M365Settings Result = new M365Settings();
-            Result.TenantId = this.TenantId;
-
-            Dictionary<Guid, DirectoryRole> AllRoles = MsGraphScanner.GetAllDirectoryRoles(true);
-            String currentUserId = this.Authenticator.GetUserId();
-            bool isGlobalAdmin = false;
-            bool isGlobalReader = false;
-            bool isSharePointAdmin = false;
-            if (currentUserId != null)
-            {
-                foreach (DirectoryRole role in AllRoles.Values)
-                {
-                    if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
-                    {
-                        if (role.Contains(Guid.Parse(currentUserId)))
-                        {
-                            isGlobalAdmin = true;
-                        }
-                    }
-
-                    if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
-                    {
-                        if (role.Contains(Guid.Parse(currentUserId)))
-                        {
-                            isGlobalReader = true;
-                        }
-                    }
-
-                    if (role.roleTemplateId == DirectoryRoleTemplateID.SharePointAdmin)
-                    {
-                        if (role.Contains(Guid.Parse(currentUserId)))
-                        {
-                            isSharePointAdmin = true;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                logger.Warn("Scanner.ScanTenant: Cannot get User Id.should not happen");
-                return null;
-            }
-
-            if (!isGlobalAdmin & !isGlobalReader)
-            {
-                Console.WriteLine("[-] The current user has not sufficient rights, please choose another one.");
-                return null;
-            }
-            else
-            {
-                Console.WriteLine("[+] Current user has sufficient rights, continue...");
-            }
-
-            if (!isGlobalAdmin & (!isSharePointAdmin & !isGlobalReader))
-            {
-                Console.WriteLine("[-] The current user has not sufficient rights to read SharePoint information.");
-            }
-
-            Console.WriteLine("[+] Scanning the tenant: {0}", this.TenantId);
-
-            Result.Domains = MsGraphScanner.GetAzDomains();
-            Result.AuthorizationPolicy = MsGraphScanner.GetAuthorizationPolicy();
-            
-            Result.TenantSkuInfo = MainIamScanner.GetTenantSkuInfo();
-            Result.EnterpriseApplicationUserSettings = MsGraphScanner.GetSettings();
-            Result.DeviceRegistrationPolicy = MsGraphScanner.GetDeviceRegistrationPolicy();
-
-            Result.AllCAPolicies = MsGraphScanner.GetAllCondtionalAccessPolicies();
-            Result.SecurityDefaults = MainIamScanner.GetSecurityDefaults();
-            Result.DirectoryProperties = MainIamScanner.GetDirectoryProperties();
-            Result.PasswordResetPolicies = MainIamScanner.GetPasswordResetPolicies();
-            Result.PasswordPolicy = MainIamScanner.GetPasswordPolicy();
-            Result.ADConnectStatus = MainIamScanner.GetADConnectStatus();
-            Result.B2BPolicy = MainIamScanner.GetB2BPolicy();
-            Result.LCMSettings = MainIamScanner.GetLCMSettings();
-            Result.UserSettings = MainIamScanner.GetUserSettings();
-            Result.SsgmProperties = MainIamScanner.GetSsgmProperties();
-
-            Result.TeamsSettings.TeamsClientConfiguration = TeamsScanner.GetTeamsClientConfiguration();
-            Result.TeamsSettings.TenantFederationSettings = TeamsScanner.GetTenantFederationSettings();
-
-            Result.SharepointInformation = ProvisionAPIScanner.GetSharepointInformation();
-            Result.MSOLCompanyInformation = ProvisionAPIScanner.GetMsolCompanyInformation();
-            if (Result.SharepointInformation != null)
-            {
-                SharePointScanner sharePointScanner = new SharePointScanner(this, Result.SharepointInformation.AdminUrl);
-                Result.SharepointInformation.SharepointInternalInfos = sharePointScanner.GetSharepointSettings();
-            }
-
-            Result.AdminCenterSettings.SkypeTeams = AdminCenterScanner.GetSkypeTeamsSettings();
-            Result.AdminCenterSettings.OfficeFormsSettings = AdminCenterScanner.GetOfficeFormsSettings();
-            Result.AdminCenterSettings.OfficeStoreSettings = AdminCenterScanner.GetOfficeStoreSettings();
-            Result.AdminCenterSettings.O365PasswordPolicy = AdminCenterScanner.GetO365PasswordPolicy();
-            Result.AdminCenterSettings.SwaySettings = AdminCenterScanner.GetSwaySettings();
-            Result.AdminCenterSettings.Calendarsharing = AdminCenterScanner.GetCalendarsharing();
-            Result.AdminCenterSettings.DirsyncManagement = AdminCenterScanner.GetDirsyncManagement();
-
-            Result.ExchangeOnlineSettings.AdminAuditLogConfig = ExchangeOnlineScanner.GetAdminAuditLogConfig();
-            Result.ExchangeOnlineSettings.HostedOutboundSpamFilterPolicy = ExchangeOnlineScanner.GetHostedOutboundSpamFilterPolicies();
-            Result.ExchangeOnlineSettings.MalwareFilterPolicy = ExchangeOnlineScanner.GetMalwareFilterPolicies();
-            Result.ExchangeOnlineSettings.TransportRules = ExchangeOnlineScanner.GetTransportRules();
-            Result.ExchangeOnlineSettings.AcceptedDomains = ExchangeOnlineScanner.GetAcceptedDomains();
-            Result.ExchangeOnlineSettings.DkimSigningConfigs = ExchangeOnlineScanner.GetDkimSigningConfig();
-            Result.ExchangeOnlineSettings.ExchangeModernAutheSettings = AdminCenterScanner.GetExchangeModernAuthSettings();
-            Result.ExchangeOnlineSettings.MalwareFilterRule = ExchangeOnlineScanner.GetMalwareFilterRules();
-            Result.ExchangeOnlineSettings.Mailboxes = ExchangeOnlineScanner.GetMailboxes();
-            Result.ExchangeOnlineSettings.RemoteDomains = ExchangeOnlineScanner.GetRemoteDomains();
-            Result.ExchangeOnlineSettings.RoleAssignmentPolicies = ExchangeOnlineScanner.GeRoleAssignmentPolicies();
-            Result.ExchangeOnlineSettings.OrganizationConfig = ExchangeOnlineScanner.GetOrganizationConfig();
-            Result.ExchangeOnlineSettings.AuthenticationPolicies = ExchangeOnlineScanner.GetAuthenticationPolicies();
-            Result.ExchangeOnlineSettings.EXOUsers = ExchangeOnlineScanner.GetEXOUsers();
-            Result.ExchangeOnlineSettings.OwaMailboxPolicy = ExchangeOnlineScanner.GetOwaMailboxPolicy();
-
-            Result.OfficeDLPPolicies = ComplianceCenterScanner.GetDLPPolicies();
-            Result.DlpLabels = ComplianceCenterScanner.GetDLPLabels();
-            Result.AuthenticationMethodsPolicy = MsGraphScanner.GetAuthenticationMethodsPolicy();
-            Console.WriteLine("[+] Finished collecting infos");
-            return Result;
-
         }
         
         private bool CheckP1License(List<LicenseDetails> licenses)

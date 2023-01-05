@@ -3,7 +3,7 @@ using AzRanger.Models.AzMgmt;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcSoftDelete", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", Service.StorageAccount)]
+    [RuleMeta("AzStorAcSoftDelete", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
     [CISAZ("3.8", "", Level.L1, "v1.4")]
     [RuleInfo("Storage Accounts without soft delete", "This can lead to unwanted data loss, if someone accidentally deletes data.", 1, null, "When soft delete is disabled, data cannot be recovered if they are accidentally deleted.", @"Enable ""Soft Delete"" for all Sotrage Accounts.")]
     internal class AzStorAcSoftDelete : BaseCheck

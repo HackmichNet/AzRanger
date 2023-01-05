@@ -12,6 +12,7 @@ using NLog;
 using CommandLine.Text;
 using System.Reflection;
 using System.Resources;
+using System.Collections;
 
 namespace AzRanger
 {
@@ -21,7 +22,13 @@ namespace AzRanger
         static void Main(string[] args)
         {
             PrintBanner();
-            var parser = new CommandLine.Parser(with => with.HelpWriter = null);
+            // var parser = new CommandLine.Parser(with => with.HelpWriter = null);
+            var parser = new CommandLine.Parser(settings =>
+            {
+                settings.HelpWriter = null;
+                settings.CaseSensitive = false;
+                settings.CaseInsensitiveEnumValues = true;
+            });
             var parserResult = parser.ParseArguments<CommandlineOptions>(args);
             parserResult
               .WithParsed<CommandlineOptions>(options => RunOptions(options))
@@ -132,11 +139,23 @@ namespace AzRanger
                 }
             }
 
+            List<ScopeEnum> scopes = new List<ScopeEnum>();
+            foreach(ScopeEnum scope in opts.Scope)
+            {
+                scopes.Add(scope);
+            }
+
+            if(scopes.Count == 0) {
+                scopes = new List<ScopeEnum>() {
+                ScopeEnum.Azure, ScopeEnum.SPO, ScopeEnum.EXO, ScopeEnum.Teams, ScopeEnum.AAD
+                };
+            }
+
             Console.WriteLine("[+] AzRanger started.");
             Scanner scanner = null;
             if (opts.Username != null && opts.Password != null)
             {
-                scanner = new Scanner(opts.Username, opts.Password, opts.Proxy);//, opts.Proxy);
+                scanner = new Scanner(opts.Username, opts.Password, opts.Proxy);
             }
             else
             {
@@ -146,7 +165,7 @@ namespace AzRanger
             if (opts.DumpAll | opts.Audit)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                Tenant tenant = scanner.ScanTenant();
+                Tenant tenant = scanner.ScanTenant(scopes);
                 watch.Stop();
                 Console.WriteLine($"[+] Scan Time: {watch.ElapsedMilliseconds} ms");
                 if (tenant == null)
@@ -158,9 +177,7 @@ namespace AzRanger
                 if (opts.Audit)
                 {
                     Auditor auditor = new Auditor(tenant);
-                    auditor.Init(new Scope[]{
-                        Scope.O365, Scope.EXO, Scope.SPO, Scope.Azure
-                    });
+                    auditor.Init(scopes);
                     auditor.PerformAudit();
                     if (opts.Output == null || opts.Output.ToLower() == "console")
                     {
@@ -187,7 +204,7 @@ namespace AzRanger
             if (opts.DumpSettings)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                M365Settings settings = scanner.ScanSettings();
+                Tenant settings = scanner.ScanTenant(scopes);
                 watch.Stop();
                 Console.WriteLine($"[+] Scan Time: {watch.ElapsedMilliseconds} ms");
                 Dumper.DumpTenantSettings(settings, opts.OutFile);

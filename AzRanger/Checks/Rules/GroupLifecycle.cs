@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("GroupLifecycle", Scope.O365, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupsManagementMenuBlade/Lifecycle")]
+    [RuleMeta("GroupLifecycle", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupsManagementMenuBlade/Lifecycle")]
     [RuleInfo("Temporary groups do not expire", "This can result in a high number of groups over the time.", 3, "https://docs.microsoft.com/en-us/microsoft-365/solutions/plan-organization-lifecycle-governance?view=o365-worldwide", null, @"Go to the Portal URL and set ""Enable expiration for these Microsoft 365 groups"" to ""Yes"".")]
     class GroupLifecycle : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
             // Policy is not set
-            if(tenant.LCMSettings.policyIdentifier == "00000000-0000-0000-0000-000000000000")
+            if(tenant.TenantSettings.LCMSettings.policyIdentifier == "00000000-0000-0000-0000-000000000000")
             {
                 return CheckResult.Finding;
             }
@@ -22,13 +22,13 @@ namespace AzRanger.Checks.Rules
             // Enable expiration for these Microsoft 365 groups => None = 2
             // Enable expiration for these Microsoft 365 groups => Selected = 1
             // Enable expiration for these Microsoft 365 groups => All = 0
-            if (tenant.LCMSettings.managedGroupTypes == 2)
+            if (tenant.TenantSettings.LCMSettings.managedGroupTypes == 2)
             {
                 return CheckResult.Finding;
             }
 
             // No admin will be notified
-            if(tenant.LCMSettings.adminNotificationEmails == null || tenant.LCMSettings.adminNotificationEmails == "")
+            if(tenant.TenantSettings.LCMSettings.adminNotificationEmails == null || tenant.TenantSettings.LCMSettings.adminNotificationEmails == "")
             {
                 return CheckResult.Finding;
             }
