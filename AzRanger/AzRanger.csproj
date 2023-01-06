@@ -388,6 +388,7 @@
     <Compile Include="Checks\Rules\UserCanViewOtherUsersProfile.cs" />
     <Compile Include="Checks\Rules\UserConsent.cs" />
     <Compile Include="Checks\Rules\UserGuestWithHighPrivRole.cs" />
+    <Compile Include="Checks\Rules\UserRemainSignIn.cs" />
     <Compile Include="Checks\Rules\UserLinkedInConnection.cs" />
     <Compile Include="Checks\Rules\UserMax4GlobalAdmins.cs" />
     <Compile Include="Checks\Rules\UserNotifyAdminOnPasswordReset.cs" />
