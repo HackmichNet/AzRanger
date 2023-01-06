@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOAutomaticForwarding", ScopeEnum.EXO, MaturityLevel.Mature)]
+    [CISM365("4.3", "", Level.L1, "v1.5-2")]
     [RuleInfo("Auto forwarding is not disabled", "Attack can use auto forwarding to exfiltrade data.", 5, "https://docs.microsoft.com/en-us/archive/blogs/exovoice/disable-automatic-forwarding-in-office-365-and-exchange-server-to-prevent-information-leakage ")]
     class EXOAutomaticForwarding : BaseCheck
     {

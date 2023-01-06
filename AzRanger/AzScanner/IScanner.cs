@@ -64,7 +64,7 @@ namespace AzRanger.AzScanner
                     var result = response.Content.ReadAsStringAsync().Result;
                     try
                     {
-                        manipulatedResponse = this.ManipulateResponse(result);
+                        manipulatedResponse = this.ManipulateResponse(result, endPoint);
                         return JsonSerializer.Deserialize<T>(manipulatedResponse);
                     }
                     catch (Exception e)
@@ -89,7 +89,7 @@ namespace AzRanger.AzScanner
             return null;
         }
 
-        internal virtual String ManipulateResponse(String response)
+        internal virtual String ManipulateResponse(String response, String endPoint)
         {
             return response;
         }
@@ -134,6 +134,7 @@ namespace AzRanger.AzScanner
 
                     /// Parse the result in GenericObjects
                     var result = response.Content.ReadAsStringAsync().Result;
+                    result = ManipulateResponse(result, endPoint);
                     GenResponse genericAnswer = JsonSerializer.Deserialize<GenResponse>(result);
                     logger.Debug("IScanner.GetAllOf: {0} elements in response", genericAnswer.value.Length);
 

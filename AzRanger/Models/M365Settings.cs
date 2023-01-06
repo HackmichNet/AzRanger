@@ -38,5 +38,6 @@ namespace AzRanger.Models
         public List<DlpLabel> DlpLabels { get; set; }
         public AuthenticationMethodsPolicy AuthenticationMethodsPolicy { get; set; }
         public DirSyncFeatures DirSyncFeatures { get; set; }
+        public List<LoginTenantBranding> LoginTenantBrandings { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace AzRanger.AzScanner
             return (TenantFederationSettings)Get<TenantFederationSettings>(TenantFederationSettings);
         }
 
-        internal override String ManipulateResponse(String response)
+        internal override String ManipulateResponse(String response, string endPoint)
         {
             if (response.StartsWith("["))
             {

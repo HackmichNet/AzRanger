@@ -1,21 +1,23 @@
 ﻿using AzRanger.Models.MainIAM;
 using System;
+using System.Collections.Generic;
 
 namespace AzRanger.AzScanner
 {
     class MainIamScanner : IScanner
     {
-        public const String SecurityDefaultsEndpoint = "/api/SecurityDefaults/GetSecurityDefaultStatus";
-        public const String DirectoryProperties = "/api/Directories/Properties";
-        public const String PasswordsResetPolicies = "/api/PasswordReset/PasswordResetPolicies?getPasswordResetEnabledGroup=true";
-        public const String PasswordPolicy = "/api/AuthenticationMethods/PasswordPolicy";
-        public const String ADConnectStatus = "/api/Directories/ADConnectStatus";
-        public const String DirSyncStatus = "/api/Directories/GetPasswordSyncStatus";
-        public const String B2BPolicy = "/api/B2B/b2bPolicy";
-        public const String LCMSettings = "/api/Directories/LcmSettings";
-        public const String UserSettings = "/api/EnterpriseApplications/UserSettings";
-        public const String TenantSkuInfo = "/api/TenantSkuInfo";
-        public const String SsgmProperties = "/api/Directories/SsgmProperties";
+        private const String SecurityDefaultsEndpoint = "/api/SecurityDefaults/GetSecurityDefaultStatus";
+        private const String DirectoryProperties = "/api/Directories/Properties";
+        private const String PasswordsResetPolicies = "/api/PasswordReset/PasswordResetPolicies?getPasswordResetEnabledGroup=true";
+        private const String PasswordPolicy = "/api/AuthenticationMethods/PasswordPolicy";
+        private const String ADConnectStatus = "/api/Directories/ADConnectStatus";
+        private const String DirSyncStatus = "/api/Directories/GetPasswordSyncStatus";
+        private const String B2BPolicy = "/api/B2B/b2bPolicy";
+        private const String LCMSettings = "/api/Directories/LcmSettings";
+        private const String UserSettings = "/api/EnterpriseApplications/UserSettings";
+        private const String TenantSkuInfo = "/api/TenantSkuInfo";
+        private const String SsgmProperties = "/api/Directories/SsgmProperties";
+        private const String LoginTenantBrandings = "/api/LoginTenantBrandings";
 
 
         public MainIamScanner(Scanner scanner)
@@ -80,6 +82,19 @@ namespace AzRanger.AzScanner
             }
             status.passwordHashSyncEnabled = (bool)Get<bool>(MainIamScanner.DirSyncStatus);
             return status;
+        }
+
+        public List<LoginTenantBranding> GetLoginTenantBrandings()
+        {
+            return GetAllOf<LoginTenantBranding>(MainIamScanner.LoginTenantBrandings);
+        }
+
+        internal override String ManipulateResponse(String response, String endPoint){
+            if (endPoint == MainIamScanner.LoginTenantBrandings)
+            {
+                response = @"{""value"":" + response + "}";
+            }
+            return response;
         }
     }
 }

@@ -314,6 +314,7 @@
     <Compile Include="Checks\Rules\AzActNSGRDPLimitiation.cs" />
     <Compile Include="Checks\Rules\AzActNSGSSHLimitiation.cs" />
     <Compile Include="Checks\Rules\AzActNSGSUnrestrictedDestionationPort.cs" />
+    <Compile Include="Checks\Rules\AzVirtMManagedDiskUsage.cs" />
     <Compile Include="Checks\Rules\AzActNSGSUnrestrictedSourceAccess.cs" />
     <Compile Include="Checks\Rules\AzAppRegistration.cs" />
     <Compile Include="Checks\Rules\AzAutoprovisioning.cs" />
@@ -375,6 +376,7 @@
     <Compile Include="Checks\Rules\TeamsExternalCommunication.cs" />
     <Compile Include="Checks\Rules\TeamsExternalCommunicationSkype.cs" />
     <Compile Include="Checks\Rules\TeamsExternalCommunicationTeams.cs" />
+    <Compile Include="Checks\Rules\TeamsExternalCommunicationFederated.cs" />
     <Compile Include="Checks\Rules\TeamsExternalCommunicationTeamsInbound.cs" />
     <Compile Include="Checks\Rules\TeamsExternalSharingProvider.cs" />
     <Compile Include="Checks\Rules\UserAdminConsent.cs" />
@@ -458,6 +460,7 @@
     <Compile Include="Models\MainIAM\B2BPolicy.cs" />
     <Compile Include="Models\MainIAM\DirectoryProperties.cs" />
     <Compile Include="Models\MainIAM\LCMSettings.cs" />
+    <Compile Include="Models\MainIAM\LoginTenantBrandings.cs" />
     <Compile Include="Models\MainIAM\PasswordResetPolicies.cs" />
     <Compile Include="Models\MainIAM\SecurityDefaults.cs" />
     <Compile Include="Models\MainIAM\SsgmProperties.cs" />

@@ -157,7 +157,7 @@ namespace AzRanger.AzScanner
             return GetAllOf<VirtualMachine>(String.Format(VirtualMachines, subscription));
         }
 
-        internal override String ManipulateResponse(String response)
+        internal override String ManipulateResponse(String response, String endPoint)
         {
             if (response.Contains("/providers/Microsoft.Security/securityContacts/default"))
             {

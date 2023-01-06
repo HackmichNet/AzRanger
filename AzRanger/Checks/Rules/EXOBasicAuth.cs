@@ -16,6 +16,7 @@ namespace AzRanger.Checks.Rules
         {
             if(tenant.TenantSettings.SecurityDefaults.securityDefaultsEnabled == true)
             {
+                this.SetReason("Security Defaults are enables. All legacy authentication protocolls should be blocked.");
                 return CheckResult.NotApplicable;
             }
             // Case 1: If no policy exist, not good => Check if Conditional Access applies

@@ -182,8 +182,6 @@ namespace AzRanger.AzScanner
             
             if (scopes.Contains(ScopeEnum.AAD))
             {
-                
-
                 if (Result.TenantSettings.TenantSkuInfo != null)
                 {
                     if (Result.TenantSettings.TenantSkuInfo.aadPremium)
@@ -365,6 +363,7 @@ namespace AzRanger.AzScanner
                 Result.TenantSettings.LCMSettings = MainIamScanner.GetLCMSettings();
                 Result.TenantSettings.UserSettings = MainIamScanner.GetUserSettings();
                 Result.TenantSettings.SsgmProperties = MainIamScanner.GetSsgmProperties();
+                Result.TenantSettings.LoginTenantBrandings = MainIamScanner.GetLoginTenantBrandings();
                 Result.TenantSettings.DirSyncFeatures = ProvisionAPIScanner.GetDirSyncFeatures();
                 Result.TenantSettings.AdminCenterSettings = new AdminCenterSettings();
                 Result.TenantSettings.AdminCenterSettings.SkypeTeams = AdminCenterScanner.GetSkypeTeamsSettings();

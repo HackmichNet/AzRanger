@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
 
     [RuleMeta("UserAllUserHaveMFA", ScopeEnum.AAD)]
-    [CISM365("1.1.2", "", Level.L2, "v1.4")]
+    [CISM365("1.1.2", "", Level.L2, "v1.5")]
     [CISAZ("1.2", "", Level.L2, "v1.4")]
     [RuleInfo("Not all users using MFA", "Users with MFA are way easier victims to phishing attacks.", 7, "https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa")]
     class UserAllUserHaveMFA : BaseCheck

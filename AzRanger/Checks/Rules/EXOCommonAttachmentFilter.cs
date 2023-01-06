@@ -4,33 +4,42 @@ using AzRanger.Models.ExchangeOnline;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOCommonAttachmentFilter", ScopeEnum.EXO, MaturityLevel.Tentative, "https://security.microsoft.com/antimalwarev2")]
-    [CISM365("4.1", "", Level.L1, "v1.4")]
-    [RuleInfo("Common Attachment filter is not active", "This increases the risk that your company is compromised with malicious attachments.", 3)]
+    [CISM365("4.1", "", Level.L1, "v1.5")]
+    [RuleInfo("Common Attachment filter is not active", "This increases the risk that your company is compromised with malicious attachments.", 3, null, null, "Go to the link in the reference and ensure that in the policy with the highest priority the value for 'Enable the common attachments filter' is 'On'. ")]
     class EXOCommonAttachmentFilter : BaseCheck
     {
-        //TODO: Check, if it implemented in another policy
         public override CheckResult Audit(Tenant tenant)
         {
-            foreach(MalwareFilterPolicy m in tenant.ExchangeOnlineSettings.MalwareFilterPolicy)
+            MalwareFilterRule highestPriority = null;
+
+            foreach(MalwareFilterRule rule in tenant.ExchangeOnlineSettings.MalwareFilterRule)
             {
-                // Because Default policy cannot be disabled everythin is good.
-                if (m.Identity == "Default" & m.EnableFileFilter)
+                if(rule.State == "Enabled" && highestPriority == null)
                 {
-                    return CheckResult.NoFinding;
+                    highestPriority = rule;
                 }
+                else
+                {
+                    if(rule.State == "Enabled" && highestPriority.Priority < rule.Priority)
+                    {
+                        highestPriority = rule;
+                    }
+                }
+            }
+
+            // If we have no rule, then it is a finding.
+            if(highestPriority == null)
+            {
+                return CheckResult.Finding;
             }
 
             foreach(MalwareFilterPolicy m in tenant.ExchangeOnlineSettings.MalwareFilterPolicy)
             {
-                if (m.EnableFileFilter)
+                if (m.Identity == highestPriority.Identity)
                 {
-                    // Check if policy is enabled
-                    foreach(MalwareFilterRule r in tenant.ExchangeOnlineSettings.MalwareFilterRule)
+                    if (m.EnableFileFilter)
                     {
-                        if(m.Id == r.Identity && r.State == "Enables")
-                        {
-                            return CheckResult.NoFinding;
-                        }
+                        return CheckResult.NoFinding;
                     }
                 }
             }
