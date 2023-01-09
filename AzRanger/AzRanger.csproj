@@ -314,6 +314,7 @@
     <Compile Include="Checks\Rules\AzActNSGRDPLimitiation.cs" />
     <Compile Include="Checks\Rules\AzActNSGSSHLimitiation.cs" />
     <Compile Include="Checks\Rules\AzActNSGSUnrestrictedDestionationPort.cs" />
+    <Compile Include="Checks\Rules\AzSubscriptionPolicy.cs" />
     <Compile Include="Checks\Rules\AzVirtMManagedDiskUsage.cs" />
     <Compile Include="Checks\Rules\AzActNSGSUnrestrictedSourceAccess.cs" />
     <Compile Include="Checks\Rules\AzAppRegistration.cs" />
@@ -399,6 +400,8 @@
     <Compile Include="Checks\Rules\UserReconfirmAuthenticationInformation.cs" />
     <Compile Include="Checks\Rules\UserRequireMFADevJoin.cs" />
     <Compile Include="Checks\Rules\UserRestrictAccessToAdminPortal.cs" />
+    <Compile Include="Checks\UserPasswordBadPasswordList.cs" />
+    <Compile Include="Checks\UserPasswordResetRequires2Methods.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Models\AdminCenterSettings.cs" />
     <Compile Include="Models\AdminCenter\Calendarsharing.cs" />
@@ -425,6 +428,7 @@
     <Compile Include="Models\AzMgmt\StorageAccountDefault.cs" />
     <Compile Include="Models\AzMgmt\StorageContainer.cs" />
     <Compile Include="Models\AzMgmt\Subscription.cs" />
+    <Compile Include="Models\AzMgmt\SubscriptionPolicy.cs" />
     <Compile Include="Models\AzMgmt\VirtualMachine.cs" />
     <Compile Include="Models\Azrbac\RoleAssignments.cs" />
     <Compile Include="Models\Azrbac\Scopedresource.cs" />

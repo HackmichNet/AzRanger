@@ -35,5 +35,6 @@ namespace AzRanger.Models
         public Dictionary<Guid, Subscription> Subscriptions { get; set; }
         public MDMSettings MDMSettings { get; set; }
         public ManagementGroupSettings ManagementGroupSettings { get; set; }
+        public SubscriptionPolicy SubscriptionPolicy { get; set; }
     }
 }

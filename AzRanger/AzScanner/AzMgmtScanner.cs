@@ -25,6 +25,7 @@ namespace AzRanger.AzScanner
         private const String SecurityCenterBuiltIn = "/subscriptions/{0}/providers/Microsoft.Authorization/policyAssignments/SecurityCenterBuiltIn?api-version=2022-06-01";
         private const String SecurityContacts = "/subscriptions/{0}/providers/Microsoft.Security/securityContacts?api-version=2020-01-01-preview";
         private const String VirtualMachines = "/subscriptions/{0}/providers/Microsoft.Compute/virtualMachines?api-version=2022-03-01";
+        private const String SubscriptionPolicy = "/providers/Microsoft.Subscription/policies/default?api-version=2021-01-01-privatepreview";
         public AzMgmtScanner(Scanner scanner)
         {
             this.Scanner = scanner;
@@ -155,6 +156,11 @@ namespace AzRanger.AzScanner
         public List<VirtualMachine> GetVirtualMachines(String subscription)
         {
             return GetAllOf<VirtualMachine>(String.Format(VirtualMachines, subscription));
+        }
+
+        public SubscriptionPolicy GetSubscriptionPolicy()
+        {
+            return (SubscriptionPolicy)Get<SubscriptionPolicy>(SubscriptionPolicy);
         }
 
         internal override String ManipulateResponse(String response, String endPoint)

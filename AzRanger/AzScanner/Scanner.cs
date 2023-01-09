@@ -444,6 +444,7 @@ namespace AzRanger.AzScanner
                 Result.ManagementGroups = AzMgmtScanner.GetAllManagementGroups();
                 Result.ManagementGroupSettings = AzMgmtScanner.GetManagementGroupSettings();
                 Result.Subscriptions = AzMgmtScanner.GetAllSubscriptions();
+                Result.SubscriptionPolicy = AzMgmtScanner.GetSubscriptionPolicy();
                 foreach (Subscription sub in Result.Subscriptions.Values)
                 {
                     sub.Resources.StorageAccounts = AzMgmtScanner.GetStorageAccounts(sub.subscriptionId);
