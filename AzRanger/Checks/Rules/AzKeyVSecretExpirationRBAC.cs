@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzKeyVSecretExpiration", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults", ServiceEnum.KeyVault)]
-    [RuleInfo("Key Vaul secret will never expire", "If the secret is lost or stolen, the attacker can use the secret as long as someone changes it. What can be a very long time.", 1)]
-    internal class AzKeyVSecretExpiration : BaseCheck
+    [RuleMeta("AzKeyVSecretExpirationRBAC", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults", ServiceEnum.KeyVault)]
+    [CISAZ("8.3", "", Level.L1, "v1.5")]
+    internal class AzKeyVSecretExpirationRBAC : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
@@ -20,6 +20,8 @@ namespace AzRanger.Checks.Rules
             {
                 foreach(KeyVault vault in sub.Resources.KeyVaults)
                 {
+                    if (vault.properties.enableRbacAuthorization)
+                    {
                         foreach (KeyVaultSecret secret in vault.Secrets)
                         {
                             if (secret.attributes.exp == null)
@@ -28,6 +30,7 @@ namespace AzRanger.Checks.Rules
                                 this.AddAffectedEntity(secret);
                             }
                         }
+                    }
                 }
             }
             

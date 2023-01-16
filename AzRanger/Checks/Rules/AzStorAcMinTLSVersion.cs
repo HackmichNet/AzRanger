@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcCustomKeys", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.12", "", Level.L2, "v1.5")]
-    [RuleInfo("StorageAccount is encrypted with Microsot Managed Keys", "Microsoft may have access to your encrypted data.", 1, null, null, "If you want to have control over your keys, you should use custom keys.")]
-    internal class AzStorAcCustomKeys : BaseCheck
+    [RuleMeta("AzStorAcMinTLSVersion", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
+    [CISAZ("3.15", "", Level.L1, "v1.5")]
+    [RuleInfo("StorageAccount does allow legacy TLS protocols", "TLS 1.0 has some known vulnerabilities. Using this legacy protocol can reduce the security of data in transit.", 1, null, null, @"For each Storage Account under ""Settings"" go to ""Configuration"" and set the ""Minimum TLS version"" to ""1.2"".")]
+    internal class AzStorAcMinTLSVersion : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
@@ -21,7 +21,7 @@ namespace AzRanger.Checks.Rules
             {
                 foreach(StorageAccount account in sub.Resources.StorageAccounts)
                 {
-                    if(account.properties.encryption.keySource == "Microsoft.Storage")
+                    if(account.properties.minimumTlsVersion != "TLS1_2")
                     {
                         passed = false;
                         this.AddAffectedEntity(account);

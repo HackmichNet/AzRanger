@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertDeleteNetworkSecGrpRule", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
-    [CISAZ("5.2.6", "", Level.L1, "v1.4")]
-    [RuleInfo("No Activity Log Alert for 'Deleting a Network Security Group Rule'", @"Unwanted changes for ""Deleting a Network Security Group Rule"" can go unnoticed.", 0)]
-    internal class AzActLogAlertDeleteNetworkSecGrpRule : BaseCheck
+    [RuleMeta("AzActLogAlertCreateOrUpdateSecuritySolution", ScopeEnum.Azure, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
+    [CISAZ("5.2.5", "", Level.L1, "v1.5")]
+    [RuleInfo("No Activity Log Alert for 'Create or Update Security Solutions' ", @"Unwanted changes for in the Security Solution might stay unnoticed.", 0)]
+    internal class AzActLogAlertCreateOrUpdateSecuritySolution : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
@@ -36,7 +36,7 @@ namespace AzRanger.Checks.Rules
                         {
                             foreach(ActivityLogAlertAllof allOf in alert.properties.condition.allOf)
                             {
-                                if(allOf.field == "operationName" && allOf.equals.ToLower() == "microsoft.network/networksecuritygroups/securityrules/delete")
+                                if(allOf.field == "operationName" && allOf.equals.ToLower() == "microsoft.security/securitysolutions/write")
                                 {
                                     wantedAllertRuleExist = true;
                                 }

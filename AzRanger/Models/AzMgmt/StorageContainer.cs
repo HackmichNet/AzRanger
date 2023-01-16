@@ -33,7 +33,7 @@ namespace AzRanger.Models.AzMgmt
         public string defaultEncryptionScope { get; set; }
         public bool denyEncryptionScopeOverride { get; set; }
         // None => Private
-        // Blob => Blob
+        // StorageAccountBlob => StorageAccountBlob
         // Container => Container
         public string publicAccess { get; set; }
         public string leaseStatus { get; set; }

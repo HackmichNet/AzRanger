@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertChangeNetworkSecGrpRule", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
-    [CISAZ("5.2.5", "", Level.L1, "v1.4")]
-    [RuleInfo("No Activity Log Alert for 'Changing a Network Security Group Rule'", @"Unwanted changes for ""Changing a Network Security Group Rule"" can go unnoticed.", 0)]
-    internal class AzActLogAlertChangeNetworkSecGrpRule : BaseCheck
+    [RuleMeta("AzActLogAlertDeletePublicIPAddressRule", ScopeEnum.Azure, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
+    [CISAZ("5.2.10", "", Level.L1, "v1.5")]
+    [RuleInfo("No Activity Log Alert for 'Delete Public IP Address rule'", @"Unwanted deletion of ""Public IP Address Rules"" can go unnoticed.", 0, null, null)]
+    internal class AzActLogAlertDeletePublicIPAddressRule : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
@@ -36,7 +36,7 @@ namespace AzRanger.Checks.Rules
                         {
                             foreach(ActivityLogAlertAllof allOf in alert.properties.condition.allOf)
                             {
-                                if(allOf.field == "operationName" && allOf.equals.ToLower() == "microsoft.network/networksecuritygroups/securityrules/write")
+                                if(allOf.field == "operationName" && allOf.equals.ToLower() == "microsoft.network/publicipaddresses/write")
                                 {
                                     wantedAllertRuleExist = true;
                                 }

@@ -38,7 +38,7 @@ namespace AzRanger.Utilities
         [Option(Required = false, HelpText = "Dump all tenant settings the tool gathers into JSON.")]
         public bool DumpSettings { get; set; }
 
-        [Option(Required = false, HelpText = "File to write results.")]
+        [Option(Required = false, HelpText = "StorageAccountFile to write results.")]
         public String OutFile { get; set; }
 
         [Option(Required = false, HelpText = "Write all results to console. Can result in a very large output.")]

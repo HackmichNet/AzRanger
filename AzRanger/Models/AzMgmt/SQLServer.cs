@@ -14,7 +14,11 @@ namespace AzRanger.Models.AzMgmt
         public string id { get; set; }
         public string name { get; set; }
         public string type { get; set; }
+
+        //Custome Attributes
         public List<SQLServerFirewallRules> firewallRules { get; set; }
+        public AuditingSettings auditingSettings { get; set; }
+        public List <SQLAdministrator> SQLAdministrators { get; set; }
 
         public string PrintConsole()
         {

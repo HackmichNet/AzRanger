@@ -9,48 +9,56 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzActLogAlertDeleteNetworkSecGrp", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
-    [CISAZ("5.2.4", "", Level.L1, "v1.4")]
+    [CISAZ("5.2.4", "", Level.L1, "v1.5")]
     [RuleInfo("No Activity Log Alert for 'Deleting a Network Security Group'", @"Unwanted changes for ""Deleting a Network Security Group"" can go unnoticed.", 0)]
     internal class AzActLogAlertDeleteNetworkSecGrp : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            
-            foreach(Subscription sub in tenant.Subscriptions.Values)
+            string operationCondition = "microsoft.network/networksecuritygroups/delete";
+            foreach (Subscription sub in tenant.Subscriptions.Values)
             {
-                bool wantedAllertRuleExist = false;
+                List<string> scopes = new List<string>();
                 foreach (ActivityLogAlert alert in sub.Resources.ActivityLogAlerts)
                 {
-                    if(alert.location == "Global" && alert.properties.enabled == true)
+                    if (alert.location == "Global" && alert.properties.enabled)
                     {
-                        bool scopeIsEntireSubscription = false;
-                        foreach (String scope in alert.properties.scopes)
+                        foreach (ActivityLogAlertAllof condition in alert.properties.condition.allOf)
                         {
-                            if (scope == sub.id)
+                            if (condition.field == "operationName" && condition.equals.ToLower() == operationCondition)
                             {
-                                scopeIsEntireSubscription = true;
-                            }
-                        }
-                        if (scopeIsEntireSubscription)
-                        {
-                            foreach(ActivityLogAlertAllof allOf in alert.properties.condition.allOf)
-                            {
-                                if(allOf.field == "operationName" && allOf.equals.ToLower() == "microsoft.network/networksecuritygroups/delete")
+                                foreach (String scope in alert.properties.scopes)
                                 {
-                                    wantedAllertRuleExist = true;
+                                    if (!scopes.Contains(scope))
+                                    {
+                                        scopes.Add(scope);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                if(wantedAllertRuleExist == false)
+
+                foreach (NetworkSecurityGroup resource in sub.Resources.NetworkSecurityGroups)
                 {
-                    this.AddAffectedEntity(sub);
-                    passed = false;
+                    bool isInscope = false;
+                    foreach (String scope in scopes)
+                    {
+                        if (resource.id.Contains(scope))
+                        {
+                            isInscope = true;
+                            break;
+                        }
+                    }
+                    if (!isInscope)
+                    {
+                        this.AddAffectedEntity(resource);
+                        passed = false;
+                    }
                 }
             }
-            
+
             if (passed)
             {
                 return CheckResult.NoFinding;

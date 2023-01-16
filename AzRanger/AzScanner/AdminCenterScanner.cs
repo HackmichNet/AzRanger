@@ -14,7 +14,7 @@ namespace AzRanger.AzScanner
         public const String ExchangeModernAuthSettings = "/admin/api/services/apps/modernAuth";
         public const String O365PasswordPolicy = "/admin/api/Settings/security/passwordpolicy";
 
-        // https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/Store
+        // https://admin.microsoft.com/#/Settings/StorageAccountServices/:/Settings/L1/Store
         // Let user access the officestore
         public const String OfficeStoreAccess = "/admin/api/settings/apps/store";
 
@@ -33,7 +33,7 @@ namespace AzRanger.AzScanner
         // SkypeTeams
         public const String SkypeTeams = "/admin/api/settings/apps/skypeteams";
 
-        // https://admin.microsoft.com/Adminportal/Home#/Settings/Services/:/Settings/L1/Calendar
+        // https://admin.microsoft.com/Adminportal/Home#/Settings/StorageAccountServices/:/Settings/L1/Calendar
         public const String Calendarsharing = "/admin/api/settings/apps/calendarsharing";
 
         // https://admin.microsoft.com/#/dirsyncmanagement

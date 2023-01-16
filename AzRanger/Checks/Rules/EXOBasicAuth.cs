@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOBasicAuth", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/ModernAuthentication")]
+    [RuleMeta("EXOBasicAuth", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.microsoft.com/#/Settings/StorageAccountServices/:/Settings/L1/ModernAuthentication")]
     [RuleInfo("Basic auth is enabled for ExchangeOnline", "This expose your tenant to attacks like Password brute force or Password Spray.", 5, "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/disable-basic-authentication-in-exchange-online", "Basic auth does not support secure authentication mechanism like MFA")]
     class EXOBasicAuth : BaseCheck
     {

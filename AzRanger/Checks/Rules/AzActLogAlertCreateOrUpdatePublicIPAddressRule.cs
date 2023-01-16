@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertChangeSecuritySolution", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
-    [CISAZ("5.2.7", "", Level.L1, "v1.4")]
-    [RuleInfo("No Activity Log Alert for 'Changing Security Solution'", @"Unwanted changes for ""Changing Security Solution"" can go unnoticed.", 0)]
-    internal class AzActLogAlertChangeSecuritySolution : BaseCheck
+    [RuleMeta("AzActLogAlertCreateOrUpdatePublicIPAddressRule", ScopeEnum.Azure, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
+    [CISAZ("5.2.9", "", Level.L1, "v1.5")]
+    [RuleInfo("No Activity Log Alert for 'Create or Update Public IP Address rule'", @"Unwanted changes for ""Public IP Address Rules"" can go unnoticed.", 0, null, null)]
+    internal class AzActLogAlertCreateOrUpdatePublicIPAddressRule : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
@@ -36,7 +36,7 @@ namespace AzRanger.Checks.Rules
                         {
                             foreach(ActivityLogAlertAllof allOf in alert.properties.condition.allOf)
                             {
-                                if(allOf.field == "operationName" && allOf.equals.ToLower() == "microsoft.security/securitysolutions/write")
+                                if(allOf.field == "operationName" && allOf.equals.ToLower() == "microsoft.network/publicipaddresses/write")
                                 {
                                     wantedAllertRuleExist = true;
                                 }

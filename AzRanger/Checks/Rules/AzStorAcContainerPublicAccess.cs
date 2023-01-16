@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcContainerPublicAccess", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.5", "", Level.L1, "v1.4")]
+    [CISAZ("3.7", "", Level.L1, "v1.5")]
     [RuleInfo("StorageAccount Container with public access", "This can lead to data loss.", 1, null, null, "Ensure that only public container listed below.")]
     internal class AzStorAcContainerPublicAccess : BaseCheck
     {

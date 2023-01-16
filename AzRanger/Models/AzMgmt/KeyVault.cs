@@ -15,7 +15,7 @@ namespace AzRanger.Models.AzMgmt
         public string location { get; set; }
         public KeyVaultProperties properties { get; set; }
 
-        // Custom Probs
+        // Custom Properties
         public List<DiagnosticSettings> DiagnosticSettings { get; set; }
         public List<KeyVaultKey> Keys { get; set; }
         public List<KeyVaultSecret> Secrets{ get; set; }

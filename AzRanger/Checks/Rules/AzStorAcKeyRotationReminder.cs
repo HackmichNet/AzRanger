@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcCustomKeys", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.12", "", Level.L2, "v1.5")]
-    [RuleInfo("StorageAccount is encrypted with Microsot Managed Keys", "Microsoft may have access to your encrypted data.", 1, null, null, "If you want to have control over your keys, you should use custom keys.")]
-    internal class AzStorAcCustomKeys : BaseCheck
+    [RuleMeta("AzStorAcKeyRotationReminder", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
+    [CISAZ("3.3", "", Level.L1, "v1.5")]
+    [RuleInfo("StorageAccount key rotation is not configured", "If the Storage Accounts Access Keys are not regularly changed potentially compromised keys can result in long-term exploitable credential.", 1, null, null, @"Go to Storage Accounts and for each Storage Account go to Access Key and click the ""Set rotation reminder"".")]
+    internal class AzStorAcKeyRotationReminder : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {

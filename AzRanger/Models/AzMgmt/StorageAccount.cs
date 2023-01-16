@@ -40,30 +40,39 @@ namespace AzRanger.Models.AzMgmt
     public class StorageAccountProperties
     {
         public bool defaultToOAuthAuthentication { get; set; }
-        public Keycreationtime keyCreationTime { get; set; }
+        public StorageAccountKeyPolicy keyPolicy { get; set; }
+        public StorageAccountKeycreationtime keyCreationTime { get; set; }
         public bool allowCrossTenantReplication { get; set; }
         public object[] privateEndpointConnections { get; set; }
         public string minimumTlsVersion { get; set; }
         public bool allowBlobPublicAccess { get; set; }
         public bool allowSharedKeyAccess { get; set; }
-        public Networkacls networkAcls { get; set; }
+        public StorageAccountNetworkacls networkAcls { get; set; }
         public bool supportsHttpsTrafficOnly { get; set; }
-        public Encryption encryption { get; set; }
+        public StorageAccountEncryption encryption { get; set; }
         public string accessTier { get; set; }
         public string provisioningState { get; set; }
         public DateTime creationTime { get; set; }
-        public Primaryendpoints primaryEndpoints { get; set; }
+        public StorageAccountPrimaryendpoints primaryEndpoints { get; set; }
         public string primaryLocation { get; set; }
         public string statusOfPrimary { get; set; }
     }
 
-    public class Keycreationtime
+
+    public class StorageAccountKeyPolicy
+    {
+        public int keyExpirationPeriodInDays { get; set; }
+        public bool enableAutoRotation { get; set; }
+    }
+
+
+    public class StorageAccountKeycreationtime
     {
         public object key1 { get; set; }
         public object key2 { get; set; }
     }
 
-    public class Networkacls
+    public class StorageAccountNetworkacls
     {
         public string bypass { get; set; }
         public object[] virtualNetworkRules { get; set; }
@@ -72,12 +81,12 @@ namespace AzRanger.Models.AzMgmt
     }
 
 
-    public class Encryption
+    public class StorageAccountEncryption
     {
         public Identity identity { get; set; }
         public bool requireInfrastructureEncryption { get; set; }
-        public Keyvaultproperties keyvaultproperties { get; set; }
-        public Services services { get; set; }
+        public StorageAccountKeyvaultproperties keyvaultproperties { get; set; }
+        public StorageAccountServices services { get; set; }
         // Microsoft.Storage => Microsoft Managed
         // Microsoft.Keyvault => Custom Key vault
         public string keySource { get; set; }
@@ -87,7 +96,7 @@ namespace AzRanger.Models.AzMgmt
     {
     }
 
-    public class Keyvaultproperties
+    public class StorageAccountKeyvaultproperties
     {
         public string currentVersionedKeyIdentifier { get; set; }
         public DateTime lastKeyRotationTimestamp { get; set; }
@@ -97,26 +106,26 @@ namespace AzRanger.Models.AzMgmt
         public string keyversion { get; set; }
     }
 
-    public class Services
+    public class StorageAccountServices
     {
-        public File file { get; set; }
-        public Blob blob { get; set; }
+        public StorageAccountFile file { get; set; }
+        public StorageAccountBlob blob { get; set; }
     }
 
-    public class File
+    public class StorageAccountFile
     {
         public string keyType { get; set; }
         public bool enabled { get; set; }
         public DateTime lastEnabledTime { get; set; }
     }
 
-    public class Blob
+    public class StorageAccountBlob
     {
         public string keyType { get; set; }
         public bool enabled { get; set; }
         public DateTime lastEnabledTime { get; set; }
     }
-    public class Primaryendpoints
+    public class StorageAccountPrimaryendpoints
     {
         public string dfs { get; set; }
         public string web { get; set; }

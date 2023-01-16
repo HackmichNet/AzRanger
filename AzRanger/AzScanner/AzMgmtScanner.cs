@@ -26,6 +26,8 @@ namespace AzRanger.AzScanner
         private const String SecurityContacts = "/subscriptions/{0}/providers/Microsoft.Security/securityContacts?api-version=2020-01-01-preview";
         private const String VirtualMachines = "/subscriptions/{0}/providers/Microsoft.Compute/virtualMachines?api-version=2022-03-01";
         private const String SubscriptionPolicy = "/providers/Microsoft.Subscription/policies/default?api-version=2021-01-01-privatepreview";
+        private const String AuditingSettings = "{0}/auditingSettings/default?api-version=2021-11-01-preview";
+        private const String SQLAdminitrators = "{0}/administrators?api-version=2019-06-01-preview";
         public AzMgmtScanner(Scanner scanner)
         {
             this.Scanner = scanner;
@@ -139,6 +141,8 @@ namespace AzRanger.AzScanner
             foreach (SQLServer server in Result)
             {
                 server.firewallRules = GetAllOf<SQLServerFirewallRules>(String.Format(SQLServerFirewall, server.id));
+                server.auditingSettings = (AuditingSettings)Get<AuditingSettings>(String.Format(AuditingSettings, server.id));
+                server.SQLAdministrators = GetAllOf<SQLAdministrator>(String.Format(SQLAdminitrators, server.id));
             }
             return Result;
         }

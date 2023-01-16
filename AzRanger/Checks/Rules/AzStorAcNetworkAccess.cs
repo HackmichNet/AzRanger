@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcNetworkAccess", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.6", "", Level.L2, "v1.4")]
+    [CISAZ("3.8", "", Level.L2, "v1.5")]
     [RuleInfo("Storage Account allows access from arbitrary networks", "This can be lead to unwanted data loss.", 1, null, null, "Enforce the usage on TLS1.2 for each Storage Account.")]
     internal class AzStorAcNetworkAccess : BaseCheck
     {

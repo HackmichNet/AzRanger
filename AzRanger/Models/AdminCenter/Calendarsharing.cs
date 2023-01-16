@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Models.AdminCenter
 {
-    // https://admin.microsoft.com/Adminportal/Home#/Settings/Services/:/Settings/L1/Calendar
+    // https://admin.microsoft.com/Adminportal/Home#/Settings/StorageAccountServices/:/Settings/L1/Calendar
     public class Calendarsharing
     {
         public bool EnableCalendarSharing { get; set; }
