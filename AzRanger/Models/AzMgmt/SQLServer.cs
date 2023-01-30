@@ -17,8 +17,9 @@ namespace AzRanger.Models.AzMgmt
 
         //Custome Attributes
         public List<SQLServerFirewallRules> firewallRules { get; set; }
-        public AuditingSettings auditingSettings { get; set; }
-        public List <SQLAdministrator> SQLAdministrators { get; set; }
+        public SQLServerAuditingSettings auditingSettings { get; set; }
+        public List<SQLAdministrator> SQLAdministrators { get; set; }
+        public List<SQLDatabase> SQLDatabases { get; set; }
 
         public string PrintConsole()
         {
@@ -57,5 +58,25 @@ namespace AzRanger.Models.AzMgmt
         public string startIpAddress { get; set; }
         public string endIpAddress { get; set; }
     }
+    public class SQLServerAuditingSettings
+    {
+        public SQLServerAuditingSettingsProperties properties { get; set; }
+        public string id { get; set; }
+        public string name { get; set; }
+        public string type { get; set; }
+    }
+
+    public class SQLServerAuditingSettingsProperties
+    {
+        public bool isDevopsAuditEnabled { get; set; }
+        public int retentionDays { get; set; }
+        public string[] auditActionsAndGroups { get; set; }
+        public bool isStorageSecondaryKeyInUse { get; set; }
+        public bool isAzureMonitorTargetEnabled { get; set; }
+        public string state { get; set; }
+        public string storageEndpoint { get; set; }
+        public string storageAccountSubscriptionId { get; set; }
+    }
+
 
 }

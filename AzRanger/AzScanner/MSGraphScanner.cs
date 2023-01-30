@@ -317,7 +317,7 @@ namespace AzRanger.AzScanner
             return Result;
         }
 
-        // Transitiv, gives only the User or Principals back, does not include other groups
+        // Transitiv, gives only the users or principals back, does not include other groups
         internal List<AzurePrincipal> GetAllGroupMemberTransitiv(Guid groupId)
         {
             List<IDTypeResponse> groupMember = GetAllOf<IDTypeResponse>(string.Format(GroupMemberTransitiv, groupId.ToString()), "?$select=id");

@@ -28,6 +28,8 @@ namespace AzRanger.AzScanner
         private const String SubscriptionPolicy = "/providers/Microsoft.Subscription/policies/default?api-version=2021-01-01-privatepreview";
         private const String AuditingSettings = "{0}/auditingSettings/default?api-version=2021-11-01-preview";
         private const String SQLAdminitrators = "{0}/administrators?api-version=2019-06-01-preview";
+        private const String SQLDatabases = "{0}/databases/?api-version=2022-02-01-preview";
+        private const String TransparentDataEncryption = "{0}/transparentDataEncryption/current?api-version=2020-11-01-preview";
         public AzMgmtScanner(Scanner scanner)
         {
             this.Scanner = scanner;
@@ -141,8 +143,13 @@ namespace AzRanger.AzScanner
             foreach (SQLServer server in Result)
             {
                 server.firewallRules = GetAllOf<SQLServerFirewallRules>(String.Format(SQLServerFirewall, server.id));
-                server.auditingSettings = (AuditingSettings)Get<AuditingSettings>(String.Format(AuditingSettings, server.id));
+                server.auditingSettings = (SQLServerAuditingSettings)Get<SQLServerAuditingSettings>(String.Format(AuditingSettings, server.id));
                 server.SQLAdministrators = GetAllOf<SQLAdministrator>(String.Format(SQLAdminitrators, server.id));
+                server.SQLDatabases = GetAllOf<SQLDatabase>(String.Format(SQLDatabases, server.id));
+                foreach (SQLDatabase database in server.SQLDatabases)
+                {
+                    database.transparentDataEncryption = (SQLDatabaseTransparentDataEncryption)Get<SQLDatabaseTransparentDataEncryption>(String.Format(TransparentDataEncryption, database.id));
+                }
             }
             return Result;
         }

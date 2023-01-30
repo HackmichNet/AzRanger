@@ -315,7 +315,9 @@
     <Compile Include="Checks\Rules\AzActNSGRDPLimitiation.cs" />
     <Compile Include="Checks\Rules\AzActNSGSSHLimitiation.cs" />
     <Compile Include="Checks\Rules\AzActNSGSUnrestrictedDestionationPort.cs" />
+    <Compile Include="Checks\Rules\AzSQLAuditingRetention.cs" />
     <Compile Include="Checks\Rules\AzSQLServerAzADAdmin.cs" />
+    <Compile Include="Checks\Rules\AzSQLDatabaseTransparentEnc.cs" />
     <Compile Include="Checks\Rules\AzStorAcMinTLSVersion.cs" />
     <Compile Include="Checks\Rules\AzStorAcKeyLastRotation.cs" />
     <Compile Include="Checks\Rules\AzStorAcKeyRotationReminder.cs" />
@@ -426,7 +428,6 @@
     <Compile Include="Models\AdminCenter\SkypeTeams.cs" />
     <Compile Include="Models\AdminCenter\SwaySettings.cs" />
     <Compile Include="Models\AzMgmt\ActivityLogAlert.cs" />
-    <Compile Include="Models\AzMgmt\AuditingSettings.cs" />
     <Compile Include="Models\AzMgmt\AutoProvisioningSettings.cs" />
     <Compile Include="Models\AzMgmt\DiagnosticSettings.cs" />
     <Compile Include="Models\AzMgmt\KeyVault.cs" />
@@ -438,6 +439,7 @@
     <Compile Include="Models\AzMgmt\SecurityCenterBuiltIn.cs" />
     <Compile Include="Models\AzMgmt\SecurityContacts.cs" />
     <Compile Include="Models\AzMgmt\SQLAdministrator.cs" />
+    <Compile Include="Models\AzMgmt\SQLDatabase.cs" />
     <Compile Include="Models\AzMgmt\SQLServer.cs" />
     <Compile Include="Models\AzMgmt\StorageAccount.cs" />
     <Compile Include="Models\AzMgmt\StorageAccountDefault.cs" />
