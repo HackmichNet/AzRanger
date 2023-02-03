@@ -17,6 +17,7 @@ namespace AzRanger.AzScanner
         private const String ClientId = "1b730954-1685-4b74-9bfd-dac224a7b894";
         private String Username;
         private SecureString Password;
+        private int FailedInteractiveLogonCounter = 0;
         public Authenticator(string tenantId)
         {
             if (tenantId == null)
@@ -55,7 +56,12 @@ namespace AzRanger.AzScanner
 
         public String GetAccessToken(String[] scopes)
         {
-            return GetAuthenticationResult(scopes).AccessToken;
+            var authenticationResult = GetAuthenticationResult(scopes);
+            if (authenticationResult == null)
+            {
+                return null;
+            }
+            return authenticationResult.AccessToken;
         }
 
         public String GetTenantId()
@@ -79,11 +85,25 @@ namespace AzRanger.AzScanner
                     return result;
                 }catch(MsalException ex)
                 {
+                    // Under some circumstances, a lot of logons failing, then we don't logon anymore and skip the rest.
+                    if(FailedInteractiveLogonCounter > 4)
+                    {
+                        return null;
+                    }
                     // May happen that we need do MFA again.
                     if (this.Username == null && this.Password == null)
                     {
-                        result = App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync().GetAwaiter().GetResult();
-                        return result;
+                        try
+                        {
+                            result = App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync().GetAwaiter().GetResult();
+                            return result;
+                        }catch(MsalServiceException ex2)
+                        {
+                            logger.Warn(ex2.ErrorCode);
+                            logger.Warn(ex2.Message);
+                            FailedInteractiveLogonCounter++;
+                            return null;
+                        }
                     }
 
                     logger.Warn(ex.ErrorCode);
