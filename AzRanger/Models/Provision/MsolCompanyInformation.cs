@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Models.Provision
 {
 
-    // Contains relevant information from Get-MsolCompanyInformation
+    // PricipalIsInActiveMembers relevant information from Get-MsolCompanyInformation
     public class MsolCompanyInformation
     {
         /**

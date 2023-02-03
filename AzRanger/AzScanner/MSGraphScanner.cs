@@ -130,17 +130,13 @@ namespace AzRanger.AzScanner
         {
             return GetAllOf<EnterpriseApplicationUserSettings>(SettingsBeta);
         }
-        public Dictionary<Guid, DirectoryRole> GetAllDirectoryRoles(bool includeMember)
+        public Dictionary<Guid, DirectoryRole> GetAllDirectoryRoles()
         {
             List<DirectoryRole> roles = base.GetAllOf<DirectoryRole>(MSGraphScanner.DirectoryRoles);
             Dictionary<Guid, DirectoryRole> Result = new Dictionary<Guid, DirectoryRole>();
             foreach (DirectoryRole role in roles)
             {
-                if (includeMember)
-                {
-                    role.SetMember(GetAllRoleMember(role.id));
-                }
-
+                role.SetMember(GetAllRoleMember(role.id));
                 Result.Add(role.id, role);
             }
             return Result;

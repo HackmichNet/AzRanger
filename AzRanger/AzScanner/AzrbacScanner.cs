@@ -1,4 +1,5 @@
 ﻿using AzRanger.Models.Azrbac;
+using AzRanger.Models.MSGraph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace AzRanger.AzScanner
 {
     class AzrbacScanner : IScanner
     {
-        private const String RoleAssignemtsForApp = "/api/v2/privilegedAccess/aadroles/roleAssignments";
+        private const String RoleAssognmentForDirectory = "/api/v2/privilegedAccess/aadroles/roleAssignments";
         public AzrbacScanner(Scanner scanner)
         {
             this.Scanner = scanner;
@@ -18,10 +19,10 @@ namespace AzRanger.AzScanner
         }
 
 
-        public List<RoleAssignments> GetRoleAssignemtsForApp(Guid tenantID, Guid roleDefinition)
+        public List<PIMRoleAssignments> GetRoleAssignemts(Guid tenantID, Guid roleDefinition)
         {
             String query = String.Format(@"$filter=(roleDefinition/resource/id eq '{0}') and (roleDefinition/id eq '{1}')&$expand=subject,scopedResource", tenantID.ToString(), roleDefinition.ToString());
-            return GetAllOf<RoleAssignments>(RoleAssignemtsForApp, query); ;
+            return GetAllOf<PIMRoleAssignments>(RoleAssognmentForDirectory, query); ;
         }
     }
 }

@@ -447,7 +447,7 @@
     <Compile Include="Models\AzMgmt\Subscription.cs" />
     <Compile Include="Models\AzMgmt\SubscriptionPolicy.cs" />
     <Compile Include="Models\AzMgmt\VirtualMachine.cs" />
-    <Compile Include="Models\Azrbac\RoleAssignments.cs" />
+    <Compile Include="Models\Azrbac\PIMRoleAssignments.cs" />
     <Compile Include="Models\Azrbac\Scopedresource.cs" />
     <Compile Include="Models\Azrbac\Subject.cs" />
     <Compile Include="Models\AzResources.cs" />

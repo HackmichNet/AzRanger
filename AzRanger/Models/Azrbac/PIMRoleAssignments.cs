@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Models.Azrbac
 {
-    public class RoleAssignments
+    public class PIMRoleAssignments
     {
         [JsonPropertyName("@odata.id")]
         public string odataid { get; set; }

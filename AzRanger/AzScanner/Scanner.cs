@@ -120,10 +120,9 @@ namespace AzRanger.AzScanner
 
             if (!scanAzureOnly)
             {
-                Result.AllDirectoryRoles = MsGraphScanner.GetAllDirectoryRoles(true);
                 Result.TenantSettings = new M365Settings();
                 Result.TenantSettings.TenantSkuInfo = MainIamScanner.GetTenantSkuInfo();
-
+                Result.AllDirectoryRoles = MsGraphScanner.GetAllDirectoryRoles();
 
                 if (currentUserId != null)
                 {
@@ -132,7 +131,7 @@ namespace AzRanger.AzScanner
                     {
                         if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
                         {
-                            if (role.Contains(Guid.Parse(currentUserId)))
+                            if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
                             {
                                 isGlobalAdmin = true;
                             }
@@ -140,7 +139,7 @@ namespace AzRanger.AzScanner
 
                         if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
                         {
-                            if (role.Contains(Guid.Parse(currentUserId)))
+                            if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
                             {
                                 isGlobalReader = true;
                             }
@@ -148,7 +147,7 @@ namespace AzRanger.AzScanner
 
                         if (role.roleTemplateId == DirectoryRoleTemplateID.SharePointAdmin)
                         {
-                            if (role.Contains(Guid.Parse(currentUserId)))
+                            if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
                             {
                                 isSharePointAdmin = true;
                             }
@@ -157,7 +156,7 @@ namespace AzRanger.AzScanner
                 }
                 else
                 {
-                    logger.Warn("Scanner.ScanTenant: Cannot get User Id.should not happen");
+                    logger.Warn("Scanner.ScanTenant: Cannot get User Id. Should not happen!");
                     return null;
                 }
 
@@ -237,8 +236,8 @@ namespace AzRanger.AzScanner
                 {
                     foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
                     {
-                        List<RoleAssignments> roleAssignments = AzrbacScanner.GetRoleAssignemtsForApp(Guid.Parse(this.TenantId), Guid.Parse(role.roleTemplateId));
-                        foreach (RoleAssignments assignment in roleAssignments)
+                        List<PIMRoleAssignments> roleAssignments = AzrbacScanner.GetRoleAssignemts(Guid.Parse(this.TenantId), Guid.Parse(role.roleTemplateId));
+                        foreach (PIMRoleAssignments assignment in roleAssignments)
                         {
                             List<AzurePrincipal> principalsToAssigne = new List<AzurePrincipal>();
                             AzurePrincipalType aztype;
@@ -275,9 +274,19 @@ namespace AzRanger.AzScanner
                             if (assignment.scopedResourceId == null)
                             {
                                 // Assigne user to role
-                                foreach (AzurePrincipal p in principalsToAssigne)
+                                if (assignment.assignmentState.Equals("Active"))
                                 {
-                                    role.AddMember(p);
+                                    foreach (AzurePrincipal p in principalsToAssigne)
+                                    {
+                                        role.AddActiveMember(p);
+                                    }
+                                }
+                                else
+                                {
+                                    foreach (AzurePrincipal p in principalsToAssigne)
+                                    {
+                                        role.AddElligbleMember(p);
+                                    }
                                 }
                                 // If a user can add creds, assign to applications and service principal
                                 if (DirectoryRoleTemplateID.RolesAllowingAddCreds.Contains(role.roleTemplateId))

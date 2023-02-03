@@ -8,7 +8,8 @@ namespace AzRanger.Models.MSGraph
     {
         public string displayName { get; }
         public Guid id { get; }
-        public List<AzurePrincipal> members { get; set; }
+        public List<AzurePrincipal> activeMembers { get; set; }
+        public List<AzurePrincipal> elligbleMembers { get; set; }
         public object deletedDateTime { get; set; }
         public string description { get; set; }
         public string roleTemplateId { get; set; }
@@ -20,32 +21,60 @@ namespace AzRanger.Models.MSGraph
             this.displayName = displayName;
             this.description = description;
             this.roleTemplateId = roleTemplateId;
-            this.members = new List<AzurePrincipal>();
+            this.activeMembers = new List<AzurePrincipal>();
         }
 
-        public void AddMember(AzurePrincipal az)
+        public void AddActiveMember(AzurePrincipal az)
         {
-            if (!Contains(az.id))
+            if (!PricipalIsInActiveMembers(az.id))
             {
-                this.members.Add(az);
+                this.activeMembers.Add(az);
+            }
+        }
+
+        public void AddElligbleMember(AzurePrincipal az)
+        {
+            // First check if in active members, if so ignore the user (active > elligble)
+            if (!PricipalIsInActiveMembers(az.id))
+            {
+                if (!PricipalIsInEllibleMembers(az.id))
+                {
+                    this.elligbleMembers.Add(az);
+                }
             }
         }
 
         public void SetMember(List<AzurePrincipal> members)
         {
-            this.members = members;
+            this.activeMembers = members;
         }
 
         public List<AzurePrincipal> GetMembers()
         {
-            return this.members;
+            return this.activeMembers;
         }
 
-        public bool Contains(Guid id)
+        public bool PricipalIsInActiveMembers(Guid id)
         {
-            foreach(AzurePrincipal azure in this.members)
+            foreach(AzurePrincipal azure in this.activeMembers)
             {
                 if(azure.id == id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool PricipalIsInEllibleMembers(Guid id)
+        {
+            if(this.elligbleMembers == null)
+            {
+                this.elligbleMembers = new List<AzurePrincipal>();
+            }
+            foreach (AzurePrincipal azure in this.elligbleMembers)
+            {
+                if (azure.id == id)
                 {
                     return true;
                 }
