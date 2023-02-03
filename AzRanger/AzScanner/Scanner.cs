@@ -285,7 +285,7 @@ namespace AzRanger.AzScanner
                                 {
                                     foreach (AzurePrincipal p in principalsToAssigne)
                                     {
-                                        role.AddElligbleMember(p);
+                                        role.AddEligibleMember(p);
                                     }
                                 }
                                 // If a user can add creds, assign to applications and service principal

@@ -9,7 +9,7 @@ namespace AzRanger.Models.MSGraph
         public string displayName { get; }
         public Guid id { get; }
         public List<AzurePrincipal> activeMembers { get; set; }
-        public List<AzurePrincipal> elligbleMembers { get; set; }
+        public List<AzurePrincipal> eligibleMembers { get; set; }
         public object deletedDateTime { get; set; }
         public string description { get; set; }
         public string roleTemplateId { get; set; }
@@ -22,6 +22,7 @@ namespace AzRanger.Models.MSGraph
             this.description = description;
             this.roleTemplateId = roleTemplateId;
             this.activeMembers = new List<AzurePrincipal>();
+            this.eligibleMembers = new List<AzurePrincipal>();
         }
 
         public void AddActiveMember(AzurePrincipal az)
@@ -32,14 +33,14 @@ namespace AzRanger.Models.MSGraph
             }
         }
 
-        public void AddElligbleMember(AzurePrincipal az)
+        public void AddEligibleMember(AzurePrincipal az)
         {
             // First check if in active members, if so ignore the user (active > elligble)
             if (!PricipalIsInActiveMembers(az.id))
             {
-                if (!PricipalIsInEllibleMembers(az.id))
+                if (!PricipalIsInEligibleMembers(az.id))
                 {
-                    this.elligbleMembers.Add(az);
+                    this.eligibleMembers.Add(az);
                 }
             }
         }
@@ -66,13 +67,13 @@ namespace AzRanger.Models.MSGraph
             return false;
         }
 
-        public bool PricipalIsInEllibleMembers(Guid id)
+        public bool PricipalIsInEligibleMembers(Guid id)
         {
-            if(this.elligbleMembers == null)
+            if(this.eligibleMembers == null)
             {
-                this.elligbleMembers = new List<AzurePrincipal>();
+                this.eligibleMembers = new List<AzurePrincipal>();
             }
-            foreach (AzurePrincipal azure in this.elligbleMembers)
+            foreach (AzurePrincipal azure in this.eligibleMembers)
             {
                 if (azure.id == id)
                 {
