@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
@@ -40,9 +41,9 @@ namespace AzRanger.AzScanner
             return GetAllOf<String>(Users);
         }
 
-        public OrganizationConfig GetOrganizationConfig()
+        public async Task<OrganizationConfig> GetOrganizationConfig()
         {
-            List<OrganizationConfig> result = GetAllOf<OrganizationConfig>(OrganizationConfig);
+            List<OrganizationConfig> result = await GetAllOf<OrganizationConfig>(OrganizationConfig);
             if(result == null)
             {
                 logger.Debug(String.Format("ExchangeOnlineScanner.GetOrganizationConfig() is null."));
@@ -56,9 +57,9 @@ namespace AzRanger.AzScanner
             return result[0];
         }
 
-        public OwaMailboxPolicy GetOwaMailboxPolicy()
+        public async Task<OwaMailboxPolicy> GetOwaMailboxPolicy()
         {
-            List<OwaMailboxPolicy> result = GetAllOf<OwaMailboxPolicy>(OwaMailboxPolicy);
+            List<OwaMailboxPolicy> result = await GetAllOf<OwaMailboxPolicy>(OwaMailboxPolicy);
             if (result == null)
             {
                 logger.Debug(String.Format("ExchangeOnlineScanner.GetOwaMailboxPolicy() is null."));
@@ -72,41 +73,41 @@ namespace AzRanger.AzScanner
             return result[0];
         }
 
-        public List<EXOUser> GetEXOUsers()
+        public Task<List<EXOUser>> GetEXOUsers()
         {
             return GetAllOf<EXOUser>(Users);
         }
 
-        public List<AuthenticationPolicy> GetAuthenticationPolicies()
+        public Task<List<AuthenticationPolicy>> GetAuthenticationPolicies()
         {
-            return GetAllOf<AuthenticationPolicy>(AuthenticationPolicy, null, null);
+            return GetAllOf<AuthenticationPolicy>(AuthenticationPolicy);
         }
 
-        public List<RemoteDomain> GetRemoteDomains()
+        public Task<List<RemoteDomain>> GetRemoteDomains()
         {
             return GetAllOf<RemoteDomain>(RemoteDomain);
         }
 
-        public List<RoleAssignmentPolicy> GeRoleAssignmentPolicies()
+        public Task<List<RoleAssignmentPolicy>> GeRoleAssignmentPolicies()
         {
             return GetAllOf<RoleAssignmentPolicy>(RoleAssignmentPolicy);
         }
 
-        public List<Mailbox> GetMailboxes()
+        public Task<List<Mailbox>> GetMailboxes()
         {
             List<Tuple<String, String>> parameters = new List<Tuple<String, String>>();
             parameters.Add(new Tuple<String,String>("ResultSize","unlimited"));
-            return GetAllOf<Mailbox>(Mailbox, null, parameters);
+            return GetAllOf<Mailbox>(Mailbox, parameters);
         }
 
-        public List<MalwareFilterRule> GetMalwareFilterRules()
+        public Task<List<MalwareFilterRule>> GetMalwareFilterRules()
         {
             return GetAllOf<MalwareFilterRule>(MalwareFilterRule);
         }
 
-        public List<AcceptedDomain> GetAcceptedDomains()
+        public async Task<List<AcceptedDomain>> GetAcceptedDomains()
         {
-            List<AcceptedDomain> allDomains = GetAllOf<AcceptedDomain>(AcceptedDomain);
+            List<AcceptedDomain> allDomains = await GetAllOf<AcceptedDomain>(AcceptedDomain);
             if (allDomains == null)
             {
                 logger.Debug(String.Format("ExchangeOnlineScanner.GetAcceptedDomains() is null."));
@@ -120,10 +121,10 @@ namespace AzRanger.AzScanner
             return allDomains;
         }
 
-        public AdminAuditLogConfig GetAdminAuditLogConfig()
+        public async Task<AdminAuditLogConfig> GetAdminAuditLogConfig()
         {
             // We should only have one entry
-            List<AdminAuditLogConfig> result = GetAllOf<AdminAuditLogConfig>(AdminAuditLogConfig);
+            List<AdminAuditLogConfig> result = await GetAllOf<AdminAuditLogConfig>(AdminAuditLogConfig);
             if (result == null)
             {
                 logger.Debug(String.Format("ExchangeOnlineScanner.GetAdminAuditLogConfig() is null."));
@@ -137,135 +138,108 @@ namespace AzRanger.AzScanner
             return result[0];
         }
 
-        public List<DkimSigningConfig> GetDkimSigningConfig()
+        public Task<List<DkimSigningConfig>> GetDkimSigningConfig()
         {
-            return GetAllOf<DkimSigningConfig>(DkimSigningConfig, null, null);
+            return GetAllOf<DkimSigningConfig>(DkimSigningConfig);
         }
 
-        public List<HostedOutboundSpamFilterPolicy> GetHostedOutboundSpamFilterPolicies()
+        public Task<List<HostedOutboundSpamFilterPolicy>> GetHostedOutboundSpamFilterPolicies()
         {
             return GetAllOf<HostedOutboundSpamFilterPolicy>(HostedOutboundSpamFilterPolicy);
         }
 
-        public List<MalwareFilterPolicy> GetMalwareFilterPolicies()
+        public Task<List<MalwareFilterPolicy>> GetMalwareFilterPolicies()
         {
             return GetAllOf<MalwareFilterPolicy>(ExchangeOnlineScanner.MalwareFilterPolicy);
         }
 
-        public List<TransportRule> GetTransportRules()
+        public Task<List<TransportRule>> GetTransportRules()
         {
             return GetAllOf<TransportRule>(ExchangeOnlineScanner.TransportRule);
         }
 
-        internal List<T> GetAllOf<T>(string command, List<T> alreadyCollectedItems = null, List<Tuple<string, string>> parameters = null, String skiptoken = null)
+        internal async Task<List<T>> GetAllOf<T>(string command, List<Tuple<string, string>> parameters = null)
         {
             logger.Debug("ExchangeOnlineScanner.GetAllOf: {0}|{1}", typeof(T).ToString(), command );
-            String accessToken = this.Scanner.Authenticator.GetAccessToken(this.Scope);
+
+            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
             if(accessToken == null)
             {
                 logger.Warn("ExchangeOnlineScanner.GetAllOf: Failed fetching access token!");
                 return null;
             }
-            String apiEndpoint = this.EndPoint;
-            if(skiptoken != null)
+            String url = this.BaseAdresse + this.EndPoint;
+            List<T> resultList = new List<T>();
+            while (url != null)
             {
-                apiEndpoint = apiEndpoint + skiptoken;
-                logger.Debug("ExchangeOnlineScanner.GetAllOf: APIEndpoint: {0})", apiEndpoint);
-            }
-            AuthenticationHeaderValue authenticationHeader = new AuthenticationHeaderValue("Bearer", accessToken);
-            using (var client = Helper.GetDefaultClient(BaseAdresse, false, null, this.Scanner.Proxy))
-            using (var message = new HttpRequestMessage(HttpMethod.Post, apiEndpoint))
-            {
-                message.Headers.Authorization = authenticationHeader;
-                message.Content = this.CreateMessage(command, parameters);
-                var response = client.SendAsync(message).Result;
-                if (response.IsSuccessStatusCode)
+                using (var client = Helper.GetDefaultClient(null, this.Scanner.Proxy))
                 {
-                    /// Create the result list
-                    List<T> r = new List<T>();
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                    HttpContent content = this.CreateMessage(command, parameters);
+                    var response = await client.PostAsync(url, content);
+                    if (response.IsSuccessStatusCode)
+                    {
 
-                    /// Parse the result in GenericObjects
-                    var result = response.Content.ReadAsStringAsync().Result;
-                    GenResponse genericAnswer = null;
-                    try
-                    {
-                        genericAnswer = JsonSerializer.Deserialize<GenResponse>(result);
-                    }catch(Exception e)
-                    {
-                        logger.Debug("ExchangeOnlineScanner.GetAllOf.GenReponse: Failed to parse response.");
-                        logger.Debug(e.Message);
-                        logger.Debug(result.ToString());
-                        return null;
-                    }
-                    if(genericAnswer == null)
-                    {
-                        return null;
-                    }
-                    logger.Debug("ExchangeOnlineScanner.GetAllOf: Response has {0} entries.", genericAnswer.value.Length);
-                    /// Go through the generic object and parse the value field
-                    foreach (var entry in genericAnswer.value)
-                    {
+                        /// Parse the result in GenericObjects
+                        var result = await response.Content.ReadAsStringAsync();
+                        GenResponse genericAnswer = null;
                         try
                         {
-                            var resultParsed = JsonSerializer.Deserialize<T>(entry.ToString());
-                            r.Add(resultParsed);
+                            genericAnswer = JsonSerializer.Deserialize<GenResponse>(result);
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
-                            logger.Debug("ExchangeOnlineScanner.GetAllOf: Failed to parse response.");
+                            logger.Debug("ExchangeOnlineScanner.GetAllOf.GenReponse: Failed to parse response.");
                             logger.Debug(e.Message);
-                            logger.Debug(entry.ToString());
+                            logger.Debug(result.ToString());
                             return null;
                         }
-                    }
-
-                    // If the generic Answer has a nextLink, we have more items then responded in the first answer
-                    if (genericAnswer.odatanextLink != null)
-                    {
-                        logger.Debug("ExchangeOnlineScanner.GetAllOf: Odatanextlink is: {0}", genericAnswer.odatanextLink);
-
-                        // Create the next endpoint => Endpoint + nextLink Attribute
-
-                        //string sktiptoken = genericAnswer.odatanextLink.Split(this.EndPoint.ToCharArray())[1];
-                        string[] seperator = new string[] { this.EndPoint };
-                        string sktiptoken = genericAnswer.odatanextLink.Split(seperator, StringSplitOptions.None)[1];
-
-                        /// If the function was called already, we hand over some values
-                        if (alreadyCollectedItems != null)
+                        if (genericAnswer == null)
+                        {
+                            return null;
+                        }
+                        logger.Debug("ExchangeOnlineScanner.GetAllOf: Response has {0} entries.", genericAnswer.value.Length);
+                        /// Go through the generic object and parse the value field
+                        foreach (var entry in genericAnswer.value)
+                        {
+                            try
                             {
-                                foreach (var item in alreadyCollectedItems)
-                                {
-                                    r.Add(item);
-                                }
+                                var resultParsed = JsonSerializer.Deserialize<T>(entry.ToString());
+                                resultList.Add(resultParsed);
                             }
+                            catch (Exception e)
+                            {
+                                logger.Debug("ExchangeOnlineScanner.GetAllOf: Failed to parse response.");
+                                logger.Debug(e.Message);
+                                logger.Debug(entry.ToString());
+                                return null;
+                            }
+                        }
 
-                            /// Call the function again with the already collected items and the nextLink
-                            return GetAllOf<T>(command, r, parameters, sktiptoken);
+                        // If the generic Answer has a nextLink, we have more items then responded in the first answer
+                        if (genericAnswer.odatanextLink != null)
+                        {
+                            logger.Debug("ExchangeOnlineScanner.GetAllOf: Odatanextlink is: {0}", genericAnswer.odatanextLink);
+                            url = genericAnswer.odatanextLink;
                         }
                         else /// No next link anymore, just check if we have some items and concat them with the current result
                         {
-                            if (alreadyCollectedItems != null)
-                            {
-                                foreach (var item in alreadyCollectedItems)
-                                {
-                                    r.Add(item);
-                                }
-                            }
+                            url = null;
                         }
-                        return r;
-                }
-                else
-                {
-                    try
-                    {
-                        logger.Debug("ExchangeOnlineScanner.GetAllOf: {0} was not successfull", typeof(T).ToString());
-                        logger.Debug("ExchangeOnlineScanner.GetAllOf: Status Code {0}", response.StatusCode);
-                        logger.Debug(response.Content.ReadAsStringAsync().Result);
                     }
-                    catch { }
+                    else
+                    {
+                        try
+                        {
+                            logger.Debug("ExchangeOnlineScanner.GetAllOf: {0} was not successfull", typeof(T).ToString());
+                            logger.Debug("ExchangeOnlineScanner.GetAllOf: Status Code {0}", response.StatusCode);
+                            logger.Debug(await response.Content.ReadAsStringAsync());
+                        }
+                        catch { }
+                    }
                 }
             }
-            return null;
+            return resultList;
         }
 
         private HttpContent CreateMessage(string command, List<Tuple<string, string>> parameters)

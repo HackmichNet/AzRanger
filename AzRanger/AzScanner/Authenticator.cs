@@ -1,8 +1,10 @@
-﻿using Microsoft.Identity.Client;
+﻿using AzRanger.Utilities;
+using Microsoft.Identity.Client;
 using NLog;
 using System;
 using System.Linq;
 using System.Security;
+using System.Threading.Tasks;
 using Logger = NLog.Logger;
 
 namespace AzRanger.AzScanner
@@ -18,21 +20,36 @@ namespace AzRanger.AzScanner
         private String Username;
         private SecureString Password;
         private int FailedInteractiveLogonCounter = 0;
-        public Authenticator(string tenantId)
+        public Authenticator(string tenantId, string proxy)
         {
             if (tenantId == null)
             {
-                App = PublicClientApplicationBuilder.Create(ClientId).WithDefaultRedirectUri().Build();
+                if (proxy != null)
+                {
+                    IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
+                    App = PublicClientApplicationBuilder.Create(ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().Build();
+                }
+                else
+                {
+                    App = PublicClientApplicationBuilder.Create(ClientId).WithDefaultRedirectUri().Build();
+                }
             }
             else
             {
                 this.Authority = Authority + "/" + tenantId + "/";
-                App = PublicClientApplicationBuilder.Create(ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithDefaultRedirectUri().Build();
+                if (proxy != null) {
+                    IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
+                    App = PublicClientApplicationBuilder.Create(ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithDefaultRedirectUri().Build();
+                }
+                else
+                {
+                    App = PublicClientApplicationBuilder.Create(ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithDefaultRedirectUri().Build();
+                }
             }
             
         }
 
-        public Authenticator(string tenantId, String Username, String Password)
+        public Authenticator(string tenantId, String Username, String Password, string proxy)
         {
             this.Authority = Authority + "/" + tenantId + "/";
             this.Username = Username;
@@ -41,22 +58,29 @@ namespace AzRanger.AzScanner
             {       
                 this.Password.AppendChar(c);
             }
-            App = PublicClientApplicationBuilder.Create(ClientId).WithAuthority(Authority).WithTenantId(tenantId).Build(); 
+            if (proxy != null) {
+                IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
+                App = PublicClientApplicationBuilder.Create(ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).Build();
+            }
+            else
+            {
+                App = PublicClientApplicationBuilder.Create(ClientId).WithAuthority(Authority).WithTenantId(tenantId).Build();
+            }
         }
 
-        public String GetUserId()
+        public async Task<String> GetUserId()
         {
-            String id = GetAuthenticationResult(null).UniqueId;
-            if(id == null)
+            AuthenticationResult result = await GetAuthenticationResult(null);
+            if (result.UniqueId == null)
             {
                 return null;
             }
-            return id;
+            return result.UniqueId;
         }
 
-        public String GetAccessToken(String[] scopes)
+        public async Task<String> GetAccessToken(String[] scopes)
         {
-            var authenticationResult = GetAuthenticationResult(scopes);
+            AuthenticationResult authenticationResult = await GetAuthenticationResult(scopes);
             if (authenticationResult == null)
             {
                 return null;
@@ -64,16 +88,18 @@ namespace AzRanger.AzScanner
             return authenticationResult.AccessToken;
         }
 
-        public String GetTenantId()
+        public async Task<String> GetTenantId()
         {
-            return GetAuthenticationResult(null).TenantId;
+            AuthenticationResult result = await GetAuthenticationResult(null);
+            return result.TenantId;
         }
 
-        public String GetUsername()
+        public async Task<String> GetUsername()
         {
-            return GetAuthenticationResult(null).Account.Username;
+            AuthenticationResult result = await GetAuthenticationResult(null);
+            return result.Account.Username;
         }
-        private AuthenticationResult GetAuthenticationResult(String[] scopes)
+        private async Task<AuthenticationResult> GetAuthenticationResult(String[] scopes)
         {
             var accounts = App.GetAccountsAsync().GetAwaiter().GetResult();
             AuthenticationResult result = null;
@@ -81,7 +107,7 @@ namespace AzRanger.AzScanner
             {
                 try
                 {
-                    result = App.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync().GetAwaiter().GetResult();
+                    result = await App.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync();
                     return result;
                 }catch(MsalException ex)
                 {
@@ -95,7 +121,7 @@ namespace AzRanger.AzScanner
                     {
                         try
                         {
-                            result = App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync().GetAwaiter().GetResult();
+                            result = await App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync();
                             return result;
                         }catch(MsalServiceException ex2)
                         {
@@ -116,12 +142,12 @@ namespace AzRanger.AzScanner
             {
                 if (this.Username == null && this.Password == null)
                 {
-                    result = App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync().GetAwaiter().GetResult();
+                    result = await App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync();
                     return result;
                 }
                 else
                 {
-                    result = App.AcquireTokenByUsernamePassword(scopes, this.Username, this.Password).ExecuteAsync().GetAwaiter().GetResult();
+                    result = await App.AcquireTokenByUsernamePassword(scopes, this.Username, this.Password).ExecuteAsync();
                     return result;
                 }
             }

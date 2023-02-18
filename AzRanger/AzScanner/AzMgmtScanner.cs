@@ -37,22 +37,22 @@ namespace AzRanger.AzScanner
             this.Scope = new string[] { "https://management.azure.com/.default", "offline_access" };
         }
 
-        public ManagementGroupSettings GetManagementGroupSettings()
+        public Task<ManagementGroupSettings> GetManagementGroupSettings()
         {
-            return (ManagementGroupSettings)Get<ManagementGroupSettings>(String.Format(ManagementGroupSettings, this.Scanner.TenantId));
+            return Get<ManagementGroupSettings>(String.Format(ManagementGroupSettings, this.Scanner.TenantId));
         }
 
-        public ManagementGroup GetRootManagementGroup()
+        public Task<ManagementGroup> GetRootManagementGroup()
         {
-            return (ManagementGroup)Get<ManagementGroup>(String.Format(ManagementGroup, this.Scanner.TenantId));
+            return Get<ManagementGroup>(String.Format(ManagementGroup, this.Scanner.TenantId));
         }
 
-        public ManagementGroup GetManagementGroup(String name)
+        public Task<ManagementGroup> GetManagementGroup(String name)
         {
-            return (ManagementGroup) Get<ManagementGroup>(String.Format(ManagementGroup, name));
+            return Get<ManagementGroup>(String.Format(ManagementGroup, name));
         }
 
-        public Dictionary<String, ManagementGroup> GetAllManagementGroups()
+        public async Task<Dictionary<String, ManagementGroup>> GetAllManagementGroups()
         {
             Stack<String> GroupsToProcess = new Stack<String>();
             Dictionary<String, ManagementGroup> Result = new Dictionary<string, ManagementGroup>();
@@ -60,7 +60,7 @@ namespace AzRanger.AzScanner
             while (GroupsToProcess.Count > 0)
             {
                 String currentManagementGroup = GroupsToProcess.Pop();
-                ManagementGroup group = GetManagementGroup(currentManagementGroup);
+                ManagementGroup group = (ManagementGroup)(await GetManagementGroup(currentManagementGroup));
                 if (group == null)
                 {
                     continue;
@@ -81,9 +81,9 @@ namespace AzRanger.AzScanner
             return Result;
         }
 
-        public Dictionary<Guid, Subscription> GetAllSubscriptions()
+        public async Task<Dictionary<Guid, Subscription>> GetAllSubscriptions()
         {
-            var subs = GetAllOf<Subscription>(Subscriptions);
+            var subs = await GetAllOf<Subscription>(Subscriptions);
             if (subs != null)
             {
                 Dictionary<Guid, Subscription> Result = new Dictionary<Guid, Subscription>();
@@ -96,15 +96,15 @@ namespace AzRanger.AzScanner
             return null;
         }
 
-        public List<StorageAccount> GetStorageAccounts(String subscription)
+        public async Task<List<StorageAccount>> GetStorageAccounts(String subscription)
         {
-            List<StorageAccount> Result = GetAllOf<StorageAccount>(String.Format(StorageAccounts, subscription));
+            List<StorageAccount> Result = await GetAllOf<StorageAccount>(String.Format(StorageAccounts, subscription));
             if (Result != null)
             {
                 foreach (StorageAccount account in Result)
                 {
-                    account.StorageContainers = GetAllOf<StorageContainer>(String.Format(StorageContainers, account.id));
-                    account.Default = (StorageAccountDefault)Get<StorageAccountDefault>(String.Format(StorageDefault, account.id));
+                    account.StorageContainers = await GetAllOf<StorageContainer>(String.Format(StorageContainers, account.id));
+                    account.Default = (StorageAccountDefault) (await Get<StorageAccountDefault>(String.Format(StorageDefault, account.id)));
                     account.Subscription = Guid.Parse(subscription);
                 }
             }
@@ -112,66 +112,66 @@ namespace AzRanger.AzScanner
 
         }
 
-        public List<KeyVault> GetKeyVaults (String subscription)
+        public async Task<List<KeyVault>> GetKeyVaults (String subscription)
         {
-            List<KeyVault> Result = GetAllOf<KeyVault>(String.Format(KeyVaults, subscription));
+            List<KeyVault> Result = await GetAllOf<KeyVault>(String.Format(KeyVaults, subscription));
             if (Result != null)
             {
                 foreach (KeyVault keyVault in Result)
                 {
-                    keyVault.DiagnosticSettings = GetAllOf<DiagnosticSettings>(String.Format(DiagnosticSettings, keyVault.id));
+                    keyVault.DiagnosticSettings = await GetAllOf<DiagnosticSettings>(String.Format(DiagnosticSettings, keyVault.id));
                 }
             }
             return Result;
         }
-        public List<ActivityLogAlert> GetActivityLogAlerts(String subscription)
+        public Task<List<ActivityLogAlert>> GetActivityLogAlerts(String subscription)
         {
             return GetAllOf<ActivityLogAlert>(String.Format(ActivityLogAlerts, subscription));
         }
 
-        public List<NetworkSecurityGroup> GetNetworkSecurityGroups(String subscription)
+        public Task<List<NetworkSecurityGroup>> GetNetworkSecurityGroups(String subscription)
         {
             return GetAllOf<NetworkSecurityGroup>(String.Format(NetworkSecurityGroups, subscription));
         }
-        public List<SQLServer> GetSQLServers(String subscription)
+        public async Task<List<SQLServer>> GetSQLServers(String subscription)
         {
-            List<SQLServer> Result = GetAllOf<SQLServer>(String.Format(SQLServers, subscription));
+            List<SQLServer> Result = await GetAllOf<SQLServer>(String.Format(SQLServers, subscription));
             if(Result == null)
             {
                 return null;
             }
             foreach (SQLServer server in Result)
             {
-                server.firewallRules = GetAllOf<SQLServerFirewallRules>(String.Format(SQLServerFirewall, server.id));
-                server.auditingSettings = (SQLServerAuditingSettings)Get<SQLServerAuditingSettings>(String.Format(AuditingSettings, server.id));
-                server.SQLAdministrators = GetAllOf<SQLAdministrator>(String.Format(SQLAdminitrators, server.id));
-                server.SQLDatabases = GetAllOf<SQLDatabase>(String.Format(SQLDatabases, server.id));
+                server.firewallRules = await GetAllOf<SQLServerFirewallRules>(String.Format(SQLServerFirewall, server.id));
+                server.auditingSettings = (SQLServerAuditingSettings)(await Get<SQLServerAuditingSettings>(String.Format(AuditingSettings, server.id)));
+                server.SQLAdministrators = await GetAllOf<SQLAdministrator>(String.Format(SQLAdminitrators, server.id));
+                server.SQLDatabases = await GetAllOf<SQLDatabase>(String.Format(SQLDatabases, server.id));
                 foreach (SQLDatabase database in server.SQLDatabases)
                 {
-                    database.transparentDataEncryption = (SQLDatabaseTransparentDataEncryption)Get<SQLDatabaseTransparentDataEncryption>(String.Format(TransparentDataEncryption, database.id));
+                    database.transparentDataEncryption = (SQLDatabaseTransparentDataEncryption) (await Get<SQLDatabaseTransparentDataEncryption>(String.Format(TransparentDataEncryption, database.id)));
                 }
             }
             return Result;
         }
 
-        public List<AutoProvisioningSettings> GetProvisioningSettings(String subscription)
+        public Task<List<AutoProvisioningSettings>> GetProvisioningSettings(String subscription)
         {
             return GetAllOf<AutoProvisioningSettings>(String.Format(AutoProvisioningSettings, subscription));
         }
 
-        public SecurityContact GetSecurityContacts(String subscription)
+        public Task<SecurityContact> GetSecurityContacts(String subscription)
         {
-            return (SecurityContact)Get<SecurityContact>(String.Format(SecurityContacts, subscription));
+            return Get<SecurityContact>(String.Format(SecurityContacts, subscription));
         }
 
-        public List<VirtualMachine> GetVirtualMachines(String subscription)
+        public Task<List<VirtualMachine>> GetVirtualMachines(String subscription)
         {
             return GetAllOf<VirtualMachine>(String.Format(VirtualMachines, subscription));
         }
 
-        public SubscriptionPolicy GetSubscriptionPolicy()
+        public Task<SubscriptionPolicy> GetSubscriptionPolicy()
         {
-            return (SubscriptionPolicy)Get<SubscriptionPolicy>(SubscriptionPolicy);
+            return Get<SubscriptionPolicy>(SubscriptionPolicy);
         }
 
         internal override String ManipulateResponse(String response, String endPoint)
@@ -188,9 +188,9 @@ namespace AzRanger.AzScanner
             }
         }
 
-        public SecurityCenterBuiltIn GetSecurityCenterBuiltIn(String subscription)
+        public Task<SecurityCenterBuiltIn> GetSecurityCenterBuiltIn(String subscription)
         {
-            return (SecurityCenterBuiltIn)Get<SecurityCenterBuiltIn>(String.Format(SecurityCenterBuiltIn, subscription));
+            return Get<SecurityCenterBuiltIn>(String.Format(SecurityCenterBuiltIn, subscription));
         }
     }
 }

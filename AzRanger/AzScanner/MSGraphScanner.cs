@@ -44,24 +44,24 @@ namespace AzRanger.AzScanner
             this.Scope = new String[] { "https://graph.microsoft.com/.default", "offline_access" };
         }
 
-        public AuthorizationPolicy GetAuthorizationPolicy()
+        public Task<AuthorizationPolicy> GetAuthorizationPolicy()
         {
-            return (AuthorizationPolicy)Get<AuthorizationPolicy>(MSGraphScanner.AuthorizationPolicy);
+            return Get<AuthorizationPolicy>(MSGraphScanner.AuthorizationPolicy);
         }
 
-        public DeviceRegistrationPolicy GetDeviceRegistrationPolicy()
+        public Task<DeviceRegistrationPolicy> GetDeviceRegistrationPolicy()
         {
-            return (DeviceRegistrationPolicy)Get<DeviceRegistrationPolicy>(MSGraphScanner.DeviceRegistrationPolicy);
+            return Get<DeviceRegistrationPolicy>(MSGraphScanner.DeviceRegistrationPolicy);
         }
 
-        public List<LicenseDetails> GetLicenses()
+        public Task<List<LicenseDetails>> GetLicenses()
         {
             return GetAllOf<LicenseDetails>(LicenseDetailBeta);
         }
 
-        public Dictionary<Guid, Device> GetAllDevices()
+        public async Task<Dictionary<Guid, Device>> GetAllDevices()
         {
-            List<Device> allDevices = GetAllOf<Device>(MSGraphScanner.DevicesBeta, "$select=id,displayname,isCompliant,isManaged,operatingSystem,enrollmentType,profileType,deviceId,deviceOwnership,onPremisesSyncEnabled&$expand=registeredOwners($select=id)");
+            List<Device> allDevices = await GetAllOf<Device>(MSGraphScanner.DevicesBeta, "$select=id,displayname,isCompliant,isManaged,operatingSystem,enrollmentType,profileType,deviceId,deviceOwnership,onPremisesSyncEnabled&$expand=registeredOwners($select=id)");
             Dictionary<Guid, Device> Result = new Dictionary<Guid, Device>();
             foreach(Device device in allDevices)
             {
@@ -69,50 +69,57 @@ namespace AzRanger.AzScanner
             }
             return Result;
         }
-        public Dictionary<Guid, User> GetAllUsers()
+        public async Task<Dictionary<Guid, User>> GetAllUsers()
         {
             List<User> allUsers;
             if (this.Scanner.HasP1License)
             {
-                allUsers = GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,signInActivity,onPremisesSyncEnabled");
+                allUsers = await GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,signInActivity,onPremisesSyncEnabled");
             }
             else
             {
-                allUsers = GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,onPremisesSyncEnabled");
+                allUsers = await GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,onPremisesSyncEnabled");
             }
             if(allUsers == null)
             {
                 return null;
             }
             Dictionary<Guid, User> Result = new Dictionary<Guid, User>();
+            List<Task<StrongAuthenticationDetail>> tasks = new List<Task<StrongAuthenticationDetail>>();
             foreach (User user in allUsers)
             {
-                StrongAuthenticationDetail details = this.Scanner.GraphWinScanner.GetStrongAuthenticationDetail(user.id);
-                user.strongAuthenticationDetail = details.strongAuthenticationDetail;
-                if (user.strongAuthenticationDetail.methods != null && user.strongAuthenticationDetail.methods.Length > 0)
+                Result.Add(user.id, user);
+                tasks.Add(this.Scanner.GraphWinScanner.GetStrongAuthenticationDetail(user.id));
+            }
+
+            IEnumerable<StrongAuthenticationDetail> results = await Task.WhenAll(tasks);
+            foreach(StrongAuthenticationDetail resultObject in results)
+            {
+                Result[resultObject.objectId].strongAuthenticationDetail = resultObject.strongAuthenticationDetail;
+
+                if (resultObject.strongAuthenticationDetail.methods != null && resultObject.strongAuthenticationDetail.methods.Length > 0)
                 {
-                    user.isMFAEnabled = true;
+                    Result[resultObject.objectId].isMFAEnabled = true;
                 }
                 else
                 {
-                    user.isMFAEnabled = false;
+                    Result[resultObject.objectId].isMFAEnabled = false;
                 }
-                Result.Add(user.id, user);
+
             }
-            //Task.WaitAll(tasks.ToArray());
             return Result;
         }
 
-        public Dictionary<Guid, User> GetAllGuests()
+        public async Task<Dictionary<Guid, User>> GetAllGuests()
         {
             List<User> allUsers;
             if (this.Scanner.HasP1License)
             {
-                allUsers = GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Guest'&$select=id,userPrincipalName,displayName,userType,ExternalUserState,ExternalUserStateChangeDateTime,CreatedDateTime,CreationType,AccountEnabled,signInActivity");
+                allUsers = await GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Guest'&$select=id,userPrincipalName,displayName,userType,ExternalUserState,ExternalUserStateChangeDateTime,CreatedDateTime,CreationType,AccountEnabled,signInActivity");
             }
             else
             {
-                allUsers = GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Guest'&$select=id,userPrincipalName,displayName,userType,ExternalUserState,ExternalUserStateChangeDateTime,CreatedDateTime,CreationType,AccountEnabled");
+                allUsers = await GetAllOf<User>(MSGraphScanner.UsersBeta, "?$Filter=UserType eq 'Guest'&$select=id,userPrincipalName,displayName,userType,ExternalUserState,ExternalUserStateChangeDateTime,CreatedDateTime,CreationType,AccountEnabled");
             }
             if(allUsers == null)
             {
@@ -126,26 +133,26 @@ namespace AzRanger.AzScanner
             return Result;
         }
 
-        public List<EnterpriseApplicationUserSettings> GetSettings()
+        public Task<List<EnterpriseApplicationUserSettings>> GetSettings()
         {
             return GetAllOf<EnterpriseApplicationUserSettings>(SettingsBeta);
         }
-        public Dictionary<Guid, DirectoryRole> GetAllDirectoryRoles()
+        public async Task<Dictionary<Guid, DirectoryRole>> GetAllDirectoryRoles()
         {
-            List<DirectoryRole> roles = base.GetAllOf<DirectoryRole>(MSGraphScanner.DirectoryRoles);
+            List<DirectoryRole> roles = await base.GetAllOf<DirectoryRole>(MSGraphScanner.DirectoryRoles);
             Dictionary<Guid, DirectoryRole> Result = new Dictionary<Guid, DirectoryRole>();
             foreach (DirectoryRole role in roles)
             {
-                role.SetMember(GetAllRoleMember(role.id));
+                role.SetMember( await GetAllRoleMember(role.id));
                 Result.Add(role.id, role);
             }
             return Result;
         }
 
-        public List<AzurePrincipal> GetAllMemberOf(Guid groupId)
+        public async Task<List<AzurePrincipal>> GetAllMemberOf(Guid groupId)
         {
             List<AzurePrincipal> Result = new List<AzurePrincipal>();
-            List<IDTypeResponse> All = GetAllOf<IDTypeResponse>(string.Format(MSGraphScanner.GroupMemberTransitiv, groupId.ToString()), "?$select=id");
+            List<IDTypeResponse> All = await GetAllOf<IDTypeResponse>(string.Format(MSGraphScanner.GroupMemberTransitiv, groupId.ToString()), "?$select=id");
             foreach (IDTypeResponse member in All)
             {
                 if (member.odatatype == "#microsoft.graph.user")
@@ -172,15 +179,15 @@ namespace AzRanger.AzScanner
             return Result;
         }
 
-        internal List<AzurePrincipal> GetAllRoleMember(Guid roleId)
+        internal async Task<List<AzurePrincipal>> GetAllRoleMember(Guid roleId)
         {
             List<AzurePrincipal> Result = new List<AzurePrincipal>();
-            List<IDTypeResponse> All = GetAllOf<IDTypeResponse>(string.Format(MSGraphScanner.DirectoryRolesMembersAll, roleId.ToString()), "?$select=id");
+            List<IDTypeResponse> All = await GetAllOf<IDTypeResponse>(string.Format(MSGraphScanner.DirectoryRolesMembersAll, roleId.ToString()), "?$select=id");
             foreach (IDTypeResponse member in All)
             {
                 if (member.odatatype == "#microsoft.graph.group")
                 {
-                    List<IDTypeResponse> usersInGroups = GetAllOf<IDTypeResponse>(string.Format(MSGraphScanner.GroupMemberTransitiv, member.id), "?$select=id");
+                    List<IDTypeResponse> usersInGroups = await GetAllOf<IDTypeResponse>(string.Format(MSGraphScanner.GroupMemberTransitiv, member.id), "?$select=id");
                     foreach (IDTypeResponse user in usersInGroups)
                     {
                         if (user.odatatype == "#microsoft.graph.user")
@@ -229,14 +236,14 @@ namespace AzRanger.AzScanner
             return Result;
         }
 
-        public List<Domain> GetAzDomains()
+        public Task<List<Domain>> GetAzDomains()
         {
             return GetAllOf<Domain>(MSGraphScanner.GetDomains);
         }
 
-        public Dictionary<Guid, ConditionalAccessPolicy> GetAllCondtionalAccessPolicies()
+        public async Task<Dictionary<Guid, ConditionalAccessPolicy>> GetAllCondtionalAccessPolicies()
         {
-            List< ConditionalAccessPolicy> policies = GetAllOf<ConditionalAccessPolicy>(MSGraphScanner.ConditionalAccessPoliciesBeta);
+            List< ConditionalAccessPolicy> policies = await GetAllOf<ConditionalAccessPolicy>(MSGraphScanner.ConditionalAccessPoliciesBeta);
             if(policies == null)
             {
                 logger.Warn("MSGraphScanner.GetAllCondtionalAccessPolicies: Connot find Conditional Access Policies. Do you have th correct rights?");
@@ -250,10 +257,10 @@ namespace AzRanger.AzScanner
             return result;
         }
 
-        public Dictionary<Guid, Application> GetAllApplications()
+        public async Task<Dictionary<Guid, Application>> GetAllApplications()
         {
             Dictionary<Guid, Application> result = new Dictionary<Guid, Application>();
-            List<Application> allApps = GetAllOf<Application>( MSGraphScanner.Applications, "?$select=id,displayName,appId,passwordCredentials,keyCredentials,publisherDomain,signInAudience&$expand=owners($select=id)");
+            List<Application> allApps = await GetAllOf<Application>( MSGraphScanner.Applications, "?$select=id,displayName,appId,passwordCredentials,keyCredentials,publisherDomain,signInAudience&$expand=owners($select=id)");
 
             foreach (Application app in allApps)
             {
@@ -267,21 +274,21 @@ namespace AzRanger.AzScanner
             return result;
         }
 
-        public Dictionary<Guid, ServicePrincipal> GetAllServicePrincipals()
+        public async Task<Dictionary<Guid, ServicePrincipal>> GetAllServicePrincipals()
         {
             Dictionary<Guid, ServicePrincipal> result = new Dictionary<Guid, ServicePrincipal>();
-            List<ServicePrincipal> allAppsWithOwner = base.GetAllOf<ServicePrincipal>(MSGraphScanner.ServicePrincipals, "?$select=id,appDisplayName,appId,passwordCredentials,keyCredentials,oauth2PermissionScopes,appOwnerOrganizationId&$expand=owners($select=id)");
+            List<ServicePrincipal> allAppsWithOwner = await base.GetAllOf<ServicePrincipal>(MSGraphScanner.ServicePrincipals, "?$select=id,appDisplayName,appId,passwordCredentials,keyCredentials,oauth2PermissionScopes,appOwnerOrganizationId&$expand=owners($select=id)");
             foreach (ServicePrincipal app in allAppsWithOwner)
             {
                 result.Add(app.id, app);
             }
-            List<ServicePrincipal> allAppsWithAppRoles = base.GetAllOf<ServicePrincipal>(MSGraphScanner.ServicePrincipals, "?$select=id&$expand=appRoleAssignments");
+            List<ServicePrincipal> allAppsWithAppRoles = await base.GetAllOf<ServicePrincipal>(MSGraphScanner.ServicePrincipals, "?$select=id&$expand=appRoleAssignments");
             foreach (ServicePrincipal app in allAppsWithAppRoles)
             {
                 result[app.id].appRoleAssignments = app.appRoleAssignments;
             }
 
-            List<Oauth2PermissionGrant> grants = GetAllOf<Oauth2PermissionGrant>(OAuth2PermissionGrants);
+            List<Oauth2PermissionGrant> grants = await GetAllOf<Oauth2PermissionGrant>(OAuth2PermissionGrants);
             foreach(Oauth2PermissionGrant grant in grants)
             {
                 // I know not the best implementation....maybe think about later.
@@ -302,9 +309,9 @@ namespace AzRanger.AzScanner
             return result;
         }
 
-        internal Dictionary<Guid, Group> GetAllGroups()
+        internal async Task<Dictionary<Guid, Group>> GetAllGroups()
         {
-            List < Group > allGroups= GetAllOf<Group>(GroupsBeta, "?$select=id,displayName,securityEnabled,Visibility");
+            List <Group> allGroups = await GetAllOf<Group>(GroupsBeta, "?$select=id,displayName,securityEnabled,Visibility");
             Dictionary<Guid, Group> Result = new Dictionary<Guid, Group>();
             foreach (Group group in allGroups)
             {
@@ -314,9 +321,9 @@ namespace AzRanger.AzScanner
         }
 
         // Transitiv, gives only the users or principals back, does not include other groups
-        internal List<AzurePrincipal> GetAllGroupMemberTransitiv(Guid groupId)
+        internal async Task<List<AzurePrincipal>> GetAllGroupMemberTransitiv(Guid groupId)
         {
-            List<IDTypeResponse> groupMember = GetAllOf<IDTypeResponse>(string.Format(GroupMemberTransitiv, groupId.ToString()), "?$select=id");
+            List<IDTypeResponse> groupMember = await GetAllOf<IDTypeResponse>(string.Format(GroupMemberTransitiv, groupId.ToString()), "?$select=id");
             List<AzurePrincipal> result = new List<AzurePrincipal>();
 
             foreach (IDTypeResponse user in groupMember)
@@ -326,9 +333,9 @@ namespace AzRanger.AzScanner
             return result;
         }
 
-        internal AuthenticationMethodsPolicy GetAuthenticationMethodsPolicy()
+        internal Task<AuthenticationMethodsPolicy> GetAuthenticationMethodsPolicy()
         {
-            return (AuthenticationMethodsPolicy)Get<AuthenticationMethodsPolicy>(AuthenticationMethodsPolicy);
+            return Get<AuthenticationMethodsPolicy>(AuthenticationMethodsPolicy);
 
         }
 

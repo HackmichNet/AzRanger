@@ -19,7 +19,7 @@ namespace AzRanger.AzScanner
         }
 
 
-        public List<PIMRoleAssignments> GetRoleAssignemts(Guid tenantID, Guid roleDefinition)
+        public Task<List<PIMRoleAssignments>> GetRoleAssignemts(Guid tenantID, Guid roleDefinition)
         {
             String query = String.Format(@"$filter=(roleDefinition/resource/id eq '{0}') and (roleDefinition/id eq '{1}')&$expand=subject,scopedResource", tenantID.ToString(), roleDefinition.ToString());
             return GetAllOf<PIMRoleAssignments>(RoleAssognmentForDirectory, query); ;

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace AzRanger.Models.WinGraph
 {
@@ -9,6 +10,8 @@ namespace AzRanger.Models.WinGraph
         [JsonPropertyName("odata.type")]
         public string odatatype { get; set; }
         public StrongAuthenticationDetailDetails strongAuthenticationDetail { get; set; }
+
+        public Guid objectId { get; set; }
     }
 
     public class StrongAuthenticationDetailDetails

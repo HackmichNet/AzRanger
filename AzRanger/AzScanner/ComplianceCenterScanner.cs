@@ -20,38 +20,38 @@ namespace AzRanger.AzScanner
         public ComplianceCenterScanner(Scanner scanner)
         {
             this.Scanner = scanner;
-            this.BaseAdresse = GetBaseAddress();
+            this.BaseAdresse = GetBaseAddress().Result;
 
             this.ClientID = "1b730954-1685-4b74-9bfd-dac224a7b894";
             this.Scope = new String[] { "https://ps.compliance.protection.outlook.com/.default", "offline_access", "openid", "profile"};
         }
 
-        public List<DlpCompliancePolicy> GetDLPPolicies()
+        public Task<List<DlpCompliancePolicy>> GetDLPPolicies()
         {
             if(BaseAdresse == null) return null;
             return GetAllOf<DlpCompliancePolicy>(DLPPolicies, null, null);
         }
 
-        public List<DlpLabel> GetDLPLabels()
+        public Task<List<DlpLabel>> GetDLPLabels()
         {
             if (BaseAdresse == null) return null;
             return GetAllOf<DlpLabel>(DLPLabels, null, null);
         }
 
-        public String GetBaseAddress()
+        public async Task<String> GetBaseAddress()
         {
-            String accessToken = this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
             if (accessToken == null)
             {
                 logger.Warn("ComplianceCenterScanner.GetBaseAddress: {0} failed to get token!", this.Scope.ToString());
                 return null;
             }
             AuthenticationHeaderValue authenticationHeader = new AuthenticationHeaderValue("Bearer", accessToken);
-            using (var client = Helper.GetDefaultClient(InitBaseAdress, false, null, this.Scanner.Proxy))
-            using (var message = new HttpRequestMessage(HttpMethod.Get, PowerShellLiveId))
+            string url = InitBaseAdress + PowerShellLiveId;
+            using (var client = Helper.GetDefaultClient(null, this.Scanner.Proxy))
             {
-                message.Headers.Authorization = authenticationHeader;
-                var response = client.SendAsync(message).Result;
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                var response = await client.GetAsync(url);
                 if (response.StatusCode == HttpStatusCode.Redirect)
                 {
                     logger.Debug("ComplianceCenterScanner.GetBaseAddress: Get base Url: {0}", response.Headers.Location.ToString());

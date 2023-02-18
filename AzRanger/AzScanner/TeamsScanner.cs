@@ -19,14 +19,14 @@ namespace AzRanger.AzScanner
             this.Scope = new string[] { "48ac35b8-9aa8-4d74-927d-1f4a14a0b239/user_impersonation", "offline_access", "openid", "profile" };
         }
 
-        public TeamsClientConfiguration GetTeamsClientConfiguration()
+        public Task<TeamsClientConfiguration> GetTeamsClientConfiguration()
         {
-            return (TeamsClientConfiguration)Get<TeamsClientConfiguration>(TeamsClientConfiguration);
+            return Get<TeamsClientConfiguration>(TeamsClientConfiguration);
         }
 
-        public TenantFederationSettings GetTenantFederationSettings()
+        public Task<TenantFederationSettings> GetTenantFederationSettings()
         {
-            return (TenantFederationSettings)Get<TenantFederationSettings>(TenantFederationSettings);
+            return Get<TenantFederationSettings>(TenantFederationSettings);
         }
 
         internal override String ManipulateResponse(String response, string endPoint)

@@ -5,6 +5,7 @@ using System.Collections;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -22,12 +23,12 @@ namespace AzRanger.AzScanner
 			
 		}
 
-		public DirSyncFeatures GetDirSyncFeatures()
+		public async Task<DirSyncFeatures> GetDirSyncFeatures()
         {
 			GetCompanyDirSyncFeaturesResponse response = null;
             try
             {
-				String responseString = PostToProvisioninApi("GetCompanyDirSyncFeatures", @"<b:ReturnValue i:nil=""true""/>");
+				String responseString = await PostToProvisioninApi("GetCompanyDirSyncFeatures", @"<b:ReturnValue i:nil=""true""/>");
 				XmlDocument doc = new XmlDocument();
 				doc.LoadXml(responseString);
 				var nsmgr = new XmlNamespaceManager(doc.NameTable);
@@ -56,12 +57,12 @@ namespace AzRanger.AzScanner
             }
         }
 
-		public MsolCompanyInformation GetMsolCompanyInformation()
+		public async Task<MsolCompanyInformation> GetMsolCompanyInformation()
         {
 			GetCompanyInformationResponse response = null;
 			try
 			{
-				response = this.GetCompanyInformationResponse();
+				response = await this.GetCompanyInformationResponse();
             }
             catch { }
 			if(response != null)
@@ -76,7 +77,7 @@ namespace AzRanger.AzScanner
             }
             else
             {
-				String response2 = PostToProvisioninApi("GetCompanyInformation", @"<b:ReturnValue i:nil=""true""/>");
+				String response2 = await PostToProvisioninApi("GetCompanyInformation", @"<b:ReturnValue i:nil=""true""/>");
 				bool UsersPermissionToCreateGroupsEnabled = false;
 				bool UsersPermissionToReadOtherUsersEnabled = false;
 				bool AllowAdHocSubscriptions = false;
@@ -176,22 +177,22 @@ namespace AzRanger.AzScanner
 		}
 			
         
-		private String PostToProvisioninApi(string command, string requestElement)
+		private async Task<String> PostToProvisioninApi(string command, string requestElement)
 		{
-			String accessToken = this.Scanner.Authenticator.GetAccessToken(this.Scope);
+			String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
 			if(accessToken == null)
             {
 				logger.Warn("ProvisionApiScanner.PostToProvisionApi: Failed to get access token");
 				return null;
             }
-			string content = CreateEnvelop(accessToken, command, requestElement);
+			
 			logger.Debug("ProvisionApiScanner.PostToProvisionApi: {0}|{1}", command, requestElement);
-			using (var client = Helper.GetDefaultClient(BaseAdresse, false,null, this.Scanner.Proxy))
-			using (var message = new HttpRequestMessage(HttpMethod.Post, Endpoint))
+			using (var client = Helper.GetDefaultClient(null, this.Scanner.Proxy))
 			{
-				message.Content = new StringContent(content.Replace("\\n", "").Replace("\\t", ""), Encoding.UTF8, "application/soap+xml");
-
-				var response = client.SendAsync(message).Result;
+				string content = CreateEnvelop(accessToken, command, requestElement);
+				StringContent message = new StringContent(content.Replace("\\n", "").Replace("\\t", ""), Encoding.UTF8, "application/soap+xml");
+				String url = this.BaseAdresse + Endpoint;
+				var response = await client.PostAsync(url, message);
 				if (response.IsSuccessStatusCode)
 				{
 					var result = response.Content.ReadAsStringAsync().Result;
@@ -203,7 +204,7 @@ namespace AzRanger.AzScanner
 					{
 						logger.Debug("ProvisionApiScanner.PostToProvisionApi: was not successfull");
 						logger.Debug("ProvisionApiScanner.PostToProvisionApi: Status Code {0}", response.StatusCode);
-						logger.Debug(response.Content.ReadAsStringAsync().Result);
+						logger.Debug(await response.Content.ReadAsStringAsync());
                     }
                     catch { }
 				}
@@ -211,9 +212,9 @@ namespace AzRanger.AzScanner
 			return null;
 		}
 
-		private GetCompanyInformationResponse GetCompanyInformationResponse()
+		private async Task<GetCompanyInformationResponse> GetCompanyInformationResponse()
         {
-			String response = PostToProvisioninApi("GetCompanyInformation", @"<b:ReturnValue i:nil=""true""/>");
+			String response = await PostToProvisioninApi("GetCompanyInformation", @"<b:ReturnValue i:nil=""true""/>");
 			try
 			{
 
@@ -238,10 +239,10 @@ namespace AzRanger.AzScanner
 			}
 		}
 
-		public SharepointInformation GetSharepointInformation()
+		public async Task<SharepointInformation> GetSharepointInformation()
 		{
 			logger.Debug("ProvisionApiScanner.GetSharepointInformation: Enter function");
-			GetCompanyInformationResponse getCompanyInformationResponse = GetCompanyInformationResponse();
+			GetCompanyInformationResponse getCompanyInformationResponse = await GetCompanyInformationResponse();
 			string SharePointAdminUrl = null;
 			string SharePointUrl = null;
 
@@ -279,7 +280,7 @@ namespace AzRanger.AzScanner
                 catch { }
 			}
 
-			String response = PostToProvisioninApi("GetCompanyInformation", @"<b:ReturnValue i:nil=""true""/>");
+			String response = await PostToProvisioninApi("GetCompanyInformation", @"<b:ReturnValue i:nil=""true""/>");
 			XmlDocument doc = new XmlDocument();
 			doc.LoadXml(response);
 			XmlNodeList nodeList = doc.GetElementsByTagName("ServiceParameter");

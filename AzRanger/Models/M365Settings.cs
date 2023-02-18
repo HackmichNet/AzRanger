@@ -17,12 +17,10 @@ namespace AzRanger.Models
     {
         public string TenantId { get; set; }
         public List<Domain> Domains;
-        public List<EnterpriseApplicationUserSettings> EnterpriseApplicationUserSettings { get; set; }
         public SecurityDefaults SecurityDefaults { get; set; }
         public DirectoryProperties DirectoryProperties { get; set; }
         public PasswordResetPolicies PasswordResetPolicies { get; set; }
         public AzureADPasswordPolicy PasswordPolicy { get; set; }
-        public Dictionary<Guid, ConditionalAccessPolicy> AllCAPolicies { get; set; }
         public ADConnectStatus ADConnectStatus { get; set; }
         public SharepointInformation SharepointInformation { get; set; }
         public MsolCompanyInformation MSOLCompanyInformation { get; set; }

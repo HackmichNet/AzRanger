@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
@@ -21,22 +22,14 @@ namespace AzRanger.AzScanner
         
         internal List<Tuple<string, string>> additionalHeaders;
 
-
-        internal virtual object Get<T>(string endPoint, string query = null)
+        internal async virtual Task<T> Get<T>(String endPoint, string query = null)
         {
-
-        String accessToken = this.Scanner.Authenticator.GetAccessToken(this.Scope);      
-        if (accessToken == null)
-        {
-            logger.Warn("IScanner.Get: Failed to authenticate for " + this.Scope.ToString());
-            return null;
-        }
-        AuthenticationHeaderValue authenticationHeader = new AuthenticationHeaderValue("Bearer", accessToken);
-        return Get<T>(authenticationHeader, endPoint, query);
-        }
-
-        internal virtual object Get<T>(AuthenticationHeaderValue authenticationHeader, String endPoint, string query = null)
-        {
+            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            if (accessToken == null)
+            {
+                logger.Warn("IScanner.GetAllOf: {0}|{1} failed to get token!", typeof(T).ToString(), this.Scope.ToString());
+                return default(T);
+            }
             string usedEndpoint = endPoint;
             if (query != null)
             {
@@ -49,14 +42,13 @@ namespace AzRanger.AzScanner
                     usedEndpoint = endPoint + "?" + query;
                 }
             }
-            logger.Debug("IScanner.Get: {0}|{1}", typeof(T).ToString(), usedEndpoint);
+            string url = BaseAdresse + usedEndpoint;
+            logger.Debug("IScanner.Get: {0}|{1}", typeof(T).ToString(), url);
 
-            using (var client = Helper.GetDefaultClient(BaseAdresse, false, additionalHeaders, this.Scanner.Proxy))
-            using (var message = new HttpRequestMessage(HttpMethod.Get, usedEndpoint))
+            using (var client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy))
             {
-
-                message.Headers.Authorization = authenticationHeader;
-                var response = client.SendAsync(message).Result;
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                var response = await client.GetAsync(url);
                 String manipulatedResponse = null;
                 if (response.IsSuccessStatusCode)
                 {
@@ -72,43 +64,35 @@ namespace AzRanger.AzScanner
                         logger.Debug("IScanner.Get: DeserializationFailed");
                         logger.Debug(e.Message);
                         logger.Debug(manipulatedResponse);
-                        return null;
+                        return default(T);
                     }
                 }
                 else
                 {
                     try
                     {
-                        logger.Debug("IScanner.Get: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
+                        logger.Debug("IScanner.Get: {0}|{1} was not successfull", typeof(T).ToString(), url);
                         logger.Debug("IScanner.Get: Status Code {0}", response.StatusCode);
-                        logger.Debug(response.Content.ReadAsStringAsync().Result);
+                        logger.Debug(await response.Content.ReadAsStringAsync());
                     }
                     catch { }
                 }
             }            
-            return null;
+            return default(T);
         }
 
         internal virtual String ManipulateResponse(String response, String endPoint)
         {
             return response;
         }
-
-
-        internal virtual List<T> GetAllOf<T>(string endPoint, string query = null, List<T> alreadyCollectedItems = null)
+        internal async virtual Task<List<T>> GetAllOf<T>(string endPoint, string query = null, List<Tuple<string, string>> additionalHeaders = null)
         {
-            String accessToken = this.Scanner.Authenticator.GetAccessToken(this.Scope);
-            if(accessToken == null)
+            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            if (accessToken == null)
             {
                 logger.Warn("IScanner.GetAllOf: {0}|{1} failed to get token!", typeof(T).ToString(), this.Scope.ToString());
                 return null;
             }
-            AuthenticationHeaderValue authenticationHeader = new AuthenticationHeaderValue("Bearer", accessToken);
-            return GetAllOf<T>(authenticationHeader, endPoint, query, alreadyCollectedItems, additionalHeaders);
-        }
-
-        internal virtual List<T> GetAllOf<T>(AuthenticationHeaderValue authenticationHeader, string endPoint, string query = null, List<T> alreadyCollectedItems = null, List<Tuple<string, string>> additionalHeaders = null)
-        {
             string usedEndpoint = endPoint;
             if (query != null)
             {
@@ -121,83 +105,62 @@ namespace AzRanger.AzScanner
                     usedEndpoint = endPoint + "?" + query;
                 }
             }
-            logger.Debug("IScanner.GetAllOf: {0}|{1}", typeof(T).ToString(), usedEndpoint);
-            using (var client = Helper.GetDefaultClient(BaseAdresse, false, additionalHeaders, this.Scanner.Proxy))
-            using (var message = new HttpRequestMessage(HttpMethod.Get, usedEndpoint))
+            string url = BaseAdresse + usedEndpoint;
+            List<T> resultList = new List<T>();
+            while (url != null)
             {
-                message.Headers.Authorization = authenticationHeader;
-                var response = client.SendAsync(message).Result;
-                if (response.IsSuccessStatusCode)
+                logger.Debug("IScanner.GetAllOf: {0}|{1}", typeof(T).ToString(), url);
+                using (var client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy))
                 {
-                    /// Create the result list
-                    List<T> r = new List<T>();
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                    var response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        /// Parse the result in GenericObjects
+                        var result = await response.Content.ReadAsStringAsync();
+                        result = ManipulateResponse(result, endPoint);
+                        GenResponse genericAnswer = JsonSerializer.Deserialize<GenResponse>(result);
+                        logger.Debug("IScanner.GetAllOf: {0} elements in response", genericAnswer.value.Length);
 
-                    /// Parse the result in GenericObjects
-                    var result = response.Content.ReadAsStringAsync().Result;
-                    result = ManipulateResponse(result, endPoint);
-                    GenResponse genericAnswer = JsonSerializer.Deserialize<GenResponse>(result);
-                    logger.Debug("IScanner.GetAllOf: {0} elements in response", genericAnswer.value.Length);
+                        /// Go throuththe generic object and parse the value field
+                        foreach (var entry in genericAnswer.value)
+                        {
+                            try
+                            {
+                                var resultParsed = JsonSerializer.Deserialize<T>(entry.ToString());
+                                resultList.Add(resultParsed);
+                            }
+                            catch (Exception e)
+                            {
+                                logger.Debug("IScanner.GetAllOf: DeserializationFailed");
+                                logger.Debug(e.Message);
+                                logger.Debug(entry.ToString());
+                            }
+                        }
 
-                    /// Go throuththe generic object and parse the value field
-                    foreach (var entry in genericAnswer.value)
+                        // If the generic Answer has a nextLink, we have more items then responded in the first answer
+                        if (genericAnswer.odatanextLink != null)
+                        {
+                            url = genericAnswer.odatanextLink;
+                        }
+                        else
+                        {
+                            url = null;
+                        }
+                    }
+                    else
                     {
                         try
                         {
-                            var resultParsed = JsonSerializer.Deserialize<T>(entry.ToString());
-                            r.Add(resultParsed);
+                            logger.Debug("IScanner.GetAllOf: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
+                            logger.Debug("IScanner.GetAllOf: Status Code {0}", response.StatusCode);
+                            logger.Debug(await response.Content.ReadAsStringAsync());
                         }
-                        catch (Exception e)
-                        {
-                            logger.Debug("IScanner.GetAllOf: DeserializationFailed");
-                            logger.Debug(e.Message);
-                            logger.Debug(entry.ToString());
-                        }
+                        catch (Exception) { }
                     }
-
-                    // If the generic Answer has a nextLink, we have more items then responded in the first answer
-                    if (genericAnswer.odatanextLink != null)
-                    {
-                        // Create the next endpoint => Endpoint + nextLink Attribute
-                        string[] seperator = new string[] { endPoint };  
-                        string NewQuery = genericAnswer.odatanextLink.Split(seperator, StringSplitOptions.None)[1];
-
-                        /// If the function was called already, we hand over some values
-                        if (alreadyCollectedItems != null)
-                        {
-                            foreach (var item in alreadyCollectedItems)
-                            {
-                                r.Add(item);
-                            }
-                        }
-
-                        /// Call the function again with the already collected items and the nextLink
-                        return GetAllOf<T>(authenticationHeader, endPoint, NewQuery, r, additionalHeaders);
-                    }
-                    else /// No next link anymore, just check if we have some items and concat them with the current result
-                    {
-                        if (alreadyCollectedItems != null)
-                        {
-                            foreach (var item in alreadyCollectedItems)
-                            {
-                                r.Add(item);
-                            }
-                        }
-                    }
-                    return r;
-                }
-                else
-                {
-                    try
-                    {
-                        logger.Debug("IScanner.GetAllOf: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
-                        logger.Debug("IScanner.GetAllOf: Status Code {0}", response.StatusCode);
-                        logger.Debug(response.Content.ReadAsStringAsync().Result);
-                    }
-                    catch (Exception) { }
-                    
                 }
             }
-            return null;
+            return resultList;
         }
     }
 }

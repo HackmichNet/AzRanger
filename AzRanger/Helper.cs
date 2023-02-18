@@ -45,7 +45,7 @@ namespace AzRanger
         internal static string GetFrom(string baseAdress, string uri, String proxy)
         {
             using (var message = new HttpRequestMessage(HttpMethod.Get, uri))
-            using (var client = Helper.GetDefaultClient(baseAdress, false, null, proxy))
+            using (var client = Helper.GetDefaultClient(null, proxy))
             {
                 var response = client.SendAsync(message).Result;
                 var result = response.Content.ReadAsStringAsync().Result;
@@ -55,13 +55,19 @@ namespace AzRanger
 
 
 
-        internal static HttpClient GetDefaultClient(String baseAdress = null, bool useCookies = true, List<Tuple<String, String>> additionalHeaders = null, String proxy = null)
+        internal static HttpClient GetDefaultClient(List<Tuple<String, String>> additionalHeaders = null, String proxy = null)
         {
+
             HttpClientHandler handler = new HttpClientHandler();
             if (proxy != null)
             {
-                handler.Proxy = new WebProxy(proxy);
-                handler.UseProxy = true;
+                var usedproxy = new WebProxy
+                {
+                    Address = new Uri($"http://{proxy}"),
+                    BypassProxyOnLocal = false,
+                    UseDefaultCredentials = false
+                };
+                handler.Proxy = usedproxy;
             }
 
             handler.ClientCertificateOptions = ClientCertificateOption.Manual;
@@ -71,14 +77,7 @@ namespace AzRanger
                     return true;
                 };
             handler.AllowAutoRedirect = false;
-
-            handler.UseCookies = useCookies;
             var client = new HttpClient(handler);
-            if (baseAdress != null)
-            {
-                client.BaseAddress = new Uri(baseAdress);
-            }
-            client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 10.0; Win64; x64; Trident/7.0; .NET4.0C; .NET4.0E)");
             client.DefaultRequestHeaders.Add("X-Ms-Client-Request-Id", Guid.NewGuid().ToString());
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -89,10 +88,6 @@ namespace AzRanger
                 {
                     client.DefaultRequestHeaders.Add(header.Item1, header.Item2);
                 }
-            }
-            if(proxy != null)
-            {
-                Thread.Sleep(1000);
             }
             return client;
         }

@@ -46,40 +46,45 @@ namespace AzRanger.AzScanner
             this.Scope = new String[]{"https://admin.microsoft.com/.default", "offline_access"};
         }
 
-        public SkypeTeams GetSkypeTeamsSettings()
+        public Task<SkypeTeams> GetSkypeTeamsSettings()
         {
-            return (SkypeTeams)Get<SkypeTeams>(AdminCenterScanner.SkypeTeams);
+            return Get<SkypeTeams>(AdminCenterScanner.SkypeTeams);
         }
 
-        public Calendarsharing GetCalendarsharing()
+        public Task<Calendarsharing> GetCalendarsharing()
         {
-            return (Calendarsharing)Get<Calendarsharing>(AdminCenterScanner.Calendarsharing);
+            return Get<Calendarsharing>(AdminCenterScanner.Calendarsharing);
         }
 
 
-        public SwaySettings GetSwaySettings()
+        public Task<SwaySettings> GetSwaySettings()
         {
-            return (SwaySettings)Get<SwaySettings>(AdminCenterScanner.SwaySettings);
+            return Get<SwaySettings>(AdminCenterScanner.SwaySettings);
         }
 
-        public DirsyncManagement GetDirsyncManagement()
+        public Task<DirsyncManagement> GetDirsyncManagement()
         {
-            return (DirsyncManagement)Get<DirsyncManagement>(AdminCenterScanner.DirsyncManagement);
+            return Get<DirsyncManagement>(AdminCenterScanner.DirsyncManagement);
         }
 
-        public O365PasswordPolicy GetO365PasswordPolicy()
+        public Task<O365PasswordPolicy> GetO365PasswordPolicy()
         {
-            return (O365PasswordPolicy)Get<O365PasswordPolicy>(AdminCenterScanner.O365PasswordPolicy);
+            return Get<O365PasswordPolicy>(AdminCenterScanner.O365PasswordPolicy);
         }
 
-        public OfficeStoreSettings GetOfficeStoreSettings()
+        public async Task<OfficeStoreSettings> GetOfficeStoreSettings()
         {
             try
             {
-                bool LetUserAccessOfficeStore = (bool)Get<bool>(AdminCenterScanner.OfficeStoreAccess);
-                bool LetUserStartTrial = (bool)Get<bool>(AdminCenterScanner.OfficeStartTrials);
-                bool LetUserAutoClaim = (bool)Get<bool>(AdminCenterScanner.OfficeLicenceAutoClaim);
-                return new OfficeStoreSettings(LetUserAccessOfficeStore, LetUserStartTrial, LetUserAutoClaim);
+                Task<bool> LetUserAccessOfficeStoreTask = Get<bool>(AdminCenterScanner.OfficeStoreAccess);
+                Task<bool> LetUserStartTrialTask = Get<bool>(AdminCenterScanner.OfficeStartTrials);
+                Task<bool> LetUserAutoClaimTask = Get<bool>(AdminCenterScanner.OfficeLicenceAutoClaim);
+
+                object LetUserAccessOfficeStore = await LetUserAccessOfficeStoreTask;
+                object LetUserStartTrial = await LetUserStartTrialTask;
+                object LetUserAutoClaim = await LetUserAutoClaimTask;
+
+                return new OfficeStoreSettings((bool)LetUserAccessOfficeStore, (bool)LetUserStartTrial, (bool)LetUserAutoClaim);
             }
             catch (Exception e)
             {
@@ -89,14 +94,14 @@ namespace AzRanger.AzScanner
             }
         }
 
-        public OfficeFormsSettings GetOfficeFormsSettings()
+        public Task<OfficeFormsSettings> GetOfficeFormsSettings()
         {
-            return (OfficeFormsSettings)Get<OfficeFormsSettings>(AdminCenterScanner.OfficeFormsSettings);
+            return Get<OfficeFormsSettings>(AdminCenterScanner.OfficeFormsSettings);
         }
 
-        public ExchangeModernAuthSettings GetExchangeModernAuthSettings()
+        public Task<ExchangeModernAuthSettings> GetExchangeModernAuthSettings()
         {
-            return (ExchangeModernAuthSettings)Get<ExchangeModernAuthSettings>(AdminCenterScanner.ExchangeModernAuthSettings);
+            return Get<ExchangeModernAuthSettings>(AdminCenterScanner.ExchangeModernAuthSettings);
         }
 
 

@@ -26,9 +26,9 @@ namespace AzRanger.AzScanner
             this.Scope = new string[] {"offline_access", baseScope};
         }
 
-        public SPOInternalUseOnly GetSharepointSettings()
+        public Task<SPOInternalUseOnly> GetSharepointSettings()
         {
-            return (SPOInternalUseOnly)Get<SPOInternalUseOnly>(SPOInternalUseOnly);
+            return Get<SPOInternalUseOnly>(SPOInternalUseOnly);
         }
     }
 }

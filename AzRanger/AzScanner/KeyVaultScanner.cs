@@ -18,12 +18,12 @@ namespace AzRanger.AzScanner
             this.Scope = new string[] { "https://vault.azure.net/.default", "offline_access" };
         }
 
-        public List<KeyVaultKey> GetKeyVaultKeys()
+        public Task<List<KeyVaultKey>> GetKeyVaultKeys()
         {
             return GetAllOf<KeyVaultKey>(Keys);
         }
 
-        public List<KeyVaultSecret> GetKeyVaultSecrets()
+        public Task<List<KeyVaultSecret>> GetKeyVaultSecrets()
         {
             return GetAllOf<KeyVaultSecret>(Secrets);
         }

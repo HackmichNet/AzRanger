@@ -13,13 +13,14 @@ using CommandLine.Text;
 using System.Reflection;
 using System.Resources;
 using System.Collections;
+using System.Threading.Tasks;
 
 namespace AzRanger
 {
     class Program
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             PrintBanner();
             // var parser = new CommandLine.Parser(with => with.HelpWriter = null);
@@ -29,10 +30,13 @@ namespace AzRanger
                 settings.CaseSensitive = false;
                 settings.CaseInsensitiveEnumValues = true;
             });
-            var parserResult = parser.ParseArguments<CommandlineOptions>(args);
-            parserResult
-              .WithParsed<CommandlineOptions>(options => RunOptions(options))
-              .WithNotParsed(errs => DisplayHelp(parserResult, errs));
+            await parser.ParseArguments<CommandlineOptions>(args)
+                .MapResult(
+                    (CommandlineOptions opts) => RunOptions(opts),
+                    errs => Task.FromResult(0));
+
+            //parserResult.WithParsed<CommandlineOptions>(options => await RunOptions(options)).WithNotParsed(errs => DisplayHelp(parserResult, errs));
+
         }
 
         private static void DisplayHelp(ParserResult<CommandlineOptions> parserResult, IEnumerable<Error> errs)
@@ -60,7 +64,7 @@ namespace AzRanger
             Console.WriteLine();
         }
 
-        static void RunOptions(CommandlineOptions opts)
+        private static async Task RunOptions(CommandlineOptions opts)
         {
             var config = new LoggingConfiguration();
             var consoleTargetDebug = new ConsoleTarget
@@ -165,7 +169,11 @@ namespace AzRanger
             if (opts.DumpAll | opts.Audit)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                Tenant tenant = scanner.ScanTenant(scopes);
+                
+                Task<Tenant> scanTask = scanner.ScanTenant(scopes);
+                //scanTask.Wait();
+                //Tenant tenant = scanTask.Result;
+                Tenant tenant = await scanTask;
                 watch.Stop();
                 Console.WriteLine($"[+] Scan Time: {watch.ElapsedMilliseconds} ms");
                 if (tenant == null)
@@ -204,7 +212,7 @@ namespace AzRanger
             if (opts.DumpSettings)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                Tenant settings = scanner.ScanTenant(scopes);
+                Tenant settings = await scanner.ScanTenant(scopes);
                 watch.Stop();
                 Console.WriteLine($"[+] Scan Time: {watch.ElapsedMilliseconds} ms");
                 Dumper.DumpTenantSettings(settings, opts.OutFile);

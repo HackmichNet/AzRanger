@@ -552,6 +552,7 @@
     </Compile>
     <Compile Include="Utilities\CommandlineOptions.cs" />
     <Compile Include="Utilities\DirectoryRoleTemplateID.cs" />
+    <Compile Include="Utilities\HttpFactoryWithProxy.cs" />
     <Compile Include="Utilities\ODataTypes.cs" />
   </ItemGroup>
   <ItemGroup>
