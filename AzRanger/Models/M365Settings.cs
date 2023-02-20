@@ -15,14 +15,12 @@ namespace AzRanger.Models
 {
     public class M365Settings
     {
-        public string TenantId { get; set; }
         public List<Domain> Domains;
         public SecurityDefaults SecurityDefaults { get; set; }
         public DirectoryProperties DirectoryProperties { get; set; }
         public PasswordResetPolicies PasswordResetPolicies { get; set; }
         public AzureADPasswordPolicy PasswordPolicy { get; set; }
         public ADConnectStatus ADConnectStatus { get; set; }
-        public SharepointInformation SharepointInformation { get; set; }
         public MsolCompanyInformation MSOLCompanyInformation { get; set; }
         public B2BPolicy B2BPolicy { get; set; }
         public LCMSettings LCMSettings { get; set; }

@@ -10,7 +10,6 @@ namespace AzRanger.Models.WinGraph
         [JsonPropertyName("odata.type")]
         public string odatatype { get; set; }
         public StrongAuthenticationDetailDetails strongAuthenticationDetail { get; set; }
-
         public Guid objectId { get; set; }
     }
 

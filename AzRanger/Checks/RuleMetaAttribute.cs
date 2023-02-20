@@ -38,7 +38,8 @@ namespace AzRanger.Checks
         Monitoring,
         NetworksSecurityGroup,
         SQLServer,
-        VirtualMachine
+        VirtualMachine,
+        PSQLServer
     }
 
     public enum MaturityLevel

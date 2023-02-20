@@ -1,4 +1,5 @@
 ﻿using AzRanger.Models.Generic;
+using AzRanger.Utilities;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -77,7 +78,7 @@ namespace AzRanger
                     return true;
                 };
             handler.AllowAutoRedirect = false;
-            var client = new HttpClient(handler);
+            var client = new HttpClient(handler); 
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 10.0; Win64; x64; Trident/7.0; .NET4.0C; .NET4.0E)");
             client.DefaultRequestHeaders.Add("X-Ms-Client-Request-Id", Guid.NewGuid().ToString());
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

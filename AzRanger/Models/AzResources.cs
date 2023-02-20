@@ -15,5 +15,6 @@ namespace AzRanger.Models
         public List<NetworkSecurityGroup> NetworkSecurityGroups;
         public List<SQLServer> SQLServers;
         public List<VirtualMachine> VirtualMachines;
+        public List<PostgreSQLFlexibleServers> PostgreSQLs;
     }
 }

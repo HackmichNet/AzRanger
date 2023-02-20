@@ -30,6 +30,8 @@ namespace AzRanger.AzScanner
         private const String SQLAdminitrators = "{0}/administrators?api-version=2019-06-01-preview";
         private const String SQLDatabases = "{0}/databases/?api-version=2022-02-01-preview";
         private const String TransparentDataEncryption = "{0}/transparentDataEncryption/current?api-version=2020-11-01-preview";
+        private const String PostgreSQL = "/subscriptions/{0}/providers/Microsoft.DBforPostgreSQL/flexibleServers/?api-version=2022-03-08-preview";
+        private const String PostgreSQLParamters = "{0}/configurations?api-version=2021-06-01";
         public AzMgmtScanner(Scanner scanner)
         {
             this.Scanner = scanner;
@@ -191,6 +193,20 @@ namespace AzRanger.AzScanner
         public Task<SecurityCenterBuiltIn> GetSecurityCenterBuiltIn(String subscription)
         {
             return Get<SecurityCenterBuiltIn>(String.Format(SecurityCenterBuiltIn, subscription));
+        }
+
+        public async Task<List<PostgreSQLFlexibleServers>> GetPostgreSQLFlexibleServers(String subscription)
+        {
+            List<PostgreSQLFlexibleServers> servers = await GetAllOf<PostgreSQLFlexibleServers>(String.Format(PostgreSQL, subscription));
+            if(servers == null)
+            {
+                return null;
+            }
+            foreach(PostgreSQLFlexibleServers server in servers)
+            {
+                server.Paramters = await GetAllOf<PostgreSQLFlexibleServersParameters>(String.Format(PostgreSQLParamters, server.id));
+            }
+            return servers;
         }
     }
 }
