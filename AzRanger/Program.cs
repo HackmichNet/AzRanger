@@ -23,23 +23,22 @@ namespace AzRanger
         static async Task Main(string[] args)
         {
             PrintBanner();
-            // var parser = new CommandLine.Parser(with => with.HelpWriter = null);
             var parser = new CommandLine.Parser(settings =>
             {
                 settings.HelpWriter = null;
                 settings.CaseSensitive = false;
                 settings.CaseInsensitiveEnumValues = true;
             });
-            await parser.ParseArguments<CommandlineOptions>(args)
-                .MapResult(
+            var parserResult = parser.ParseArguments<CommandlineOptions>(args);
+            await parserResult.MapResult(
                     (CommandlineOptions opts) => RunOptions(opts),
-                    errs => Task.FromResult(0));
+                    errs => DisplayHelp(parserResult));
 
             //parserResult.WithParsed<CommandlineOptions>(options => await RunOptions(options)).WithNotParsed(errs => DisplayHelp(parserResult, errs));
 
         }
 
-        private static void DisplayHelp(ParserResult<CommandlineOptions> parserResult, IEnumerable<Error> errs)
+        private static Task DisplayHelp(ParserResult<CommandlineOptions> parserResult)
         {
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
@@ -49,6 +48,7 @@ namespace AzRanger
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
             Console.WriteLine(helpText);
+            return Task.FromResult(1);
         }
 
 
