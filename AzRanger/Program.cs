@@ -43,7 +43,7 @@ namespace AzRanger
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "AzRanger 0.0.8"; //change header
+                h.Heading = "AzRanger 0.0.9"; //change header
                 h.Copyright = ""; 
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
@@ -97,31 +97,31 @@ namespace AzRanger
           
             if(opts.Audit && opts.DumpAll && opts.DumpSettings)
             {
-                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely.");
+                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely. Or use --help for more information.");
                 return;
             }
 
             if (opts.Audit && opts.DumpAll)
             {
-                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely.");
+                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely. Or use --help for more information..");
                 return;
             }
 
             if (opts.Audit && opts.DumpSettings)
             {
-                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely.");
+                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely. Or use --help for more information.");
                 return;
             }
 
             if (opts.DumpAll && opts.DumpSettings)
             {
-                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely.");
+                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely. Or use --help for more information..");
                 return;
             }
 
             if (opts.Audit == false && opts.DumpAll == false && opts.DumpSettings == false )
             {
-                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely.");
+                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely. Or use --help for more information..");
                 return;
             }
 
