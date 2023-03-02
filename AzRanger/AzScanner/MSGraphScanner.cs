@@ -84,30 +84,47 @@ namespace AzRanger.AzScanner
             {
                 return null;
             }
-            Dictionary<Guid, User> Result = new Dictionary<Guid, User>();
-            List<Task<StrongAuthenticationDetail>> tasks = new List<Task<StrongAuthenticationDetail>>();
+            Dictionary<Guid, User> resultingUsers = new Dictionary<Guid, User>();
+            
             foreach (User user in allUsers)
             {
-                Result.Add(user.id, user);
-                tasks.Add(this.Scanner.GraphWinScanner.GetStrongAuthenticationDetail(user.id));
+                resultingUsers.Add(user.id, user);
             }
 
-            IEnumerable<StrongAuthenticationDetail> results = await Task.WhenAll(tasks);
-            foreach(StrongAuthenticationDetail resultObject in results)
+            int maxConcurrentRequests = 100;
+            int concurrentRequests = 0;
+            List<Task<StrongAuthenticationDetail>> tasks = new List<Task<StrongAuthenticationDetail>>();
+
+            foreach (User user in allUsers)
             {
-                Result[resultObject.objectId].strongAuthenticationDetail = resultObject.strongAuthenticationDetail;
-
-                if (resultObject.strongAuthenticationDetail.methods != null && resultObject.strongAuthenticationDetail.methods.Length > 0)
+                if (concurrentRequests < maxConcurrentRequests)
                 {
-                    Result[resultObject.objectId].isMFAEnabled = true;
+                    tasks.Add(this.Scanner.GraphWinScanner.GetStrongAuthenticationDetail(user.id));
+                    concurrentRequests++;
                 }
-                else
+                else 
                 {
-                    Result[resultObject.objectId].isMFAEnabled = false;
+                    IEnumerable<StrongAuthenticationDetail> tempResults = await Task.WhenAll(tasks);
+                    concurrentRequests = 0;
+                    foreach (StrongAuthenticationDetail resultObject in tempResults)
+                    {
+                        resultingUsers[resultObject.objectId].strongAuthenticationDetail = resultObject.strongAuthenticationDetail;
+
+                        if (resultObject.strongAuthenticationDetail.methods != null && resultObject.strongAuthenticationDetail.methods.Length > 0)
+                        {
+                            resultingUsers[resultObject.objectId].isMFAEnabled = true;
+                        }
+                        else
+                        {
+                            resultingUsers[resultObject.objectId].isMFAEnabled = false;
+                        }
+                    }
+                    tasks = new List<Task<StrongAuthenticationDetail>>();
+                    await Task.Delay(100);
                 }
 
-            }
-            return Result;
+            }            
+            return resultingUsers;
         }
 
         public async Task<Dictionary<Guid, User>> GetAllGuests()
