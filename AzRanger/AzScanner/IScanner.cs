@@ -27,7 +27,7 @@ namespace AzRanger.AzScanner
             String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
             if (accessToken == null)
             {
-                logger.Warn("IScanner.GetAllOf: {0}|{1} failed to get token!", typeof(T).ToString(), this.Scope.ToString());
+                logger.Warn("IScanner.Get: {0}|{1} failed to get token!", typeof(T).ToString(), this.Scope.ToString());
                 return default(T);
             }
             string usedEndpoint = endPoint;
@@ -155,8 +155,11 @@ namespace AzRanger.AzScanner
                             logger.Debug("IScanner.GetAllOf: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
                             logger.Debug("IScanner.GetAllOf: Status Code {0}", response.StatusCode);
                             logger.Debug(await response.Content.ReadAsStringAsync());
+                            return null;
                         }
-                        catch (Exception) { }
+                        catch (Exception) {
+                            return null;
+                        }
                     }
                 }
             }
