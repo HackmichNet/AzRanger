@@ -76,6 +76,9 @@ namespace AzRanger.Checks
                         case CheckResult.NotApplicable:
                             this.NotApplicable.Add(check);
                             break;
+                        case CheckResult.Error:
+                            this.Error.Add(check);
+                            break;
                         default:
                             break;
                     }

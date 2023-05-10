@@ -36,6 +36,8 @@ namespace AzRanger.AzScanner
         public const String AuthorizationPolicy = "/beta/policies/authorizationPolicy/authorizationPolicy";
         public const String AuthenticationMethodsPolicy = "/beta/policies/authenticationmethodspolicy";
         public const String OAuth2PermissionGrants = "/beta/oauth2PermissionGrants";
+        //https://learn.microsoft.com/en-us/graph/api/authentication-list-methods?view=graph-rest-1.0&tabs=http
+        public const String AuthenticationMethods = "/{0}/authentication/methods";
 
         public MSGraphScanner(Scanner scanner)
         {
@@ -91,7 +93,7 @@ namespace AzRanger.AzScanner
                 resultingUsers.Add(user.id, user);
             }
 
-            int maxConcurrentRequests = 100;
+            int maxConcurrentRequests = 5;
             int concurrentRequests = 0;
             List<Task<StrongAuthenticationDetail>> tasks = new List<Task<StrongAuthenticationDetail>>();
 
@@ -126,7 +128,6 @@ namespace AzRanger.AzScanner
             }            
             return resultingUsers;
         }
-
         public async Task<Dictionary<Guid, User>> GetAllGuests()
         {
             List<User> allUsers;

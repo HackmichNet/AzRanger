@@ -37,6 +37,7 @@ namespace AzRanger.Checks
     {
         NoFinding,
         Finding,
-        NotApplicable
+        NotApplicable,
+        Error
     }
 }

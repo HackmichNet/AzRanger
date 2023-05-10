@@ -399,7 +399,6 @@ namespace AzRanger.AzScanner
                 officeTasks.Add(MainIamScanner.GetB2BPolicy());
                 officeTasks.Add(MainIamScanner.GetLCMSettings());
                 officeTasks.Add(MainIamScanner.GetUserSettings());
-                officeTasks.Add(MainIamScanner.GetUserSettings());
                 officeTasks.Add(MainIamScanner.GetSsgmProperties());
                 officeTasks.Add(MainIamScanner.GetLoginTenantBrandings());
                 officeTasks.Add(ProvisionAPIScanner.GetDirSyncFeatures());

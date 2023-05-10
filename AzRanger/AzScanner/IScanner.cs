@@ -45,6 +45,7 @@ namespace AzRanger.AzScanner
             string url = BaseAdresse + usedEndpoint;
             logger.Debug("IScanner.Get: {0}|{1}", typeof(T).ToString(), url);
 
+            //https://www.aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/
             using (var client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy))
             {
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
@@ -64,7 +65,7 @@ namespace AzRanger.AzScanner
                         logger.Debug("IScanner.Get: DeserializationFailed");
                         logger.Debug(e.Message);
                         logger.Debug(manipulatedResponse);
-                        return default(T);
+                        return default;
                     }
                 }
                 else

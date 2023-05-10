@@ -16,7 +16,7 @@ namespace AzRanger.Models.MainIAM
         public object squareLogoDarkUrl { get; set; }
         public object tileLogoUrl { get; set; }
         public object illustrationUrl { get; set; }
-        public bool hideKeepMeSignedIn { get; set; }
+        public object hideKeepMeSignedIn { get; set; }
         public object postSignoutUrl { get; set; }
         public object postSignoutUrlText { get; set; }
         public string localeDisplayName { get; set; }

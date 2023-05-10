@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcAllowTrustedServices", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
     [CISAZ("3.9", "", Level.L2, "v1.5")]
-    [RuleInfo("Storage Account block network access for Trusted Microsft StorageAccountServices", "This may prevent functions like Azure Backup or Azure Monitoring from correct working.", 1, null, null, "When you are using services from Microsoft like Logging or Backup, allow the network access for these services.")]
+    [RuleInfo("Storage Account block network access for Trusted Microsoft StorageAccountServices", "This may prevent functions like Azure Backup or Azure Monitoring from correct working.", 1, null, null, "When you are using services from Microsoft like Logging or Backup, allow the network access for these services.")]
     internal class AzStorAcAllowTrustedServices : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

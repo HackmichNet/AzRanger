@@ -26,7 +26,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>0.9.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -317,7 +317,6 @@
     <Compile Include="Checks\Rules\AzActNSGSUnrestrictedDestionationPort.cs" />
     <Compile Include="Checks\Rules\AzSQLAuditingRetention.cs" />
     <Compile Include="Checks\Rules\AzSQLServerAzADAdmin.cs" />
-    <Compile Include="Checks\Rules\AzSQLDatabaseTransparentEnc.cs" />
     <Compile Include="Checks\Rules\AzPSQLLogCheckpoints.cs" />
     <Compile Include="Checks\Rules\AzStorAcMinTLSVersion.cs" />
     <Compile Include="Checks\Rules\AzStorAcKeyLastRotation.cs" />

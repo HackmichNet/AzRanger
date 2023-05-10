@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("DfCEAdditionalMailAlert", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings")]
     [CISAZ("2.3.3", "", Level.L1, "v1.5")]
-    [RuleInfo("Email Securtiy Alerts for a subscription are not configured correctly", "Your security team and subscription owners might receive to much Mails regarding security issues.", 0, null, null, @"Go to <a href=""https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings"">https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings</a> and choose a Subscription or Resource Group. Then check ""Notify about alerts with the following severity"" and choose ""High"".")]
+    [RuleInfo("Email Security Alerts for a subscription are not configured correctly", "Your security team and subscription owners might receive to much Mails regarding security issues.", 0, null, null, @"Go to <a href=""https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings"">https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings</a> and choose a Subscription or Resource Group. Then check ""Notify about alerts with the following severity"" and choose ""High"".")]
     class DfCEEMailAlertSeverity : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
