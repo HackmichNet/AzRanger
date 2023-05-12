@@ -19,7 +19,6 @@ namespace AzRanger.AzScanner
 
         public MDMScanner(Scanner scanner) : base(scanner)
         {
-            this.ClientID = "d1ddf0e4-d672-4dae-b554-9d5bdfd93547";
         }
 
         public bool CheckIntunePowerShellAvailable()

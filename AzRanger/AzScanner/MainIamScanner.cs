@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class MainIamScanner : IScanner
+    class MainIamScanner : IScannerModule
     {
         private const String SecurityDefaultsEndpoint = "/api/SecurityDefaults/GetSecurityDefaultStatus";
         private const String DirectoryProperties = "/api/Directories/Properties";
@@ -26,6 +26,7 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = "https://main.iam.ad.ext.azure.com";
             this.Scope = new string[] { "74658136-14ec-4630-ad9b-26e160ff0fc6/.default", "offline_access" };
+            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
         }
 
         public Task<SecurityDefaults> GetSecurityDefaults()

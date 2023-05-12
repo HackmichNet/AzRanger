@@ -17,7 +17,7 @@ namespace AzRanger.Checks.Rules
             // "Restricted Guest User" => Template ID: 2af84b1e-32c8-42b7-82bc-daa82404023b
             // "Guest User" => Template ID: 10dae51f-b6af-4016-8d66-8c2a99b929b3
             // "User" => Template ID: a0b1b346-4d3e-4e8b-98f8-753987be4970
-            if (tenant.TenantSettings.AuthorizationPolicy.guestUserRoleId == "2af84b1e-32c8-42b7-82bc-daa82404023b")
+            if (tenant.TenantSettings.AuthorizationPolicy.guestUserRoleId.Equals("2af84b1e-32c8-42b7-82bc-daa82404023b"))
             {
                 return CheckResult.NoFinding;
             }

@@ -70,16 +70,6 @@ namespace AzRanger.AzScanner
             {
                 this.Authenticator = new Authenticator(this.TenantId, username, password, this.Proxy);
             }
-            AdminCenterScanner = new AdminCenterScanner(this);
-            MsGraphScanner = new MSGraphScanner(this);
-            ProvisionAPIScanner = new ProvisionAPIScanner(this);
-            ExchangeOnlineScanner = new ExchangeOnlineScanner(this);
-            MainIamScanner = new MainIamScanner(this);
-            ComplianceCenterScanner = new ComplianceCenterScanner(this);
-            GraphWinScanner = new GraphWinScanner(this);
-            TeamsScanner = new TeamsScanner(this);
-            AzrbacScanner = new AzrbacScanner(this);
-            AzMgmtScanner = new AzMgmtScanner(this);
         }
 
         public Scanner(String proxy, String tenant = null)
@@ -92,16 +82,6 @@ namespace AzRanger.AzScanner
                 this.TenantId = this.Authenticator.GetTenantId().Result;
             }
             this.Username = this.Authenticator.GetUsername().Result;
-            AdminCenterScanner = new AdminCenterScanner(this);
-            MsGraphScanner = new MSGraphScanner(this);
-            ProvisionAPIScanner = new ProvisionAPIScanner(this);
-            ExchangeOnlineScanner = new ExchangeOnlineScanner(this);
-            MainIamScanner = new MainIamScanner(this);
-            ComplianceCenterScanner = new ComplianceCenterScanner(this);
-            GraphWinScanner = new GraphWinScanner(this);
-            TeamsScanner = new TeamsScanner(this);
-            AzrbacScanner = new AzrbacScanner(this);
-            AzMgmtScanner = new AzMgmtScanner(this);
         }
 
         public async Task<Tenant> ScanTenant(List<ScopeEnum> scopes)
@@ -111,7 +91,7 @@ namespace AzRanger.AzScanner
                 logger.Warn("Scanner.ScanTenant: Cannot retrieve TenantId. Aborting!");
                 return null;
             }
-                
+
             Tenant Result = new Tenant();
             Result.TenantId = this.TenantId;   
             Result.Username = this.Username;
@@ -121,7 +101,18 @@ namespace AzRanger.AzScanner
             bool isSharePointAdmin = false;
             bool scanAzureOnly = false;
 
-            if(scopes.Count == 1 & scopes.Contains(ScopeEnum.Azure))
+            AdminCenterScanner = await ScannerFactory.CreateAdminCenterScanner(this);
+            MsGraphScanner = await ScannerFactory.CreateMSGraphScanner(this);
+            ProvisionAPIScanner = await ScannerFactory.CreateProvisionAPIScanner(this);
+            ExchangeOnlineScanner = await ScannerFactory.CreateExchangeOnlineScanner(this);
+            MainIamScanner = await ScannerFactory.CreateMainIamScanner(this);
+            ComplianceCenterScanner = await ScannerFactory.CreateComplianceCenterScanner(this);
+            GraphWinScanner = await ScannerFactory.CreateGraphWinScanner(this);
+            TeamsScanner = await ScannerFactory.CreateTeamsScanner(this);
+            AzrbacScanner = await ScannerFactory.CreateAzrbacScanner(this);
+            AzMgmtScanner = await ScannerFactory.CreateAzMgmtScanner(this);
+
+            if (scopes.Count == 1 & scopes.Contains(ScopeEnum.Azure))
             {
                 scanAzureOnly = true;
             }
@@ -417,8 +408,18 @@ namespace AzRanger.AzScanner
 
                 while (officeTasks.Any())
                 {
-                    var result = await Task.WhenAny(officeTasks);
 
+                    Task result = null;
+                    try {
+                        result = await Task.WhenAny(officeTasks);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Warn("[-] An error occured. Don't panic...");
+                        logger.Debug("Scanner.ScanTenant: OfficeTasks failed.");
+                        logger.Debug(ex.Message);
+                        continue;
+                    }
                     switch (result)
                     {
                         case Task<List<EnterpriseApplicationUserSettings>> getEnterpriseApplicationUserSettingsTask:
@@ -516,8 +517,20 @@ namespace AzRanger.AzScanner
 
                 while (teamsTasks.Any())
                 {
-                    var result = await Task.WhenAny(teamsTasks);
-                    if(result == getTeamsClientConfigurationTask)
+                    Task result = null;
+                    try
+                    {
+                        result = await Task.WhenAny(teamsTasks);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Warn("[-] An error occured. Don't panic...");
+                        logger.Debug("Scanner.ScanTenant: TeamsTasks failed.");
+                        logger.Debug(ex.Message);
+                        continue;
+                    }
+
+                    if (result == getTeamsClientConfigurationTask)
                     {
                         settings.TeamsClientConfiguration = await getTeamsClientConfigurationTask;
                     }
@@ -543,7 +556,7 @@ namespace AzRanger.AzScanner
                     {
                         Console.WriteLine("[+] Found SharePoint on: {0}", Result.SharepointInformation.SharepointUrl);
                         Console.WriteLine("[+] Found SharePoint-Admin on: {0}", Result.SharepointInformation.AdminUrl);
-                        SharePointScanner sharePointScanner = new SharePointScanner(this, Result.SharepointInformation.AdminUrl);
+                        SharePointScanner sharePointScanner = await ScannerFactory.CreateSharePointScanner(this, Result.SharepointInformation.AdminUrl);
                         Result.SharepointInformation.SharepointInternalInfos = await sharePointScanner.GetSharepointSettings();
                     }
                 }
@@ -563,7 +576,6 @@ namespace AzRanger.AzScanner
                 Result.ExchangeOnlineSettings = new ExchangeOnlineSettings();
 
                 List<Task> exchangeTask = new List<Task>();
-
                 exchangeTask.Add(ExchangeOnlineScanner.GetAdminAuditLogConfig());
                 exchangeTask.Add(ExchangeOnlineScanner.GetHostedOutboundSpamFilterPolicies());
                 exchangeTask.Add(ExchangeOnlineScanner.GetMalwareFilterPolicies());
@@ -582,7 +594,18 @@ namespace AzRanger.AzScanner
 
                 while (exchangeTask.Any())
                 {
-                    var result = await Task.WhenAny(exchangeTask);
+                    Task result = null;
+                    try
+                    {
+                        result = await Task.WhenAny(exchangeTask);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Warn("[-] An error occured. Don't panic...");
+                        logger.Debug("Scanner.ScanTenant: ExchangeTasks failed.");
+                        logger.Debug(ex.Message);
+                        continue;
+                    }
 
                     switch (result)
                     {
@@ -659,7 +682,7 @@ namespace AzRanger.AzScanner
                     sub.Resources.KeyVaults = await AzMgmtScanner.GetKeyVaults(sub.subscriptionId);
                     foreach (KeyVault vault in sub.Resources.KeyVaults)
                     {
-                        KeyVaultScanner vaultScanner = new KeyVaultScanner(this, vault.properties.vaultUri);
+                        KeyVaultScanner vaultScanner = await ScannerFactory.CreateKeyVaultScanner(this, vault.properties.vaultUri);
                         vault.Keys = await vaultScanner.GetKeyVaultKeys();
                         vault.Secrets = await vaultScanner.GetKeyVaultSecrets();
                     }

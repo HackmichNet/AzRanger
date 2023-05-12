@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class TeamsScanner : IScanner
+    class TeamsScanner : IScannerModule
     {
         private const String TeamsClientConfiguration = "/Skype.Policy/configurations/TeamsClientConfiguration";
         private const String TenantFederationSettings = "/Skype.Policy/configurations/TenantFederationSettings/configuration/global";
@@ -17,6 +17,7 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = "https://api.interfaces.records.teams.microsoft.com";
             this.Scope = new string[] { "48ac35b8-9aa8-4d74-927d-1f4a14a0b239/user_impersonation", "offline_access", "openid", "profile" };
+            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
         }
 
         public Task<TeamsClientConfiguration> GetTeamsClientConfiguration()

@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace AzRanger.AzScanner
 {
-	class ProvisionAPIScanner : IScanner
+	class ProvisionAPIScanner : IScannerModule
 	{
 		public const String Endpoint = "/provisioningwebservice.svc";
 
@@ -20,8 +20,9 @@ namespace AzRanger.AzScanner
 			this.Scanner = scanner;
 			this.BaseAdresse = "https://provisioningapi.microsoftonline.com";
 			this.Scope = new String[] { "https://graph.windows.net/.default", "offline_access" };
-			
-		}
+            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+
+        }
 
 		public async Task<DirSyncFeatures> GetDirSyncFeatures()
         {
@@ -179,36 +180,28 @@ namespace AzRanger.AzScanner
         
 		private async Task<String> PostToProvisioninApi(string command, string requestElement)
 		{
-			String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
-			if(accessToken == null)
-            {
-				logger.Warn("ProvisionApiScanner.PostToProvisionApi: Failed to get access token");
-				return null;
-            }
-			
+		
 			logger.Debug("ProvisionApiScanner.PostToProvisionApi: {0}|{1}", command, requestElement);
-			using (var client = Helper.GetDefaultClient(null, this.Scanner.Proxy))
+			string content = CreateEnvelop(this.client.DefaultRequestHeaders.Authorization.ToString().Split(' ')[1], command, requestElement);
+			StringContent message = new StringContent(content.Replace("\\n", "").Replace("\\t", ""), Encoding.UTF8, "application/soap+xml");
+			String url = this.BaseAdresse + Endpoint;
+			var response = await client.PostAsync(url, message);
+			if (response.IsSuccessStatusCode)
 			{
-				string content = CreateEnvelop(accessToken, command, requestElement);
-				StringContent message = new StringContent(content.Replace("\\n", "").Replace("\\t", ""), Encoding.UTF8, "application/soap+xml");
-				String url = this.BaseAdresse + Endpoint;
-				var response = await client.PostAsync(url, message);
-				if (response.IsSuccessStatusCode)
-				{
-					var result = response.Content.ReadAsStringAsync().Result;
-					return result;
-				}
-				else
-				{
-					try
-					{
-						logger.Debug("ProvisionApiScanner.PostToProvisionApi: was not successfull");
-						logger.Debug("ProvisionApiScanner.PostToProvisionApi: Status Code {0}", response.StatusCode);
-						logger.Debug(await response.Content.ReadAsStringAsync());
-                    }
-                    catch { }
-				}
+				var result = await response.Content.ReadAsStringAsync();
+				return result;
 			}
+			else
+			{
+				try
+				{
+					logger.Debug("ProvisionApiScanner.PostToProvisionApi: was not successfull");
+					logger.Debug("ProvisionApiScanner.PostToProvisionApi: Status Code {0}", response.StatusCode);
+					logger.Debug(await response.Content.ReadAsStringAsync());
+                }
+                catch { }
+			}
+			
 			return null;
 		}
 

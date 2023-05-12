@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    public class GraphWinScanner : IScanner
+    public class GraphWinScanner : IScannerModule
     {
         public const String UsersInternal = "/{0}/users/{1}";
         public const String RoleDefinitions = "/myorganization/roleDefinitions";
@@ -19,6 +19,7 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = "https://graph.windows.net";
             this.Scope = new string[] { "https://graph.windows.net/.default", "offline_access" };
+            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
         }
 
         public Task<List<RoleDefinition>> GetRoleDefinitons()
@@ -33,12 +34,6 @@ namespace AzRanger.AzScanner
 
         internal async override Task<List<T>> GetAllOf<T>(string endPoint, string query = null, List<Tuple<string, string>> additionalHeaders = null)
         {
-            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
-            if (accessToken == null)
-            {
-                logger.Warn("ComplianceCenterScanner.GetBaseAddress: {0} failed to get token!", this.Scope.ToString());
-                return null;
-            }
             string usedEndpoint = endPoint;
             if (query != null)
             {
@@ -56,58 +51,56 @@ namespace AzRanger.AzScanner
             string url = BaseAdresse + usedEndpoint;
             while (url != null)
             {
-                using (var client = Helper.GetDefaultClient(null, this.Scanner.Proxy))
+
+                var response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
                 {
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-                    var response = await client.GetAsync(url);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        /// Parse the result in GenericObjects
-                        var result = await response.Content.ReadAsStringAsync();
-                        WinGraphGernericResponse genericAnswer = JsonSerializer.Deserialize<WinGraphGernericResponse>(result);
-                        logger.Debug("GraphWinScanner.GetAllOf: {0} elements in response", genericAnswer.value.Length);
+                    /// Parse the result in GenericObjects
+                    var result = await response.Content.ReadAsStringAsync();
+                    WinGraphGernericResponse genericAnswer = JsonSerializer.Deserialize<WinGraphGernericResponse>(result);
+                    logger.Debug("GraphWinScanner.GetAllOf: {0} elements in response", genericAnswer.value.Length);
 
-                        /// Go throuththe geneirc object and parse the value field
-                        foreach (var entry in genericAnswer.value)
-                        {
-                            try
-                            {
-                                var resultParsed = JsonSerializer.Deserialize<T>(entry.ToString());
-                                resultList.Add(resultParsed);
-                            }
-                            catch (Exception e)
-                            {
-                                logger.Debug("IScanner.GetAllOf: DeserializationFailed");
-                                logger.Debug(e.Message);
-                                logger.Debug(entry.ToString());
-                                return null;
-                            }
-                        }
-
-                        // If the generic Answer has a nextLink, we have more items then responded in the first answer
-                        if (genericAnswer.odatanextLink != null)
-                        {
-                            url = genericAnswer.odatanextLink;
-                        }
-                        else /// No next link anymore, just check if we have some items and concat them with the current result
-                        {
-                            url = null;
-                        }
-                    }
-                    else
+                    /// Go throuththe geneirc object and parse the value field
+                    foreach (var entry in genericAnswer.value)
                     {
                         try
                         {
-                            logger.Debug("GraphWinScanner.GetAllOf: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
-                            logger.Debug("GraphWinScanner.GetAllOf: Status Code {0}", response.StatusCode);
-                            logger.Debug(response.Content.ReadAsStringAsync().Result);
-                            return null;
+                            var resultParsed = JsonSerializer.Deserialize<T>(entry.ToString());
+                            resultList.Add(resultParsed);
                         }
-                        catch {
+                        catch (Exception e)
+                        {
+                            logger.Debug("IScanner.GetAllOf: DeserializationFailed");
+                            logger.Debug(e.Message);
+                            logger.Debug(entry.ToString());
                             return null;
                         }
                     }
+
+                    // If the generic Answer has a nextLink, we have more items then responded in the first answer
+                    if (genericAnswer.odatanextLink != null)
+                    {
+                        url = genericAnswer.odatanextLink;
+                    }
+                    else /// No next link anymore, just check if we have some items and concat them with the current result
+                    {
+                        url = null;
+                    }
                 }
+                else
+                {
+                    try
+                    {
+                        logger.Debug("GraphWinScanner.GetAllOf: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
+                        logger.Debug("GraphWinScanner.GetAllOf: Status Code {0}", response.StatusCode);
+                        logger.Debug(response.Content.ReadAsStringAsync().Result);
+                        return null;
+                    }
+                    catch {
+                        return null;
+                    }
+                }
+
             }
             return resultList;
         }

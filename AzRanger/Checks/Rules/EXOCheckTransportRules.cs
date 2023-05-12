@@ -38,6 +38,11 @@ namespace AzRanger.Checks.Rules
                         {
                             domainIsInAzDomains = true;
                         }
+                        // IT is ok, if it is a Subdomains
+                        if (maildomain.EndsWith(AZDomain))
+                        {
+                            domainIsInAzDomains = true;
+                        }
                     }
                     if(domainIsInAzDomains == false)
                     {

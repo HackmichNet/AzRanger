@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class ComplianceCenterScanner : IScanner
+    class ComplianceCenterScanner : IScannerModule
     {
         public const String DLPPolicies = "/Psws/service.svc/DlpCompliancePolicy";
         public const String DLPLabels = "/Psws/service.svc/Label";
@@ -20,10 +20,8 @@ namespace AzRanger.AzScanner
         public ComplianceCenterScanner(Scanner scanner)
         {
             this.Scanner = scanner;
-            this.BaseAdresse = GetBaseAddress().Result;
-
-            this.ClientID = "1b730954-1685-4b74-9bfd-dac224a7b894";
-            this.Scope = new String[] { "https://ps.compliance.protection.outlook.com/.default", "offline_access", "openid", "profile"};
+            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+            this.Scope = new String[] { "https://ps.compliance.protection.outlook.com/.default", "offline_access", "openid", "profile" };
         }
 
         public Task<List<DlpCompliancePolicy>> GetDLPPolicies()
@@ -40,35 +38,25 @@ namespace AzRanger.AzScanner
 
         public async Task<String> GetBaseAddress()
         {
-            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
-            if (accessToken == null)
+            string url = InitBaseAdress + PowerShellLiveId;
+            var response = await client.GetAsync(url);
+            if (response.StatusCode == HttpStatusCode.Redirect)
             {
-                logger.Warn("ComplianceCenterScanner.GetBaseAddress: {0} failed to get token!", this.Scope.ToString());
+                logger.Debug("ComplianceCenterScanner.GetBaseAddress: Get base Url: {0}", response.Headers.Location.ToString());
+                if (response.Headers.Location.ToString().Contains(PowerShellLiveId))
+                {
+                    String[] seperator = new string[] { PowerShellLiveId };
+                    return response.Headers.Location.ToString().Split(seperator, StringSplitOptions.None)[0];
+                }
+                logger.Warn("ComplianceCenterScanner.GetBaseAddress: Failed to get Redirect URL!");
                 return null;
             }
-            AuthenticationHeaderValue authenticationHeader = new AuthenticationHeaderValue("Bearer", accessToken);
-            string url = InitBaseAdress + PowerShellLiveId;
-            using (var client = Helper.GetDefaultClient(null, this.Scanner.Proxy))
+            else
             {
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-                var response = await client.GetAsync(url);
-                if (response.StatusCode == HttpStatusCode.Redirect)
-                {
-                    logger.Debug("ComplianceCenterScanner.GetBaseAddress: Get base Url: {0}", response.Headers.Location.ToString());
-                    if (response.Headers.Location.ToString().Contains(PowerShellLiveId))
-                    {
-                        String[] seperator = new string[] { PowerShellLiveId };
-                        return response.Headers.Location.ToString().Split(seperator, StringSplitOptions.None)[0];
-                    }
-                    logger.Warn("ComplianceCenterScanner.GetBaseAddress: Failed to get Redirect URL!");
-                    return null;
-                }
-                else
-                {
-                    logger.Warn("ComplianceCenterScanner.GetBaseAddress: Failed getting base url");
-                    logger.Debug("ComplianceCenterScanner.GetBaseAddress: Statuscode: ", (int)response.StatusCode);
-                }
+                logger.Warn("ComplianceCenterScanner.GetBaseAddress: Failed getting base url");
+                logger.Debug("ComplianceCenterScanner.GetBaseAddress: Statuscode: ", (int)response.StatusCode);
             }
+            
             return null;
         }
     }

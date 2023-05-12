@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOBasicAuth", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.microsoft.com/#/Settings/StorageAccountServices/:/Settings/L1/ModernAuthentication")]
+    [RuleMeta("EXOBasicAuth", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/ModernAuthentication")]
     [RuleInfo("Basic auth is enabled for ExchangeOnline", "This expose your tenant to attacks like Password brute force or Password Spray.", 5, "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/disable-basic-authentication-in-exchange-online", "Basic auth does not support secure authentication mechanism like MFA")]
     class EXOBasicAuth : BaseCheck
     {
@@ -26,7 +26,7 @@ namespace AzRanger.Checks.Rules
             }
 
             bool defaultPolicyPassed = false;
-            bool userWithNoPolicy = false;
+            bool userWithNoPolicy = true;
             bool userPolicyPassed = true;
 
             // Case 2: DefaultAuthenticationPolicy is set, we have to check user too
@@ -49,6 +49,7 @@ namespace AzRanger.Checks.Rules
             {
                 if(user.AuthenticationPolicy != null)
                 {
+                    userWithNoPolicy = false;
                     foreach (AuthenticationPolicy policy in tenant.ExchangeOnlineSettings.AuthenticationPolicies)
                     {
                         // Default policy
@@ -66,10 +67,6 @@ namespace AzRanger.Checks.Rules
                         }
                     }
                 }
-                else
-                {
-                    userWithNoPolicy = true;
-                }
             }
             
             // Default policy is good and we have no user policy
@@ -78,7 +75,7 @@ namespace AzRanger.Checks.Rules
                 return CheckResult.NoFinding;
             }
             // User assigned policies are secure and all users have a custom poliicy
-            if(userPolicyPassed && !userWithNoPolicy)
+            if(userPolicyPassed)
             {
                 return CheckResult.NoFinding;
             }

@@ -26,7 +26,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>0.9.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -279,13 +279,14 @@
     <Compile Include="AzScanner\DNSScanner.cs" />
     <Compile Include="AzScanner\ExchangeOnlineScanner.cs" />
     <Compile Include="AzScanner\GraphWinScanner.cs" />
-    <Compile Include="AzScanner\IScanner.cs" />
+    <Compile Include="AzScanner\IScannerModule.cs" />
     <Compile Include="AzScanner\KeyVaultScanner.cs" />
     <Compile Include="AzScanner\MainIamScanner.cs" />
     <Compile Include="AzScanner\MDMScanner.cs" />
     <Compile Include="AzScanner\MSGraphScanner.cs" />
     <Compile Include="AzScanner\ProvisionAPIScanner.cs" />
     <Compile Include="AzScanner\Scanner.cs" />
+    <Compile Include="AzScanner\ScannerFactory.cs" />
     <Compile Include="AzScanner\SharePointScanner.cs" />
     <Compile Include="AzScanner\TeamsScanner.cs" />
     <Compile Include="Checks\Auditor.cs" />
@@ -555,6 +556,7 @@
     <Compile Include="Utilities\DirectoryRoleTemplateID.cs" />
     <Compile Include="Utilities\HttpFactoryWithProxy.cs" />
     <Compile Include="Utilities\ODataTypes.cs" />
+    <Compile Include="Utilities\RetryHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

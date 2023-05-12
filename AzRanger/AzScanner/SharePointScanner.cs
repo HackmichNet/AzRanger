@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class SharePointScanner : IScanner
+    class SharePointScanner : IScannerModule
     {
 
         public const String SPOInternalUseOnly = "/_api/SPOInternalUseOnly.Tenant";
@@ -24,6 +24,7 @@ namespace AzRanger.AzScanner
             };
             String baseScope = BaseAdresse + "/.default";
             this.Scope = new string[] {"offline_access", baseScope};
+            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
         }
 
         public Task<SPOInternalUseOnly> GetSharepointSettings()

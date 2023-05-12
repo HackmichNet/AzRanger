@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    internal class AzMgmtScanner : IScanner
+    internal class AzMgmtScanner : IScannerModule
     {
         private const String ManagementGroup = "/providers/Microsoft.Management/managementGroups/{0}?api-version=2020-05-01&$expand=children";
         private const String ManagementGroupSettings = "/providers/Microsoft.Management/managementGroups/{0}/settings/default?api-version=2020-02-01";
@@ -37,6 +37,7 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = "https://management.azure.com/";
             this.Scope = new string[] { "https://management.azure.com/.default", "offline_access" };
+            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
         }
 
         public Task<ManagementGroupSettings> GetManagementGroupSettings()

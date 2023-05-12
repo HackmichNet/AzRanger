@@ -8,7 +8,6 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            // 0 => Self service password reset enabled = None
             if (tenant.TenantSettings.MSOLCompanyInformation.AllowAdHocSubscriptions == false)
             {
                 return CheckResult.NoFinding;

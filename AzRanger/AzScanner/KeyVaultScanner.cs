@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    public class KeyVaultScanner : IScanner
+    public class KeyVaultScanner : IScannerModule
     {
         private const String Keys = "/keys/?api-version=7.3";
         private const String Secrets = "/secrets/?api-version=7.3";
@@ -16,6 +16,7 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = vaultUri;
             this.Scope = new string[] { "https://vault.azure.net/.default", "offline_access" };
+            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
         }
 
         public Task<List<KeyVaultKey>> GetKeyVaultKeys()

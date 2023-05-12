@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class AzrbacScanner : IScanner
+    class AzrbacScanner : IScannerModule
     {
         private const String RoleAssognmentForDirectory = "/api/v2/privilegedAccess/aadroles/roleAssignments";
         public AzrbacScanner(Scanner scanner)
@@ -16,6 +16,7 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = "https://api.azrbac.mspim.azure.com";
             this.Scope = new String[] { "01fc33a7-78ba-4d2f-a4b7-768e336e890e/.default", "offline_access" };
+            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
         }
 
 

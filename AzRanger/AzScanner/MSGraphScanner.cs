@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 using AzRanger.Models.WinGraph;
+using System.Linq;
 
 namespace AzRanger.AzScanner
 {
 
-    public class MSGraphScanner : IScanner
+    public class MSGraphScanner : IScannerModule
     {
         public const String ConditionalAccessPoliciesBeta = "/beta/identity/conditionalAccess/policies";
         public const String SecureScoreBeta = "/beta/security/secureScores";
@@ -44,6 +45,7 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = "https://graph.microsoft.com";
             this.Scope = new String[] { "https://graph.microsoft.com/.default", "offline_access" };
+            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
         }
 
         public Task<AuthorizationPolicy> GetAuthorizationPolicy()
@@ -93,39 +95,42 @@ namespace AzRanger.AzScanner
                 resultingUsers.Add(user.id, user);
             }
 
-            int maxConcurrentRequests = 5;
-            int concurrentRequests = 0;
             List<Task<StrongAuthenticationDetail>> tasks = new List<Task<StrongAuthenticationDetail>>();
 
             foreach (User user in allUsers)
+            {               
+                tasks.Add(this.Scanner.GraphWinScanner.GetStrongAuthenticationDetail(user.id));
+            }
+
+            while (tasks.Any())
             {
-                if (concurrentRequests < maxConcurrentRequests)
+                Task<StrongAuthenticationDetail> finishedTask = null;
+                try
                 {
-                    tasks.Add(this.Scanner.GraphWinScanner.GetStrongAuthenticationDetail(user.id));
-                    concurrentRequests++;
+                    finishedTask = await Task.WhenAny(tasks);
                 }
-                else 
+                catch (Exception ex)
                 {
-                    IEnumerable<StrongAuthenticationDetail> tempResults = await Task.WhenAll(tasks);
-                    concurrentRequests = 0;
-                    foreach (StrongAuthenticationDetail resultObject in tempResults)
-                    {
-                        resultingUsers[resultObject.objectId].strongAuthenticationDetail = resultObject.strongAuthenticationDetail;
-
-                        if (resultObject.strongAuthenticationDetail.methods != null && resultObject.strongAuthenticationDetail.methods.Length > 0)
-                        {
-                            resultingUsers[resultObject.objectId].isMFAEnabled = true;
-                        }
-                        else
-                        {
-                            resultingUsers[resultObject.objectId].isMFAEnabled = false;
-                        }
-                    }
-                    tasks = new List<Task<StrongAuthenticationDetail>>();
-                    await Task.Delay(100);
+                    logger.Warn("[-] An error occured. Don't panic...");
+                    logger.Debug("MSGraphScanner.GetAllUser.StrongAuth failed.");
+                    logger.Debug(ex.Message);
+                    continue;
                 }
 
-            }            
+                StrongAuthenticationDetail strongAuthTaskResult = await finishedTask;
+                tasks.Remove(finishedTask);
+
+                resultingUsers[strongAuthTaskResult.objectId].strongAuthenticationDetail = strongAuthTaskResult.strongAuthenticationDetail;
+
+                if (strongAuthTaskResult.strongAuthenticationDetail.methods != null && strongAuthTaskResult.strongAuthenticationDetail.methods.Length > 0)
+                {
+                    resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = true;
+                }
+                else
+                {
+                    resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = false;
+                }
+            }
             return resultingUsers;
         }
         public async Task<Dictionary<Guid, User>> GetAllGuests()
