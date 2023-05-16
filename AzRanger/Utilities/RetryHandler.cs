@@ -29,6 +29,10 @@ namespace AzRanger.Utilities
                 {
                     return response;
                 }
+                if((int)response.StatusCode == 401 | (int)response.StatusCode == 403)
+                {
+                    return response;
+                }
             }
             return response;
         }
