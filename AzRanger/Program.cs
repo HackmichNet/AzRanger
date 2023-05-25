@@ -43,7 +43,7 @@ namespace AzRanger
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "AzRanger 0.0.9"; //change header
+                h.Heading = "AzRanger 0.1.0"; //change header
                 h.Copyright = ""; 
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
@@ -171,8 +171,6 @@ namespace AzRanger
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 
                 Task<Tenant> scanTask = scanner.ScanTenant(scopes);
-                //scanTask.Wait();
-                //Tenant tenant = scanTask.Result;
                 Tenant tenant = await scanTask;
                 watch.Stop();
                 Console.WriteLine($"[+] Scan Time: {watch.ElapsedMilliseconds} ms");
@@ -194,6 +192,11 @@ namespace AzRanger
                     else if(opts.Output != null && opts.Output.ToLower() == "html")
                     {
                         HTMLReportingOutput.Print(auditor, tenant, opts.OutFile);
+                        Console.WriteLine("[+] Report written to: " + opts.OutFile);
+                    }
+                    else if (opts.Output != null && opts.Output.ToLower() == "json")
+                    {
+                        JSONOutput.Print(auditor, opts.OutFile);
                         Console.WriteLine("[+] Report written to: " + opts.OutFile);
                     }
                     else

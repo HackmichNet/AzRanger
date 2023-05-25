@@ -44,7 +44,7 @@ namespace AzRanger.Utilities
         [Option(Required = false, HelpText = "Write all results to console. Can result in a very large output.")]
         public bool WriteAllResults { get; set; }
 
-        [Option(Required = false, HelpText = "Only for audit. Specify 'console' (standard) or 'html'.")]
+        [Option(Required = false, HelpText = "Only for audit. Specify 'console' (standard), 'html' or 'json'.")]
         public string Output { get; set; }
         [Option(Required = false, HelpText = "Set ScopeEnum AAD, Teams, SharePoint(SPO), ExchangeOnline(EXO) or Azure. If not set all scopes will be used.", Separator = ',')]
         public IEnumerable<ScopeEnum> Scope { get; set; }

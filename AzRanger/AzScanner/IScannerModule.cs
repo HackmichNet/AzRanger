@@ -36,14 +36,23 @@ namespace AzRanger.AzScanner
             }
             string url = BaseAdresse + usedEndpoint;
             logger.Debug("IScanner.Get: {0}|{1}", typeof(T).ToString(), url);
-            var response = await client.GetAsync(url);
+            HttpResponseMessage response = null;
+            try
+            {
+                response = await client.GetAsync(url);
+            }catch(Exception e)
+            {
+                logger.Debug("IScanner.Get: {0}|{1} failed...return", typeof(T).ToString(), url);
+                logger.Debug(e.Message);
+                return default;
+            }
             String manipulatedResponse = null;
             if (response.IsSuccessStatusCode)
             {
-                ArrayList r = new ArrayList();
-                var result = await response.Content.ReadAsStringAsync();
                 try
                 {
+                    ArrayList r = new ArrayList();
+                    var result = await response.Content.ReadAsStringAsync();
                     manipulatedResponse = this.ManipulateResponse(result, endPoint);
                     return JsonSerializer.Deserialize<T>(manipulatedResponse);
                 }
@@ -92,8 +101,17 @@ namespace AzRanger.AzScanner
             while (url != null)
             {
                 logger.Debug("IScanner.GetAllOf: {0}|{1}", typeof(T).ToString(), url);
-                var response = await client.GetAsync(url);
-                if (response.IsSuccessStatusCode)
+                HttpResponseMessage response = null;
+                try
+                {
+                    response = await client.GetAsync(url);
+                }catch (Exception e)
+                {
+                    logger.Debug("IScanner.GetAllOf: {0}|{1} failed...return", typeof(T).ToString(), url);
+                    logger.Debug(e.Message);
+                    return resultList;
+                }
+                if (response != null && response.IsSuccessStatusCode)
                 {
                     /// Parse the result in GenericObjects
                     var result = await response.Content.ReadAsStringAsync();
@@ -136,10 +154,11 @@ namespace AzRanger.AzScanner
                         logger.Debug(await response.Content.ReadAsStringAsync());
                         return null;
                     }
-                    catch (Exception) {
+                    catch (Exception)
+                    {
                         return null;
                     }
-                } 
+                }  
             }
             return resultList;
         }

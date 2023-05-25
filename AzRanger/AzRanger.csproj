@@ -476,6 +476,7 @@
     <Compile Include="Models\Generic\GenResponse.cs" />
     <Compile Include="Models\Generic\IDTypeResponse.cs" />
     <Compile Include="Models\Generic\OpenIDConfiguration.cs" />
+    <Compile Include="Models\Generic\ResultJSONItem.cs" />
     <Compile Include="Models\Generic\Token.cs" />
     <Compile Include="Models\IReporting.cs" />
     <Compile Include="Models\M365Settings.cs" />
@@ -545,6 +546,7 @@
     <Compile Include="Output\ConsoleOutput.cs" />
     <Compile Include="Output\Dumper.cs" />
     <Compile Include="Output\HTMLReportingOutput.cs" />
+    <Compile Include="Output\JSONOutput.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resource.Designer.cs">
