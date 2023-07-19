@@ -9,7 +9,7 @@ namespace AzRanger.Models.MSGraph
         public String userPrincipalName { get; set; }
         public String displayName { get; set; }
         public String userType { get; set; }
-        public DateTime createdDateTime { get; set; }
+        public DateTime? createdDateTime { get; set; }
         public bool accountEnabled { get; set; }
         public Signinactivity signInActivity { get; set; }
 

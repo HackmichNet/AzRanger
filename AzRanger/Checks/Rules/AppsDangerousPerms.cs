@@ -22,6 +22,10 @@ namespace AzRanger.Checks.Rules
                 {
                     continue;
                 }
+                if(principal.appRoleAssignments == null)
+                {
+                    continue;
+                }
                 foreach(Approleassignment roles in principal.appRoleAssignments)
                 {
                     // 9e3f62cf-ca93-4989-b6ce-bf83c28f9fe8 # RoleManagement.ReadWrite.Directory -> directly promote yourself to GA
