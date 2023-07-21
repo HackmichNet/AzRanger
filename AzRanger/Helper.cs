@@ -45,7 +45,7 @@ namespace AzRanger
 
         internal static string GetFrom(string baseAdress, string uri, String proxy)
         {
-            using (var message = new HttpRequestMessage(HttpMethod.Get, uri))
+            using (var message = new HttpRequestMessage(HttpMethod.Get, baseAdress + uri))
             using (var client = Helper.GetDefaultClient(null, proxy))
             {
                 var response = client.SendAsync(message).Result;

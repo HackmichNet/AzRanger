@@ -19,9 +19,9 @@ namespace AzRanger.Checks.Rules
             
             foreach(Subscription sub in tenant.Subscriptions.Values)
             {
-                if (sub.SecurityContact.properties.notificationsByRole.state.Equals("On") && sub.SecurityContact.properties.alertNotifications.state.Equals("On"))
+                if (sub.SecurityContact[0].properties.notificationsByRole.state.Equals("On") && sub.SecurityContact[0].properties.alertNotifications.state.Equals("On"))
                 {
-                    if (sub.SecurityContact.properties.emails.Length == 0)
+                    if (sub.SecurityContact[0].properties.emails.Length == 0)
                     {
                         AddAffectedEntity(sub);
                         passed = false;

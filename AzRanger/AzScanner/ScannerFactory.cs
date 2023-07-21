@@ -13,7 +13,7 @@ namespace AzRanger.AzScanner
             String accessToken = await scanner.Scanner.Authenticator.GetAccessToken(scanner.Scope);
             if (accessToken == null)
             {
-                logger.Warn("IScanner.Get: {0}|{1} failed to get token!", scanner.GetType().ToString(), scanner.Scope.ToString());
+                logger.Warn("ScannerFactory.CreateScanner: {0}|{1} failed to init scanner!", scanner.GetType().ToString(), scanner.Scope.ToString());
                 return null;
             }
             scanner.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -43,6 +43,10 @@ namespace AzRanger.AzScanner
             ComplianceCenterScanner scannerModul = new ComplianceCenterScanner(scanner);
             scannerModul = (ComplianceCenterScanner)await CreateScanner(scannerModul);
             scannerModul.BaseAdresse = await scannerModul.GetBaseAddress();
+            if(scannerModul.BaseAdresse == null)
+            {
+                return null;
+            }
             return scannerModul;
         }
 

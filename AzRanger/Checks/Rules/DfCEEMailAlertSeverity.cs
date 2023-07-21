@@ -19,9 +19,9 @@ namespace AzRanger.Checks.Rules
             
             foreach(Subscription sub in tenant.Subscriptions.Values)
             {
-                if (sub.SecurityContact.properties.notificationsByRole.state.Equals("On") && sub.SecurityContact.properties.alertNotifications.state.Equals("On"))
+                if (sub.SecurityContact[0].properties.notificationsByRole.state.Equals("On") && sub.SecurityContact[0].properties.alertNotifications.state.Equals("On"))
                 {
-                    if (sub.SecurityContact.properties.alertNotifications.minimalSeverity != "High" )
+                    if (sub.SecurityContact[0].properties.alertNotifications.minimalSeverity != "High" )
                     {
                         AddAffectedEntity(sub);
                         passed = false;

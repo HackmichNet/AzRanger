@@ -20,7 +20,7 @@ namespace AzRanger.Models.AzMgmt
         public AzResources Resources = new AzResources();
         public List<AutoProvisioningSettings> AutoProvisioningSettings { get; set; }
         public SecurityCenterBuiltIn SecurityCenterBuiltIn { get; set; }
-        public SecurityContact SecurityContact { get; set;  }
+        public List<SecurityContact> SecurityContact { get; set;  }
 
         public string PrintConsole()
         {

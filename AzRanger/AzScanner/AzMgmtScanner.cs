@@ -162,9 +162,9 @@ namespace AzRanger.AzScanner
             return GetAllOf<AutoProvisioningSettings>(String.Format(AutoProvisioningSettings, subscription));
         }
 
-        public Task<SecurityContact> GetSecurityContacts(String subscription)
+        public Task<List<SecurityContact>> GetSecurityContacts(String subscription)
         {
-            return Get<SecurityContact>(String.Format(SecurityContacts, subscription));
+            return Get<List<SecurityContact>>(String.Format(SecurityContacts, subscription));
         }
 
         public Task<List<VirtualMachine>> GetVirtualMachines(String subscription)
@@ -175,20 +175,6 @@ namespace AzRanger.AzScanner
         public Task<SubscriptionPolicy> GetSubscriptionPolicy()
         {
             return Get<SubscriptionPolicy>(SubscriptionPolicy);
-        }
-
-        internal override String ManipulateResponse(String response, String endPoint)
-        {
-            if (response.Contains("/providers/Microsoft.Security/securityContacts/default"))
-            {
-                String newResp = response.Substring(1);
-                newResp = newResp.Substring(0, newResp.Length - 1);
-                return newResp;
-            }
-            else
-            {
-                return response;
-            }
         }
 
         public Task<SecurityCenterBuiltIn> GetSecurityCenterBuiltIn(String subscription)

@@ -29,9 +29,14 @@ namespace AzRanger.Utilities
                 {
                     return response;
                 }
-                if((int)response.StatusCode == 401 | (int)response.StatusCode == 403)
+                if((int)response.StatusCode == 400 | (int)response.StatusCode == 401 | (int)response.StatusCode == 403)
                 {
                     return response;
+                }
+                if((int)response.StatusCode == 429)
+                {
+                    await Task.Delay(10, cancellationToken);
+                    continue;
                 }
             }
             return response;
