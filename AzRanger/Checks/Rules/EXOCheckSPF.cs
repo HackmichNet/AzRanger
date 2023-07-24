@@ -4,8 +4,8 @@ using AzRanger.Models.ExchangeOnline;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOCheckSPF", ScopeEnum.EXO, MaturityLevel.Mature)]
-    [CISM365("4.8", "", Level.L1, "v1.5")]
-    [RuleInfo("Missing SPF for Domains used in Exchange Online", "The Sender Policy Framework can prevent that someone impersonates your domain.", 3)]
+    [CISM365("4.8", "", Level.L1, "v2.0")]
+    [RuleInfo("Missing SPF for Domains used in Exchange Online", "The Sender Policy Framework can prevent that someone impersonates your domain.", 3, null, null, @"You must set the SPF records in at your DNS providers portal.")]
     class EXOCheckSPF : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

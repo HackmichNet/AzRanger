@@ -2,9 +2,9 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOAdminAuditLogConfig", ScopeEnum.EXO, MaturityLevel.Mature, "https://security.microsoft.com/auditlogsearch")]
-    [CISM365("5.1", "", Level.L1, "v1.5")]
-    [RuleInfo("Unified AuditLog is turned off", "Attacks on Exchange Online can go unnoticed.", 7 , "https://docs.microsoft.com/en-us/microsoft-365/compliance/turn-audit-log-search-on-or-off?view=o365-worldwide", null, "Enable Unified Audit Log like in the Reference Link.")]
+    [RuleMeta("EXOAdminAuditLogConfig", ScopeEnum.EXO, MaturityLevel.Mature, "https://compliance.microsoft.com/auditlogsearch")]
+    [CISM365("5.2", "", Level.L1, "v2.0")]
+    [RuleInfo("Unified AuditLog is turned off", "Attacks on Exchange Online can go unnoticed.", 7 , "https://learn.microsoft.com/en-us/purview/audit-log-enable-disable?view=o365-worldwide", null, @"Go to Microsoft PureView and select ""Audit"". Afterwards click ""Start recording user and admin activity"". As an alternative you can use the PowerShell Exchange Online Management Module and use the following command: ""Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true"".")]
     class EXOAdminAuditLogConfig : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

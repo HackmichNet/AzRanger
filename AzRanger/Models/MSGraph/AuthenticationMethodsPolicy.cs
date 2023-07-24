@@ -43,12 +43,14 @@ namespace AzRanger.Models.MSGraph
 
     public class Authenticationmethodconfiguration
     {
+        [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }
         public string id { get; set; }
         public string state { get; set; }
         public bool isSelfServiceRegistrationAllowed { get; set; }
         public bool isAttestationEnforced { get; set; }
         public Keyrestrictions keyRestrictions { get; set; }
+        [JsonPropertyName("@includeTargets@odata.context")]
         public string includeTargetsodatacontext { get; set; }
         public Includetarget[] includeTargets { get; set; }
         public Featuresettings featureSettings { get; set; }

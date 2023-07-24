@@ -8,21 +8,30 @@ using System.Linq;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserAllAdminsHaveMFA", ScopeEnum.AAD, MaturityLevel.Mature, null)]
-    [CISM365("1.1.1", "", Level.L1, "v1.5")]
+    [CISM365("1.1.2", "", Level.L1, "v2.0")]
     [RuleInfo("Not all priviledged accounts uses MFA", "This increases the risk, that one of your admins becomes a victim of a phishing attack.", 10, "https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-admin-mfa", null, "No discussion here. Force them to use MFA!")]
     class UserAllAdminsHaveMFA : BaseCheck
     {
         private readonly String[] InteresstingRoles = new String[] {
+                "Application administrator",
+                "Authentication administrator",
+                "Cloud application administrator",
+                "Conditional Access administrator",
                 "Global Administrator",
                 "Billing Administrator",
                 "Exchange Administrator",
                 "SharePoint Administrator",
                 "Password Administrator",
                 "Skype for Business Administrator",
-                "Skype for Business Administrator",
                 "User Administrator",
                 "Dynamics 365 ServiceEnum Administrator",
-                "Power BI Administrator"
+                "Power BI Administrator",
+                "Global reader",
+                "Helpdesk administrator",
+                "Privileged authentication administrator",
+                "Privileged role administrator",
+                "Security administrator",
+                "User administrator"
         };
 
         public override CheckResult Audit(Tenant tenant)

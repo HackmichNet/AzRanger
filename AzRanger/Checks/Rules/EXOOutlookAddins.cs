@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOOutlookAddins", ScopeEnum.EXO, MaturityLevel.Tentative, "https://outlook.office365.com/ecp/?form=eac&mkt=en-US")]
-    [CISM365("2.8", "", Level.L2, "v1.5")]
+    [CISM365("2.8", "", Level.L2, "v2.0")]
     [RuleInfo("Users can install Outlook Add-Ins", "Outlook Add-Ins can contain malicious functions.", 1, "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/add-ins-for-outlook/specify-who-can-install-and-manage-add-ins", null, "See reference.")]
     class EXOOutlookAddins : BaseCheck
     {

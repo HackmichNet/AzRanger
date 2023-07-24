@@ -2,10 +2,10 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("SPOLegacyAuth", ScopeEnum.SPO, MaturityLevel.Mature, "https://<YOURDOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/accessControl")]
-    [CISM365("1.3", "", Level.L1, "v2.0")]
-    [RuleInfo("SharePoint Online allows to use legacy authentication protocol", "This increases the attack surface against user credentials.", 10, null, null, @"Go tot the Portal URL and under ""Apps that don't use modern authentication"" set the value to ""Block access"".")]
-    class SPOLegacyAuth : BaseCheck
+    [RuleMeta("SPOEntraB2BEnabled", ScopeEnum.SPO, MaturityLevel.Mature)]
+    [CISM365("2.12", "", Level.L1, "v2.0")]
+    [RuleInfo("SharePoint and OnDrive are not integrated to Entra ID B2B", "This makes the auditing of Guest access harder and does not allow to apply Azure Access Policies to them.", 3, "https://learn.microsoft.com/en-us/sharepoint/sharepoint-azureb2b-integration#enabling-the-integration", null,  @"You can enable Azure AD b2B Inegration by using the following command ""Set-SPOTenant -EnableAzureADB2BIntegration $true"".")]
+    class SPOEntraB2BEnabled : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {

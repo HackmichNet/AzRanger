@@ -387,6 +387,7 @@
     <Compile Include="Checks\Rules\OfficeSwaySettings.cs" />
     <Compile Include="Checks\Rules\SPOExpireExternalLinks.cs" />
     <Compile Include="Checks\Rules\SPOGuestSharing.cs" />
+    <Compile Include="Checks\Rules\SPOEntraB2BEnabled.cs" />
     <Compile Include="Checks\Rules\SPOLegacyAuth.cs" />
     <Compile Include="Checks\Rules\SPOModernAuthDisabled.cs" />
     <Compile Include="Checks\Rules\SPOOneDriveSync.cs" />
@@ -400,6 +401,7 @@
     <Compile Include="Checks\Rules\UserAdminConsent.cs" />
     <Compile Include="Checks\Rules\UserAllAdminsHaveMFA.cs" />
     <Compile Include="Checks\Rules\UserAllowAdHocSubscriptions.cs" />
+    <Compile Include="Checks\Rules\UserMFAFatigueProtection.cs" />
     <Compile Include="Checks\Rules\UserAllUserHaveMFA.cs" />
     <Compile Include="Checks\Rules\UserAllowCreationOfAzureTenants.cs" />
     <Compile Include="Checks\Rules\UserCanAddGalleryApps.cs" />
