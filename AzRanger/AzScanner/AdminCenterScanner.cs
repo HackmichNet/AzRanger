@@ -39,12 +39,19 @@ namespace AzRanger.AzScanner
         // https://admin.microsoft.com/#/dirsyncmanagement
         public const String DirsyncManagement = "/admin/api/DirsyncManagement/manage";
 
+        public const String Officeonline = "/admin/api/settings/apps/officeonline";
+
         public AdminCenterScanner(Scanner scanner)
         {
             this.Scanner = scanner;
             this.BaseAdresse = "https://admin.microsoft.com";
             this.Scope = new String[]{"https://admin.microsoft.com/.default", "offline_access"};
             this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+        }
+
+        public Task<Officeonline> GetOfficeonline()
+        {
+            return Get<Officeonline>(AdminCenterScanner.Officeonline);
         }
 
         public Task<SkypeTeams> GetSkypeTeamsSettings()

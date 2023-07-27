@@ -425,6 +425,7 @@ namespace AzRanger.AzScanner
                     officeTasks.Add(AdminCenterScanner.GetSwaySettings());
                     officeTasks.Add(AdminCenterScanner.GetCalendarsharing());
                     officeTasks.Add(AdminCenterScanner.GetDirsyncManagement());
+                    officeTasks.Add(AdminCenterScanner.GetOfficeonline());
                 }
 
                 if (this.ComplianceCenterScanner != null)
@@ -528,6 +529,9 @@ namespace AzRanger.AzScanner
                             break;
                         case Task<MsolCompanyInformation> getMSOLCompanyInformationTask:
                             Result.TenantSettings.MSOLCompanyInformation = await getMSOLCompanyInformationTask;
+                            break;
+                        case Task<Officeonline> getOfficeonline:
+                            Result.TenantSettings.Officeonline = await getOfficeonline;
                             break;
                         default:
                             Console.WriteLine("Scanner.ScanTennant: OfficeTask Defaul. This should not happen");

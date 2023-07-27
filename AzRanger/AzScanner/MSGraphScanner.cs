@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using AzRanger.Models.WinGraph;
 using System.Linq;
+using System.Net;
 
 namespace AzRanger.AzScanner
 {
@@ -97,41 +98,71 @@ namespace AzRanger.AzScanner
 
             List<Task<StrongAuthenticationDetail>> tasks = new List<Task<StrongAuthenticationDetail>>();
 
-            foreach (User user in allUsers)
-            {               
-                tasks.Add(this.Scanner.GraphWinScanner.GetStrongAuthenticationDetail(user.id));
-            }
-
-            while (tasks.Any())
+            // What shitty code.... homage an ML =) 
+            int counter = 0;
+            while (!DoesAllUserHaveStrongAuthDetails(resultingUsers.Values.ToList()))
             {
-                Task<StrongAuthenticationDetail> finishedTask = null;
-                try
+                if(counter >= 5)
                 {
-                    finishedTask = await Task.WhenAny(tasks);
+                    return resultingUsers;
                 }
-                catch (Exception ex)
+                foreach (User user in resultingUsers.Values.ToList())
                 {
-                    logger.Warn("[-] An error occured. Don't panic...");
-                    logger.Debug("MSGraphScanner.GetAllUser.StrongAuth failed.");
-                    logger.Debug(ex.Message);
-                    continue;
+                    if (user.strongAuthenticationDetail == null)
+                    {
+                        tasks.Add(this.Scanner.GraphWinScanner.GetStrongAuthenticationDetail(user.id));
+                    }
                 }
 
-                StrongAuthenticationDetail strongAuthTaskResult = await finishedTask;
-                tasks.Remove(finishedTask);
-
-                resultingUsers[strongAuthTaskResult.objectId].strongAuthenticationDetail = strongAuthTaskResult.strongAuthenticationDetail;
-
-                if (strongAuthTaskResult.strongAuthenticationDetail.methods != null && strongAuthTaskResult.strongAuthenticationDetail.methods.Length > 0)
+                while (tasks.Any())
                 {
-                    resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = true;
+                    Task<StrongAuthenticationDetail> finishedTask = null;
+                    try
+                    {
+                        finishedTask = await Task.WhenAny(tasks);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Warn("[-] An error occured. Don't panic...");
+                        logger.Debug("MSGraphScanner.GetAllUser.StrongAuth failed.");
+                        logger.Debug(ex.Message);
+                        continue;
+                    }
+
+                    StrongAuthenticationDetail strongAuthTaskResult = await finishedTask;
+
+                    // Sometimes a task dies and I don't know why -.- 
+                    if (strongAuthTaskResult.strongAuthenticationDetail != null)
+                    {
+                        resultingUsers[strongAuthTaskResult.objectId].strongAuthenticationDetail = strongAuthTaskResult.strongAuthenticationDetail;
+
+                        if (strongAuthTaskResult.strongAuthenticationDetail.methods != null && strongAuthTaskResult.strongAuthenticationDetail.methods.Length > 0)
+                        {
+                            resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = true;
+                        }
+                        else
+                        {
+                            resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = false;
+                        }
+                        tasks.Remove(finishedTask);
+                    }
                 }
-                else
-                {
-                    resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = false;
-                }
+                counter += 1;
             }
             return resultingUsers;
+        }
+
+
+        private bool DoesAllUserHaveStrongAuthDetails(List<User>UserList)
+        {
+            foreach(User user in UserList)
+            {
+                if(user.strongAuthenticationDetail  == null)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
         public async Task<Dictionary<Guid, User>> GetAllGuests()
         {

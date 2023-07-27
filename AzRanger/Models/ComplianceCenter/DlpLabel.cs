@@ -49,10 +49,10 @@ namespace AzRanger.Models.ComplianceCenter
         public object SchematizedDataCondition { get; set; }
         public string[] Settings { get; set; }
         public string Tooltip { get; set; }
-        public DateTime WhenChanged { get; set; }
-        public DateTime WhenChangedUTC { get; set; }
-        public DateTime WhenCreated { get; set; }
-        public DateTime WhenCreatedUTC { get; set; }
+        public DateTime? WhenChanged { get; set; }
+        public DateTime? WhenChangedUTC { get; set; }
+        public DateTime? WhenCreated { get; set; }
+        public DateTime? WhenCreatedUTC { get; set; }
         public string Workload { get; set; }
         public object[] ResolvedUsers { get; set; }
         public object Setting { get; set; }

@@ -35,5 +35,6 @@ namespace AzRanger.Models
         public AuthenticationMethodsPolicy AuthenticationMethodsPolicy { get; set; }
         public DirSyncFeatures DirSyncFeatures { get; set; }
         public List<LoginTenantBranding> LoginTenantBrandings { get; set; }
+        public Officeonline Officeonline { get; set; }
     }
 }

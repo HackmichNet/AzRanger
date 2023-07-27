@@ -372,6 +372,7 @@
     <Compile Include="Checks\Rules\EXOModernauthentication.cs" />
     <Compile Include="Checks\Rules\EXONotifcationUsersSendingMalware.cs" />
     <Compile Include="Checks\Rules\EXOOutlookAddins.cs" />
+    <Compile Include="Checks\Rules\M365WebStorageProvider.cs" />
     <Compile Include="Checks\Rules\EXOOwaExternalStorageProvider.cs" />
     <Compile Include="Checks\Rules\EXOSpamPolicy.cs" />
     <Compile Include="Checks\Rules\EXOWhitelistBypass.cs" />
@@ -382,6 +383,7 @@
     <Compile Include="Checks\Rules\GroupPublic.cs" />
     <Compile Include="Checks\Rules\OfficeAddIns.cs" />
     <Compile Include="Checks\Rules\OfficeCalenderSharing.cs" />
+    <Compile Include="Checks\Rules\OfficeDLPLabels.cs" />
     <Compile Include="Checks\Rules\OfficeDLPPolicies.cs" />
     <Compile Include="Checks\Rules\OfficeFormsPhishingProtection.cs" />
     <Compile Include="Checks\Rules\OfficeSwaySettings.cs" />
@@ -427,6 +429,7 @@
     <Compile Include="Models\AdminCenter\ExchangeModernAuthSettings.cs" />
     <Compile Include="Models\AdminCenter\O365PasswordPolicy.cs" />
     <Compile Include="Models\AdminCenter\OfficeFormsSettings.cs" />
+    <Compile Include="Models\AdminCenter\Officeonline.cs" />
     <Compile Include="Models\AdminCenter\OfficeStoreSettings.cs" />
     <Compile Include="Models\AdminCenter\SkypeTeams.cs" />
     <Compile Include="Models\AdminCenter\SwaySettings.cs" />
