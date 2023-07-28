@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzGuestRestrictions", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/CompanyRelationshipsMenuBlade/Settings")]
-    [CISAZ("1.15", "", Level.L2, "v1.5")]
+    [RuleMeta("AzGuestRestrictions", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AllowlistPolicyBlade")]
+    [CISAZ("1.15", "", Level.L2, "v2.0")]
     [RuleInfo("Guest are not maximal restricted", "Currently guests can enumerate the whole tenant.", 2, "https://danielchronlund.com/2021/11/18/scary-azure-ad-tenant-enumeration-using-regular-b2b-guest-accounts/", null, @"Go to ""External Identities | External collaboration settings"" and set ""Guest user access restrictions"" to ""Guest user access is restricted to properties and memberships of their own directory objects (most restrictive).""")]
     internal class AzGuestRestrictions : BaseCheck
     {

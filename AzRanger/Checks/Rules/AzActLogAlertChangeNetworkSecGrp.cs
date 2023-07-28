@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzActLogAlertChangeNetworkSecGrp", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
-    [CISAZ("5.2.3", "", Level.L1, "v1.5")]
+    [CISAZ("5.2.3", "", Level.L1, "v2.0")]
     [RuleInfo("No Activity Log Alert for 'Create or Update Network Security Group '", @"Unwanted changes for ""Network Security Groups"" can go unnoticed.", 0, null, null)]
     internal class AzActLogAlertChangeNetworkSecGrp : BaseCheck
     {

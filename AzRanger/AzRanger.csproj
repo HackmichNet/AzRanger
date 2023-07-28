@@ -442,6 +442,7 @@
     <Compile Include="Models\AzMgmt\ManagementGroup.cs" />
     <Compile Include="Models\AzMgmt\ManagementGroupSettings.cs" />
     <Compile Include="Models\AzMgmt\NetworkSecurityGroup.cs" />
+    <Compile Include="Models\AzMgmt\PolicyAssignment.cs" />
     <Compile Include="Models\AzMgmt\PostgreSQLFlexibleServers.cs" />
     <Compile Include="Models\AzMgmt\SecurityCenterBuiltIn.cs" />
     <Compile Include="Models\AzMgmt\SecurityContacts.cs" />

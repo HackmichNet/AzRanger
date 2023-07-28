@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzPSQLLogCheckpoints", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DBforPostgreSQL%2Fservers", ServiceEnum.PSQLServer)]
-    [RuleInfo("Log Checkpoints are disabled", @"You might miss problems and errors in PSQLQueries.", 1, null, null, @"For each PSQLServer go to Settings->Server parameters and search for ""log_checkpoints"". Set the value to ""On"".")]
-    [CISAZ("4.3.2", "", Level.L1, "v2.0")]
-    internal class AzPSQLLogCheckpoints : BaseCheck
+    [RuleMeta("AzPSQLLogConnections", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DBforPostgreSQL%2Fservers", ServiceEnum.PSQLServer)]
+    [RuleInfo("Log Connection are disabled", @"You might miss problems and errors in PSQLQueries.", 1, null, null, @"For each PSQLServer go to Settings->Server parameters and search for ""log_connections"". Set the value to ""On"".")]
+    [CISAZ("4.3.3", "", Level.L1, "v2.0")]
+    internal class AzPSQLLogConnections : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
@@ -28,7 +28,7 @@ namespace AzRanger.Checks.Rules
                 {
                     foreach (PostgreSQLFlexibleServersParameters param in server.Paramters)
                     {
-                        if (param.name == "log_checkpoints")
+                        if (param.name == "log_connections")
                         {
                             if (param.properties.value == "off")
                             {

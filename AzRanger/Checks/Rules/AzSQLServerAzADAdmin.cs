@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzSQLServerAzADAdmin", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", ServiceEnum.SQLServer)]
-    [CISAZ("4.1.4", "", Level.L1, "v1.5")]
+    [CISAZ("4.1.4", "", Level.L1, "v2.0")]
     [RuleInfo("Azure AD Authentication is not enabled for SQL-Server", "This could be an addtional risk to the SQL Server. It eases attacks like password bruteforce.", 1, null, null, @"For each SQL-Server go to ""Settings"" and ""Azure Active Directory"". Here click on ""Set Admin"" and choose an admin.")]
     internal class AzSQLServerAzADAdmin : BaseCheck
     {

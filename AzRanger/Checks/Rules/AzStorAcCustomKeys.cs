@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcCustomKeys", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.12", "", Level.L2, "v1.5")]
+    [CISAZ("3.12", "", Level.L2, "v2.0")]
     [RuleInfo("StorageAccount is encrypted with Microsot Managed Keys", "Microsoft may have access to your encrypted data.", 1, null, null, "If you want to have control over your keys, you should use custom keys.")]
     internal class AzStorAcCustomKeys : BaseCheck
     {

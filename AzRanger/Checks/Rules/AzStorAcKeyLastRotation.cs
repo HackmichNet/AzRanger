@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcKeyLastRotation", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.4", "", Level.L1, "v1.5")]
+    [CISAZ("3.4", "", Level.L1, "v2.0")]
     [RuleInfo("StorageAccount key is too old", "If the Storage Accounts Access Keys are not regularly changed potentially compromised keys can result in long-term exploitable credential.", 1, null, null, @"Go to Storage Accounts and for each Storage Account go to ""Access Key"" and click ""Rotate Key"" for ""key1"" and ""key2"".")]
     internal class AzStorAcKeyLastRotation : BaseCheck
     {

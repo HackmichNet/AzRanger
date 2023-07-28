@@ -74,6 +74,7 @@ namespace AzRanger
             };
             if (opts.Debug)
             {
+                config.AddRule(LogLevel.Debug, LogLevel.Fatal, consoleTargetDebug, "*");
                 if (opts.Logfile != null)
                 {
                     var fileTarget = new FileTarget
@@ -83,10 +84,6 @@ namespace AzRanger
                         FileName = opts.Logfile,
                     };
                     config.AddRule(LogLevel.Debug, LogLevel.Fatal, fileTarget, "*");
-                }
-                else
-                {
-                    config.AddRule(LogLevel.Debug, LogLevel.Fatal, consoleTargetDebug, "*");
                 }
             }
             else
@@ -134,7 +131,7 @@ namespace AzRanger
                 }
             }
 
-            if(opts.Audit && (opts.Output != null && opts.Output.ToLower() == "html"))
+            if(opts.Audit && (opts.Output != null && (opts.Output.ToLower() == "html" | opts.Output.ToLower() == "json")))
             {
                 if(opts.OutFile == null || opts.OutFile.Length == 0)
                 {

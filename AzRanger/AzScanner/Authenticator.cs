@@ -60,17 +60,18 @@ namespace AzRanger.AzScanner
             }
             if (proxy != null) {
                 IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                App = PublicClientApplicationBuilder.Create(ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).Build();
+                App = PublicClientApplicationBuilder.Create(ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
             }
             else
             {
-                App = PublicClientApplicationBuilder.Create(ClientId).WithAuthority(Authority).WithTenantId(tenantId).Build();
+                App = PublicClientApplicationBuilder.Create(ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
             }
         }
 
         public async Task<String> GetUserId()
         {
-            AuthenticationResult result = await GetAuthenticationResult(null);
+            String[] scope = new string[] { "offline_access" };
+            AuthenticationResult result = await GetAuthenticationResult(scope);
             if (result.UniqueId == null)
             {
                 return null;
@@ -101,7 +102,8 @@ namespace AzRanger.AzScanner
         }
         private async Task<AuthenticationResult> GetAuthenticationResult(String[] scopes)
         {
-            var accounts = App.GetAccountsAsync().GetAwaiter().GetResult();
+            //var accounts = App.GetAccountsAsync().GetAwaiter().GetResult();
+            var accounts = await App.GetAccountsAsync();
             AuthenticationResult result = null;
             if (accounts.Any())
             {

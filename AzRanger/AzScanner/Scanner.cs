@@ -744,6 +744,7 @@ namespace AzRanger.AzScanner
                         sub.SecurityContact = await AzMgmtScanner.GetSecurityContacts(sub.subscriptionId);
                         sub.Resources.VirtualMachines = await AzMgmtScanner.GetVirtualMachines(sub.subscriptionId);
                         sub.Resources.PostgreSQLs = await AzMgmtScanner.GetPostgreSQLFlexibleServers(sub.subscriptionId);
+                        sub.PolicyAssignment = await AzMgmtScanner.GetPolicyAssignment(sub.subscriptionId);
                     }
                 }
             }

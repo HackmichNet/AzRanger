@@ -32,6 +32,7 @@ namespace AzRanger.AzScanner
         private const String TransparentDataEncryption = "{0}/transparentDataEncryption/current?api-version=2020-11-01-preview";
         private const String PostgreSQL = "/subscriptions/{0}/providers/Microsoft.DBforPostgreSQL/flexibleServers/?api-version=2022-03-08-preview";
         private const String PostgreSQLParamters = "{0}/configurations?api-version=2021-06-01";
+        private const String PolicyAssignment = "/subscriptions/{0}/providers/Microsoft.Authorization/policyAssignments?api-version=2019-09-01";
         public AzMgmtScanner(Scanner scanner)
         {
             this.Scanner = scanner;
@@ -135,6 +136,11 @@ namespace AzRanger.AzScanner
         public Task<List<NetworkSecurityGroup>> GetNetworkSecurityGroups(String subscription)
         {
             return GetAllOf<NetworkSecurityGroup>(String.Format(NetworkSecurityGroups, subscription));
+        }
+
+        public Task<List<PolicyAssignment>> GetPolicyAssignment(String subscription)
+        {
+            return GetAllOf<PolicyAssignment>(String.Format(PolicyAssignment, subscription));
         }
         public async Task<List<SQLServer>> GetSQLServers(String subscription)
         {
