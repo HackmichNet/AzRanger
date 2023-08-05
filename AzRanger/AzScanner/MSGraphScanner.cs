@@ -130,22 +130,25 @@ namespace AzRanger.AzScanner
                     }
 
                     StrongAuthenticationDetail strongAuthTaskResult = await finishedTask;
-
                     // Sometimes a task dies and I don't know why -.- 
-                    if (strongAuthTaskResult.strongAuthenticationDetail != null)
+                    if (strongAuthTaskResult != null)
                     {
-                        resultingUsers[strongAuthTaskResult.objectId].strongAuthenticationDetail = strongAuthTaskResult.strongAuthenticationDetail;
+                        if (strongAuthTaskResult.strongAuthenticationDetail != null)
+                        {
+                            resultingUsers[strongAuthTaskResult.objectId].strongAuthenticationDetail = strongAuthTaskResult.strongAuthenticationDetail;
 
-                        if (strongAuthTaskResult.strongAuthenticationDetail.methods != null && strongAuthTaskResult.strongAuthenticationDetail.methods.Length > 0)
-                        {
-                            resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = true;
+                            if (strongAuthTaskResult.strongAuthenticationDetail.methods != null && strongAuthTaskResult.strongAuthenticationDetail.methods.Length > 0)
+                            {
+                                resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = true;
+                            }
+                            else
+                            {
+                                resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = false;
+                            }
+                            
                         }
-                        else
-                        {
-                            resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = false;
-                        }
-                        tasks.Remove(finishedTask);
                     }
+                    tasks.Remove(finishedTask);
                 }
                 counter += 1;
             }

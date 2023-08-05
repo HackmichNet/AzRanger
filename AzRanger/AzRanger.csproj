@@ -316,6 +316,7 @@
     <Compile Include="Checks\Rules\AzActNSGRDPLimitiation.cs" />
     <Compile Include="Checks\Rules\AzActNSGSSHLimitiation.cs" />
     <Compile Include="Checks\Rules\AzActNSGSUnrestrictedDestionationPort.cs" />
+    <Compile Include="Checks\Rules\AzKeyVSoftDelete.cs" />
     <Compile Include="Checks\Rules\AzSQLAuditingRetention.cs" />
     <Compile Include="Checks\Rules\AzSQLServerAzADAdmin.cs" />
     <Compile Include="Checks\Rules\AzPSQLLogCheckpoints.cs" />

@@ -5,7 +5,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOClientForwardingIsBlocked", ScopeEnum.EXO, MaturityLevel.Tentative, "https://admin.exchange.microsoft.com/#/transportrules")]
     [CISM365("4.3", "", Level.L1, "v1.5-3")]
-    [RuleInfo("Autoforwarding on the client site is not prevent by Exchange Online", "This can lead to an unwanted data loss.", 4, null, "No mail flow rule detected, that blocks auto forwarding on the client site. User might be able automatically forward mails outside the organization")]
+    [RuleInfo("Autoforwarding on the client site is not prevent by Exchange Online", "This can lead to an unwanted data loss.", 4, null, "No mail flow rule detected, that blocks auto forwarding on the client site. User might be able automatically forward mails outside the organization.")]
     class EXOClientForwardingIsBlocked : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

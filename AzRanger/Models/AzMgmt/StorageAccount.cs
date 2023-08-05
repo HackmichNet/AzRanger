@@ -52,7 +52,7 @@ namespace AzRanger.Models.AzMgmt
         public StorageAccountEncryption encryption { get; set; }
         public string accessTier { get; set; }
         public string provisioningState { get; set; }
-        public DateTime creationTime { get; set; }
+        public DateTime? creationTime { get; set; }
         public StorageAccountPrimaryendpoints primaryEndpoints { get; set; }
         public string primaryLocation { get; set; }
         public string statusOfPrimary { get; set; }

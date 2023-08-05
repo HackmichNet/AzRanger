@@ -21,9 +21,11 @@ namespace AzRanger.Checks.Rules
                 }
                 else
                 {
-                    if (tenant.TeamsSettings.TenantFederationSettings.AllowedDomains.AllowedDomain.Length > 0)
-                    {
-                        return CheckResult.NoFinding;
+                    if (tenant.TeamsSettings.TenantFederationSettings.AllowedDomains.AllowedDomain != null) {
+                        if(tenant.TeamsSettings.TenantFederationSettings.AllowedDomains.AllowedDomain.Length > 0)
+                        {
+                            return CheckResult.NoFinding;
+                        }
                     }
                 }
             }

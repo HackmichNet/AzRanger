@@ -12,7 +12,7 @@ namespace AzRanger.Checks.Rules
     [RuleMeta("UserAllUserHaveMFA", ScopeEnum.AAD)]
     [CISM365("1.1.4", "", Level.L1, "v2.0")]
     [CISAZ("1.1.3", "", Level.L2, "v2.0")]
-    [RuleInfo("Not all users using MFA", "Users with MFA are way easier victims to phishing attacks.", 7, "https://learn.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa")]
+    [RuleInfo("Not all users using MFA", "Users with MFA are way easier victims to phishing attacks.", 7, "https://learn.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa", null, "Think about to implement MFA for all your users.")]
     class UserAllUserHaveMFA : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
