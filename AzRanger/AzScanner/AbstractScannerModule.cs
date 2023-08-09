@@ -3,6 +3,7 @@ using NLog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    public abstract class IScannerModule
+    public abstract class AbstractScannerModule
     {
         internal static Logger logger = LogManager.GetCurrentClassLogger();
         internal Scanner Scanner;
@@ -22,6 +23,12 @@ namespace AzRanger.AzScanner
 
         internal async virtual Task<T> Get<T>(String endPoint, string query = null)
         {
+            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            if (accessToken == null)
+            {
+                return default;
+            }
+            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             string usedEndpoint = endPoint;
             if (query != null)
             {
@@ -68,14 +75,13 @@ namespace AzRanger.AzScanner
             {
                 try
                 {
-                    logger.Debug("IScanner.Get: {0}|{1} was not successfull", typeof(T).ToString(), url);
-                    logger.Debug("IScanner.Get: Status Code {0}", response.StatusCode);
+                    logger.Debug("IScanner.Get: {0}|{1} was not successful.", typeof(T).ToString(), url);
+                    logger.Debug("IScanner.Get: Status Code {0}.", response.StatusCode);
                     logger.Debug(await response.Content.ReadAsStringAsync());
                 }
                 catch { }
-            }
-                        
-            return default(T);
+            }                
+            return default;
         }
 
         internal virtual String ManipulateResponse(String response, String endPoint)
@@ -84,6 +90,12 @@ namespace AzRanger.AzScanner
         }
         internal async virtual Task<List<T>> GetAllOf<T>(string endPoint, string query = null, List<Tuple<string, string>> additionalHeaders = null)
         {
+            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            if (accessToken == null)
+            {
+                return new List<T>();
+            }
+            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             string usedEndpoint = endPoint;
             if (query != null)
             {
@@ -119,7 +131,7 @@ namespace AzRanger.AzScanner
                     GenResponse genericAnswer = JsonSerializer.Deserialize<GenResponse>(result);
                     logger.Debug("IScanner.GetAllOf: {0} elements in response", genericAnswer.value.Length);
 
-                    /// Go throuththe generic object and parse the value field
+                    /// Go through the generic object and parse the value field
                     foreach (var entry in genericAnswer.value)
                     {
                         try
@@ -149,14 +161,14 @@ namespace AzRanger.AzScanner
                 {
                     try
                     {
-                        logger.Debug("IScanner.GetAllOf: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
+                        logger.Debug("IScanner.GetAllOf: {0}|{1} was not successful", typeof(T).ToString(), usedEndpoint);
                         logger.Debug("IScanner.GetAllOf: Status Code {0}", response.StatusCode);
                         logger.Debug(await response.Content.ReadAsStringAsync());
-                        return null;
+                        return new List<T>(); ;
                     }
                     catch (Exception)
                     {
-                        return null;
+                        return new List<T>();
                     }
                 }  
             }

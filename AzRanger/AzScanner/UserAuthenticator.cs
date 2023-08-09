@@ -9,10 +9,10 @@ using Logger = NLog.Logger;
 
 namespace AzRanger.AzScanner
 {
-    public class Authenticator
+    public class UserAuthenticator : IAuthenticator
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        private string Authority = "https://login.microsoftonline.com";
+        private readonly string Authority = "https://login.microsoftonline.com";
         IPublicClientApplication App;
         // AzurePowerShell = "1950a258-227b-4e31-a9cf-717495945fc2"
         // GlobalPowerShell = "1b730954-1685-4b74-9bfd-dac224a7b894"
@@ -20,7 +20,7 @@ namespace AzRanger.AzScanner
         private String Username;
         private SecureString Password;
         private int FailedInteractiveLogonCounter = 0;
-        public Authenticator(string tenantId, string proxy)
+        public UserAuthenticator(string tenantId, string proxy)
         {
             if (tenantId == null)
             {
@@ -49,7 +49,7 @@ namespace AzRanger.AzScanner
             
         }
 
-        public Authenticator(string tenantId, String Username, String Password, string proxy)
+        public UserAuthenticator(String Username, String Password, string tenantId, string proxy)
         {
             this.Authority = Authority + "/" + tenantId + "/";
             this.Username = Username;

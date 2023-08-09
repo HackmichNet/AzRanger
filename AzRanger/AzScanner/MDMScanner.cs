@@ -25,7 +25,6 @@ namespace AzRanger.AzScanner
         {
             // For later
             return false;
-            
         }
 
         public Task<List<GenericCompliancePolicy>> GetGenericCompliancePolicy()
@@ -104,7 +103,7 @@ namespace AzRanger.AzScanner
                     MAC.Add((MacOSGeneralDeviceConfiguration) await Get<MacOSGeneralDeviceConfiguration>(String.Format(DeviceConfiguration, config.id), "?$expand=assignments"));
                     continue;
                 }
-                logger.Debug("Unkown Mobile Device Type: " + config.odatatype);
+                logger.Debug("Unknown Mobile Device Type: " + config.odatatype);
             }
             return new MobileDeviceConfigurations(androidPrivate ,android, IOS, MAC);
         }

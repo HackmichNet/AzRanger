@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class MainIamScanner : IScannerModule
+    class MainIamScanner : AbstractScannerModule
     {
         private const String SecurityDefaultsEndpoint = "/api/SecurityDefaults/GetSecurityDefaultStatus";
         private const String DirectoryProperties = "/api/Directories/Properties";
@@ -20,13 +20,12 @@ namespace AzRanger.AzScanner
         private const String SsgmProperties = "/api/Directories/SsgmProperties";
         private const String LoginTenantBrandings = "/api/LoginTenantBrandings";
 
-
         public MainIamScanner(Scanner scanner)
         {
             this.Scanner = scanner;
             this.BaseAdresse = "https://main.iam.ad.ext.azure.com";
             this.Scope = new string[] { "74658136-14ec-4630-ad9b-26e160ff0fc6/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
         }
 
         public Task<SecurityDefaults> GetSecurityDefaults()
@@ -76,7 +75,7 @@ namespace AzRanger.AzScanner
 
         public async Task<ADConnectStatus> GetADConnectStatus()
         {
-            ADConnectStatus status = await Get<ADConnectStatus>( MainIamScanner.ADConnectStatus);
+            ADConnectStatus status = await Get<ADConnectStatus>(MainIamScanner.ADConnectStatus);
             if(status == null)
             {
                 logger.Warn("MainIamScanner.ADConnectStatus: Failed to get status");
@@ -88,15 +87,8 @@ namespace AzRanger.AzScanner
 
         public Task<List<LoginTenantBranding>> GetLoginTenantBrandings()
         {
-            return GetAllOf<LoginTenantBranding>(MainIamScanner.LoginTenantBrandings);
-        }
-
-        internal override String ManipulateResponse(String response, String endPoint){
-            if (endPoint == MainIamScanner.LoginTenantBrandings)
-            {
-                response = @"{""value"":" + response + "}";
-            }
-            return response;
+            //return GetAllOf<LoginTenantBranding>(MainIamScanner.LoginTenantBrandings);
+            return Get<List<LoginTenantBranding>>(MainIamScanner.LoginTenantBrandings);
         }
     }
 }

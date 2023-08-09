@@ -24,10 +24,9 @@ namespace AzRanger.AzScanner
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         internal string Username { get; }
-        internal String Password { get; }
         internal String Proxy { get; }
 
-        internal Authenticator Authenticator;
+        internal IAuthenticator Authenticator;
         internal String Domain;
         internal String TenantId;
         internal bool HasP1License = false;
@@ -46,37 +45,11 @@ namespace AzRanger.AzScanner
         internal AzrbacScanner AzrbacScanner;
         internal AzMgmtScanner AzMgmtScanner;
 
-
-        public Scanner(String username, String password, String proxy, String tenant = null)
-        {
-            this.Username = username;
-            this.Password = password;
-            this.Proxy = proxy;
-            this.Domain = username.Split('@')[1];
-            if (tenant == null)
-            {
-                this.TenantId = Helper.GetTenantIdToDomain(this.Domain, this.Proxy);
-            }
-            else
-            {
-                this.TenantId = tenant;
-            }
-
-            if (username == null && password == null)
-            { 
-                this.Authenticator = new Authenticator(this.TenantId, this.Proxy);
-            }
-            else
-            {
-                this.Authenticator = new Authenticator(this.TenantId, username, password, this.Proxy);
-            }
-        }
-
-        public Scanner(String proxy, String tenant = null)
+        public Scanner(IAuthenticator authenticator, String proxy, String tenant = null)
         {
             this.Proxy = proxy;
             this.TenantId = tenant;
-            this.Authenticator = new Authenticator(this.TenantId, this.Proxy);
+            this.Authenticator = authenticator;
             if(this.TenantId == null)
             {
                 this.TenantId = this.Authenticator.GetTenantId().Result;
@@ -101,17 +74,17 @@ namespace AzRanger.AzScanner
             bool isSharePointAdmin = false;
             bool scanAzureOnly = false;
 
-            AdminCenterScanner = await ScannerFactory.CreateAdminCenterScanner(this);
-            MsGraphScanner = await ScannerFactory.CreateMSGraphScanner(this);
-            ProvisionAPIScanner = await ScannerFactory.CreateProvisionAPIScanner(this);
-            ExchangeOnlineScanner = await ScannerFactory.CreateExchangeOnlineScanner(this);
-            MainIamScanner = await ScannerFactory.CreateMainIamScanner(this);
-            ComplianceCenterScanner = await ScannerFactory.CreateComplianceCenterScanner(this);
-            GraphWinScanner = await ScannerFactory.CreateGraphWinScanner(this);
-            TeamsScanner = await ScannerFactory.CreateTeamsScanner(this);
-            AzrbacScanner = await ScannerFactory.CreateAzrbacScanner(this);
-            AzMgmtScanner = await ScannerFactory.CreateAzMgmtScanner(this);
-
+            AdminCenterScanner = new AdminCenterScanner(this);
+            MsGraphScanner = new MSGraphScanner(this);
+            ProvisionAPIScanner = new ProvisionAPIScanner(this);
+            ExchangeOnlineScanner = new ExchangeOnlineScanner(this);
+            MainIamScanner = new MainIamScanner(this);
+            ComplianceCenterScanner = new ComplianceCenterScanner(this);
+            GraphWinScanner = new GraphWinScanner(this);
+            TeamsScanner = new TeamsScanner(this);
+            AzrbacScanner = new AzrbacScanner(this);
+            AzMgmtScanner = new AzMgmtScanner(this);
+            
             if (scopes.Count == 1 & scopes.Contains(ScopeEnum.Azure))
             {
                 scanAzureOnly = true;
@@ -120,44 +93,43 @@ namespace AzRanger.AzScanner
             if (!scanAzureOnly)
             {
                 Result.TenantSettings = new M365Settings();
-                if (this.MsGraphScanner != null) {
-                    Result.AllDirectoryRoles = await MsGraphScanner.GetAllDirectoryRoles();
-                    if (currentUserId != null)
+                Result.AllDirectoryRoles = await MsGraphScanner.GetAllDirectoryRoles();
+                if (Result.AllDirectoryRoles != null && currentUserId != null)
+                {
+
+                    foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
                     {
-
-                        foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
+                        if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
                         {
-                            if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
+                            if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
                             {
-                                if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
-                                {
-                                    isGlobalAdmin = true;
-                                }
+                                isGlobalAdmin = true;
                             }
+                        }
 
-                            if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
+                        if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
+                        {
+                            if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
                             {
-                                if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
-                                {
-                                    isGlobalReader = true;
-                                }
+                                isGlobalReader = true;
                             }
+                        }
 
-                            if (role.roleTemplateId == DirectoryRoleTemplateID.SharePointAdmin)
+                        if (role.roleTemplateId == DirectoryRoleTemplateID.SharePointAdmin)
+                        {
+                            if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
                             {
-                                if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
-                                {
-                                    isSharePointAdmin = true;
-                                }
+                                isSharePointAdmin = true;
                             }
                         }
                     }
-                    else
-                    {
-                        logger.Warn("Scanner.ScanTenant: Cannot get User Id. Should not happen!");
-                        return null;
-                    } 
                 }
+                else
+                {
+                    logger.Warn("Scanner.ScanTenant: Cannot get User Id. Should not happen!");
+                    return null;
+                } 
+                
 
                 if (!isGlobalAdmin & !isGlobalReader)
                 {
@@ -296,10 +268,10 @@ namespace AzRanger.AzScanner
                                 {
                                     principalsToAssigne.Add(new AzurePrincipal(assignment.subjectId, aztype));
                                 }
-                                // Global resourese
+                                // Global recourse
                                 if (assignment.scopedResourceId == null)
                                 {
-                                    // Assigne user to role
+                                    // Assign user to role
                                     if (assignment.assignmentState.Equals("Active"))
                                     {
                                         foreach (AzurePrincipal p in principalsToAssigne)
@@ -445,9 +417,10 @@ namespace AzRanger.AzScanner
                     }
                     catch (Exception ex)
                     {
-                        logger.Warn("[-] An error occured. Don't panic...");
+                        logger.Warn("[-] An error occurred. Don't panic...");
                         logger.Debug("Scanner.ScanTenant: OfficeTasks failed.");
                         logger.Debug(ex.Message);
+                        officeTasks.Remove(result);
                         continue;
                     }
                     switch (result)
@@ -559,7 +532,7 @@ namespace AzRanger.AzScanner
                         }
                         catch (Exception ex)
                         {
-                            logger.Warn("[-] An error occured. Don't panic...");
+                            logger.Warn("[-] An error occurred. Don't panic...");
                             logger.Debug("Scanner.ScanTenant: TeamsTasks failed.");
                             logger.Debug(ex.Message);
                             continue;
@@ -594,8 +567,8 @@ namespace AzRanger.AzScanner
                         {
                             Console.WriteLine("[+] Found SharePoint on: {0}", Result.SharepointInformation.SharepointUrl);
                             Console.WriteLine("[+] Found SharePoint-Admin on: {0}", Result.SharepointInformation.AdminUrl);
-                            SharePointScanner sharePointScanner = await ScannerFactory.CreateSharePointScanner(this, Result.SharepointInformation.AdminUrl);
-                            Result.SharepointInformation.SharepointInternalInfos = await sharePointScanner.GetSharepointSettings();
+                            SharePointScanner sharePointScanner = new SharePointScanner(this, Result.SharepointInformation.AdminUrl);
+                            Result.SharepointInformation.SharepointInternalInfos = await sharePointScanner.GetSharePointSettings();
                         }
                     }
                 }
@@ -642,7 +615,7 @@ namespace AzRanger.AzScanner
                         }
                         catch (Exception ex)
                         {
-                            logger.Warn("[-] An error occured. Don't panic...");
+                            logger.Warn("[-] An error occurred. Don't panic...");
                             logger.Debug("Scanner.ScanTenant: ExchangeTasks failed.");
                             logger.Debug(ex.Message);
                             continue;
@@ -728,7 +701,7 @@ namespace AzRanger.AzScanner
                         {
                             foreach (KeyVault vault in sub.Resources.KeyVaults)
                             {
-                                KeyVaultScanner vaultScanner = await ScannerFactory.CreateKeyVaultScanner(this, vault.properties.vaultUri);
+                                KeyVaultScanner vaultScanner = new KeyVaultScanner(this, vault.properties.vaultUri);
                                 if (vaultScanner != null)
                                 {
                                     vault.Keys = await vaultScanner.GetKeyVaultKeys();
@@ -759,7 +732,6 @@ namespace AzRanger.AzScanner
                     mdmSettings.ConfigurationPolicies = await MDMScanner.GetConfigurationPolicies();
                     mdmSettings.MobileDeviceCompliancePolicies = await MDMScanner.GetMobileDeviceCompliancePolicies();
                     Result.MDMSettings = mdmSettings;
-
                 }
             }
 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class ComplianceCenterScanner : IScannerModule
+    class ComplianceCenterScanner : AbstractScannerModule
     {
         public const String DLPPolicies = "/Psws/service.svc/DlpCompliancePolicy";
         public const String DLPLabels = "/Psws/service.svc/Label";
@@ -21,7 +21,8 @@ namespace AzRanger.AzScanner
         {
             this.Scanner = scanner;
             this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
-            this.Scope = new String[] { "https://ps.compliance.protection.outlook.com/.default", "offline_access", "openid", "profile" };
+            this.Scope = new String[] { "https://ps.compliance.protection.outlook.com/.default", "offline_access" };
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
         }
 
         public Task<List<DlpCompliancePolicy>> GetDLPPolicies()
@@ -38,6 +39,12 @@ namespace AzRanger.AzScanner
 
         public async Task<String> GetBaseAddress()
         {
+            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            if (accessToken == null)
+            {
+                return null;
+            }
+            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             string url = InitBaseAdress + PowerShellLiveId;
             var response = await client.GetAsync(url);
             if (response.StatusCode == HttpStatusCode.Redirect)
@@ -54,9 +61,8 @@ namespace AzRanger.AzScanner
             else
             {
                 logger.Warn("ComplianceCenterScanner.GetBaseAddress: Failed getting base url");
-                logger.Debug("ComplianceCenterScanner.GetBaseAddress: Statuscode: ", (int)response.StatusCode);
-            }
-            
+                logger.Debug("ComplianceCenterScanner.GetBaseAddress: Status code: ", (int)response.StatusCode);
+            }  
             return null;
         }
     }

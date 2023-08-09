@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class SharePointScanner : IScannerModule
+    class SharePointScanner : AbstractScannerModule
     {
 
         public const String SPOInternalUseOnly = "/_api/SPOInternalUseOnly.Tenant";
 
 
-        public SharePointScanner(Scanner scanner, String BaseAdresse)
+        public SharePointScanner(Scanner scanner, String baseAdresse)
         {
             this.Scanner = scanner;
-            this.BaseAdresse = BaseAdresse;
+            this.BaseAdresse = baseAdresse;
             this.additionalHeaders = new List<Tuple<string, string>>
             {
                 Tuple.Create("Odata-Version", "4.0")
             };
-            String baseScope = BaseAdresse + "/.default";
-            this.Scope = new string[] {"offline_access", baseScope};
+            String baseScope = baseAdresse + "/.default";
+            this.Scope = new string[] { baseScope, "offline_access" };
             this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
         }
 
-        public Task<SPOInternalUseOnly> GetSharepointSettings()
+        public Task<SPOInternalUseOnly> GetSharePointSettings()
         {
             return Get<SPOInternalUseOnly>(SPOInternalUseOnly);
         }

@@ -272,21 +272,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzScanner\AdminCenterScanner.cs" />
-    <Compile Include="AzScanner\Authenticator.cs" />
+    <Compile Include="AzScanner\AppAuthenticator.cs" />
+    <Compile Include="AzScanner\UserAuthenticator.cs" />
     <Compile Include="AzScanner\AzMgmtScanner.cs" />
     <Compile Include="AzScanner\AzrbacScanner.cs" />
     <Compile Include="AzScanner\ComplianceCenterScanner.cs" />
     <Compile Include="AzScanner\DNSScanner.cs" />
     <Compile Include="AzScanner\ExchangeOnlineScanner.cs" />
     <Compile Include="AzScanner\GraphWinScanner.cs" />
-    <Compile Include="AzScanner\IScannerModule.cs" />
+    <Compile Include="AzScanner\IAuthenticator.cs" />
+    <Compile Include="AzScanner\AbstractScannerModule.cs" />
     <Compile Include="AzScanner\KeyVaultScanner.cs" />
     <Compile Include="AzScanner\MainIamScanner.cs" />
     <Compile Include="AzScanner\MDMScanner.cs" />
     <Compile Include="AzScanner\MSGraphScanner.cs" />
     <Compile Include="AzScanner\ProvisionAPIScanner.cs" />
     <Compile Include="AzScanner\Scanner.cs" />
-    <Compile Include="AzScanner\ScannerFactory.cs" />
     <Compile Include="AzScanner\SharePointScanner.cs" />
     <Compile Include="AzScanner\TeamsScanner.cs" />
     <Compile Include="Checks\Auditor.cs" />

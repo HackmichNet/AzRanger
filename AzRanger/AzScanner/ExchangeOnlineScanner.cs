@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    public class ExchangeOnlineScanner : IScannerModule
+    public class ExchangeOnlineScanner : AbstractScannerModule
     {
         private const String MalwareFilterPolicy = "Get-MalwareFilterPolicy";
         private const String MalwareFilterRule = "Get-MalwareFilterRule";
@@ -33,8 +33,8 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = "https://outlook.office365.com";
             this.EndPoint = "/adminapi/beta/" + scanner.TenantId + "/InvokeCommand";
-            this.Scope = new String[] { "openid", "offline_access", "profile", "https://outlook.office365.com/.default" };
-            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+            this.Scope = new String[] { "https://outlook.office365.com/.default", "offline_access" };
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
         }
 
         public object GetExoUsers()
@@ -161,9 +161,14 @@ namespace AzRanger.AzScanner
 
         internal async Task<List<T>> GetAllOf<T>(string command, List<Tuple<string, string>> parameters = null)
         {
-            logger.Debug("ExchangeOnlineScanner.GetAllOf: {0}|{1}", typeof(T).ToString(), command );
+            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            if (accessToken == null)
+            {
+                return new List<T>();
+            }
+            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            
+            logger.Debug("ExchangeOnlineScanner.GetAllOf: {0}|{1}", typeof(T).ToString(), command );
             String url = this.BaseAdresse + this.EndPoint;
             List<T> resultList = new List<T>();
             while (url != null)
@@ -185,11 +190,11 @@ namespace AzRanger.AzScanner
                         logger.Debug("ExchangeOnlineScanner.GetAllOf.GenReponse: Failed to parse response.");
                         logger.Debug(e.Message);
                         logger.Debug(result.ToString());
-                        return null;
+                        return new List<T>();
                     }
                     if (genericAnswer == null)
                     {
-                        return null;
+                        return new List<T>(); ;
                     }
                     logger.Debug("ExchangeOnlineScanner.GetAllOf: Response has {0} entries.", genericAnswer.value.Length);
                     /// Go through the generic object and parse the value field
@@ -205,7 +210,7 @@ namespace AzRanger.AzScanner
                             logger.Debug("ExchangeOnlineScanner.GetAllOf: Failed to parse response.");
                             logger.Debug(e.Message);
                             logger.Debug(entry.ToString());
-                            return null;
+                            return new List<T>();
                         }
                     }
 

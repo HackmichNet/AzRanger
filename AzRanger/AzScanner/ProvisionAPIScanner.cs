@@ -2,8 +2,10 @@
 using AzRanger.Models.Provision;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -11,7 +13,7 @@ using System.Xml.Serialization;
 
 namespace AzRanger.AzScanner
 {
-	class ProvisionAPIScanner : IScannerModule
+	class ProvisionAPIScanner : AbstractScannerModule
 	{
 		public const String Endpoint = "/provisioningwebservice.svc";
 
@@ -21,10 +23,9 @@ namespace AzRanger.AzScanner
 			this.BaseAdresse = "https://provisioningapi.microsoftonline.com";
 			this.Scope = new String[] { "https://graph.windows.net/.default", "offline_access" };
             this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
-
         }
 
-		public async Task<DirSyncFeatures> GetDirSyncFeatures()
+        public async Task<DirSyncFeatures> GetDirSyncFeatures()
         {
 			GetCompanyDirSyncFeaturesResponse response = null;
             try
@@ -180,8 +181,13 @@ namespace AzRanger.AzScanner
         
 		private async Task<String> PostToProvisioninApi(string command, string requestElement)
 		{
-		
-			logger.Debug("ProvisionApiScanner.PostToProvisionApi: {0}|{1}", command, requestElement);
+            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            if (accessToken == null)
+            {
+                return null;
+            }
+            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            logger.Debug("ProvisionApiScanner.PostToProvisionApi: {0}|{1}", command, requestElement);
 			string content = CreateEnvelop(this.client.DefaultRequestHeaders.Authorization.ToString().Split(' ')[1], command, requestElement);
 			StringContent message = new StringContent(content.Replace("\\n", "").Replace("\\t", ""), Encoding.UTF8, "application/soap+xml");
 			String url = this.BaseAdresse + Endpoint;
@@ -195,13 +201,12 @@ namespace AzRanger.AzScanner
 			{
 				try
 				{
-					logger.Debug("ProvisionApiScanner.PostToProvisionApi: was not successfull");
+					logger.Debug("ProvisionApiScanner.PostToProvisionApi: was not successful");
 					logger.Debug("ProvisionApiScanner.PostToProvisionApi: Status Code {0}", response.StatusCode);
 					logger.Debug(await response.Content.ReadAsStringAsync());
                 }
                 catch { }
 			}
-			
 			return null;
 		}
 
@@ -234,7 +239,13 @@ namespace AzRanger.AzScanner
 
 		public async Task<SharepointInformation> GetSharepointInformation()
 		{
-			logger.Debug("ProvisionApiScanner.GetSharepointInformation: Enter function");
+            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            if (accessToken == null)
+            {
+                return null;
+            }
+            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            logger.Debug("ProvisionApiScanner.GetSharepointInformation: Enter function");
 			GetCompanyInformationResponse getCompanyInformationResponse = await GetCompanyInformationResponse();
 			string SharePointAdminUrl = null;
 			string SharePointUrl = null;

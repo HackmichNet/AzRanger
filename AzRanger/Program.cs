@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Resources;
 using System.Collections;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace AzRanger
 {
@@ -33,9 +34,6 @@ namespace AzRanger
             await parserResult.MapResult(
                     (CommandlineOptions opts) => RunOptions(opts),
                     errs => DisplayHelp(parserResult));
-
-            //parserResult.WithParsed<CommandlineOptions>(options => await RunOptions(options)).WithNotParsed(errs => DisplayHelp(parserResult, errs));
-
         }
 
         private static Task DisplayHelp(ParserResult<CommandlineOptions> parserResult)
@@ -43,7 +41,7 @@ namespace AzRanger
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "AzRanger 0.1.0"; //change header
+                h.Heading = "AzRanger 0.2.0"; //change header
                 h.Copyright = ""; 
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
@@ -156,11 +154,33 @@ namespace AzRanger
             Scanner scanner = null;
             if (opts.Username != null && opts.Password != null)
             {
-                scanner = new Scanner(opts.Username, opts.Password, opts.Proxy, opts.TenantId);
+                String TenantId = opts.TenantId;
+                if (TenantId == null)
+                {
+                    TenantId = Helper.GetTenantIdToDomain(opts.Username.Split('@')[1], opts.Proxy);
+                }
+                if (TenantId != null)
+                {
+                    UserAuthenticator authenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy);
+                    scanner = new Scanner(authenticator, opts.Proxy, TenantId);
+                }
+                else
+                {
+                    Console.WriteLine("[-] Could not find TenantId.... this should not happen, when providing the correct username...");
+                    return;
+                }
             }
-            else
+            else if(opts.ClientId != null && opts.ClientSecret != null){
+                if(opts.TenantId == null)
+                {
+                    Console.WriteLine("[-] You must provide the TenantId, when using clientid and secret.");
+                    return; 
+                }
+                AppAuthenticator authenticator = new AppAuthenticator(opts.ClientId, opts.ClientSecret, opts.TenantId, opts.Proxy);
+                scanner = new Scanner(authenticator, opts.Proxy, opts.TenantId);
+            }else
             {
-                scanner = new Scanner(opts.Proxy, opts.TenantId);
+                scanner = new Scanner(new UserAuthenticator(opts.TenantId, opts.Proxy), opts.Proxy, opts.TenantId);
             }
 
             if (opts.DumpAll | opts.Audit)

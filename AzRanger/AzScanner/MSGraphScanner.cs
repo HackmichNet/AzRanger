@@ -11,7 +11,7 @@ using System.Net;
 namespace AzRanger.AzScanner
 {
 
-    public class MSGraphScanner : IScannerModule
+    public class MSGraphScanner : AbstractScannerModule
     {
         public const String ConditionalAccessPoliciesBeta = "/beta/identity/conditionalAccess/policies";
         public const String SecureScoreBeta = "/beta/security/secureScores";
@@ -46,7 +46,7 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = "https://graph.microsoft.com";
             this.Scope = new String[] { "https://graph.microsoft.com/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
         }
 
         public Task<AuthorizationPolicy> GetAuthorizationPolicy()
@@ -303,7 +303,7 @@ namespace AzRanger.AzScanner
             List< ConditionalAccessPolicy> policies = await GetAllOf<ConditionalAccessPolicy>(MSGraphScanner.ConditionalAccessPoliciesBeta);
             if(policies == null)
             {
-                logger.Warn("MSGraphScanner.GetAllCondtionalAccessPolicies: Connot find Conditional Access Policies. Do you have th correct rights?");
+                logger.Warn("MSGraphScanner.GetAllConditionalAccessPolicies: Cannot find Conditional Access Policies. Do you have th correct rights?");
                 return null;
             }
             Dictionary<Guid, ConditionalAccessPolicy> result = new Dictionary<Guid, ConditionalAccessPolicy>();
@@ -377,7 +377,7 @@ namespace AzRanger.AzScanner
             return Result;
         }
 
-        // Transitiv, gives only the users or principals back, does not include other groups
+        // Transitive, gives only the users or principals back, does not include other groups
         internal async Task<List<AzurePrincipal>> GetAllGroupMemberTransitiv(Guid groupId)
         {
             List<IDTypeResponse> groupMember = await GetAllOf<IDTypeResponse>(string.Format(GroupMemberTransitiv, groupId.ToString()), "?$select=id");

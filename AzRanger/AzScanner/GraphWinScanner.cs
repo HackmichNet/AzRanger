@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    public class GraphWinScanner : IScannerModule
+    public class GraphWinScanner : AbstractScannerModule
     {
         public const String UsersInternal = "/{0}/users/{1}";
         public const String RoleDefinitions = "/myorganization/roleDefinitions";
@@ -19,9 +19,8 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = "https://graph.windows.net";
             this.Scope = new string[] { "https://graph.windows.net/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
         }
-
         public Task<List<RoleDefinition>> GetRoleDefinitons()
         {
             return GetAllOf<RoleDefinition>(RoleDefinitions, "?api-version=1.61-internal&$select=objectId,displayName,isBuilt,InisEnabled");
@@ -34,6 +33,12 @@ namespace AzRanger.AzScanner
 
         internal async override Task<List<T>> GetAllOf<T>(string endPoint, string query = null, List<Tuple<string, string>> additionalHeaders = null)
         {
+            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            if (accessToken == null)
+            {
+                return new List<T>();
+            }
+            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             string usedEndpoint = endPoint;
             if (query != null)
             {
@@ -60,7 +65,7 @@ namespace AzRanger.AzScanner
                     WinGraphGernericResponse genericAnswer = JsonSerializer.Deserialize<WinGraphGernericResponse>(result);
                     logger.Debug("GraphWinScanner.GetAllOf: {0} elements in response", genericAnswer.value.Length);
 
-                    /// Go throuththe geneirc object and parse the value field
+                    /// Go through the generic object and parse the value field
                     foreach (var entry in genericAnswer.value)
                     {
                         try
@@ -91,7 +96,7 @@ namespace AzRanger.AzScanner
                 {
                     try
                     {
-                        logger.Debug("GraphWinScanner.GetAllOf: {0}|{1} was not successfull", typeof(T).ToString(), usedEndpoint);
+                        logger.Debug("GraphWinScanner.GetAllOf: {0}|{1} was not successful", typeof(T).ToString(), usedEndpoint);
                         logger.Debug("GraphWinScanner.GetAllOf: Status Code {0}", response.StatusCode);
                         logger.Debug(response.Content.ReadAsStringAsync().Result);
                         return null;

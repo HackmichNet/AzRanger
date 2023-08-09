@@ -17,10 +17,16 @@ namespace AzRanger.Utilities
         [Option('p', "password", HelpText = "Specifiy the password.")]
         public String Password { get; set; }
 
-        [Option('t', "tenant", HelpText = "Specifiy a tenand.")]
+        [Option('c', "clientid", HelpText = "Specify the client id.")]
+        public String ClientId { get; set; }
+
+        [Option('s', "secret", HelpText = "Specify the client secret.")]
+        public String ClientSecret { get; set; }
+
+        [Option('t', "tenant", HelpText = "Specify a tenant.")]
         public String TenantId { get; set; }
 
-        [Option(Required = false, HelpText = "Specifiy a proxy.")]
+        [Option(Required = false, HelpText = "Specify a proxy.")]
         public String Proxy { get; set; }
 
         [Option(Required = false, HelpText = "Enable verbose logging.")]

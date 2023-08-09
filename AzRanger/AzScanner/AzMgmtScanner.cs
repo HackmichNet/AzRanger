@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    internal class AzMgmtScanner : IScannerModule
+    internal class AzMgmtScanner : AbstractScannerModule
     {
         private const String ManagementGroup = "/providers/Microsoft.Management/managementGroups/{0}?api-version=2020-05-01&$expand=children";
         private const String ManagementGroupSettings = "/providers/Microsoft.Management/managementGroups/{0}/settings/default?api-version=2020-02-01";
@@ -27,7 +27,7 @@ namespace AzRanger.AzScanner
         private const String VirtualMachines = "/subscriptions/{0}/providers/Microsoft.Compute/virtualMachines?api-version=2022-03-01";
         private const String SubscriptionPolicy = "/providers/Microsoft.Subscription/policies/default?api-version=2021-01-01-privatepreview";
         private const String AuditingSettings = "{0}/auditingSettings/default?api-version=2021-11-01-preview";
-        private const String SQLAdminitrators = "{0}/administrators?api-version=2019-06-01-preview";
+        private const String SQLAdministrators = "{0}/administrators?api-version=2019-06-01-preview";
         private const String SQLDatabases = "{0}/databases/?api-version=2022-02-01-preview";
         private const String TransparentDataEncryption = "{0}/transparentDataEncryption/current?api-version=2020-11-01-preview";
         private const String PostgreSQL = "/subscriptions/{0}/providers/Microsoft.DBforPostgreSQL/flexibleServers/?api-version=2022-03-08-preview";
@@ -38,8 +38,9 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = "https://management.azure.com/";
             this.Scope = new string[] { "https://management.azure.com/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
         }
+
 
         public Task<ManagementGroupSettings> GetManagementGroupSettings()
         {
@@ -153,7 +154,7 @@ namespace AzRanger.AzScanner
             {
                 server.firewallRules = await GetAllOf<SQLServerFirewallRules>(String.Format(SQLServerFirewall, server.id));
                 server.auditingSettings = (SQLServerAuditingSettings)(await Get<SQLServerAuditingSettings>(String.Format(AuditingSettings, server.id)));
-                server.SQLAdministrators = await GetAllOf<SQLAdministrator>(String.Format(SQLAdminitrators, server.id));
+                server.SQLAdministrators = await GetAllOf<SQLAdministrator>(String.Format(SQLAdministrators, server.id));
                 server.SQLDatabases = await GetAllOf<SQLDatabase>(String.Format(SQLDatabases, server.id));
                 foreach (SQLDatabase database in server.SQLDatabases)
                 {

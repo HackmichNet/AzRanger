@@ -13,7 +13,7 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if (tenant.TeamsSettings.TenantFederationSettings.AllowPublicUsers == false && tenant.TeamsSettings.TenantFederationSettings.AllowTeamsConsumer == false) {
+             if (tenant.TeamsSettings.TenantFederationSettings.AllowPublicUsers == false && tenant.TeamsSettings.TenantFederationSettings.AllowTeamsConsumer == false) {
 
                 if(tenant.TeamsSettings.TenantFederationSettings.AllowFederatedUsers == false)
                 {

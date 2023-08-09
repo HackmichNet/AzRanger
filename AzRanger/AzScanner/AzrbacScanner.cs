@@ -8,22 +8,21 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class AzrbacScanner : IScannerModule
+    class AzrbacScanner : AbstractScannerModule
     {
-        private const String RoleAssognmentForDirectory = "/api/v2/privilegedAccess/aadroles/roleAssignments";
+        private const String RoleAssignmentForDirectory = "/api/v2/privilegedAccess/aadroles/roleAssignments";
         public AzrbacScanner(Scanner scanner)
         {
             this.Scanner = scanner;
             this.BaseAdresse = "https://api.azrbac.mspim.azure.com";
             this.Scope = new String[] { "01fc33a7-78ba-4d2f-a4b7-768e336e890e/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
         }
-
 
         public Task<List<PIMRoleAssignments>> GetRoleAssignemts(Guid tenantID, Guid roleDefinition)
         {
             String query = String.Format(@"$filter=(roleDefinition/resource/id eq '{0}') and (roleDefinition/id eq '{1}')&$expand=subject,scopedResource", tenantID.ToString(), roleDefinition.ToString());
-            return GetAllOf<PIMRoleAssignments>(RoleAssognmentForDirectory, query); ;
+            return GetAllOf<PIMRoleAssignments>(RoleAssignmentForDirectory, query); ;
         }
     }
 }

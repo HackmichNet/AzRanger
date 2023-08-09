@@ -1,14 +1,10 @@
-﻿using AzRanger.Models;
-using AzRanger.Models.AdminCenter;
+﻿using AzRanger.Models.AdminCenter;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class AdminCenterScanner : IScannerModule
+    class AdminCenterScanner : AbstractScannerModule
     {
 
         public const String ExchangeModernAuthSettings = "/admin/api/services/apps/modernAuth";
@@ -46,7 +42,7 @@ namespace AzRanger.AzScanner
             this.Scanner = scanner;
             this.BaseAdresse = "https://admin.microsoft.com";
             this.Scope = new String[]{"https://admin.microsoft.com/.default", "offline_access"};
-            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
         }
 
         public Task<Officeonline> GetOfficeonline()
