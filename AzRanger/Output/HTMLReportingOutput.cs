@@ -270,12 +270,12 @@ namespace AzRanger.Output
             {
                 result = result + "</br> </br> <b>Portal Url:</b> </br> " + ruleMetaInfo.PortalUrl;
             }
-            if (ruleInfo.RefernceLink != null | cisM365Rule != null | cisAzRule != null)
+            if (ruleInfo.ReferenceLink != null | cisM365Rule != null | cisAzRule != null)
             {
                 result = result + "</br></br> <b>Reference:</b>";
-                if (ruleInfo.RefernceLink != null)
+                if (ruleInfo.ReferenceLink != null)
                 {
-                    result = result + @"</br> More information under: </br> <a href=""" + ruleInfo.RefernceLink + @""">" + ruleInfo.RefernceLink + "</a>" ;
+                    result = result + @"</br> More information under: </br> <a href=""" + ruleInfo.ReferenceLink + @""">" + ruleInfo.ReferenceLink + "</a>" ;
                 }
 
                 if (cisM365Rule != null)

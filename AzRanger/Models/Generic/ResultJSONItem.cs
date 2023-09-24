@@ -21,7 +21,7 @@ namespace AzRanger.Models.Generic
         public String Version { get; set; }
         public string ShortDescription { get; set; }
         public string Risk { get; set; }
-        public string RefernceLink { get; set; }
+        public string ReferenceLink { get; set; }
         public string Solution { get; set; }
         public string LongDescription { get; set; }
         public int RiskScore { get; set; }
@@ -31,6 +31,6 @@ namespace AzRanger.Models.Generic
         public String PortalUrl { get; set; }
         public String Service { get; set; }
         public String CISDocument { get; set; }
-        public List<String> AffedtedItems { get; set; }
+        public List<String> AffectedItems { get; set; }
     }
 }

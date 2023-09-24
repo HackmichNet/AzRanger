@@ -40,9 +40,9 @@ namespace AzRanger.Output
                 {
                     Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
                 }
-                if(ruleScore.RefernceLink != null)
+                if(ruleScore.ReferenceLink != null)
                 {
-                    Console.WriteLine("         You can find more information here: {0}", ruleScore.RefernceLink);
+                    Console.WriteLine("         You can find more information here: {0}", ruleScore.ReferenceLink);
                 }
                 
 

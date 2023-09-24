@@ -10,19 +10,19 @@ namespace AzRanger.Checks
     {
         public string ShortDescription { get; }
         public string Risk { get; }
-        public string RefernceLink { get; }
+        public string ReferenceLink { get; }
         public string Solution { get; }
         public string LongDescription { get; }
 
         // Value between 0 and 10
         public int RiskScore { get; }
 
-        public RuleInfoAttribute(String shortDecription, string risk, int riskscore, string referencelink = null, string longDescription = null, string solution = null)
+        public RuleInfoAttribute(String shortDescription, string risk, int riskscore, string referencelink = null, string longDescription = null, string solution = null)
         {
-            this.ShortDescription = shortDecription;
+            this.ShortDescription = shortDescription;
             this.Risk = risk;
             this.RiskScore = riskscore;
-            this.RefernceLink = referencelink;
+            this.ReferenceLink = referencelink;
             this.LongDescription = LongDescription;
             this.Solution = solution;
         }

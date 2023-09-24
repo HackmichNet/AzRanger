@@ -20,7 +20,6 @@ namespace AzRanger.AzScanner
         public ComplianceCenterScanner(Scanner scanner)
         {
             this.Scanner = scanner;
-            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
             this.Scope = new String[] { "https://ps.compliance.protection.outlook.com/.default", "offline_access" };
             this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
         }
