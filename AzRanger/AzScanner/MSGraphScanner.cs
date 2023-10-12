@@ -334,7 +334,7 @@ namespace AzRanger.AzScanner
         public async Task<Dictionary<Guid, ServicePrincipal>> GetAllServicePrincipals()
         {
             Dictionary<Guid, ServicePrincipal> result = new Dictionary<Guid, ServicePrincipal>();
-            List<ServicePrincipal> allAppsWithOwner = await base.GetAllOf<ServicePrincipal>(MSGraphScanner.ServicePrincipals, "?$select=id,appDisplayName,appId,passwordCredentials,keyCredentials,oauth2PermissionScopes,appOwnerOrganizationId&$expand=owners($select=id)");
+            List<ServicePrincipal> allAppsWithOwner = await base.GetAllOf<ServicePrincipal>(MSGraphScanner.ServicePrincipals, "?$select=id,appDisplayName,appId,passwordCredentials,keyCredentials,oauth2PermissionScopes,appOwnerOrganizationId,appRoles&$expand=owners($select=id)");
             foreach (ServicePrincipal app in allAppsWithOwner)
             {
                 result.Add(app.id, app);

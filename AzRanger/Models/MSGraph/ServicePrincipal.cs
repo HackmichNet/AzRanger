@@ -14,6 +14,7 @@ namespace AzRanger.Models.MSGraph
         public Passwordcredential[] passwordCredentials { get; set; }
         public KeyCredentials[] keyCredentials { get; set; }
         public Oauth2permissionscopes[] oauth2PermissionScopes { get; set; }
+        public Approle[] appRoles { get; set; }
         public IDTypeResponse[] owners { get; set; }
         // Custom Properties
         public Approleassignment[] appRoleAssignments { get; set; }
