@@ -1,4 +1,5 @@
 ﻿
+using AzRanger.Output;
 using System;
 
 namespace AzRanger.Models.ComplianceCenter
@@ -29,7 +30,7 @@ namespace AzRanger.Models.ComplianceCenter
         }
         public AffectedItem GetAffectedItem()
         {
-            return new AffectedItem(this.id, this.name);
+            return new AffectedItem(this.Identity, null);
         }
     }
 

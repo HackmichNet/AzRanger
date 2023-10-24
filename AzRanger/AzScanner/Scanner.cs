@@ -493,7 +493,7 @@ namespace AzRanger.AzScanner
                             Result.TenantSettings.Officeonline = await getOfficeonline;
                             break;
                         default:
-                            Console.WriteLine("Scanner.ScanTennant: OfficeTask Defaul. This should not happen");
+                            Console.WriteLine("Scanner.ScanTennant: OfficeTask Default. This should not happen");
                             break;
                     }
                     officeTasks.Remove(result);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AzRanger.Output;
+using System;
 
 namespace AzRanger.Models.ExchangeOnline
 {

@@ -1,4 +1,5 @@
 ﻿using AzRanger.Checks;
+using AzRanger.Output;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace AzRanger.Models.Generic
         public String PortalUrl { get; set; }
         public String Service { get; set; }
         public String CISDocument { get; set; }
-        public List<String> AffectedItems { get; set; }
+        public List<AffectedItem> AffectedItems { get; set; }
+        public String RawDate { get; set; }
     }
 }

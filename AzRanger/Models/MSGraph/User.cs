@@ -1,4 +1,5 @@
 ﻿using AzRanger.Models.WinGraph;
+using AzRanger.Output;
 using System;
 
 namespace AzRanger.Models.MSGraph
@@ -34,6 +35,10 @@ namespace AzRanger.Models.MSGraph
         public string PrintCSV()
         {
             return String.Format("{0};{1}", id, userPrincipalName);
+        }
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(this.id.ToString(), this.displayName);
         }
     }
 }

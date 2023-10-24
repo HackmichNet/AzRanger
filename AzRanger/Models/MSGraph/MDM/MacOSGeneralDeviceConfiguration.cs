@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AzRanger.Output;
 
 namespace AzRanger.Models.MSGraph.MDM
 {
@@ -88,6 +89,10 @@ namespace AzRanger.Models.MSGraph.MDM
         public string PrintCSV()
         {
             return String.Format("{0};{1}", this.id, this.displayName);
+        }
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(this.id, this.displayName);
         }
     }
 }

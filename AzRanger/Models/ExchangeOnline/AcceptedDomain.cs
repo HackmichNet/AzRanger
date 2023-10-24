@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AzRanger.Output;
+using System;
 
 namespace AzRanger.Models.ExchangeOnline
 {
@@ -58,6 +59,10 @@ namespace AzRanger.Models.ExchangeOnline
         public string PrintCSV()
         {
             return String.Format("{0};", DomainName);
+        }
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(null, this.DomainName);
         }
     }
 

@@ -14,15 +14,15 @@ namespace AzRanger.AzScanner
         public const String SPOInternalUseOnly = "/_api/SPOInternalUseOnly.Tenant";
 
 
-        public SharePointScanner(Scanner scanner, String baseAdresse)
+        public SharePointScanner(Scanner scanner, String baseAddresse)
         {
             this.Scanner = scanner;
-            this.BaseAdresse = baseAdresse;
+            this.BaseAdresse = baseAddresse;
             this.additionalHeaders = new List<Tuple<string, string>>
             {
                 Tuple.Create("Odata-Version", "4.0")
             };
-            String baseScope = baseAdresse + "/.default";
+            String baseScope = baseAddresse + "/.default";
             this.Scope = new string[] { baseScope, "offline_access" };
             this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
         }

@@ -1,4 +1,5 @@
 ﻿using AzRanger.Models.Generic;
+using AzRanger.Output;
 using System;
 using System.Collections.Generic;
 
@@ -62,6 +63,10 @@ namespace AzRanger.Models.MSGraph
         public string PrintCSV()
         {
             return String.Format("{0};{1}", id, this.appDisplayName);
+        }
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(this.id.ToString(), this.appDisplayName);
         }
     }
 }

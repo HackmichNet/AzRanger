@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AzRanger.Output;
+using System;
 using System.Text.Json.Serialization;
 
 
@@ -156,6 +157,10 @@ namespace AzRanger.Models.MSGraph.MDM
         public string PrintCSV()
         {
             return this.displayName + ";" + this.id;
+        }
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(this.id, this.displayName);
         }
     }
 

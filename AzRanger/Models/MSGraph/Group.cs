@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AzRanger.Output;
+using System;
 using System.Text.Json.Serialization;
 
 namespace AzRanger.Models
@@ -20,6 +21,10 @@ namespace AzRanger.Models
         public string PrintCSV()
         {
             return String.Format(@"{0};{1}", this.id, this.displayName);
+        }
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(this.id.ToString(), this.displayName);
         }
     }
 }

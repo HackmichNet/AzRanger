@@ -9,7 +9,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
+using System.Xml;
 
 namespace AzRanger
 {
@@ -35,6 +37,17 @@ namespace AzRanger
                 return null;
             }
             return result;
+        }
+
+        public static String ObjectToJson(object obj)
+        {
+            var options = new JsonSerializerOptions
+            {
+                MaxDepth = 16,
+                IncludeFields = true,
+                WriteIndented = true
+            };
+            return JsonSerializer.Serialize(obj, options);
         }
 
         internal static string GetOpenIDConfiguration(string domain, string proxy)

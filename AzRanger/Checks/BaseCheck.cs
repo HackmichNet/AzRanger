@@ -9,7 +9,8 @@ namespace AzRanger.Checks
     {
 
         private List<IReporting> AffectedEntity = new List<IReporting>();
-        private String Reason = null;
+        public String Reason = null;
+        public String RawData = null;
         public abstract CheckResult Audit(Tenant tenant);
 
         public void SetReason(String reason)

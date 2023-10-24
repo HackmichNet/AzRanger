@@ -63,10 +63,10 @@ namespace AzRanger.Output
 
                 if (check.GetAffectedEntity().Count > 0)
                 {
-                    List<String> affectedItems = new List<string>();
+                    List<AffectedItem> affectedItems = new List<AffectedItem>();
                     foreach (IReporting entity in check.GetAffectedEntity())
                     {
-                        affectedItems.Add(entity.PrintConsole());
+                        affectedItems.Add(entity.GetAffectedItem());
                     }
                     item.AffectedItems = affectedItems;
                 }

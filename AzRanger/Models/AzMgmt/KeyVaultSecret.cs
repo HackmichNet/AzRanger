@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AzRanger.Output;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace AzRanger.Models.AzMgmt
 
         public AffectedItem GetAffectedItem()
         {
-            return new AffectedItem(this.id, this.name);
+            return new AffectedItem(this.id, null);
         }
     }
 

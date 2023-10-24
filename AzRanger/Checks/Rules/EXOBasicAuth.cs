@@ -16,7 +16,7 @@ namespace AzRanger.Checks.Rules
         {
             if(tenant.TenantSettings.SecurityDefaults.securityDefaultsEnabled == true)
             {
-                this.SetReason("Security Defaults are enables. All legacy authentication protocolls should be blocked.");
+                this.SetReason("Security Defaults are enables. All legacy authentication protocols should be blocked.");
                 return CheckResult.NotApplicable;
             }
             // Case 1: If no policy exist, not good => Check if Conditional Access applies
@@ -42,6 +42,7 @@ namespace AzRanger.Checks.Rules
                         {
                             defaultPolicyPassed = true;
                         }
+                        this.RawData = Helper.ObjectToJson(policy);
                     }
                 }
             }
@@ -74,7 +75,7 @@ namespace AzRanger.Checks.Rules
             {
                 return CheckResult.NoFinding;
             }
-            // User assigned policies are secure and all users have a custom poliicy
+            // User assigned policies are secure and all users have a custom policy
             if(userPolicyPassed)
             {
                 return CheckResult.NoFinding;
