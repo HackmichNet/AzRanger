@@ -20,7 +20,10 @@ namespace AzRanger.Models.AzMgmt
         {
             return String.Format("{0};", kid);
         }
-
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(this.id, this.name);
+        }
     }
 
     public class KeyVaultKeyAttributes

@@ -24,10 +24,13 @@ namespace AzRanger.Models.AzMgmt
         {
             return String.Format("{0} - {1}", name, id);
         }
-
         public string PrintCSV()
         {
             return String.Format("{0};{1}", name, id);
+        }
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(this.id, this.name);
         }
     }
 

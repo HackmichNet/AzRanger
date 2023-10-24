@@ -33,5 +33,9 @@ namespace AzRanger.Models.MSGraph
         {
             return String.Format("{0};{1}", id, userPrincipalName);
         }
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(this.id, this.userPrincipalName);
+        }
     }
 }

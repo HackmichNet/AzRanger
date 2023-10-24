@@ -54,6 +54,11 @@ namespace AzRanger.Models.ExchangeOnline
         {
             return String.Format("{0};", Domain);
         }
+
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(null, this.Domain);
+        }
     }
 
 }

@@ -32,6 +32,10 @@ namespace AzRanger.Models.AzMgmt
         {
             return String.Format("{0};{1}", displayName, id);
         }
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(this.id, this.userPrincipalName);
+        }
     }
 
     public class Subscriptionpolicies

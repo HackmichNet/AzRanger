@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AzRanger.Output;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,10 @@ namespace AzRanger.Models.AzMgmt
         public string PrintCSV()
         {
             return String.Format("{0};{1}", name, id);
+        }
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(this.id, this.name);
         }
     }
 

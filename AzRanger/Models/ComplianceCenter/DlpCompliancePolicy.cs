@@ -27,6 +27,10 @@ namespace AzRanger.Models.ComplianceCenter
         {
             return Identity + ";";
         }
+        public AffectedItem GetAffectedItem()
+        {
+            return new AffectedItem(this.id, this.name);
+        }
     }
 
 }
