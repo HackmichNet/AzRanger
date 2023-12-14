@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    public class ExchangeOnlineScanner : AbstractScannerModule
+    public class ExchangeOnlineCollector : AbstractCollector
     {
         private const String MalwareFilterPolicy = "Get-MalwareFilterPolicy";
         private const String MalwareFilterRule = "Get-MalwareFilterRule";
@@ -28,7 +28,7 @@ namespace AzRanger.AzScanner
         private const String OwaMailboxPolicy = "Get-OwaMailboxPolicy";
         private String EndPoint;
 
-        public ExchangeOnlineScanner(Scanner scanner)
+        public ExchangeOnlineCollector(MainCollector scanner)
         {
             this.Scanner = scanner;
             this.BaseAdresse = "https://outlook.office365.com";
@@ -116,8 +116,8 @@ namespace AzRanger.AzScanner
             }
             foreach (AcceptedDomain domain in allDomains)
             {
-                domain.HasSPF = DNSScanner.hasSPF(domain.DomainName);
-                domain.HasDMARC = DNSScanner.hasDMARC(domain.DomainName);
+                domain.HasSPF = DNSCollector.hasSPF(domain.DomainName);
+                domain.HasDMARC = DNSCollector.hasDMARC(domain.DomainName);
             }
             return allDomains;
         }
@@ -151,12 +151,12 @@ namespace AzRanger.AzScanner
 
         public Task<List<MalwareFilterPolicy>> GetMalwareFilterPolicies()
         {
-            return GetAllOf<MalwareFilterPolicy>(ExchangeOnlineScanner.MalwareFilterPolicy);
+            return GetAllOf<MalwareFilterPolicy>(ExchangeOnlineCollector.MalwareFilterPolicy);
         }
 
         public Task<List<TransportRule>> GetTransportRules()
         {
-            return GetAllOf<TransportRule>(ExchangeOnlineScanner.TransportRule);
+            return GetAllOf<TransportRule>(ExchangeOnlineCollector.TransportRule);
         }
 
         internal async Task<List<T>> GetAllOf<T>(string command, List<Tuple<string, string>> parameters = null)

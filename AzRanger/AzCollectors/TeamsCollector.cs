@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class TeamsScanner : AbstractScannerModule
+    class TeamsCollector : AbstractCollector
     {
         private const String TeamsClientConfiguration = "/Skype.Policy/configurations/TeamsClientConfiguration";
         private const String TenantFederationSettings = "/Skype.Policy/configurations/TenantFederationSettings/configuration/global";
 
-        public TeamsScanner(Scanner scanner)
+        public TeamsCollector(MainCollector scanner)
         {
             this.Scanner = scanner;
             this.BaseAdresse = "https://api.interfaces.records.teams.microsoft.com";

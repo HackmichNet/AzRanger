@@ -67,8 +67,6 @@ namespace AzRanger
             }
         }
 
-
-
         internal static HttpClient GetDefaultClient(List<Tuple<String, String>> additionalHeaders = null, String proxy = null)
         {
 
@@ -92,7 +90,6 @@ namespace AzRanger
                 };
             handler.AllowAutoRedirect = false;
             handler.MaxConnectionsPerServer = 25;
-            //var client = new HttpClient(handler); 
             var client = new HttpClient(new RetryHandler(handler));
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 10.0; Win64; x64; Trident/7.0; .NET4.0C; .NET4.0E)");
             client.DefaultRequestHeaders.Add("X-Ms-Client-Request-Id", Guid.NewGuid().ToString());

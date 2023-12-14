@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    internal class AzMgmtScanner : AbstractScannerModule
+    internal class AzMgmtCollector : AbstractCollector
     {
         private const String ManagementGroup = "/providers/Microsoft.Management/managementGroups/{0}?api-version=2020-05-01&$expand=children";
         private const String ManagementGroupSettings = "/providers/Microsoft.Management/managementGroups/{0}/settings/default?api-version=2020-02-01";
@@ -33,7 +33,7 @@ namespace AzRanger.AzScanner
         private const String PostgreSQL = "/subscriptions/{0}/providers/Microsoft.DBforPostgreSQL/flexibleServers/?api-version=2022-03-08-preview";
         private const String PostgreSQLParamters = "{0}/configurations?api-version=2021-06-01";
         private const String PolicyAssignment = "/subscriptions/{0}/providers/Microsoft.Authorization/policyAssignments?api-version=2019-09-01";
-        public AzMgmtScanner(Scanner scanner)
+        public AzMgmtCollector(MainCollector scanner)
         {
             this.Scanner = scanner;
             this.BaseAdresse = "https://management.azure.com/";

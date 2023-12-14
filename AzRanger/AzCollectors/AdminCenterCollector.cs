@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class AdminCenterScanner : AbstractScannerModule
+    class AdminCenterCollector : AbstractCollector
     {
 
         public const String ExchangeModernAuthSettings = "/admin/api/services/apps/modernAuth";
@@ -37,7 +37,7 @@ namespace AzRanger.AzScanner
 
         public const String Officeonline = "/admin/api/settings/apps/officeonline";
 
-        public AdminCenterScanner(Scanner scanner)
+        public AdminCenterCollector(MainCollector scanner)
         {
             this.Scanner = scanner;
             this.BaseAdresse = "https://admin.microsoft.com";
@@ -47,42 +47,42 @@ namespace AzRanger.AzScanner
 
         public Task<Officeonline> GetOfficeonline()
         {
-            return Get<Officeonline>(AdminCenterScanner.Officeonline);
+            return Get<Officeonline>(AdminCenterCollector.Officeonline);
         }
 
         public Task<SkypeTeams> GetSkypeTeamsSettings()
         {
-            return Get<SkypeTeams>(AdminCenterScanner.SkypeTeams);
+            return Get<SkypeTeams>(AdminCenterCollector.SkypeTeams);
         }
 
         public Task<Calendarsharing> GetCalendarsharing()
         {
-            return Get<Calendarsharing>(AdminCenterScanner.Calendarsharing);
+            return Get<Calendarsharing>(AdminCenterCollector.Calendarsharing);
         }
 
 
         public Task<SwaySettings> GetSwaySettings()
         {
-            return Get<SwaySettings>(AdminCenterScanner.SwaySettings);
+            return Get<SwaySettings>(AdminCenterCollector.SwaySettings);
         }
 
         public Task<DirsyncManagement> GetDirsyncManagement()
         {
-            return Get<DirsyncManagement>(AdminCenterScanner.DirsyncManagement);
+            return Get<DirsyncManagement>(AdminCenterCollector.DirsyncManagement);
         }
 
         public Task<O365PasswordPolicy> GetO365PasswordPolicy()
         {
-            return Get<O365PasswordPolicy>(AdminCenterScanner.O365PasswordPolicy);
+            return Get<O365PasswordPolicy>(AdminCenterCollector.O365PasswordPolicy);
         }
 
         public async Task<OfficeStoreSettings> GetOfficeStoreSettings()
         {
             try
             {
-                Task<bool> LetUserAccessOfficeStoreTask = Get<bool>(AdminCenterScanner.OfficeStoreAccess);
-                Task<bool> LetUserStartTrialTask = Get<bool>(AdminCenterScanner.OfficeStartTrials);
-                Task<bool> LetUserAutoClaimTask = Get<bool>(AdminCenterScanner.OfficeLicenceAutoClaim);
+                Task<bool> LetUserAccessOfficeStoreTask = Get<bool>(AdminCenterCollector.OfficeStoreAccess);
+                Task<bool> LetUserStartTrialTask = Get<bool>(AdminCenterCollector.OfficeStartTrials);
+                Task<bool> LetUserAutoClaimTask = Get<bool>(AdminCenterCollector.OfficeLicenceAutoClaim);
 
                 object LetUserAccessOfficeStore = await LetUserAccessOfficeStoreTask;
                 object LetUserStartTrial = await LetUserStartTrialTask;
@@ -100,12 +100,12 @@ namespace AzRanger.AzScanner
 
         public Task<OfficeFormsSettings> GetOfficeFormsSettings()
         {
-            return Get<OfficeFormsSettings>(AdminCenterScanner.OfficeFormsSettings);
+            return Get<OfficeFormsSettings>(AdminCenterCollector.OfficeFormsSettings);
         }
 
         public Task<ExchangeModernAuthSettings> GetExchangeModernAuthSettings()
         {
-            return Get<ExchangeModernAuthSettings>(AdminCenterScanner.ExchangeModernAuthSettings);
+            return Get<ExchangeModernAuthSettings>(AdminCenterCollector.ExchangeModernAuthSettings);
         }
 
 

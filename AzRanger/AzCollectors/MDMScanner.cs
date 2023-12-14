@@ -8,7 +8,7 @@ namespace AzRanger.AzScanner
     // Um auch Intune mit betrachten zu können, muss vorher die Intune PowerSHell im Tenant aktiviert werden
     // https://raw.githubusercontent.com/microsoftgraph/powershell-intune-samples/master/AdminConsent/GA_AdminConsent_Set.ps1
     // Client ID = d1ddf0e4-d672-4dae-b554-9d5bdfd93547
-    class MDMScanner : MSGraphScanner
+    class MDMScanner : MSGraphCollector
     {
         public const String DeviceConfigurations = "/beta/deviceManagement/deviceConfigurations";       //?$select=id,displayName
         public const String ConfigurationPolicies = "/beta/deviceManagement/configurationPolicies"; //?$select=id,name,description,platforms,technologies,isAssigned
@@ -17,7 +17,7 @@ namespace AzRanger.AzScanner
         public const String DeviceCompliancePolicies = "/beta/deviceManagement/deviceCompliancePolicies"; //?$select=id,displayName;
         public const String DeviceCompliancePolicy = "/beta/deviceManagement/deviceCompliancePolicies/{0}"; //$expand=assignments
 
-        public MDMScanner(Scanner scanner) : base(scanner)
+        public MDMScanner(MainCollector scanner) : base(scanner)
         {
         }
 

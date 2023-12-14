@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class ComplianceCenterScanner : AbstractScannerModule
+    class ComplianceCenterCollector : AbstractCollector
     {
         public const String DLPPolicies = "/Psws/service.svc/DlpCompliancePolicy";
         public const String DLPLabels = "/Psws/service.svc/Label";
         public const String PowerShellLiveId = "/Powershell-LiveId";
         public const String InitBaseAdress = "https://ps.compliance.protection.outlook.com";
-        public ComplianceCenterScanner(Scanner scanner)
+        public ComplianceCenterCollector(MainCollector scanner)
         {
             this.Scanner = scanner;
             this.Scope = new String[] { "https://ps.compliance.protection.outlook.com/.default", "offline_access" };

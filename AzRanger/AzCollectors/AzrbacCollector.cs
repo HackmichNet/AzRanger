@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class AzrbacScanner : AbstractScannerModule
+    class AzrbacCollector : AbstractCollector
     {
         private const String RoleAssignmentForDirectory = "/api/v2/privilegedAccess/aadroles/roleAssignments";
-        public AzrbacScanner(Scanner scanner)
+        public AzrbacCollector(MainCollector scanner)
         {
             this.Scanner = scanner;
             this.BaseAdresse = "https://api.azrbac.mspim.azure.com";

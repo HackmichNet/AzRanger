@@ -61,19 +61,12 @@ namespace AzRanger.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;html&gt;
-        ///
-        ///&lt;head&gt;
-        ///    &lt;style&gt;@charset &quot;UTF-8&quot;;/*!
-        /// * Bootstrap  v5.2.0 (https://getbootstrap.com/)
-        /// * Copyright 2011-2022 The Bootstrap Authors
-        /// * Copyright 2011-2022 Twitter, Inc.
-        /// * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
-        /// */:root{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--bs-black:#000;--bs-white:#fff;--bs-gray:#6c757d;--b [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string Report_html {
+        internal static byte[] ReportTemplate {
             get {
-                return ResourceManager.GetString("Report.html", resourceCulture);
+                object obj = ResourceManager.GetObject("ReportTemplate", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

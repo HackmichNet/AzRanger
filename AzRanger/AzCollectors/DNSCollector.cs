@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    public static class DNSScanner
+    public static class DNSCollector
     {
         internal static Logger logger = LogManager.GetCurrentClassLogger();
         public static bool hasSPF(String domains)

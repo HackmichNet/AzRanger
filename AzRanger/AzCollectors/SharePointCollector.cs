@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class SharePointScanner : AbstractScannerModule
+    class SharePointCollector : AbstractCollector
     {
 
         public const String SPOInternalUseOnly = "/_api/SPOInternalUseOnly.Tenant";
 
 
-        public SharePointScanner(Scanner scanner, String baseAddresse)
+        public SharePointCollector(MainCollector scanner, String baseAddresse)
         {
             this.Scanner = scanner;
             this.BaseAdresse = baseAddresse;

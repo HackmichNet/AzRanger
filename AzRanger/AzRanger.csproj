@@ -82,6 +82,9 @@
     <Reference Include="DnsClient, Version=1.6.0.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
       <HintPath>..\packages\DnsClient.1.6.0\lib\net471\DnsClient.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.4.2.13, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.4.2\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -271,25 +274,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AzScanner\AdminCenterScanner.cs" />
-    <Compile Include="AzScanner\AppAuthenticator.cs" />
-    <Compile Include="AzScanner\UserAuthenticator.cs" />
-    <Compile Include="AzScanner\AzMgmtScanner.cs" />
-    <Compile Include="AzScanner\AzrbacScanner.cs" />
-    <Compile Include="AzScanner\ComplianceCenterScanner.cs" />
-    <Compile Include="AzScanner\DNSScanner.cs" />
-    <Compile Include="AzScanner\ExchangeOnlineScanner.cs" />
-    <Compile Include="AzScanner\GraphWinScanner.cs" />
-    <Compile Include="AzScanner\IAuthenticator.cs" />
-    <Compile Include="AzScanner\AbstractScannerModule.cs" />
-    <Compile Include="AzScanner\KeyVaultScanner.cs" />
-    <Compile Include="AzScanner\MainIamScanner.cs" />
-    <Compile Include="AzScanner\MDMScanner.cs" />
-    <Compile Include="AzScanner\MSGraphScanner.cs" />
-    <Compile Include="AzScanner\ProvisionAPIScanner.cs" />
-    <Compile Include="AzScanner\Scanner.cs" />
-    <Compile Include="AzScanner\SharePointScanner.cs" />
-    <Compile Include="AzScanner\TeamsScanner.cs" />
+    <Compile Include="AzCollectors\AdminCenterCollector.cs" />
+    <Compile Include="AzCollectors\AppAuthenticator.cs" />
+    <Compile Include="AzCollectors\PasswordResetCollector.cs" />
+    <Compile Include="AzCollectors\UserAuthenticator.cs" />
+    <Compile Include="AzCollectors\AzMgmtCollector.cs" />
+    <Compile Include="AzCollectors\AzrbacCollector.cs" />
+    <Compile Include="AzCollectors\ComplianceCenterCollector.cs" />
+    <Compile Include="AzCollectors\DNSCollector.cs" />
+    <Compile Include="AzCollectors\ExchangeOnlineCollector.cs" />
+    <Compile Include="AzCollectors\GraphWinCollector.cs" />
+    <Compile Include="AzCollectors\IAuthenticator.cs" />
+    <Compile Include="AzCollectors\AbstractCollector.cs" />
+    <Compile Include="AzCollectors\KeyVaultCollector.cs" />
+    <Compile Include="AzCollectors\MainIamCollector.cs" />
+    <Compile Include="AzCollectors\MDMScanner.cs" />
+    <Compile Include="AzCollectors\MSGraphCollector.cs" />
+    <Compile Include="AzCollectors\ProvisionAPICollector.cs" />
+    <Compile Include="AzCollectors\MainCollector.cs" />
+    <Compile Include="AzCollectors\SharePointCollector.cs" />
+    <Compile Include="AzCollectors\TeamsCollector.cs" />
     <Compile Include="Checks\Auditor.cs" />
     <Compile Include="Checks\BaseCheck.cs" />
     <Compile Include="Checks\CISAZAttribute.cs" />
@@ -494,6 +498,7 @@
     <Compile Include="Models\MainIAM\DirectoryProperties.cs" />
     <Compile Include="Models\MainIAM\LCMSettings.cs" />
     <Compile Include="Models\MainIAM\LoginTenantBrandings.cs" />
+    <Compile Include="Models\MainIAM\OnPremisesPasswordResetPolicy.cs" />
     <Compile Include="Models\MainIAM\PasswordResetPolicies.cs" />
     <Compile Include="Models\MainIAM\SecurityDefaults.cs" />
     <Compile Include="Models\MainIAM\SsgmProperties.cs" />
@@ -537,6 +542,7 @@
     <Compile Include="Models\MSGraph\ServicePrincipal.cs" />
     <Compile Include="Models\MSGraph\Signinactivity.cs" />
     <Compile Include="Models\MSGraph\User.cs" />
+    <Compile Include="Models\PasswordReset\AdminPasswordResetPolicy.cs" />
     <Compile Include="Models\Provision\DirSyncFeatures.cs" />
     <Compile Include="Models\Provision\GetCompanyDirSyncFeaturesResponse.cs" />
     <Compile Include="Models\Provision\GetCompanyInformationResponse.cs" />
@@ -564,6 +570,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\AzRangerModes.cs" />
+    <Compile Include="Utilities\AzRangerOutput.cs" />
     <Compile Include="Utilities\CommandlineOptions.cs" />
     <Compile Include="Utilities\DirectoryRoleTemplateID.cs" />
     <Compile Include="Utilities\HttpFactoryWithProxy.cs" />
@@ -575,6 +583,7 @@
     <None Include="AzRanger_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
+    <None Include="Resources\ReportTemplate.zip" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
@@ -590,12 +599,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
-    <None Include="Resources\Report.html.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

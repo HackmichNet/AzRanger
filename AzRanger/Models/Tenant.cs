@@ -27,11 +27,11 @@ namespace AzRanger.Models
         public List<EnterpriseApplicationUserSettings> EnterpriseApplicationUserSettings { get; set; }
         public M365Settings TenantSettings { get; set; }
         public Dictionary<Guid, ConditionalAccessPolicy> AllCAPolicies { get; set; }
-        public SharepointInformation SharepointInformation{ get; set; }
+        public SharepointInformation SharepointInformation { get; set; }
         public ExchangeOnlineSettings ExchangeOnlineSettings { get; set; }
         public TeamsSettings TeamsSettings { get; set; }
         public List<RoleDefinition> RoleDefinitions { get; set; }
-        public Dictionary<String, ManagementGroup> ManagementGroups{ get; set; }
+        public Dictionary<String, ManagementGroup> ManagementGroups { get; set; }
         public Dictionary<Guid, Subscription> Subscriptions { get; set; }
         public MDMSettings MDMSettings { get; set; }
         public ManagementGroupSettings ManagementGroupSettings { get; set; }

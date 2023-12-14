@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    public class Scanner
+    public class MainCollector
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         internal string Username { get; }
@@ -33,19 +33,19 @@ namespace AzRanger.AzScanner
         internal bool HasP2License = false;
 
 
-        internal AdminCenterScanner AdminCenterScanner;
-        internal MSGraphScanner MsGraphScanner;
-        internal ProvisionAPIScanner ProvisionAPIScanner;
-        internal ExchangeOnlineScanner ExchangeOnlineScanner;
-        internal MainIamScanner MainIamScanner;
-        internal ComplianceCenterScanner ComplianceCenterScanner;
-        internal GraphWinScanner GraphWinScanner;
-        internal TeamsScanner TeamsScanner;
+        internal AdminCenterCollector AdminCenterScanner;
+        internal MSGraphCollector MsGraphScanner;
+        internal ProvisionAPICollector ProvisionAPIScanner;
+        internal ExchangeOnlineCollector ExchangeOnlineScanner;
+        internal MainIamCollector MainIamScanner;
+        internal ComplianceCenterCollector ComplianceCenterScanner;
+        internal GraphWinCollector GraphWinScanner;
+        internal TeamsCollector TeamsScanner;
         internal MDMScanner MDMScanner;
-        internal AzrbacScanner AzrbacScanner;
-        internal AzMgmtScanner AzMgmtScanner;
+        internal AzrbacCollector AzrbacScanner;
+        internal AzMgmtCollector AzMgmtScanner;
 
-        public Scanner(IAuthenticator authenticator, String proxy, String tenant = null)
+        public MainCollector(IAuthenticator authenticator, String proxy, String tenant = null)
         {
             this.Proxy = proxy;
             this.TenantId = tenant;
@@ -74,16 +74,16 @@ namespace AzRanger.AzScanner
             bool isSharePointAdmin = false;
             bool scanAzureOnly = false;
 
-            AdminCenterScanner = new AdminCenterScanner(this);
-            MsGraphScanner = new MSGraphScanner(this);
-            ProvisionAPIScanner = new ProvisionAPIScanner(this);
-            ExchangeOnlineScanner = new ExchangeOnlineScanner(this);
-            MainIamScanner = new MainIamScanner(this);
-            ComplianceCenterScanner = new ComplianceCenterScanner(this);
-            GraphWinScanner = new GraphWinScanner(this);
-            TeamsScanner = new TeamsScanner(this);
-            AzrbacScanner = new AzrbacScanner(this);
-            AzMgmtScanner = new AzMgmtScanner(this);
+            AdminCenterScanner = new AdminCenterCollector(this);
+            MsGraphScanner = new MSGraphCollector(this);
+            ProvisionAPIScanner = new ProvisionAPICollector(this);
+            ExchangeOnlineScanner = new ExchangeOnlineCollector(this);
+            MainIamScanner = new MainIamCollector(this);
+            ComplianceCenterScanner = new ComplianceCenterCollector(this);
+            GraphWinScanner = new GraphWinCollector(this);
+            TeamsScanner = new TeamsCollector(this);
+            AzrbacScanner = new AzrbacCollector(this);
+            AzMgmtScanner = new AzMgmtCollector(this);
             
             if (scopes.Count == 1 & scopes.Contains(ScopeEnum.Azure))
             {
@@ -94,7 +94,7 @@ namespace AzRanger.AzScanner
             {
                 Result.TenantSettings = new M365Settings();
                 Result.AllDirectoryRoles = await MsGraphScanner.GetAllDirectoryRoles();
-                if (Result.AllDirectoryRoles != null && currentUserId != null)
+                if ((Result.AllDirectoryRoles != null && currentUserId != null) && this.Authenticator.GetType() != typeof(AppAuthenticator))
                 {
 
                     foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
@@ -122,6 +122,23 @@ namespace AzRanger.AzScanner
                                 isSharePointAdmin = true;
                             }
                         }
+                        if (!isGlobalAdmin & !isGlobalReader)
+                        {
+                            Console.WriteLine("[-] The current user has not sufficient rights, please choose another one.");
+                            return null;
+                        }
+                        else
+                        {
+                            Console.WriteLine("[+] Current user has sufficient rights, continue...");
+                        }
+
+                        if (!isGlobalAdmin)
+                        {
+                            if (!isSharePointAdmin)
+                            {
+                                Console.WriteLine("[-] The current user is no SharePointAdmin, so it cannot read data from SharePoint.");
+                            }
+                        }
                     }
                 }
                 else
@@ -129,25 +146,6 @@ namespace AzRanger.AzScanner
                     logger.Warn("Scanner.ScanTenant: Cannot get User Id. Should not happen!");
                     return null;
                 } 
-                
-
-                if (!isGlobalAdmin & !isGlobalReader)
-                {
-                    Console.WriteLine("[-] The current user has not sufficient rights, please choose another one.");
-                    return null;
-                }
-                else
-                {
-                    Console.WriteLine("[+] Current user has sufficient rights, continue...");
-                }
-
-                if (!isGlobalAdmin)
-                {
-                    if (!isSharePointAdmin)
-                    {
-                        Console.WriteLine("[-] The current user is no SharePointAdmin, so it cannot read data from SharePoint.");
-                    }
-                }
             }
             
             if (scopes.Contains(ScopeEnum.AAD))
@@ -233,6 +231,7 @@ namespace AzRanger.AzScanner
                             List<PIMRoleAssignments> roleAssignments = await AzrbacScanner.GetRoleAssignemts(Guid.Parse(this.TenantId), Guid.Parse(role.roleTemplateId));
                             foreach (PIMRoleAssignments assignment in roleAssignments)
                             {
+                                // Calculate which user has which role
                                 List<AzurePrincipal> principalsToAssigne = new List<AzurePrincipal>();
                                 AzurePrincipalType aztype;
                                 switch (assignment.subject.type)
@@ -282,6 +281,7 @@ namespace AzRanger.AzScanner
                                             role.AddEligibleMember(p);
                                         }
                                     }
+                                    // Calculate which user can add credentials to App or ServicePrincipal
                                     // If a user can add creds, assign to applications and service principal
                                     if (DirectoryRoleTemplateID.RolesAllowingAddCreds.Contains(role.roleTemplateId))
                                     {
@@ -318,6 +318,7 @@ namespace AzRanger.AzScanner
                             }
                         }
                     }
+                    // If not Premium P2 ist much easier
                     else
                     {
                         foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
@@ -373,9 +374,8 @@ namespace AzRanger.AzScanner
                 officeTasks.Add(MainIamScanner.GetUserSettings());
                 officeTasks.Add(MainIamScanner.GetSsgmProperties());
                 officeTasks.Add(MainIamScanner.GetLoginTenantBrandings());
+                officeTasks.Add(MainIamScanner.GetOnPremisesPasswordResetPolicy());
              
-
-                
                 officeTasks.Add(ProvisionAPIScanner.GetDirSyncFeatures());
                 officeTasks.Add(ProvisionAPIScanner.GetMsolCompanyInformation());
                 
@@ -389,11 +389,8 @@ namespace AzRanger.AzScanner
                 officeTasks.Add(AdminCenterScanner.GetOfficeonline());
                
                 officeTasks.Add(ComplianceCenterScanner.GetDLPPolicies());
-                officeTasks.Add(ComplianceCenterScanner.GetDLPPolicies());
                 officeTasks.Add(ComplianceCenterScanner.GetDLPLabels());
                
-                
-
                 while (officeTasks.Any())
                 {
 
@@ -492,6 +489,9 @@ namespace AzRanger.AzScanner
                         case Task<Officeonline> getOfficeonline:
                             Result.TenantSettings.Officeonline = await getOfficeonline;
                             break;
+                        case Task<OnPremisesPasswordResetPolicy> getOnPremisesPasswordResetPolicyTask:
+                            Result.TenantSettings.OnPremisesPasswordResetPolicy = await getOnPremisesPasswordResetPolicyTask;
+                            break;
                         default:
                             Console.WriteLine("Scanner.ScanTennant: OfficeTask Default. This should not happen");
                             break;
@@ -551,7 +551,7 @@ namespace AzRanger.AzScanner
                     {
                         Console.WriteLine("[+] Found SharePoint on: {0}", Result.SharepointInformation.SharepointUrl);
                         Console.WriteLine("[+] Found SharePoint-Admin on: {0}", Result.SharepointInformation.AdminUrl);
-                        SharePointScanner sharePointScanner = new SharePointScanner(this, Result.SharepointInformation.AdminUrl);
+                        SharePointCollector sharePointScanner = new SharePointCollector(this, Result.SharepointInformation.AdminUrl);
                         Result.SharepointInformation.SharepointInternalInfos = await sharePointScanner.GetSharePointSettings();
                     }
                 }
@@ -570,7 +570,6 @@ namespace AzRanger.AzScanner
                 }
 
                 Result.ExchangeOnlineSettings = new ExchangeOnlineSettings();
-
                 
                 List<Task> exchangeTask = new List<Task>();
                 exchangeTask.Add(ExchangeOnlineScanner.GetAdminAuditLogConfig());
@@ -659,7 +658,6 @@ namespace AzRanger.AzScanner
                     exchangeTask.Remove(result);
                 }
                 
-                
                 if (Result.ExchangeOnlineSettings.EXOUsers != null)
                 {
                     Console.WriteLine("[+] Found {0} Exchange-User.", Result.ExchangeOnlineSettings.EXOUsers.Count);
@@ -669,7 +667,6 @@ namespace AzRanger.AzScanner
 
             if (scopes.Contains(ScopeEnum.Azure))
             {
-               
                 Result.ManagementGroups = await AzMgmtScanner.GetAllManagementGroups();
                 Result.ManagementGroupSettings = await AzMgmtScanner.GetManagementGroupSettings();
                 Result.Subscriptions = await AzMgmtScanner.GetAllSubscriptions();
@@ -682,7 +679,7 @@ namespace AzRanger.AzScanner
                     {
                         foreach (KeyVault vault in sub.Resources.KeyVaults)
                         {
-                            KeyVaultScanner vaultScanner = new KeyVaultScanner(this, vault.properties.vaultUri);
+                            KeyVaultCollector vaultScanner = new KeyVaultCollector(this, vault.properties.vaultUri);
                             if (vaultScanner != null)
                             {
                                 vault.Keys = await vaultScanner.GetKeyVaultKeys();
@@ -699,10 +696,10 @@ namespace AzRanger.AzScanner
                     sub.Resources.VirtualMachines = await AzMgmtScanner.GetVirtualMachines(sub.subscriptionId);
                     sub.Resources.PostgreSQLs = await AzMgmtScanner.GetPostgreSQLFlexibleServers(sub.subscriptionId);
                     sub.PolicyAssignment = await AzMgmtScanner.GetPolicyAssignment(sub.subscriptionId);
-                }
-                
+                }   
             }
 
+            // Ignore infos not availabe
             if (scopes.Contains(ScopeEnum.MDM))
             {
                 MDMScanner = new MDMScanner(this);
@@ -716,7 +713,7 @@ namespace AzRanger.AzScanner
                 }
             }
 
-            Console.WriteLine("[+] Finished collecting infos.");
+            Console.WriteLine("[+] Finished collecting information.");
             return Result;  
         }
         

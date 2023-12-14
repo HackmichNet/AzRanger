@@ -11,7 +11,23 @@ namespace AzRanger.Output
 {
     public static class JSONOutput
     {
-        public static void Print(Auditor auditor, string outFile)
+        public static void Print(Auditor auditor, string outPath)
+        {
+            
+
+            if(outPath == null | outPath.Length == 0)
+            {
+                outPath = ".";
+            }
+            String outFile = Path.Combine(outPath,  "/report.json");
+            using (StreamWriter file = File.CreateText(outFile))
+            {
+                var json = createJSON(auditor);                
+                file.Write(json);
+            }
+        }
+
+        public static String createJSON(Auditor auditor)
         {
             List<ResultJSONItem> NoFindingList = new List<ResultJSONItem>();
             List<ResultJSONItem> ErrorList = new List<ResultJSONItem>();
@@ -36,7 +52,7 @@ namespace AzRanger.Output
                     item.LongDescription = ruleInfo.LongDescription;
                 }
 
-                if(ruleMeta != null)
+                if (ruleMeta != null)
                 {
                     item.ShortName = ruleMeta.ShortName;
                     item.PortalUrl = ruleMeta.PortalUrl;
@@ -45,7 +61,7 @@ namespace AzRanger.Output
                     item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
                 }
 
-                if(cisM365Rule != null)
+                if (cisM365Rule != null)
                 {
                     item.Version = cisM365Rule.Version;
                     item.Section = cisM365Rule.Section;
@@ -59,6 +75,11 @@ namespace AzRanger.Output
                     item.Section = cisAzRule.Section;
                     item.Level = cisAzRule.Level.ToString();
                     item.CISDocument = "CIS Azure";
+                }
+
+                if (check.RawData != null)
+                {
+                    item.RawData = check.RawData;
                 }
 
                 if (check.GetAffectedEntity().Count > 0)
@@ -215,17 +236,14 @@ namespace AzRanger.Output
             FinalList.Error = ErrorList.OrderBy(x => x.RiskScore).ToList();
             FinalList.NotApplicable = NotApplicable.OrderBy(x => x.RiskScore).ToList();
 
-            using (StreamWriter file = File.CreateText(outFile))
+            var options = new JsonSerializerOptions
             {
-                var options = new JsonSerializerOptions
-                {
-                    MaxDepth = 16,
-                    IncludeFields = true,
-                    WriteIndented = true
-                };
-                var json = JsonSerializer.Serialize(FinalList, options);
-                file.Write(json);
-            }
+                MaxDepth = 16,
+                IncludeFields = true,
+                WriteIndented = true
+            };
+
+            return JsonSerializer.Serialize(FinalList, options);
         }
     }
 }

@@ -13,11 +13,11 @@ using System.Xml.Serialization;
 
 namespace AzRanger.AzScanner
 {
-	class ProvisionAPIScanner : AbstractScannerModule
+	class ProvisionAPICollector : AbstractCollector
 	{
 		public const String Endpoint = "/provisioningwebservice.svc";
 
-		public ProvisionAPIScanner(Scanner scanner)
+		public ProvisionAPICollector(MainCollector scanner)
 		{
 			this.Scanner = scanner;
 			this.BaseAdresse = "https://provisioningapi.microsoftonline.com";

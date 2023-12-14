@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    public class KeyVaultScanner : AbstractScannerModule
+    public class KeyVaultCollector : AbstractCollector
     {
         private const String Keys = "/keys/?api-version=7.3";
         private const String Secrets = "/secrets/?api-version=7.3";
-        public KeyVaultScanner(Scanner scanner, String vaultUri)
+        public KeyVaultCollector(MainCollector scanner, String vaultUri)
         {
             this.Scanner = scanner;
             this.BaseAdresse = vaultUri;

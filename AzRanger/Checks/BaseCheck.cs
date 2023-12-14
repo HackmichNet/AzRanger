@@ -12,6 +12,8 @@ namespace AzRanger.Checks
         public String Reason = null;
         public String RawData = null;
         public abstract CheckResult Audit(Tenant tenant);
+        bool Blacklist = false;
+        List<string> BlackListAffectedEntity = null;
 
         public void SetReason(String reason)
         {
@@ -22,6 +24,13 @@ namespace AzRanger.Checks
 
         public void AddAffectedEntity(IReporting entity)
         {
+            if(BlackListAffectedEntity != null)
+            {
+                if (BlackListAffectedEntity.Contains(entity.ToString()))
+                {
+                    return;
+                }
+            }
             if (!this.AffectedEntity.Contains(entity))
             {
                 this.AffectedEntity.Add(entity);

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    class MainIamScanner : AbstractScannerModule
+    class MainIamCollector : AbstractCollector
     {
         private const String SecurityDefaultsEndpoint = "/api/SecurityDefaults/GetSecurityDefaultStatus";
         private const String DirectoryProperties = "/api/Directories/Properties";
@@ -19,8 +19,9 @@ namespace AzRanger.AzScanner
         private const String TenantSkuInfo = "/api/TenantSkuInfo";
         private const String SsgmProperties = "/api/Directories/SsgmProperties";
         private const String LoginTenantBrandings = "/api/LoginTenantBrandings";
+        private const String OnPremisesPasswordResetPolicies = "/api/PasswordReset/OnPremisesPasswordResetPolicies";
 
-        public MainIamScanner(Scanner scanner)
+        public MainIamCollector(MainCollector scanner)
         {
             this.Scanner = scanner;
             this.BaseAdresse = "https://main.iam.ad.ext.azure.com";
@@ -28,67 +29,72 @@ namespace AzRanger.AzScanner
             this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
         }
 
+        public Task<OnPremisesPasswordResetPolicy> GetOnPremisesPasswordResetPolicy()
+        {
+            return Get<OnPremisesPasswordResetPolicy>(MainIamCollector.OnPremisesPasswordResetPolicies);
+        }
+
         public Task<SecurityDefaults> GetSecurityDefaults()
         {
-            return Get<SecurityDefaults>( MainIamScanner.SecurityDefaultsEndpoint);
+            return Get<SecurityDefaults>(MainIamCollector.SecurityDefaultsEndpoint);
         }
 
         public Task<SsgmProperties> GetSsgmProperties()
         {
-            return Get<SsgmProperties>(MainIamScanner.SsgmProperties);
+            return Get<SsgmProperties>(MainIamCollector.SsgmProperties);
         }
 
         public Task<TenantSkuInfo> GetTenantSkuInfo()
         {
-            return Get<TenantSkuInfo>(MainIamScanner.TenantSkuInfo);
+            return Get<TenantSkuInfo>(MainIamCollector.TenantSkuInfo);
         }
 
         public Task<UserSettings> GetUserSettings()
         {
-            return Get<UserSettings>(MainIamScanner.UserSettings);
+            return Get<UserSettings>(MainIamCollector.UserSettings);
         }
 
         public Task<LCMSettings> GetLCMSettings()
         {
-            return Get<LCMSettings>(MainIamScanner.LCMSettings);
+            return Get<LCMSettings>(MainIamCollector.LCMSettings);
         }
 
         public Task<B2BPolicy> GetB2BPolicy()
         {
-            return Get<B2BPolicy>(MainIamScanner.B2BPolicy);
+            return Get<B2BPolicy>(MainIamCollector.B2BPolicy);
         }
 
         public Task<DirectoryProperties> GetDirectoryProperties()
         {
-            return Get<DirectoryProperties>(MainIamScanner.DirectoryProperties);
+            return Get<DirectoryProperties>(MainIamCollector.DirectoryProperties);
         }
 
         public Task<PasswordResetPolicies> GetPasswordResetPolicies()
         {
-            return Get<PasswordResetPolicies>(MainIamScanner.PasswordsResetPolicies);
+            return Get<PasswordResetPolicies>(MainIamCollector.PasswordsResetPolicies);
         }
 
         public Task<AzureADPasswordPolicy> GetPasswordPolicy()
         {
-            return Get<AzureADPasswordPolicy>(MainIamScanner.PasswordPolicy);
+            return Get<AzureADPasswordPolicy>(MainIamCollector.PasswordPolicy);
         }
 
         public async Task<ADConnectStatus> GetADConnectStatus()
         {
-            ADConnectStatus status = await Get<ADConnectStatus>(MainIamScanner.ADConnectStatus);
+            ADConnectStatus status = await Get<ADConnectStatus>(MainIamCollector.ADConnectStatus);
             if(status == null)
             {
                 logger.Warn("MainIamScanner.ADConnectStatus: Failed to get status");
                 return null;
             }
-            status.passwordHashSyncEnabled = (bool) await Get<bool>(MainIamScanner.DirSyncStatus);
+            status.passwordHashSyncEnabled = (bool) await Get<bool>(MainIamCollector.DirSyncStatus);
             return status;
         }
 
         public Task<List<LoginTenantBranding>> GetLoginTenantBrandings()
         {
             //return GetAllOf<LoginTenantBranding>(MainIamScanner.LoginTenantBrandings);
-            return Get<List<LoginTenantBranding>>(MainIamScanner.LoginTenantBrandings);
+            return Get<List<LoginTenantBranding>>(MainIamCollector.LoginTenantBrandings);
         }
     }
 }

@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    public class GraphWinScanner : AbstractScannerModule
+    public class GraphWinCollector : AbstractCollector
     {
         public const String UsersInternal = "/{0}/users/{1}";
         public const String RoleDefinitions = "/myorganization/roleDefinitions";
 
-        public GraphWinScanner(Scanner scanner)
+        public GraphWinCollector(MainCollector scanner)
         {
             this.Scanner = scanner;
             this.BaseAdresse = "https://graph.windows.net";

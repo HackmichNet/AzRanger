@@ -10,11 +10,7 @@ using NLog.Config;
 using NLog.Targets;
 using NLog;
 using CommandLine.Text;
-using System.Reflection;
-using System.Resources;
-using System.Collections;
 using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace AzRanger
 {
@@ -42,7 +38,7 @@ namespace AzRanger
             {
                 h.AdditionalNewLineAfterOption = false;
                 h.Heading = "AzRanger 0.2.0"; //change header
-                h.Copyright = ""; 
+                h.Copyright = "";
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
             Console.WriteLine(helpText);
@@ -89,69 +85,41 @@ namespace AzRanger
                 config.AddRule(LogLevel.Info, LogLevel.Fatal, consoleTargetDebug, "*");
             }
             LogManager.Configuration = config;
-          
-            if(opts.Audit && opts.DumpAll && opts.DumpSettings)
-            {
-                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely. Or use --help for more information.");
-                return;
-            }
 
-            if (opts.Audit && opts.DumpAll)
+            String outputPath = null;
+            if (opts.OutPath == null || opts.OutPath.Length == 0)
             {
-                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely. Or use --help for more information..");
-                return;
-            }
-
-            if (opts.Audit && opts.DumpSettings)
-            {
-                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely. Or use --help for more information.");
-                return;
-            }
-
-            if (opts.DumpAll && opts.DumpSettings)
-            {
-                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely. Or use --help for more information..");
-                return;
-            }
-
-            if (opts.Audit == false && opts.DumpAll == false && opts.DumpSettings == false )
-            {
-                Console.WriteLine("[-] Please choose between --audit, --dumpsettings and --dumpall. Choose wisely. Or use --help for more information..");
-                return;
-            }
-
-            if(opts.DumpAll | opts.DumpSettings)
-            {
-                if(opts.OutFile == null)
+                DateTime date = DateTime.Now;
+                if (opts.Mode == AzRangerModes.Audit)
                 {
-                    Console.WriteLine("[-] Please specify an outfile with --outfile");
-                    return;
+                    outputPath = date.ToString("ddMMyyyy") + "_AZRangerReport";
+                }
+                if (opts.Mode == AzRangerModes.DumpAll | opts.Mode == AzRangerModes.DumpSettings)
+                {
+                    outputPath = date.ToString("ddMMyyyy") + "_AZRangerReport.json";
+
                 }
             }
-
-            if(opts.Audit && (opts.Output != null && (opts.Output.ToLower() == "html" | opts.Output.ToLower() == "json")))
+            else
             {
-                if(opts.OutFile == null || opts.OutFile.Length == 0)
-                {
-                    Console.WriteLine("[-] Please specify an outfile with --outfile.");
-                    return;
-                }
+                outputPath = opts.OutPath;
             }
 
             List<ScopeEnum> scopes = new List<ScopeEnum>();
-            foreach(ScopeEnum scope in opts.Scope)
+            foreach (ScopeEnum scope in opts.Scope)
             {
                 scopes.Add(scope);
             }
 
-            if(scopes.Count == 0) {
+            if (scopes.Count == 0)
+            {
                 scopes = new List<ScopeEnum>() {
-                ScopeEnum.Azure, ScopeEnum.SPO, ScopeEnum.EXO, ScopeEnum.Teams, ScopeEnum.AAD
-                };
+            ScopeEnum.Azure, ScopeEnum.SPO, ScopeEnum.EXO, ScopeEnum.Teams, ScopeEnum.AAD
+            };
             }
 
             Console.WriteLine("[+] AzRanger started.");
-            Scanner scanner = null;
+            MainCollector scanner = null;
             if (opts.Username != null && opts.Password != null)
             {
                 String TenantId = opts.TenantId;
@@ -162,31 +130,33 @@ namespace AzRanger
                 if (TenantId != null)
                 {
                     UserAuthenticator authenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy);
-                    scanner = new Scanner(authenticator, opts.Proxy, TenantId);
+                    scanner = new MainCollector(authenticator, opts.Proxy, TenantId);
                 }
                 else
                 {
-                    Console.WriteLine("[-] Could not find TenantId.... this should not happen, when providing the correct username...");
+                    Console.WriteLine("[-] Could not find TenantId.... this should not happen, when providing the correct username.");
                     return;
                 }
             }
-            else if(opts.ClientId != null && opts.ClientSecret != null){
-                if(opts.TenantId == null)
+            else if (opts.ClientId != null && opts.ClientSecret != null)
+            {
+                if (opts.TenantId == null)
                 {
                     Console.WriteLine("[-] You must provide the TenantId, when using clientid and secret.");
-                    return; 
+                    return;
                 }
                 AppAuthenticator authenticator = new AppAuthenticator(opts.ClientId, opts.ClientSecret, opts.TenantId, opts.Proxy);
-                scanner = new Scanner(authenticator, opts.Proxy, opts.TenantId);
-            }else
+                scanner = new MainCollector(authenticator, opts.Proxy, opts.TenantId);
+            }
+            else
             {
-                scanner = new Scanner(new UserAuthenticator(opts.TenantId, opts.Proxy), opts.Proxy, opts.TenantId);
+                scanner = new MainCollector(new UserAuthenticator(opts.TenantId, opts.Proxy), opts.Proxy, opts.TenantId);
             }
 
-            if (opts.DumpAll | opts.Audit)
+            if (opts.Mode == AzRangerModes.Audit | opts.Mode == AzRangerModes.DumpAll)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-                
+
                 Task<Tenant> scanTask = scanner.ScanTenant(scopes);
                 Tenant tenant = await scanTask;
                 watch.Stop();
@@ -197,24 +167,24 @@ namespace AzRanger
                     return;
                 }
 
-                if (opts.Audit)
+                if (opts.Mode == AzRangerModes.Audit)
                 {
                     Auditor auditor = new Auditor(tenant);
                     auditor.Init(scopes);
                     auditor.PerformAudit();
-                    if (opts.Output == null || opts.Output.ToLower() == "console")
+                    if (opts.Output == AzRangerOutput.Console)
                     {
                         ConsoleOutput.Print(auditor, opts.WriteAllResults);
                     }
-                    else if(opts.Output != null && opts.Output.ToLower() == "html")
+                    else if (opts.Output == AzRangerOutput.HTML)
                     {
-                        HTMLReportingOutput.Print(auditor, tenant, opts.OutFile);
-                        Console.WriteLine("[+] Report written to: " + opts.OutFile);
+                        HTMLReportingOutput.Print(auditor, tenant, outputPath);
+                        Console.WriteLine("[+] Report written to: " + outputPath);
                     }
-                    else if (opts.Output != null && opts.Output.ToLower() == "json")
+                    else if (opts.Output == AzRangerOutput.JSON)
                     {
-                        JSONOutput.Print(auditor, opts.OutFile);
-                        Console.WriteLine("[+] Report written to: " + opts.OutFile);
+                        JSONOutput.Print(auditor, outputPath);
+                        Console.WriteLine("[+] Report written to: " + outputPath);
                     }
                     else
                     {
@@ -222,25 +192,29 @@ namespace AzRanger
                         return;
                     }
                 }
-                if (opts.DumpAll)
+                if (opts.Mode == AzRangerModes.DumpAll)
                 {
-                    Dumper.DumpTenant(tenant, opts.OutFile);
-                    Console.WriteLine("[+] Successfully written to " + opts.OutFile);
+                    Dumper.DumpTenant(tenant, outputPath);
+                    Console.WriteLine("[+] Successfully written to " + outputPath);
                 }
             }
 
-            if (opts.DumpSettings)
+            if (opts.Mode == AzRangerModes.DumpSettings)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 Tenant settings = await scanner.ScanTenant(scopes);
                 watch.Stop();
                 Console.WriteLine($"[+] Scan Time: {watch.ElapsedMilliseconds} ms");
-                Dumper.DumpTenantSettings(settings, opts.OutFile);
-                Console.WriteLine("[+] Successfully written to " + opts.OutFile);
+                Dumper.DumpTenantSettings(settings, outputPath);
+                Console.WriteLine("[+] Successfully written to " + outputPath);
             }
 
-            Console.WriteLine("[+] AzRanger finished... Press any key to exit!");
-            Console.ReadKey();
+            if (opts.Batch)
+            {
+                Console.WriteLine("[+] AzRanger finished... Press any key to exit!");
+                Console.ReadKey();
+            }
         }
     }
 }
+

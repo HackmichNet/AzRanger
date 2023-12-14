@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
-    public abstract class AbstractScannerModule
+    public abstract class AbstractCollector
     {
         internal static Logger logger = LogManager.GetCurrentClassLogger();
-        internal Scanner Scanner;
+        internal MainCollector Scanner;
         internal String BaseAdresse;
         internal String[] Scope;
         internal List<Tuple<string, string>> additionalHeaders = null;

@@ -7,10 +7,17 @@ namespace AzRanger.Output
 {
     public static class Dumper
     {
-        public static void DumpTenant(Tenant tenant, string outFile)
+        public static void DumpTenant(Tenant tenant, string outPath)
         {
-           
-            using (StreamWriter file = File.CreateText(outFile))
+
+            if (outPath == null | outPath.Length == 0)
+            {
+                outPath = ".";
+            }
+
+            string outFile = outPath + "/dump.json";
+
+            using (StreamWriter file = File.CreateText(outPath))
             {
                 var options = new JsonSerializerOptions
                 {

@@ -43,14 +43,14 @@ namespace AzRanger.Checks
                         RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
                         foreach (ScopeEnum scope in scopes) {
                             if (ruleInfo.Scope.Equals(scope)){
-                                logger.Debug("Auditor.Init: {0} successfull instatiated and added", ruleInfo.ShortName);
+                                logger.Debug("[+} Auditor.Init: {0} successful instantiated and added.", ruleInfo.ShortName);
                                 AllChecks.Add(check);
                             }
                         }
                     }
                     catch(Exception e) {
                         
-                        logger.Debug("Auditor.Init: CreateClass failed");
+                        logger.Debug("[-] Auditor.Init: CreateClass failed!");
                         logger.Debug(e.Message);
                         continue;
                     }                    
@@ -74,7 +74,7 @@ namespace AzRanger.Checks
                             this.NoFinding.Add(check);
                             break;
                         case CheckResult.NotApplicable:
-                            this.NotApplicable.Add(check);
+                              this.NotApplicable.Add(check);
                             break;
                         case CheckResult.Error:
                             this.Error.Add(check);

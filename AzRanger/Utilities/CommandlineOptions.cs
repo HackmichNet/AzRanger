@@ -1,11 +1,8 @@
 ﻿using AzRanger.Checks;
 using CommandLine;
-using CommandLine.Text;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AzRanger.Utilities
 {
@@ -35,24 +32,20 @@ namespace AzRanger.Utilities
         [Option(Required = false, HelpText = "Set the logfile path.")]
         public String Logfile{ get; set; }
 
-        [Option(Required = false, HelpText = "Perform an audit against your tenant.")]
-        public bool Audit { get; set; }
-
-        [Option(Required = false, HelpText = "Dump all information the tools gather into JSON.")]
-        public bool DumpAll { get; set; }
-
-        [Option(Required = false, HelpText = "Dump all tenant settings the tool gathers into JSON.")]
-        public bool DumpSettings { get; set; }
-
-        [Option(Required = false, HelpText = "File to write results.")]
-        public String OutFile { get; set; }
+        [Option(Required = false, HelpText = "Path/File to write results.")]
+        public String OutPath { get; set; }
 
         [Option(Required = false, HelpText = "Write all results to console. Can result in a very large output.")]
         public bool WriteAllResults { get; set; }
 
-        [Option(Required = false, HelpText = "Only for audit. Specify 'console' (standard), 'html' or 'json'.")]
-        public string Output { get; set; }
+        [Option(Required = false, HelpText = "Only for audit. Specify 'console', 'html' or 'json'.", Default = AzRangerOutput.HTML)]
+        public AzRangerOutput Output { get; set; }
+
         [Option(Required = false, HelpText = "Set ScopeEnum AAD, Teams, SharePoint(SPO), ExchangeOnline(EXO) or Azure. If not set all scopes will be used.", Separator = ',')]
         public IEnumerable<ScopeEnum> Scope { get; set; }
+        [Option(Default = false, Required = false, HelpText = "Batch mode. Use for automatic runs.")]
+        public bool Batch { get; set; }
+        [Option(Required = false, HelpText = "AzRanger mode. Use audit, dumpall or dumpsettings. ", Default = AzRangerModes.Audit)]
+        public AzRangerModes Mode{ get; set; }
     }
 }

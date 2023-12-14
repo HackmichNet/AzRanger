@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AppsAsGlobalAdmin", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/~/AppAppsPreview")]
-    [RuleInfo(@"ServiceEnum principals which are member of the Roles ""Global Admin"" or ""Privileged Authentication Administrator""", @"A user with ""owner"" rights to the service principal or with the role ""Application administrator"" or ""Cloud application administrator"" can use this configuration to elevate its privileges.", 9, "https://posts.specterops.io/azure-privilege-escalation-via-service-principal-abuse-210ae2be2a5", null, @"Remove the service principals from these roles.")]
+    [RuleInfo(@"Service principals which are member of the Roles ""Global Admin"" or ""Privileged Authentication Administrator""", @"A user with ""owner"" rights to the service principal or with the role ""Application administrator"" or ""Cloud application administrator"" can use this configuration to elevate its privileges.", 9, "https://posts.specterops.io/azure-privilege-escalation-via-service-principal-abuse-210ae2be2a5", null, @"Remove the service principals from these roles.")]
     class AppsAsGlobalAdmin : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

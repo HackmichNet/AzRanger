@@ -36,5 +36,6 @@ namespace AzRanger.Models
         public DirSyncFeatures DirSyncFeatures { get; set; }
         public List<LoginTenantBranding> LoginTenantBrandings { get; set; }
         public Officeonline Officeonline { get; set; }
+        public OnPremisesPasswordResetPolicy OnPremisesPasswordResetPolicy { get; set; }
     }
 }
