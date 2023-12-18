@@ -1,5 +1,6 @@
 ﻿using AzRanger.Utilities;
 using Microsoft.Identity.Client;
+using Microsoft.Identity.Client.Extensions.Msal;
 using NLog;
 using System;
 using System.Linq;
@@ -20,8 +21,12 @@ namespace AzRanger.AzScanner
         private String Username;
         private SecureString Password;
         private int FailedInteractiveLogonCounter = 0;
+        public const string CacheFileName = "azranger.cache";
+        public readonly static string CacheDir = MsalCacheHelper.UserRootDirectory;
         public UserAuthenticator(string tenantId, string proxy)
         {
+            var storageProperties = new StorageCreationPropertiesBuilder(CacheFileName, CacheDir).Build();
+            var cacheHelper = MsalCacheHelper.CreateAsync(storageProperties).Result;
             if (tenantId == null)
             {
                 if (proxy != null)
@@ -46,7 +51,7 @@ namespace AzRanger.AzScanner
                     App = PublicClientApplicationBuilder.Create(ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithDefaultRedirectUri().Build();
                 }
             }
-            
+            cacheHelper.RegisterCache(App.UserTokenCache);
         }
 
         public UserAuthenticator(String Username, String Password, string tenantId, string proxy)

@@ -37,7 +37,7 @@ namespace AzRanger
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "AzRanger 0.2.0"; //change header
+                h.Heading = "AzRanger 0.1.0"; //change header
                 h.Copyright = "";
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
@@ -142,7 +142,7 @@ namespace AzRanger
             {
                 if (opts.TenantId == null)
                 {
-                    Console.WriteLine("[-] You must provide the TenantId, when using clientid and secret.");
+                    Console.WriteLine("[-] You must provide the TenantId, when using application id and secret.");
                     return;
                 }
                 AppAuthenticator authenticator = new AppAuthenticator(opts.ClientId, opts.ClientSecret, opts.TenantId, opts.Proxy);

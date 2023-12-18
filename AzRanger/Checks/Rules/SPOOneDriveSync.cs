@@ -14,8 +14,8 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.SharepointInformation.SharepointInternalInfos.IsUnmanagedSyncClientForTenantRestricted == true &&
-               tenant.SharepointInformation.SharepointInternalInfos.BlockMacSync == true)
+            if(tenant.SharePointInformation.SharePointInternalInfos.IsUnmanagedSyncClientForTenantRestricted == true &&
+               tenant.SharePointInformation.SharePointInternalInfos.BlockMacSync == true)
             {
                 return CheckResult.NoFinding;
             }

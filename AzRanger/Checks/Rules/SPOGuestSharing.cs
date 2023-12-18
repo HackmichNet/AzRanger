@@ -14,7 +14,7 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.SharepointInformation.SharepointInternalInfos.PreventExternalUsersFromResharing == true)
+            if(tenant.SharePointInformation.SharePointInternalInfos.PreventExternalUsersFromResharing == true)
             {
                 return CheckResult.NoFinding;
             }

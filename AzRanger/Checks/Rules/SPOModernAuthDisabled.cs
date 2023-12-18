@@ -13,7 +13,7 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.SharepointInformation.SharepointInternalInfos.OfficeClientADALDisabled == false)
+            if(tenant.SharePointInformation.SharePointInternalInfos.OfficeClientADALDisabled == false)
             {
                 return CheckResult.NoFinding;
             }

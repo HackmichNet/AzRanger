@@ -17,7 +17,7 @@ namespace AzRanger.Models
     {
         public string TenantId { get; set; }
         public string Username { get; set; }
-        public List<Domain> domains;
+        public List<Domain> Domains;
         public Dictionary<Guid, User> AllUsers { get; set; }
         public Dictionary<Guid, User> AllGuests { get; set; }
         public Dictionary<Guid, MSGraph.DirectoryRole> AllDirectoryRoles { get; set; }
@@ -27,7 +27,7 @@ namespace AzRanger.Models
         public List<EnterpriseApplicationUserSettings> EnterpriseApplicationUserSettings { get; set; }
         public M365Settings TenantSettings { get; set; }
         public Dictionary<Guid, ConditionalAccessPolicy> AllCAPolicies { get; set; }
-        public SharepointInformation SharepointInformation { get; set; }
+        public SharePointInformation SharePointInformation { get; set; }
         public ExchangeOnlineSettings ExchangeOnlineSettings { get; set; }
         public TeamsSettings TeamsSettings { get; set; }
         public List<RoleDefinition> RoleDefinitions { get; set; }

@@ -181,49 +181,45 @@ namespace AzRanger.AzScanner
                 }
 
                 Task<List<Domain>> getDomainTask = MsGraphScanner.GetAzDomains();
-                Task<Dictionary<Guid, User>> getUserTask = MsGraphScanner.GetAllUsers();
-                Task<Dictionary<Guid, User>> getGuestTask = MsGraphScanner.GetAllGuests();
-                Task<Dictionary<Guid, Application>> getAllApplications = MsGraphScanner.GetAllApplications();
-                Task<Dictionary<Guid, ServicePrincipal>> getAllServicePrincipals = MsGraphScanner.GetAllServicePrincipals();
-                Task<Dictionary<Guid, Group>> getGroupTask = MsGraphScanner.GetAllGroups();
-
-                List<Task> tasks = new List<Task> { getDomainTask, getUserTask, getGuestTask, getAllApplications, getAllServicePrincipals, getGroupTask };
-
-                while (tasks.Any())
+                Result.Domains = await getDomainTask;
+                if (Result.Domains != null)
                 {
-                    var result = await Task.WhenAny(tasks);
-
-                    if (result == getDomainTask)
-                    {
-                        Result.domains = await getDomainTask;
-                    }
-                    if (result == getUserTask)
-                    {
-                        Result.AllUsers = await getUserTask;
-                    }
-                    if (result == getGuestTask)
-                    {
-                        Result.AllGuests = await getGuestTask;
-                    }
-                    if (result == getAllApplications)
-                    {
-                        Result.AllApplications = await getAllApplications;
-                    }
-                    if (result == getAllServicePrincipals)
-                    {
-                        Result.AllServicePrincipals = await getAllServicePrincipals;
-                    }
-                    if (result == getGroupTask)
-                    {
-                        Result.AllGroups = await getGroupTask;
-                    }
-
-                    tasks.Remove(result);
+                    Console.WriteLine("[+] You have {0} domains in your tenant", Result.Domains.Count);
                 }
-                
+                Task<Dictionary<Guid, User>> getUserTask = MsGraphScanner.GetAllUsers();
+                Result.AllUsers = await getUserTask;
+                if (Result.AllUsers != null)
+                {
+                    Console.WriteLine("[+] You have {0} users in your tenant", Result.AllUsers.Count);
+                }
+                Task<Dictionary<Guid, User>> getGuestTask = MsGraphScanner.GetAllGuests();
+                Result.AllGuests = await getGuestTask;
+                if (Result.AllGuests != null)
+                {
+                    Console.WriteLine("[+] You have {0} guests in your tenant", Result.AllGuests.Count);
+                }
+                Task<Dictionary<Guid, Application>> getAllApplications = MsGraphScanner.GetAllApplications();
+                Result.AllApplications = await getAllApplications;
+                if (Result.AllApplications != null)
+                {
+                    Console.WriteLine("[+] You have {0} applications in your tenant", Result.AllApplications.Count);
+                }
+                Task<Dictionary<Guid, ServicePrincipal>> getAllServicePrincipals = MsGraphScanner.GetAllServicePrincipals();
+                Result.AllServicePrincipals = await getAllServicePrincipals;
+                if (Result.AllServicePrincipals != null)
+                {
+                    Console.WriteLine("[+] You have {0} service principals in your tenant", Result.AllServicePrincipals.Count);
+                }
+                Task<Dictionary<Guid, Group>> getGroupTask = MsGraphScanner.GetAllGroups();
+                Result.AllGroups = await getGroupTask;
+                if (Result.AllGroups != null)
+                {
+                    Console.WriteLine("[+] You have {0} groups in your tenant", Result.AllGroups.Count);
+                }               
 
                 if (Result.AllDirectoryRoles != null)
                 {
+                    Console.WriteLine("[+] You are using {0} roles in your tenant", Result.AllDirectoryRoles.Count);
                     if (HasP2License)
                     {
                         foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
@@ -546,13 +542,13 @@ namespace AzRanger.AzScanner
                 }
                 if (isGlobalAdmin | isSharePointAdmin)
                 {
-                    Result.SharepointInformation = await ProvisionAPIScanner.GetSharepointInformation();
-                    if (Result.SharepointInformation != null)
+                    Result.SharePointInformation = await ProvisionAPIScanner.GetSharepointInformation();
+                    if (Result.SharePointInformation != null)
                     {
-                        Console.WriteLine("[+] Found SharePoint on: {0}", Result.SharepointInformation.SharepointUrl);
-                        Console.WriteLine("[+] Found SharePoint-Admin on: {0}", Result.SharepointInformation.AdminUrl);
-                        SharePointCollector sharePointScanner = new SharePointCollector(this, Result.SharepointInformation.AdminUrl);
-                        Result.SharepointInformation.SharepointInternalInfos = await sharePointScanner.GetSharePointSettings();
+                        Console.WriteLine("[+] Found SharePoint on: {0}", Result.SharePointInformation.SharePointUrl);
+                        Console.WriteLine("[+] Found SharePoint-Admin on: {0}", Result.SharePointInformation.AdminUrl);
+                        SharePointCollector sharePointScanner = new SharePointCollector(this, Result.SharePointInformation.AdminUrl);
+                        Result.SharePointInformation.SharePointInternalInfos = await sharePointScanner.GetSharePointSettings();
                     }
                 }
                 
@@ -564,9 +560,9 @@ namespace AzRanger.AzScanner
                 {
                     Result.TenantSettings.SecurityDefaults = await MainIamScanner.GetSecurityDefaults();
                 }
-                if (Result.domains == null)
+                if (Result.Domains == null)
                 {
-                    Result.domains = await MsGraphScanner.GetAzDomains();
+                    Result.Domains = await MsGraphScanner.GetAzDomains();
                 }
 
                 Result.ExchangeOnlineSettings = new ExchangeOnlineSettings();

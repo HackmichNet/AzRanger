@@ -237,7 +237,7 @@ namespace AzRanger.AzScanner
 			}
 		}
 
-		public async Task<SharepointInformation> GetSharepointInformation()
+		public async Task<SharePointInformation> GetSharepointInformation()
 		{
             String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
             if (accessToken == null)
@@ -276,7 +276,7 @@ namespace AzRanger.AzScanner
 							}
 							if (SharePointAdminUrl != null & SharePointUrl != null)
 							{
-								return new SharepointInformation(SharePointAdminUrl, SharePointUrl);
+								return new SharePointInformation(SharePointAdminUrl, SharePointUrl);
 							}
 						}
 					}
@@ -309,7 +309,7 @@ namespace AzRanger.AzScanner
 				}
 				if (SharePointAdminUrl != null && SharePointUrl != null)
 				{
-					return new SharepointInformation(SharePointAdminUrl, SharePointUrl);
+					return new SharePointInformation(SharePointAdminUrl, SharePointUrl);
 				}
 			}
 			

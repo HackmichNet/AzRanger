@@ -14,7 +14,7 @@ namespace AzRanger.Checks.Rules
                 this.SetReason("Security Defaults are enabled. This disabled legacy authentication protocols.");
                 return CheckResult.NotApplicable;
             }
-            if (tenant.SharepointInformation.SharepointInternalInfos.LegacyAuthProtocolsEnabled == false)
+            if (tenant.SharePointInformation.SharePointInternalInfos.LegacyAuthProtocolsEnabled == false)
             {
                 return CheckResult.NoFinding;
             }

@@ -15,7 +15,7 @@ namespace AzRanger.Checks.Rules
         {
             // Check Tenant.ExchangeOnlineSettings.TransportRules.RedirectMessageTo[]
             List<String> domainsToCheck = new List<string>();
-            foreach(Domain domain in tenant.domains)
+            foreach(Domain domain in tenant.Domains)
             {
                 domainsToCheck.Add(domain.id);
             }

@@ -4,16 +4,16 @@ using System;
 
 namespace AzRanger.Models
 {
-    public class SharepointInformation
+    public class SharePointInformation
     {
         public String AdminUrl;
-        public String SharepointUrl;
-        public SPOInternalUseOnly SharepointInternalInfos; 
+        public String SharePointUrl;
+        public SPOInternalUseOnly SharePointInternalInfos; 
 
-        public SharepointInformation(string AdminUrl, String SharepointUrl)
+        public SharePointInformation(string AdminUrl, String SharePointUrl)
         {
             this.AdminUrl = AdminUrl;
-            this.SharepointUrl = SharepointUrl;
+            this.SharePointUrl = SharePointUrl;
         }
     }
 }
