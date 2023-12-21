@@ -135,6 +135,11 @@ namespace AzRanger
                 else
                 {
                     Console.WriteLine("[-] Could not find TenantId.... this should not happen, when providing the correct username.");
+                    if (opts.Batch)
+                    {
+                        Console.WriteLine("[+] AzRanger finished... Press any key to exit!");
+                        Console.ReadKey();
+                    }
                     return;
                 }
             }
@@ -143,6 +148,11 @@ namespace AzRanger
                 if (opts.TenantId == null)
                 {
                     Console.WriteLine("[-] You must provide the TenantId, when using application id and secret.");
+                    if (opts.Batch)
+                    {
+                        Console.WriteLine("[+] AzRanger finished... Press any key to exit!");
+                        Console.ReadKey();
+                    }
                     return;
                 }
                 AppAuthenticator authenticator = new AppAuthenticator(opts.ClientId, opts.ClientSecret, opts.TenantId, opts.Proxy);
@@ -164,6 +174,11 @@ namespace AzRanger
                 if (tenant == null)
                 {
                     Console.WriteLine("[-] Something went wrong. Please run the tool with --debug and notify me.");
+                    if (opts.Batch)
+                    {
+                        Console.WriteLine("[+] AzRanger finished... Press any key to exit!");
+                        Console.ReadKey();
+                    }
                     return;
                 }
 
@@ -189,6 +204,11 @@ namespace AzRanger
                     else
                     {
                         Console.WriteLine("[-] Should not happen =)");
+                        if (opts.Batch)
+                        {
+                            Console.WriteLine("[+] AzRanger finished... Press any key to exit!");
+                            Console.ReadKey();
+                        }
                         return;
                     }
                 }

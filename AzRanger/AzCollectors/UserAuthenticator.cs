@@ -24,6 +24,7 @@ namespace AzRanger.AzScanner
         private int FailedInteractiveLogonCounter = 0;
         public const string CacheFileName = "azranger.cache";
         public readonly static string CacheDir = MsalCacheHelper.UserRootDirectory;
+        // https://blog.cdemi.io/async-waiting-inside-c-sharp-locks/#:~:text=The%20lock%20keyword%20can%20only,is%20used%20pretty%20much%20everywhere.
         static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
         public UserAuthenticator(string tenantId, string proxy)
         {
