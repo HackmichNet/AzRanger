@@ -122,22 +122,22 @@ namespace AzRanger.AzScanner
                                 isSharePointAdmin = true;
                             }
                         }
-                        if (!isGlobalAdmin & !isGlobalReader)
-                        {
-                            Console.WriteLine("[-] The current user has not sufficient rights, please choose another one.");
-                            return null;
-                        }
-                        else
-                        {
-                            Console.WriteLine("[+] Current user has sufficient rights, continue...");
-                        }
+                    }
+                    if (!isGlobalAdmin & !isGlobalReader)
+                    {
+                        Console.WriteLine("[-] The current user has not sufficient rights, please choose another one.");
+                        return null;
+                    }
+                    else
+                    {
+                        Console.WriteLine("[+] Current user has sufficient rights, continue...");
+                    }
 
-                        if (!isGlobalAdmin)
+                    if (!isGlobalAdmin)
+                    {
+                        if (!isSharePointAdmin)
                         {
-                            if (!isSharePointAdmin)
-                            {
-                                Console.WriteLine("[-] The current user is no SharePointAdmin, so it cannot read data from SharePoint.");
-                            }
+                            Console.WriteLine("[-] The current user is no SharePointAdmin, so it cannot read data from SharePoint.");
                         }
                     }
                 }

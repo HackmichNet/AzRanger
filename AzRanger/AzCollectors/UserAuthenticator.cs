@@ -5,6 +5,7 @@ using NLog;
 using System;
 using System.Linq;
 using System.Security;
+using System.Threading;
 using System.Threading.Tasks;
 using Logger = NLog.Logger;
 
@@ -23,10 +24,11 @@ namespace AzRanger.AzScanner
         private int FailedInteractiveLogonCounter = 0;
         public const string CacheFileName = "azranger.cache";
         public readonly static string CacheDir = MsalCacheHelper.UserRootDirectory;
+        static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
         public UserAuthenticator(string tenantId, string proxy)
         {
-            var storageProperties = new StorageCreationPropertiesBuilder(CacheFileName, CacheDir).Build();
-            var cacheHelper = MsalCacheHelper.CreateAsync(storageProperties).Result;
+            //var storageProperties = new StorageCreationPropertiesBuilder(CacheFileName, CacheDir).Build();
+            //var cacheHelper = MsalCacheHelper.CreateAsync(storageProperties).Result;
             if (tenantId == null)
             {
                 if (proxy != null)
@@ -51,7 +53,7 @@ namespace AzRanger.AzScanner
                     App = PublicClientApplicationBuilder.Create(ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithDefaultRedirectUri().Build();
                 }
             }
-            cacheHelper.RegisterCache(App.UserTokenCache);
+            //cacheHelper.RegisterCache(App.UserTokenCache);
         }
 
         public UserAuthenticator(String Username, String Password, string tenantId, string proxy)
@@ -107,7 +109,7 @@ namespace AzRanger.AzScanner
         }
         private async Task<AuthenticationResult> GetAuthenticationResult(String[] scopes)
         {
-            //var accounts = App.GetAccountsAsync().GetAwaiter().GetResult();
+            await semaphoreSlim.WaitAsync();
             var accounts = await App.GetAccountsAsync();
             AuthenticationResult result = null;
             if (accounts.Any())
@@ -115,12 +117,14 @@ namespace AzRanger.AzScanner
                 try
                 {
                     result = await App.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync();
+                    semaphoreSlim.Release();
                     return result;
                 }catch(MsalException ex)
                 {
                     // Under some circumstances, a lot of logons failing, then we don't logon anymore and skip the rest.
                     if(FailedInteractiveLogonCounter > 4)
                     {
+                        semaphoreSlim.Release();
                         return null;
                     }
                     // May happen that we need do MFA again.
@@ -129,18 +133,21 @@ namespace AzRanger.AzScanner
                         try
                         {
                             result = await App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync();
+                            semaphoreSlim.Release();
                             return result;
                         }catch(MsalServiceException ex2)
                         {
                             logger.Warn(ex2.ErrorCode);
                             logger.Warn(ex2.Message);
                             FailedInteractiveLogonCounter++;
+                            semaphoreSlim.Release();
                             return null;
                         }
                     }
 
                     logger.Warn(ex.ErrorCode);
                     logger.Warn(ex.Message);
+                    semaphoreSlim.Release();
                     return null;
                 }
             }
@@ -150,11 +157,13 @@ namespace AzRanger.AzScanner
                 if (this.Username == null && this.Password == null)
                 {
                     result = await App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync();
+                    semaphoreSlim.Release();
                     return result;
                 }
                 else
                 {
                     result = await App.AcquireTokenByUsernamePassword(scopes, this.Username, this.Password).ExecuteAsync();
+                    semaphoreSlim.Release();
                     return result;
                 }
             }
@@ -163,6 +172,7 @@ namespace AzRanger.AzScanner
                 // More errors on: https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-desktop-acquire-token-username-password?tabs=dotnet
                 logger.Warn(ex.ErrorCode);
                 logger.Warn(ex.Message);
+                semaphoreSlim.Release();
                 return null;
             }
         }
