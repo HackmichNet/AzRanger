@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace AzRanger
@@ -65,6 +66,16 @@ namespace AzRanger
                 var result = response.Content.ReadAsStringAsync().Result;
                 return result;
             }
+        }
+
+        internal static async void PressKeyToContinue(string message = "Press any key to continue...")
+        {
+            Console.WriteLine(message);
+            while (!Console.KeyAvailable)
+            {
+                await Task.Delay(250);
+            }
+            Console.ReadKey(true);
         }
 
         internal static HttpClient GetDefaultClient(List<Tuple<String, String>> additionalHeaders = null, String proxy = null)

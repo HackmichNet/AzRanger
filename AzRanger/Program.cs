@@ -135,10 +135,9 @@ namespace AzRanger
                 else
                 {
                     Console.WriteLine("[-] Could not find TenantId.... this should not happen, when providing the correct username.");
-                    if (opts.Batch)
+                    if (opts.Batch == false)
                     {
-                        Console.WriteLine("[+] AzRanger finished... Press any key to exit!");
-                        Console.ReadKey();
+                        Helper.PressKeyToContinue("[+] AzRanger finished... Press any key to exit!");
                     }
                     return;
                 }
@@ -148,10 +147,9 @@ namespace AzRanger
                 if (opts.TenantId == null)
                 {
                     Console.WriteLine("[-] You must provide the TenantId, when using application id and secret.");
-                    if (opts.Batch)
+                    if (opts.Batch == false)
                     {
-                        Console.WriteLine("[+] AzRanger finished... Press any key to exit!");
-                        Console.ReadKey();
+                        Helper.PressKeyToContinue("[+] AzRanger finished... Press any key to exit!");
                     }
                     return;
                 }
@@ -173,11 +171,13 @@ namespace AzRanger
                 Console.WriteLine($"[+] Scan Time: {watch.ElapsedMilliseconds} ms");
                 if (tenant == null)
                 {
-                    Console.WriteLine("[-] Something went wrong. Please run the tool with --debug and notify me.");
-                    if (opts.Batch)
+                    if (!opts.Debug)
                     {
-                        Console.WriteLine("[+] AzRanger finished... Press any key to exit!");
-                        Console.ReadKey();
+                        Console.WriteLine("[-] Something went wrong. Please run the tool with --debug and notify me.");
+                    }
+                    if (opts.Batch == false)
+                    {
+                        Helper.PressKeyToContinue("[+] AzRanger finished... Press any key to exit!");
                     }
                     return;
                 }
@@ -204,10 +204,9 @@ namespace AzRanger
                     else
                     {
                         Console.WriteLine("[-] Should not happen =)");
-                        if (opts.Batch)
+                        if (opts.Batch == false)
                         {
-                            Console.WriteLine("[+] AzRanger finished... Press any key to exit!");
-                            Console.ReadKey();
+                            Helper.PressKeyToContinue("[+] AzRanger finished... Press any key to exit!");
                         }
                         return;
                     }
@@ -229,10 +228,9 @@ namespace AzRanger
                 Console.WriteLine("[+] Successfully written to " + outputPath);
             }
 
-            if (opts.Batch)
+            if (opts.Batch == false)
             {
-                Console.WriteLine("[+] AzRanger finished... Press any key to exit!");
-                Console.ReadKey();
+                Helper.PressKeyToContinue("[+] AzRanger finished... Press any key to exit!");
             }
         }
     }

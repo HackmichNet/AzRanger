@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AppsWithHighPrives", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM")]
-    [RuleInfo("ServiceEnum principals with high privileged roles assigned", @"A user with ""owner"" rights to the service principal or with the role ""Application administrator"" or ""Cloud application administrator"" can use this configuration to elevate its privileges.", 9, null, null, "Check if the service principals needs these roles or if they can be removed.")]
+    [RuleInfo("Service principals with high privileged roles assigned", @"A user with ""owner"" rights to the service principal or with the role ""Application administrator"" or ""Cloud application administrator"" can use this configuration to elevate its privileges.", 9, null, null, "Check if the service principals needs these roles or if they can be removed.")]
 
     class AppsWithHighPrives : BaseCheck
     {

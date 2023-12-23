@@ -43,7 +43,7 @@ namespace AzRanger.Checks
                         RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
                         foreach (ScopeEnum scope in scopes) {
                             if (ruleInfo.Scope.Equals(scope)){
-                                logger.Debug("[+} Auditor.Init: {0} successful instantiated and added.", ruleInfo.ShortName);
+                                logger.Debug("[+] Auditor.Init: {0} successful instantiated and added.", ruleInfo.ShortName);
                                 AllChecks.Add(check);
                             }
                         }

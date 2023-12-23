@@ -93,58 +93,65 @@ namespace AzRanger.AzScanner
             if (!scanAzureOnly)
             {
                 Result.TenantSettings = new M365Settings();
-                Result.AllDirectoryRoles = await MsGraphScanner.GetAllDirectoryRoles();
-                if ((Result.AllDirectoryRoles != null && currentUserId != null) && this.Authenticator.GetType() != typeof(AppAuthenticator))
+                if (this.Authenticator.GetType() == typeof(UserAuthenticator))
                 {
-
-                    foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
+                    Result.AllDirectoryRoles = await MsGraphScanner.GetAllDirectoryRoles();
+                    if ((Result.AllDirectoryRoles != null && currentUserId != null))
                     {
-                        if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
+                        Console.WriteLine("[+] You are using {0} roles in your tenant", Result.AllDirectoryRoles.Count);
+                        foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
                         {
-                            if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
+                            if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
                             {
-                                isGlobalAdmin = true;
+                                if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
+                                {
+                                    isGlobalAdmin = true;
+                                }
                             }
+
+                            if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
+                            {
+                                if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
+                                {
+                                    isGlobalReader = true;
+                                }
+                            }
+
+                            if (role.roleTemplateId == DirectoryRoleTemplateID.SharePointAdmin)
+                            {
+                                if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
+                                {
+                                    isSharePointAdmin = true;
+                                }
+                            }
+                        }
+                        if (!isGlobalAdmin & !isGlobalReader)
+                        {
+                            Console.WriteLine("[-] The current user has not sufficient rights, please choose another one.");
+                            return null;
+                        }
+                        else
+                        {
+                            Console.WriteLine("[+] Current user has sufficient rights, continue...");
                         }
 
-                        if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalReader)
+                        if (!isGlobalAdmin)
                         {
-                            if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
+                            if (!isSharePointAdmin)
                             {
-                                isGlobalReader = true;
+                                Console.WriteLine("[-] The current user is no SharePointAdmin, so it cannot read data from SharePoint.");
                             }
                         }
-
-                        if (role.roleTemplateId == DirectoryRoleTemplateID.SharePointAdmin)
-                        {
-                            if (role.PricipalIsInActiveMembers(Guid.Parse(currentUserId)))
-                            {
-                                isSharePointAdmin = true;
-                            }
-                        }
-                    }
-                    if (!isGlobalAdmin & !isGlobalReader)
-                    {
-                        Console.WriteLine("[-] The current user has not sufficient rights, please choose another one.");
-                        return null;
                     }
                     else
                     {
-                        Console.WriteLine("[+] Current user has sufficient rights, continue...");
-                    }
-
-                    if (!isGlobalAdmin)
-                    {
-                        if (!isSharePointAdmin)
-                        {
-                            Console.WriteLine("[-] The current user is no SharePointAdmin, so it cannot read data from SharePoint.");
-                        }
+                        logger.Warn("Scanner.ScanTenant: Cannot get User Id. Should not happen!");
+                        return null;
                     }
                 }
                 else
                 {
-                    logger.Warn("Scanner.ScanTenant: Cannot get User Id. Should not happen!");
-                    return null;
+                    Console.WriteLine("[+] Running AzRanger with a service principal.... Good luck!");
                 } 
             }
             
@@ -180,6 +187,15 @@ namespace AzRanger.AzScanner
                     return null;
                 }
 
+                if(Result.AllDirectoryRoles == null)
+                {
+                    Task<Dictionary<Guid, DirectoryRole>> getAllDirectoryRoles = MsGraphScanner.GetAllDirectoryRoles(); ;
+                    Result.AllDirectoryRoles = await getAllDirectoryRoles;
+                    if (Result.AllDirectoryRoles != null)
+                    {
+                        Console.WriteLine("[+] You have {0} roles in your tenant", Result.AllDirectoryRoles.Count);
+                    }
+                }
                 Task<List<Domain>> getDomainTask = MsGraphScanner.GetAzDomains();
                 Result.Domains = await getDomainTask;
                 if (Result.Domains != null)
@@ -219,7 +235,6 @@ namespace AzRanger.AzScanner
 
                 if (Result.AllDirectoryRoles != null)
                 {
-                    Console.WriteLine("[+] You are using {0} roles in your tenant", Result.AllDirectoryRoles.Count);
                     if (HasP2License)
                     {
                         foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)

@@ -13,7 +13,7 @@ namespace AzRanger.Checks.Rules
     [RuleInfo("Not all privileged accounts uses MFA", "This increases the risk, that one of your admins becomes a victim of a phishing attack.", 10, "https://learn.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-admin-mfa", null, "No discussion here. Force them to use MFA!")]
     class UserAllAdminsHaveMFA : BaseCheck
     {
-        private readonly String[] InteresstingRoles = new String[] {
+        private readonly String[] InterestingRoles = new String[] {
                 "Application administrator",
                 "Authentication administrator",
                 "Cloud application administrator",
@@ -25,7 +25,7 @@ namespace AzRanger.Checks.Rules
                 "Password Administrator",
                 "Skype for Business Administrator",
                 "User Administrator",
-                "Dynamics 365 ServiceEnum Administrator",
+                "Dynamics 365 Service Administrator",
                 "Power BI Administrator",
                 "Global reader",
                 "Helpdesk administrator",
@@ -40,7 +40,7 @@ namespace AzRanger.Checks.Rules
             bool passed = true;
             foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values.ToList())
             {
-                if (InteresstingRoles.Any(x=>x == role.displayName) )
+                if (InterestingRoles.Any(x=>x == role.displayName) )
                 {
                     DirectoryRole TmpRole = new DirectoryRole(role.id, role.displayName, null, null);
                     foreach (AzurePrincipal member in role.GetMembers())

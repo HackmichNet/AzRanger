@@ -110,6 +110,8 @@ namespace AzRanger.AzScanner
             }
             string url = BaseAdresse + usedEndpoint;
             List<T> resultList = new List<T>();
+            int taskCancelCounter = 0;
+            int maxRetries = 3;
             while (url != null)
             {
                 logger.Debug("IScanner.GetAllOf: {0}|{1}", typeof(T).ToString(), url);
@@ -117,7 +119,19 @@ namespace AzRanger.AzScanner
                 try
                 {
                     response = await client.GetAsync(url);
-                }catch (Exception e)
+                }catch(TaskCanceledException excancel)
+                {
+                    logger.Debug("IScanner.GetAllOf: {0}|{1} canceled...", typeof(T).ToString(), url);
+                    logger.Debug(excancel.Message);
+                    logger.Info("Your network seems to be unreliable, please be patient.");
+                    if (taskCancelCounter < maxRetries)
+                    {
+                        taskCancelCounter++;
+                        continue;
+                    }
+                    return resultList;
+                }
+                catch (Exception e)
                 {
                     logger.Debug("IScanner.GetAllOf: {0}|{1} failed...return", typeof(T).ToString(), url);
                     logger.Debug(e.Message);
@@ -151,6 +165,7 @@ namespace AzRanger.AzScanner
                     if (genericAnswer.odatanextLink != null)
                     {
                         url = genericAnswer.odatanextLink;
+                        taskCancelCounter = 0;
                     }
                     else
                     {
