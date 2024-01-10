@@ -5,7 +5,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOCommonAttachmentFilter", ScopeEnum.EXO, MaturityLevel.Tentative, "https://security.microsoft.com/antimalwarev2")]
     [CISM365("4.1", "", Level.L1, "v2.0")]
-    [RuleInfo("Common Attachment Filter is not active", "This increases the risk that your company is compromised with malicious attachments.", 3, null, null, "Go to the link in the reference and ensure that in the policy with the highest priority the value for 'Enable the common attachments filter' is 'On'. ")]
+    [RuleInfo("EXOCommonAttachmentFilter")]
     class EXOCommonAttachmentFilter : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

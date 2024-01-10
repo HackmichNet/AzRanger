@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzPSQLLogConnections", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DBforPostgreSQL%2Fservers", ServiceEnum.PSQLServer)]
-    [RuleInfo("Log Connection are disabled", @"You might miss problems and errors in PSQLQueries.", 1, null, null, @"For each PSQLServer go to Settings->Server parameters and search for ""log_connections"". Set the value to ""On"".")]
+    [RuleInfo("AzPSQLLogConnections")]
     [CISAZ("4.3.3", "", Level.L1, "v2.0")]
     internal class AzPSQLLogConnections : BaseCheck
     {

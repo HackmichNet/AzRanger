@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AzRanger.Utilities;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,14 +19,20 @@ namespace AzRanger.Checks
         // Value between 0 and 10
         public int RiskScore { get; }
 
-        public RuleInfoAttribute(String shortDescription, string risk, int riskscore, string referencelink = null, string longDescription = null, string solution = null)
+        public RuleInfoAttribute(string identifier)
         {
-            this.ShortDescription = shortDescription;
-            this.Risk = risk;
-            this.RiskScore = riskscore;
-            this.ReferenceLink = referencelink;
-            this.LongDescription = LongDescription;
-            this.Solution = solution;
+            if (identifier == null || identifier.Length == 0)
+            {
+                throw new ArgumentNullException("The identifier for RuleInfoAttribute must not be null or empty");
+            }
+
+            var data = RuleInfoData.GetSectionOrThrow(identifier);
+            this.ShortDescription = data.GetStringOrThrow("short");
+            this.Risk = MarkdownRenderer.Render(data.GetStringOrThrow("risk"));
+            this.ReferenceLink = data.GetStringOrNull("link");
+            this.LongDescription = MarkdownRenderer.Render(data.GetStringOrNull("long"));
+            this.Solution = MarkdownRenderer.Render(data.GetStringOrNull("solution"));
+            this.RiskScore = data.GetIntOrThrow("score");
         }
     }
 }

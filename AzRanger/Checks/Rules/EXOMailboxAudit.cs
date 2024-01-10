@@ -6,7 +6,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOMailboxAudit", ScopeEnum.EXO)]
     [CISM365("5.3", "", Level.L1, "v2.0")]
-    [RuleInfo("Not all mailboxes have audit enabled", "Malicious behavior can go unnoticed.", 6, "https://docs.microsoft.com/en-us/microsoft-365/compliance/enable-mailbox-auditing?view=o365-worldwide", null, "To enable logging, see the reference link.")]
+    [RuleInfo("EXOMailboxAudit")]
     class EXOMailboxAudit : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

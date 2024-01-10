@@ -12,6 +12,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("MDMJailBreake", ScopeEnum.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
     [CISM365("7.4", "Ensure that users cannot connect from devices that are jail broken or rooted", Level.L1, "v1.4")]
+    // TODO
     class MDMJailBreake : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

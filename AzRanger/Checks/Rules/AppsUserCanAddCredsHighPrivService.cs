@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AppsUserCanAddCredsHighPrivService", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/~/AppAppsPreview")]
-    [RuleInfo("Low priv user can add credentials to service principals with high privileged roles", "This could lead privileges escalation within your tenant, please check 'Roles and administrators | Preview'.", 9, "https://posts.specterops.io/azure-privilege-escalation-via-azure-api-permissions-abuse-74aee1006f48", "Users with low privileges can add credentials to service principals with high privileges.", @"1. Check if the high privileges are required by the service principal </b> 2. Check if you can remove the rights from the user to add credentials.")]
+    [RuleInfo("AppsUserCanAddCredsHighPrivService")]
     class AppsUserCanAddCredsHighPrivService : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

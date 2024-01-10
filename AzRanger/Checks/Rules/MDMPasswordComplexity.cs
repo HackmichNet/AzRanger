@@ -10,6 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("MDMPasswordComplexity", ScopeEnum.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
     [CISM365("7.6", "Ensure that mobile devices require a complex password to prevent brute force attacks", Level.L1, "v1.4")]
+    // TODO
     class MDMPasswordComplexity : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

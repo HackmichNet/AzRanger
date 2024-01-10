@@ -5,7 +5,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOWhitelistBypass", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.exchange.microsoft.com/#/transportrules")]
     [CISM365("4.4", "", Level.L1, "v2.0")]
-    [RuleInfo("Your EXO has Transport Rules, that can bypass anti-spam and anti-malware scanning by whitelisting certain domains", "This expose your organization an additional risk.", 3, "https://docs.microsoft.com/en-us/Exchange/security-and-compliance/mail-flow-rules/mail-flow-rules", null, "Go to the Exchange Admin Center and check the rules.")]
+    [RuleInfo("EXOWhitelistBypass")]
     class EXOWhitelistBypass : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

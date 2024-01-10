@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzActLogAlertCreateOrUpdateSecuritySolution", ScopeEnum.Azure, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
     [CISAZ("5.2.5", "", Level.L1, "v2.0")]
-    [RuleInfo("No Activity Log Alert for 'Create or Update Security Solutions' ", @"Unwanted changes for in the Security Solution might stay unnoticed.", 0)]
+    [RuleInfo("AzActLogAlertCreateOrUpdateSecuritySolution")]
     internal class AzActLogAlertCreateOrUpdateSecuritySolution : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

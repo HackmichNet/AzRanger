@@ -10,6 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("MDMManagedMail", ScopeEnum.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesComplianceMenu/policies")]
     [CISM365("7.12", "Ensure mobile device management policies are required for email profiles", Level.L2, "v1.4")]
+    // TODO
     class MDMManagedMail : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

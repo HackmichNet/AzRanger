@@ -4,7 +4,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("CABlockLegacyAuth", ScopeEnum.AAD, MaturityLevel.Tentative, "https://entra.microsoft.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade/~/Overview/fromNav/Identity")]
     [CISM365("1.1.6", "", Level.L1, "v2.0")]
-    [RuleInfo("Legacy Authentication methods is not blocked by Conditional Access", "This can expose your tenant to password brute force or password spraying attacks.", 7, "Legacy authentication does not support techniques like MFA.")]
+    [RuleInfo("CABlockLegacyAuth")]
     class CABlockLegacyAuth : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

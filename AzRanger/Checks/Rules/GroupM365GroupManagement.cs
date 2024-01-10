@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("GroupM365GroupManagement", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/General/menuId/General")]
     [CISAZ("1.21", "", Level.L2, "v2.0")]
-    [RuleInfo("All member can create Microsoft 365 Groups in Azure portals, API or PowerShell", "This may result in unwanted groups configurations or group memberships.", 1, null, null, @"Go to the Portal URL and set ""Users can create Microsoft 365 groups in Azure portals, API or PowerShell"" to ""No"".")]
+    [RuleInfo("GroupM365GroupManagement")]
     internal class GroupM365GroupManagement : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

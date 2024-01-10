@@ -6,7 +6,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserMax4GlobalAdmins", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RolesAndAdministrators")]
     [CISM365("1.1.7", "", Level.L1, "v2.0")]
-    [RuleInfo("Your organization has more than four or less then two global admins", "Too fewer admins increases the risk, that you lose the control over your tenant. Too many admins increases the risk that your tenant is compromised.", 10, null, null, "Try to have only between two and four global admins. The most of the tasks can be performed using other roles.")]
+    [RuleInfo("UserMax4GlobalAdmins")]
     class UserMax4GlobalAdmins : BaseCheck
     {
         int MaxGA = 4;

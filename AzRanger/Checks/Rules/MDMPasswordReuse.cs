@@ -10,6 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("MDMPasswordReuse", ScopeEnum.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
     [CISM365("7.2", "Ensure that mobile device password reuse is prohibited", Level.L1, "v1.4")]
+    // TODO
     class MDMPasswordReuse : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcContainerPublicAccess", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
     [CISAZ("3.7", "", Level.L1, "v2.0")]
-    [RuleInfo(@"StorageAccount Container with 'Public Access Level'", "This can lead to data loss.", 1, null, null, "Ensure that only intended public container listed below.")]
+    [RuleInfo("AzStorAcContainerPublicAccess")]
     internal class AzStorAcContainerPublicAccess : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

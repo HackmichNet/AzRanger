@@ -9,7 +9,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("GroupAllowUserToCreateSecGroups", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/General/menuId/General")]
     [CISAZ("1.19", "", Level.L2, "v2.0")]
-    [RuleInfo("All users can create security groups using the Azure Portal, API or PowerShell", "This can result in a high number of groups over the time.", 2, null, null, @"Go to the Portal URL and set ""Users can create security groups in Azure portals, API or PowerShell"" to ""No"".")]
+    [RuleInfo("GroupAllowUserToCreateSecGroups")]
     internal class GroupAllowUserToCreateSecGroups : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

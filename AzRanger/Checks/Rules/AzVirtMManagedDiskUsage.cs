@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzVirtMManagedDiskUsage", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Compute%2FVirtualMachines", ServiceEnum.VirtualMachine)]
-    [RuleInfo("Virtual Machine does not use Managed Disk", "The Virtual Machine does not use a Managed Disk. Managed disks are encrypted by default and are more resilient against failure.", 0, null, null, "Check if a migration to Managed Disk is possible.")]
+    [RuleInfo("AzVirtMManagedDiskUsage")]
     [CISAZ("7.2", "", Level.L1, "v2.0")]
     internal class AzVirtMManagedDiskUsage : BaseCheck
     {

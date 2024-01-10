@@ -10,6 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("MDMSimplePasswords", ScopeEnum.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
     [CISM365("7.10", "Ensure that mobile devices require complex passwords (Simple Passwords = Blocked) ", Level.L1, "v1.4")]
+    // TODO
     class MDMSimplePasswords : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

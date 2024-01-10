@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOBasicAuth", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/ModernAuthentication")]
-    [RuleInfo("Basic Authentication is enabled for ExchangeOnline", "This expose your tenant to attacks like Password brute force or Password Spray.", 5, "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/disable-basic-authentication-in-exchange-online", "Basic authentication does not support secure authentication mechanism like MFA", @"Go to the reference link and disable Basic Authentication for Exchange. If Basic Authentication is deactivated in the GUI check the PowerShell Command ""AllowBasicAuthOutlookService"".")]
+    [RuleInfo("EXOBasicAuth")]
     class EXOBasicAuth : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

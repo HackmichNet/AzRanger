@@ -9,6 +9,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("TeamsExternalCommunication", ScopeEnum.Teams, MaturityLevel.Mature, "https://admin.teams.microsoft.com/company-wide-settings/external-communications")]
     [CISM365("3.3", "", Level.L2, "v2.0")]
+    // TODO
     class TeamsExternalCommunication : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

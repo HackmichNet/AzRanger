@@ -85,6 +85,9 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.4.2.13, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.1.4.2\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Markdig, Version=0.34.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Markdig.0.34.0\lib\net462\Markdig.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -285,6 +288,9 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Tomlyn, Version=0.17.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tomlyn.0.17.0\lib\netstandard2.0\Tomlyn.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzCollectors\AdminCenterCollector.cs" />
@@ -312,6 +318,7 @@
     <Compile Include="Checks\CISAZAttribute.cs" />
     <Compile Include="Checks\CISM365Attribute.cs" />
     <Compile Include="Checks\RuleInfoAttribute.cs" />
+    <Compile Include="Checks\RuleInfoData.cs" />
     <Compile Include="Checks\RuleMetaAttribute.cs" />
     <Compile Include="Checks\Rules\ADPasswordHashSyncEnabled.cs" />
     <Compile Include="Checks\Rules\ADPasswordProtection.cs" />
@@ -608,6 +615,7 @@
     <Compile Include="Utilities\CommandlineOptions.cs" />
     <Compile Include="Utilities\DirectoryRoleTemplateID.cs" />
     <Compile Include="Utilities\HttpFactoryWithProxy.cs" />
+    <Compile Include="Utilities\MarkdownRenderer.cs" />
     <Compile Include="Utilities\ODataTypes.cs" />
     <Compile Include="Utilities\RetryHandler.cs" />
   </ItemGroup>
@@ -617,6 +625,7 @@
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Resources\ReportTemplate.zip" />
+    <None Include="Resources\RuleInformation.toml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">

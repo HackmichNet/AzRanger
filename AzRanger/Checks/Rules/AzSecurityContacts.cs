@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzSecurityContacts", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/?l=en.en-us#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Overview")]
     [CISAZ("2.13", "Ensure 'Additional email addresses' is Configured with a Security Contact Email", Level.L1, "v1.4")]
-    [RuleInfo("Subscribion without security contact", "In case of an incident, this could increase the time span to identify the legitimate owner or responsible person for a subscription.", 2)]
+    [RuleInfo("AzSecurityContacts")]
     internal class AzSecurityContacts : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

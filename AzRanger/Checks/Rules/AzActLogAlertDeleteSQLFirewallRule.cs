@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzActLogAlertDeleteSQLFirewallRule", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
     [CISAZ("5.2.8", "", Level.L1, "v2.0")]
-    [RuleInfo("No Activity Log Alert for 'Delete SQL Server Firewall Rule'", @"Unwanted changes for ""Delete SQL Server Firewall Rule"" can go unnoticed.", 0)]
+    [RuleInfo("AzActLogAlertDeleteSQLFirewallRule")]
     internal class AzActLogAlertDeleteSQLFirewallRule : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
