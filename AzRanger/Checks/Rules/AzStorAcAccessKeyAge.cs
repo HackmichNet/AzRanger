@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcAccessKeyAge", Scope.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", Service.StorageAccount)]
+    [RuleMeta("AzStorAcAccessKeyAge", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
     [CISAZ("3.2", "Ensure That Storage Account Access Keys are Periodically Regenerated", Level.L1, "v1.4")]
     [RuleInfo("Old access key for storage account", "If an attacker gets the access key he can access the sotrage account as long as it is vaild.", 1, null, null, "Change the access key for your Sotrage Accounts regularly")]
     internal class AzStorAcAccessKeyAge : BaseCheck

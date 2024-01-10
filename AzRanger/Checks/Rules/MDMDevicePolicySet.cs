@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("MDMDevicePolicySet", Scope.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
+    [RuleMeta("MDMDevicePolicySet", ScopeEnum.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
     [CISM365("7.1", "Ensure mobile device management polices are set to require advanced security configurations to protect from basic internet attacks", Level.L1, "v1.4")]
     class MDMDevicePolicySet : BaseCheck
     {

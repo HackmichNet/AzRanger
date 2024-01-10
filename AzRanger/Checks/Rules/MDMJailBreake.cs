@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("MDMJailBreake", Scope.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
+    [RuleMeta("MDMJailBreake", ScopeEnum.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
     [CISM365("7.4", "Ensure that users cannot connect from devices that are jail broken or rooted", Level.L1, "v1.4")]
     class MDMJailBreake : BaseCheck
     {
