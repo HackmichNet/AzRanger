@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzActNSGRDPLimitiation", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", ServiceEnum.NetworksSecurityGroup)]
     [CISAZ("6.1", "", Level.L1, "v2.0")]
-    [RuleInfo("AzActNSGRDPLimitiation")]
+    
     internal class AzActNSGRDPLimitiation : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

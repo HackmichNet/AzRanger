@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzSecurityContactsNotifiedForHigh", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/?l=en.en-us#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Overview")]
     [CISAZ("2.14", "Ensure That 'Notify about alerts with the following severity' is Set to 'High'", Level.L1, "v1.4")]
-    [RuleInfo("AzSecurityContactsNotifiedForHigh")]
+    
     internal class AzSecurityContactsNotifiedForHigh : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

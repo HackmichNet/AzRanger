@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOMailTipps", ScopeEnum.EXO, MaturityLevel.Mature)]
     [CISM365("4.11", "", Level.L2, "v2.0")]
-    [RuleInfo("EXOMailTipps")]
+    
     class EXOMailTipps : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

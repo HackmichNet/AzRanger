@@ -4,7 +4,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("OfficeAddIns", ScopeEnum.AAD, MaturityLevel.Mature, "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/Store")]
     [CISM365("2.9", "", Level.L1, "v2.0")]
-    [RuleInfo("OfficeAddIns")]
+    
     class OfficeAddIns : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

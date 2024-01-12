@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzMgmtGroupCreation", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_ManagementGroups/ManagementGroupBrowseBlade/MGBrowse_settingsItem")]
-    [RuleInfo("AzMgmtGroupCreation")]
+    
     internal class AzMgmtGroupCreation : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

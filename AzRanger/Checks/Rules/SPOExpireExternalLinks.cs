@@ -4,7 +4,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("SPOExpireExternalLinks", ScopeEnum.SPO, MaturityLevel.Mature, @"https://<YOURDOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/sharing")]
     [CISM365("6.3", "", Level.L1, "v2.0")]
-    [RuleInfo("SPOExpireExternalLinks")]
+    
     class SPOExpireExternalLinks : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

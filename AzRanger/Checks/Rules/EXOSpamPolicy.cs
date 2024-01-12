@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOSpamPolicy", ScopeEnum.EXO, MaturityLevel.Mature, "https://security.microsoft.com/antispam")]
     [CISM365("4.2", "", Level.L1, "v2.0")]
-    [RuleInfo("EXOSpamPolicy")]
+    
     class EXOSpamPolicy : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

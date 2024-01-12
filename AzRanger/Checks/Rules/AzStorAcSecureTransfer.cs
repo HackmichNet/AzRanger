@@ -5,7 +5,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcSecureTransfer", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
     [CISAZ("3.1", "", Level.L1, "v2.0")]
-    [RuleInfo("AzStorAcSecureTransfer")]
+    
     internal class AzStorAcSecureTransfer : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -6,7 +6,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserMax4GlobalAdmins", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RolesAndAdministrators")]
     [CISM365("1.1.7", "", Level.L1, "v2.0")]
-    [RuleInfo("UserMax4GlobalAdmins")]
+    
     class UserMax4GlobalAdmins : BaseCheck
     {
         int MaxGA = 4;

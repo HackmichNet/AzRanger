@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcKeyRotationReminder", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
     [CISAZ("3.3", "", Level.L1, "v2.0")]
-    [RuleInfo("AzStorAcKeyRotationReminder")]
+    
     internal class AzStorAcKeyRotationReminder : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

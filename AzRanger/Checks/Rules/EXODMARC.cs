@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXODMARC", ScopeEnum.EXO, MaturityLevel.Mature)]
     [CISM365("4.9", "", Level.L1, "v2.0")]
-    [RuleInfo("EXODMARC")]
+    
     class EXODMARC : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

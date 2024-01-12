@@ -4,7 +4,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOModernauthentication", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/ModernAuthentication")]
     [CISM365("1.2", "", Level.L1, "v2.0")]
-    [RuleInfo("EXOModernauthentication")]
+    
     class EXOModernauthentication : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

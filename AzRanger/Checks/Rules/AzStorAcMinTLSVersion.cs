@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcMinTLSVersion", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
     [CISAZ("3.15", "", Level.L1, "v2.0")]
-    [RuleInfo("AzStorAcMinTLSVersion")]
+    
     internal class AzStorAcMinTLSVersion : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

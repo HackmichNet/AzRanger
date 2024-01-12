@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzActNSGSSHLimitiation", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", ServiceEnum.NetworksSecurityGroup)]
     [CISAZ("6.2", "", Level.L1, "v2.0")]
-    [RuleInfo("AzActNSGSSHLimitiation")]
+    
     internal class AzActNSGSSHLimitiation : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

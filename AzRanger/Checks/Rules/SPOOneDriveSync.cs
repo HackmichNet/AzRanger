@@ -9,7 +9,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("SPOOneDriveSync", ScopeEnum.SPO, MaturityLevel.Mature, "https://<YOUR-DOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/settings/ODBSync")]
     [CISM365("6.2", "", Level.L2, "v2.0")]
-    [RuleInfo("SPOOneDriveSync")]
+    
     class SPOOneDriveSync : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

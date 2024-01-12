@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AppsDangerousPerms", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM")]
-    [RuleInfo("AppsDangerousPerms")]
     class AppsDangerousPerms : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

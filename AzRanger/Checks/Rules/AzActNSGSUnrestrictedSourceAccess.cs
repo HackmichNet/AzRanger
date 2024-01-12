@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzActNSGSUnrestrictedSourceAccess", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", ServiceEnum.NetworksSecurityGroup)]
-    [RuleInfo("AzActNSGSUnrestrictedSourceAccess")]
+    
     internal class AzActNSGSUnrestrictedSourceAccess : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

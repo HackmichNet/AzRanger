@@ -5,7 +5,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOClientForwardingIsBlocked", ScopeEnum.EXO, MaturityLevel.Tentative, "https://admin.exchange.microsoft.com/#/transportrules")]
     [CISM365("4.3", "", Level.L1, "v1.5-3")]
-    [RuleInfo("EXOClientForwardingIsBlocked")]
+    
     class EXOClientForwardingIsBlocked : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

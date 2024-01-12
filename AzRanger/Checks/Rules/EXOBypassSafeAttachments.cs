@@ -5,7 +5,7 @@ namespace AzRanger.Checks.Rules
 {
     // Credits to https://github.com/soteria-security/365Inspect/blob/main/Inspectors/BypassingSafeAttachments.ps1
     [RuleMeta("EXOBypassSafeAttachments", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.exchange.microsoft.com/#/transportrules")]
-    [RuleInfo("EXOBypassSafeAttachments")]
+    
     class EXOBypassSafeAttachments : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

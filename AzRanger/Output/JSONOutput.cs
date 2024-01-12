@@ -1,8 +1,10 @@
 ﻿using AzRanger.Checks;
 using AzRanger.Models;
 using AzRanger.Models.Generic;
+using AzRanger.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -37,19 +39,18 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.Finding)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
                 CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
                 CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
-                if (ruleInfo != null)
+                if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
                     item.ShortDescription = ruleInfo.ShortDescription;
-                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.Risk = ruleInfo.Risk;
-                    item.RiskScore = ruleInfo.RiskScore;
-                    item.Solution = ruleInfo.Solution;
+                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.LongDescription = ruleInfo.LongDescription;
+                    item.Solution = ruleInfo.Solution;
+                    item.RiskScore = ruleInfo.RiskScore;
                 }
 
                 if (ruleMeta != null)
@@ -97,19 +98,18 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.NoFinding)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
                 CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
                 CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
-                if (ruleInfo != null)
+                if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
                     item.ShortDescription = ruleInfo.ShortDescription;
-                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.Risk = ruleInfo.Risk;
-                    item.RiskScore = ruleInfo.RiskScore;
-                    item.Solution = ruleInfo.Solution;
+                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.LongDescription = ruleInfo.LongDescription;
+                    item.Solution = ruleInfo.Solution;
+                    item.RiskScore = ruleInfo.RiskScore;
                 }
 
                 if (ruleMeta != null)
@@ -142,19 +142,18 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.Error)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
                 CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
                 CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
-                if (ruleInfo != null)
+                if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
                     item.ShortDescription = ruleInfo.ShortDescription;
-                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.Risk = ruleInfo.Risk;
-                    item.RiskScore = ruleInfo.RiskScore;
-                    item.Solution = ruleInfo.Solution;
+                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.LongDescription = ruleInfo.LongDescription;
+                    item.Solution = ruleInfo.Solution;
+                    item.RiskScore = ruleInfo.RiskScore;
                 }
 
                 if (ruleMeta != null)
@@ -187,19 +186,18 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.NotApplicable)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
                 CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
                 CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
-                if (ruleInfo != null)
+                if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
                     item.ShortDescription = ruleInfo.ShortDescription;
-                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.Risk = ruleInfo.Risk;
-                    item.RiskScore = ruleInfo.RiskScore;
-                    item.Solution = ruleInfo.Solution;
+                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.LongDescription = ruleInfo.LongDescription;
+                    item.Solution = ruleInfo.Solution;
+                    item.RiskScore = ruleInfo.RiskScore;
                 }
 
                 if (ruleMeta != null)

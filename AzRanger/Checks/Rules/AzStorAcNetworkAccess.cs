@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcNetworkAccess", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
     [CISAZ("3.8", "", Level.L2, "v2.0")]
-    [RuleInfo("AzStorAcNetworkAccess")]
+    
     internal class AzStorAcNetworkAccess : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

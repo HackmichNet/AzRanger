@@ -4,7 +4,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserPasswordResetRequires2Methods", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/PasswordResetMenuBlade/~/AuthenticationMethods")]
     [CISAZ( "1.6", "", Level.L1, "v2.0")]
-    [RuleInfo("UserPasswordResetRequires2Methods")]
+    
     class UserPasswordResetRequires2Methods : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

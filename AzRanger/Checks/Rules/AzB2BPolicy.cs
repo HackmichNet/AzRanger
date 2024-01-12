@@ -9,7 +9,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzB2BPolicy", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AllowlistPolicyBlade")]
     [CISM365("1.1.17", "", Level.L2, "v2.0")]
-    [RuleInfo("AzB2BPolicy")]
+    
     class AzB2BPolicy : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

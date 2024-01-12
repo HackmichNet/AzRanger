@@ -9,7 +9,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOOwaExternalStorageProvider", ScopeEnum.EXO, MaturityLevel.Mature)]
     [CISM365("6.5", "", Level.L2, "v2.0")]
-    [RuleInfo("EXOOwaExternalStorageProvider")]
+    
     class EXOOwaExternalStorageProvider : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

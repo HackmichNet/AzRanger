@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcAllowTrustedServices", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
     [CISAZ("3.9", "", Level.L2, "v2.0")]
-    [RuleInfo("AzStorAcAllowTrustedServices")]
+    
 
     internal class AzStorAcAllowTrustedServices : BaseCheck
     {

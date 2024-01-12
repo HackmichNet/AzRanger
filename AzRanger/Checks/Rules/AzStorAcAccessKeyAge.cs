@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcAccessKeyAge", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
     [CISAZ("3.2", "Ensure That Storage Account Access Keys are Periodically Regenerated", Level.L1, "v1.4")]
-    [RuleInfo("AzStorAcAccessKeyAge")]
+    
     internal class AzStorAcAccessKeyAge : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

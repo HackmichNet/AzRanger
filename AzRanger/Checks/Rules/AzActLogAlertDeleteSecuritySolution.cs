@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzActLogAlertDeleteSecuritySolution", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
     [CISAZ("5.2.6", "", Level.L1, "v2.0")]
-    [RuleInfo("AzActLogAlertDeleteSecuritySolution")]
+    
     internal class AzActLogAlertDeleteSecuritySolution : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

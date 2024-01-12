@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzSecurityContactsNotifyOwner", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/?l=en.en-us#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Overview")]
     [CISAZ("2.15", "Ensure That 'All users with the following roles' is set to 'Owner'", Level.L1, "v1.4")]
-    [RuleInfo("AzSecurityContactsNotifyOwner")]
+    
     internal class AzSecurityContactsNotifyOwner : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserRequireMFADevJoin", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_AAD_Devices/DevicesMenuBlade/~/DeviceSettings/menuId~/null")]
     [CISAZ("1.22", "", Level.L1, "v2.0")]
-    [RuleInfo("UserRequireMFADevJoin")]
+    
     internal class UserRequireMFADevJoin : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

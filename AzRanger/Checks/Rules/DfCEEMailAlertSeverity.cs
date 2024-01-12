@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("DfCEAdditionalMailAlertSeverity", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings")]
     [CISAZ("2.1.20", "", Level.L1, "v2.0")]
-    [RuleInfo("DfCEAdditionalMailAlertSeverity")]
+    
     class DfCEEMailAlertSeverity : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

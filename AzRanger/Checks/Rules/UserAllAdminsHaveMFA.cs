@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
     [RuleMeta("UserAllAdminsHaveMFA", ScopeEnum.AAD, MaturityLevel.Mature, null)]
     [CISM365("1.1.2", "", Level.L1, "v2.0")]
     [CISAZ("1.1.2", "", Level.L1, "v2.0")]
-    [RuleInfo("UserAllAdminsHaveMFA")]
+    
     class UserAllAdminsHaveMFA : BaseCheck
     {
         private readonly String[] InterestingRoles = new String[] {

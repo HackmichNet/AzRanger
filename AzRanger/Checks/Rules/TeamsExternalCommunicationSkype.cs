@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("TeamsExternalCommunicationSkype", ScopeEnum.Teams, MaturityLevel.Mature, "https://admin.teams.microsoft.com/company-wide-settings/external-communications")]
-    [RuleInfo("TeamsExternalCommunicationSkype")]
+    
     class TeamsExternalCommunicationSkype : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

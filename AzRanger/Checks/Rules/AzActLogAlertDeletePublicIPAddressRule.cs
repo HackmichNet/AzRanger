@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzActLogAlertDeletePublicIPAddressRule", ScopeEnum.Azure, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
     [CISAZ("5.2.10", "", Level.L1, "v2.0")]
-    [RuleInfo("AzActLogAlertDeletePublicIPAddressRule")]
+    
     internal class AzActLogAlertDeletePublicIPAddressRule : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -5,7 +5,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXODKIM", ScopeEnum.EXO, MaturityLevel.Mature)]
     [CISM365("4.7", "", Level.L1, "v2.0")]
-    [RuleInfo("EXODKIM")]
+    
     class EXODKIM : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

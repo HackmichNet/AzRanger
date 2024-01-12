@@ -1,13 +1,7 @@
 ﻿using AzRanger.Checks;
-using AzRanger.Checks.Rules;
 using AzRanger.Models;
-using AzRanger.Models.MSGraph;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Output
 {
@@ -28,21 +22,19 @@ namespace AzRanger.Output
             {
                 
                 RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(result.GetType(), typeof(RuleMetaAttribute));
-                RuleInfoAttribute ruleScore = (RuleInfoAttribute)Attribute.GetCustomAttribute(result.GetType(), typeof(RuleInfoAttribute));
 
-                if (ruleScore == null)
-                {
+                if (!RuleInfo.TryGet(result.GetType().Name, out RuleInfo info)) {
                     continue;
                 }
-                               
-                Console.WriteLine("     [-] {0} - {1} ", ruleScore.ShortDescription, ruleScore.Risk);
+                
+                Console.WriteLine("     [-] {0} - {1} ", info.ShortDescription, info.Risk);
                 if(ruleInfo.PortalUrl != null)
                 {
                     Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
                 }
-                if(ruleScore.ReferenceLink != null)
+                if(info.ReferenceLink != null)
                 {
-                    Console.WriteLine("         You can find more information here: {0}", ruleScore.ReferenceLink);
+                    Console.WriteLine("         You can find more information here: {0}", info.ReferenceLink);
                 }
                 
 
@@ -84,13 +76,8 @@ namespace AzRanger.Output
             List<BaseCheck> tentantiveChecks = new List<BaseCheck>();
             foreach (BaseCheck check in auditor.NoFinding)
             {
-                RuleInfoAttribute ruleScore = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
-
-                if (ruleScore == null)
-                {
-                    continue;
-                }
                 RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));  
+
                 if (ruleInfo == null)
                 {
                     continue;
@@ -108,9 +95,12 @@ namespace AzRanger.Output
                 {
 
                     RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                    RuleInfoAttribute ruleScore = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
-                    
-                    Console.WriteLine("     [-] {0}", ruleScore.ShortDescription);
+                    if (!RuleInfo.TryGet(check.GetType().Name, out RuleInfo info))
+                    {
+                        continue;
+                    }
+
+                    Console.WriteLine("     [-] {0}", info.ShortDescription);
                     if (ruleInfo.PortalUrl != null)
                     {
                         Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
@@ -125,9 +115,12 @@ namespace AzRanger.Output
                 {
                     Console.WriteLine("[+] The following checks were not applicable to your tenant:");
                     RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                    RuleInfoAttribute ruleScore = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
+                    if (!RuleInfo.TryGet(check.GetType().Name, out RuleInfo info))
+                    {
+                        continue;
+                    }
 
-                    Console.WriteLine("     [+] {0}", ruleScore.ShortDescription);
+                    Console.WriteLine("     [+] {0}", info.ShortDescription);
                     if(check.GetReason() != null && check.GetReason().Length > 0)
                     {
                         Console.WriteLine("         Reason: {0}", check.GetReason());

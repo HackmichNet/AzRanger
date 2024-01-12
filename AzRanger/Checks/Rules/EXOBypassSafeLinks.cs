@@ -5,7 +5,7 @@ namespace AzRanger.Checks.Rules
 {
     // Credits to https://github.com/soteria-security/365Inspect/blob/main/Inspectors/BypassingSafeLinks.ps1
     [RuleMeta("EXOBypassSafeLinks", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.exchange.microsoft.com/#/transportrules")]
-    [RuleInfo("EXOBypassSafeLinks")]
+    
     class EXOBypassSafeLinks : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzSQLAuditingEnabled", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", ServiceEnum.SQLServer)]
     [CISAZ("4.1.1", "", Level.L1, "v2.0")]
-    [RuleInfo("AzSQLAuditingEnabled")]
+    
     internal class AzSQLAuditingEnabled : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

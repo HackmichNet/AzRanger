@@ -5,7 +5,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcSoftDelete", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
     [CISAZ("3.11", "", Level.L1, "v2.0")]
-    [RuleInfo("AzStorAcSoftDelete")]
+    
     internal class AzStorAcSoftDelete : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

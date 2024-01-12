@@ -9,7 +9,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("GroupAllowsSelfService", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/General/menuId/General")]
     [CISAZ("1.20", "", Level.L2, "v2.0")]
-    [RuleInfo("GroupAllowsSelfService")]
+    
     internal class GroupAllowsSelfService : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

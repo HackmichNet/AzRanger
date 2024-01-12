@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("SPOModernAuthDisabled", ScopeEnum.SPO, MaturityLevel.Mature)]
-    [RuleInfo("SPOModernAuthDisabled")]
+    
     class SPOModernAuthDisabled : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

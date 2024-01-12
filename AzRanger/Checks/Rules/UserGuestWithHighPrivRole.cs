@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserGuestWithHighPrivRole", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RolesAndAdministrators")]
-    [RuleInfo("UserGuestWithHighPrivRole")]
+    
     class UserGuestWithHighPrivRole : BaseCheck
     {
         bool passed = true;
