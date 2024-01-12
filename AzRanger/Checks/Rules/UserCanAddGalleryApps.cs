@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserCanAddGalleryApps", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/FeatureSettingsBlade")]
-    [CISAZ("1.13", "", Level.L2, "v2.0")]
+    [CISAZ("1.13", "", CISLevel.L2, "v2.0")]
     
     internal class UserCanAddGalleryApps : BaseCheck
     {

@@ -40,7 +40,6 @@ namespace AzRanger.Output
             {
                 ResultJSONItem item = new ResultJSONItem();
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
                 CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
@@ -62,11 +61,11 @@ namespace AzRanger.Output
                     item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
                 }
 
-                if (cisM365Rule != null)
+                if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
                 {
-                    item.Version = cisM365Rule.Version;
-                    item.Section = cisM365Rule.Section;
-                    item.Level = cisM365Rule.Level.ToString();
+                    item.Version = info.Version;
+                    item.Section = info.Section;
+                    item.Level = info.Level.ToString();
                     item.CISDocument = "CIS M365";
                 }
 
@@ -99,7 +98,6 @@ namespace AzRanger.Output
             {
                 ResultJSONItem item = new ResultJSONItem();
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
                 CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
@@ -121,11 +119,11 @@ namespace AzRanger.Output
                     item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
                 }
 
-                if (cisM365Rule != null)
+                if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
                 {
-                    item.Version = cisM365Rule.Version;
-                    item.Section = cisM365Rule.Section;
-                    item.Level = cisM365Rule.Level.ToString();
+                    item.Version = info.Version;
+                    item.Section = info.Section;
+                    item.Level = info.Level.ToString();
                     item.CISDocument = "CIS M365";
                 }
 
@@ -143,7 +141,6 @@ namespace AzRanger.Output
             {
                 ResultJSONItem item = new ResultJSONItem();
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
                 CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
@@ -165,11 +162,11 @@ namespace AzRanger.Output
                     item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
                 }
 
-                if (cisM365Rule != null)
+                if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
                 {
-                    item.Version = cisM365Rule.Version;
-                    item.Section = cisM365Rule.Section;
-                    item.Level = cisM365Rule.Level.ToString();
+                    item.Version = info.Version;
+                    item.Section = info.Section;
+                    item.Level = info.Level.ToString();
                     item.CISDocument = "CIS M365";
                 }
 
@@ -187,7 +184,6 @@ namespace AzRanger.Output
             {
                 ResultJSONItem item = new ResultJSONItem();
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
                 CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
@@ -209,11 +205,11 @@ namespace AzRanger.Output
                     item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
                 }
 
-                if (cisM365Rule != null)
+                if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
                 {
-                    item.Version = cisM365Rule.Version;
-                    item.Section = cisM365Rule.Section;
-                    item.Level = cisM365Rule.Level.ToString();
+                    item.Version = info.Version;
+                    item.Section = info.Section;
+                    item.Level = info.Level.ToString();
                     item.CISDocument = "CIS M365";
                 }
 

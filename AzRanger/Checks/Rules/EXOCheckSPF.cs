@@ -4,8 +4,6 @@ using AzRanger.Models.ExchangeOnline;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOCheckSPF", ScopeEnum.EXO, MaturityLevel.Mature)]
-    [CISM365("4.8", "", Level.L1, "v2.0")]
-    
     class EXOCheckSPF : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

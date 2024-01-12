@@ -9,9 +9,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserConsent", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/UserSettings")]
-    [CISM365("2.7", "", Level.L2, "v2.0")]
-    [CISAZ("1.11", "", Level.L2, "v2.0")]
-    
+    [CISAZ("1.11", "", CISLevel.L2, "v2.0")]
     class UserConsent : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

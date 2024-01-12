@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzSQLServerAzADAdmin", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", ServiceEnum.SQLServer)]
-    [CISAZ("4.1.4", "", Level.L1, "v2.0")]
+    [CISAZ("4.1.4", "", CISLevel.L1, "v2.0")]
     
     internal class AzSQLServerAzADAdmin : BaseCheck
     {

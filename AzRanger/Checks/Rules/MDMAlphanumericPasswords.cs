@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("MDMAlphanumericPasswords", ScopeEnum.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
-    [CISM365("7.9", "Ensure that mobile devices require complex passwords (Type = Alphanumeric)", Level.L1, "v1.4")]
-    // TODO
     class MDMAlphanumericPasswords : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

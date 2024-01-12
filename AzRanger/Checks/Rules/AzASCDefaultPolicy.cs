@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzASCDefaultPolicy", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/?l=en.en-us#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Overview")]
-    [CISAZ("2.1.14", null, Level.L1, "v2.0")]
+    [CISAZ("2.1.14", null, CISLevel.L1, "v2.0")]
     
     internal class AzASCDefaultPolicy : BaseCheck
     {

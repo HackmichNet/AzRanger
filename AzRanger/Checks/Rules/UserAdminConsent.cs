@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserAdminConsent", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/AdminConsentSettings")]
-    [CISM365("2.1", "", Level.L1, "v2.0")]
-    
+    [RuleMeta("UserAdminConsent", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/AdminConsentSettings")]    
     class UserAdminConsent : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserLinkedInConnection", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings")]
-    [CISM365("1.1.18", "", Level.L2, "v2.0")]
-    
+    [RuleMeta("UserLinkedInConnection", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings")]    
     class UserLinkedInConnection : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

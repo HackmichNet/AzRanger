@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOSpamPolicy", ScopeEnum.EXO, MaturityLevel.Mature, "https://security.microsoft.com/antispam")]
-    [CISM365("4.2", "", Level.L1, "v2.0")]
-    
+    [RuleMeta("EXOSpamPolicy", ScopeEnum.EXO, MaturityLevel.Mature, "https://security.microsoft.com/antispam")]    
     class EXOSpamPolicy : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -1,0 +1,371 @@
+[ADPasswordHashSyncEnabled]
+section = "1.1.12"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[ADPasswordProtection]
+section = "1.1.10"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzAppRegistration]
+section = "2.2"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[AzB2BPolicy]
+section = "1.1.17"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[AzPasswordPolicy]
+section = "1.4"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzSecurityDefaultsO365]
+section = "1.1.1"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[CABlockLegacyAuth]
+section = "1.1.6"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[EXOAdminAuditLogConfig]
+section = "5.2"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[EXOAutomaticForwarding]
+section = "4.3"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[EXOCheckSPF]
+section = "4.8"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[EXOCheckTransportRules]
+section = "4.3"
+title = "<EMPTY>"
+level = "L1"
+version = "1.5-1"
+
+[EXOClientForwardingIsBlocked]
+section = "4.3"
+title = "<EMPTY>"
+level = "L1"
+version = "1.5-3"
+
+[EXOCommonAttachmentFilter]
+section = "4.1"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[EXODKIM]
+section = "4.7"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[EXODMARC]
+section = "4.9"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[EXOMailboxAudit]
+section = "5.3"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[EXOMailTipps]
+section = "4.11"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[EXOModernauthentication]
+section = "1.2"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[EXONotifcationUsersSendingMalware]
+section = "4.10"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[EXOOutlookAddins]
+section = "2.8"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[EXOOwaExternalStorageProvider]
+section = "6.5"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[EXOSpamPolicy]
+section = "4.2"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[EXOWhitelistBypass]
+section = "4.4"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[GroupPublic]
+section = "1.1.16"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[M365WebStorageProvider]
+section = "6.4"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[MDMAlphanumericPasswords]
+section = "7.9"
+title = "Ensure that mobile devices require complex passwords (Type = Alphanumeric)"
+level = "L1"
+version = "1.4"
+
+[MDMDevicePolicySet]
+section = "7.1"
+title = "Ensure mobile device management polices are set to require advanced security configurations to protect from basic internet attacks"
+level = "L1"
+version = "1.4"
+
+[MDMDeviceWipe]
+section = "7.5"
+title = "Ensure mobile devices are set to wipe on multiple sign-in failures to prevent brute force compromise"
+level = "L2"
+version = "1.4"
+
+[MDMJailBreake]
+section = "7.4"
+title = "Ensure that users cannot connect from devices that are jail broken or rooted"
+level = "L1"
+version = "1.4"
+
+[MDMLockScreen]
+section = "7.7"
+title = "Ensure that settings are enable to lock devices after a period of inactivity to prevent unauthorized access"
+level = "L1"
+version = "1.4"
+
+[MDMManagedMail]
+section = "7.12"
+title = "Ensure mobile device management policies are required for email profiles"
+level = "L2"
+version = "1.4"
+
+[MDMPasswordComplexity]
+section = "7.6"
+title = "Ensure that mobile devices require a complex password to prevent brute force attacks"
+level = "L1"
+version = "1.4"
+
+[MDMPasswordNeverExpired]
+section = "7.3"
+title = "Ensure that mobile devices are set to never expire passwords"
+level = "L1"
+version = "1.4"
+
+[MDMPasswordReuse]
+section = "7.2"
+title = "Ensure that mobile device password reuse is prohibited"
+level = "L1"
+version = "1.4"
+
+[MDMSimplePasswords]
+section = "7.10"
+title = "Ensure that mobile devices require complex passwords (Simple Passwords = Blocked)"
+level = "L1"
+version = "1.4"
+
+[MDMStorageEncryption]
+section = "7.8"
+title = "Ensure that mobile device encryption is enabled to prevent unauthorized access to mobile data"
+level = "L1"
+version = "1.4"
+
+[OfficeAddIns]
+section = "2.9"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[OfficeCalenderSharing]
+section = "2.3"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[OfficeDLPLabels]
+section = "3.2"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[OfficeDLPPolicies]
+section = "3.4"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[OfficeFormsPhishingProtection]
+section = "2.10"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[OfficeSwaySettings]
+section = "2.11"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[SPOEntraB2BEnabled]
+section = "2.12"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[SPOExpireExternalLinks]
+section = "6.3"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[SPOGuestSharing]
+section = "3.6"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[SPOLegacyAuth]
+section = "1.3"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[SPOOneDriveSync]
+section = "6.2"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[SPOSharing]
+section = "6.1"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[TeamsExternalCommunication]
+section = "3.3"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[TeamsExternalSharingProvider]
+section = "3.7"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[UserAdminConsent]
+section = "2.1"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserAllAdminsHaveMFA]
+section = "1.1.2"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserAllowCreationOfAzureTenants]
+section = "1.1.22"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserAllUserHaveMFA]
+section = "1.1.4"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserConsent]
+section = "2.7"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[UserLinkedInConnection]
+section = "1.1.18"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[UserMax4GlobalAdmins]
+section = "1.1.7"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserMFAFatigueProtection]
+section = "1.1.5"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserPasswordBadPasswordList]
+section = "1.1.10"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserPasswordSelfService]
+section = "1.1.8"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserRemainSignIn]
+section = "1.1.19"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[UserRestrictAccessToAdminPortal]
+section = "1.1.20"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"

@@ -61,6 +61,19 @@ namespace AzRanger.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [ADPasswordHashSyncEnabled]
+        ///risk = &quot;If password hash sync is not enabled, there is a risk that the leak of user credentials remains unnoticed.&quot;
+        ///short = &quot;Password hash sync is not enabled&quot;
+        ///solution = &quot;You have to enable Password hash sync on the server where you have installed you Azure AD Connect tool. During the setup under *Optional Features* **Password hash synchronization** can be enabled.&quot;
+        ///.
+        /// </summary>
+        internal static string CISM365InfoData {
+            get {
+                return ResourceManager.GetString("CISM365InfoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] ReportTemplate {
@@ -72,10 +85,15 @@ namespace AzRanger.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to [ADPasswordHashSyncEnabled]
+        ///score = 3
         ///risk = &quot;If password hash sync is not enabled, there is a risk that the leak of user credentials remains unnoticed.&quot;
         ///short = &quot;Password hash sync is not enabled&quot;
-        ///solution = &quot;You have to enable Password hash sync on the server where you have installed you Azure AD Connect tool. During the setup under *Optional Features* **Password hash synchronization** can be enabled.&quot;
-        ///.
+        ///solution = &quot;You have to enable Password hash sync on the server where you have installed you Azure AD Connect tool. During the setup under *Optional Features* *Password hash synchronization* can be enabled.&quot;
+        ///
+        ///[ADPasswordProtection]
+        ///score = 3
+        ///short = &quot;Entra ID Password Protection is not enabled&quot;
+        ///risk = &quot;E [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string RuleInfoData {
             get {

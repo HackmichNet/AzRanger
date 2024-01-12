@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzSQLServerInboundTraffic", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", ServiceEnum.SQLServer)]
-    [CISAZ("4.1.2", "", Level.L1, "v2.0")]
+    [CISAZ("4.1.2", "", CISLevel.L1, "v2.0")]
     
     internal class AzSQLServerInboundTraffic : BaseCheck
     {

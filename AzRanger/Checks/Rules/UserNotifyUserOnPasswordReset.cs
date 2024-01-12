@@ -3,7 +3,7 @@
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserNotifyUserOnPasswordReset", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/PasswordResetMenuBlade/~/Notifications")]
-    [CISAZ("1.9", "", Level.L1, "v2.0")]
+    [CISAZ("1.9", "", CISLevel.L1, "v2.0")]
     
     class UserNotifyUserOnPasswordReset : BaseCheck
     {

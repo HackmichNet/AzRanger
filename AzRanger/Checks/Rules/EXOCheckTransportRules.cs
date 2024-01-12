@@ -7,7 +7,6 @@ using System.Collections.Generic;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOCheckTransportRules", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.exchange.microsoft.com/#/transportrules")]
-    [CISM365("4.3", "", Level.L1, "v1.5-1")]
     
     class EXOCheckTransportRules : BaseCheck
     {

@@ -3,8 +3,6 @@
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOAdminAuditLogConfig", ScopeEnum.EXO, MaturityLevel.Mature, "https://compliance.microsoft.com/auditlogsearch")]
-    [CISM365("5.2", "", Level.L1, "v2.0")]
-    
     class EXOAdminAuditLogConfig : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

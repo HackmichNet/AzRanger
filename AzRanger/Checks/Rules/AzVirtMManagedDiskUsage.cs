@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzVirtMManagedDiskUsage", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Compute%2FVirtualMachines", ServiceEnum.VirtualMachine)]
     
-    [CISAZ("7.2", "", Level.L1, "v2.0")]
+    [CISAZ("7.2", "", CISLevel.L1, "v2.0")]
     internal class AzVirtMManagedDiskUsage : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

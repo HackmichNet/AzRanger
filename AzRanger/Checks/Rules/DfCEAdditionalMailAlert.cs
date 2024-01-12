@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("DfCEAdditionalMailAlert", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings")]
-    [CISAZ("2.1.19", "", Level.L1, "v2.0")]
+    [CISAZ("2.1.19", "", CISLevel.L1, "v2.0")]
     
     class DfCEAdditionalMailAlert : BaseCheck
     {

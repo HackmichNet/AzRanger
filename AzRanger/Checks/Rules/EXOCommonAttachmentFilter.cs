@@ -4,8 +4,6 @@ using AzRanger.Models.ExchangeOnline;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOCommonAttachmentFilter", ScopeEnum.EXO, MaturityLevel.Tentative, "https://security.microsoft.com/antimalwarev2")]
-    [CISM365("4.1", "", Level.L1, "v2.0")]
-    
     class EXOCommonAttachmentFilter : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

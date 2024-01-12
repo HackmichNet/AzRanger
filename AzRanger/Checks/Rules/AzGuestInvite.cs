@@ -3,7 +3,7 @@
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzGuestInvite", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AllowlistPolicyBlade")]
-    [CISAZ("1.16", "", Level.L2, "v2.0")]
+    [CISAZ("1.16", "", CISLevel.L2, "v2.0")]
     
     internal class AzGuestInvite : BaseCheck
     {

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("MDMStorageEncryption", ScopeEnum.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesComplianceMenu/policies")]
-    [CISM365("7.8", "Ensure that mobile device encryption is enabled to prevent unauthorized access to mobile data", Level.L1, "v1.4")]
     // TODO
     class MDMStorageEncryption : BaseCheck
     {

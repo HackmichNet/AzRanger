@@ -4,7 +4,7 @@ using AzRanger.Models.AzMgmt;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcInfraEncrypt", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.2", "", Level.L2, "v2.0")]
+    [CISAZ("3.2", "", CISLevel.L2, "v2.0")]
     
     internal class AzStorAcInfraEncrypt : BaseCheck
     {

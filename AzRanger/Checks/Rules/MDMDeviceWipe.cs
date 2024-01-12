@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("MDMDeviceWipe", ScopeEnum.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
-    [CISM365("7.5", "Ensure mobile devices are set to wipe on multiple sign-in failures to prevent brute force compromise", Level.L2, "v1.4")]
     // TODO
     class MDMDeviceWipe : BaseCheck
     {

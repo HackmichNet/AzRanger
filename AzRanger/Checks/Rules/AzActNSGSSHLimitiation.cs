@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzActNSGSSHLimitiation", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", ServiceEnum.NetworksSecurityGroup)]
-    [CISAZ("6.2", "", Level.L1, "v2.0")]
+    [CISAZ("6.2", "", CISLevel.L1, "v2.0")]
     
     internal class AzActNSGSSHLimitiation : BaseCheck
     {

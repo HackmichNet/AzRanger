@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserRemainSignIn", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings")]
-    [CISM365("1.1.19", "", Level.L2, "v2.0")]
-    
+    [RuleMeta("UserRemainSignIn", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings")]    
     class UserRemainSignIn : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

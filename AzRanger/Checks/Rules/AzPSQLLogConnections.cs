@@ -10,7 +10,7 @@ namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzPSQLLogConnections", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DBforPostgreSQL%2Fservers", ServiceEnum.PSQLServer)]
     
-    [CISAZ("4.3.3", "", Level.L1, "v2.0")]
+    [CISAZ("4.3.3", "", CISLevel.L1, "v2.0")]
     internal class AzPSQLLogConnections : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

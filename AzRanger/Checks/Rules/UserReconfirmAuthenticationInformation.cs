@@ -3,7 +3,7 @@
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserReconfirmAuthenticationInformation", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/PasswordResetMenuBlade/~/Registration")]
-    [CISAZ("1.8", "", Level.L1, "v2.0")]
+    [CISAZ("1.8", "", CISLevel.L1, "v2.0")]
     
     class UserReconfirmAuthenticationInformation : BaseCheck
     {

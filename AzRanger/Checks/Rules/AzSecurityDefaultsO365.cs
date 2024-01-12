@@ -3,8 +3,6 @@
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzSecurityDefaultsO365", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/TenantOverview.ReactView")]
-    [CISM365("1.1.1", "", Level.L1, "v2.0")]
-    
     class AzSecurityDefaultsO365 : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -5,8 +5,6 @@ using AzRanger.Models.ExchangeOnline;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("EXOMailboxAudit", ScopeEnum.EXO)]
-    [CISM365("5.3", "", Level.L1, "v2.0")]
-    
     class EXOMailboxAudit : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -3,9 +3,7 @@ using AzRanger.Models.ComplianceCenter;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("OfficeDLPPolicies", ScopeEnum.AAD, MaturityLevel.Tentative, "https://compliance.microsoft.com/datalossprevention?viewid=policies")]
-    [CISM365("3.4", "", Level.L1, "v2.0")]
-    
+    [RuleMeta("OfficeDLPPolicies", ScopeEnum.AAD, MaturityLevel.Tentative, "https://compliance.microsoft.com/datalossprevention?viewid=policies")]    
     class OfficeDLPPolicies : BaseCheck
     {
         // TODO: Maybe we can check if they makes sense

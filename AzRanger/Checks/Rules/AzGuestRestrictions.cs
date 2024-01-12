@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzGuestRestrictions", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AllowlistPolicyBlade")]
-    [CISAZ("1.15", "", Level.L2, "v2.0")]
+    [CISAZ("1.15", "", CISLevel.L2, "v2.0")]
     
     internal class AzGuestRestrictions : BaseCheck
     {

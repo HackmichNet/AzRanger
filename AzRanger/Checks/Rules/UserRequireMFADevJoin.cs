@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserRequireMFADevJoin", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_AAD_Devices/DevicesMenuBlade/~/DeviceSettings/menuId~/null")]
-    [CISAZ("1.22", "", Level.L1, "v2.0")]
+    [CISAZ("1.22", "", CISLevel.L1, "v2.0")]
     
     internal class UserRequireMFADevJoin : BaseCheck
     {

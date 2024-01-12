@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
 
-    [RuleMeta("UserMFAFatigueProtection", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/AdminAuthMethods")]
-    [CISM365("1.1.5", "", Level.L1, "v2.0")]
-    
+    [RuleMeta("UserMFAFatigueProtection", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/AdminAuthMethods")]    
     class UserMFAFatigueProtection : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

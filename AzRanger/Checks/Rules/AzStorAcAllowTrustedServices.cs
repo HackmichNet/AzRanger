@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcAllowTrustedServices", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.9", "", Level.L2, "v2.0")]
+    [CISAZ("3.9", "", CISLevel.L2, "v2.0")]
     
 
     internal class AzStorAcAllowTrustedServices : BaseCheck

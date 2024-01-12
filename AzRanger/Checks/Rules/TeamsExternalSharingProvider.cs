@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("TeamsExternalSharingProvider", ScopeEnum.Teams, MaturityLevel.Mature, "https://admin.teams.microsoft.com/company-wide-settings/teams-settings")]
-    [CISM365("3.7", "", Level.L2, "v2.0")]
-    
+    [RuleMeta("TeamsExternalSharingProvider", ScopeEnum.Teams, MaturityLevel.Mature, "https://admin.teams.microsoft.com/company-wide-settings/teams-settings")]    
     class TeamsExternalSharingProvider : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

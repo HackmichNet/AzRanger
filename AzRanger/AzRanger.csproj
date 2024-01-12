@@ -316,7 +316,6 @@
     <Compile Include="Checks\Auditor.cs" />
     <Compile Include="Checks\BaseCheck.cs" />
     <Compile Include="Checks\CISAZAttribute.cs" />
-    <Compile Include="Checks\CISM365Attribute.cs" />
     <Compile Include="Checks\CISM365Info.cs" />
     <Compile Include="Checks\CISM365InfoData.cs" />
     <Compile Include="Checks\RuleInfo.cs" />

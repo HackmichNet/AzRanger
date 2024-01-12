@@ -8,11 +8,11 @@ namespace AzRanger.Checks
         public int Id { get; private set; }
         public string Title { get; private set; }
         public String Section { get; private set; }
-        public Level Level { get; set; }
+        public CISLevel Level { get; set; }
         public String Version { get; set; }
 
 
-        public CISAZAttribute(string section, string title, Level level, string version)
+        public CISAZAttribute(string section, string title, CISLevel level, string version)
         {
             this.Id = 0;
             this.Title = title;

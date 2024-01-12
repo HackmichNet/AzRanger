@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcMinTLSVersion", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.15", "", Level.L1, "v2.0")]
+    [CISAZ("3.15", "", CISLevel.L1, "v2.0")]
     
     internal class AzStorAcMinTLSVersion : BaseCheck
     {

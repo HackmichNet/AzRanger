@@ -4,7 +4,7 @@ using AzRanger.Models.AzMgmt;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzStorAcSecureTransfer", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.1", "", Level.L1, "v2.0")]
+    [CISAZ("3.1", "", CISLevel.L1, "v2.0")]
     
     internal class AzStorAcSecureTransfer : BaseCheck
     {

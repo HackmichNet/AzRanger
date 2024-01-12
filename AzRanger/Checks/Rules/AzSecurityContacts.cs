@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("AzSecurityContacts", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/?l=en.en-us#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Overview")]
-    [CISAZ("2.13", "Ensure 'Additional email addresses' is Configured with a Security Contact Email", Level.L1, "v1.4")]
+    [CISAZ("2.13", "Ensure 'Additional email addresses' is Configured with a Security Contact Email", CISLevel.L1, "v1.4")]
     
     internal class AzSecurityContacts : BaseCheck
     {

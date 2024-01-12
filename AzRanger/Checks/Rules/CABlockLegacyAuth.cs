@@ -3,8 +3,6 @@
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("CABlockLegacyAuth", ScopeEnum.AAD, MaturityLevel.Tentative, "https://entra.microsoft.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade/~/Overview/fromNav/Identity")]
-    [CISM365("1.1.6", "", Level.L1, "v2.0")]
-    
     class CABlockLegacyAuth : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
