@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertDeleteSQLFirewallRule", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
-    [CISAZ("5.2.8", "", CISLevel.L1, "v2.0")]
-    
+    [RuleMeta("AzActLogAlertDeleteSQLFirewallRule", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]    
     internal class AzActLogAlertDeleteSQLFirewallRule : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

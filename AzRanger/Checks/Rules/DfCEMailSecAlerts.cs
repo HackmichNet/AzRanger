@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("DfCEMailSecAlerts", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings")]
-    [CISAZ("2.1.18", "", CISLevel.L1, "v2.0")]
-    
+    [RuleMeta("DfCEMailSecAlerts", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings")]    
     class DfCEMailSecAlerts : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

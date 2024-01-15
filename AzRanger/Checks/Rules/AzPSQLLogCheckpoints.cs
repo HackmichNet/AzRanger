@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzPSQLLogCheckpoints", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DBforPostgreSQL%2Fservers", ServiceEnum.PSQLServer)]
-    [CISAZ("4.3.2", "", CISLevel.L1, "v2.0")]
-    
+    [RuleMeta("AzPSQLLogCheckpoints", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DBforPostgreSQL%2Fservers", ServiceEnum.PSQLServer)]    
     internal class AzPSQLLogCheckpoints : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

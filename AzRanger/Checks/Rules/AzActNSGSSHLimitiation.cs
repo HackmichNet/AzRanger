@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActNSGSSHLimitiation", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", ServiceEnum.NetworksSecurityGroup)]
-    [CISAZ("6.2", "", CISLevel.L1, "v2.0")]
-    
+    [RuleMeta("AzActNSGSSHLimitiation", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", ServiceEnum.NetworksSecurityGroup)]    
     internal class AzActNSGSSHLimitiation : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcCustomKeys", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.12", "", CISLevel.L2, "v2.0")]
-    
+    [RuleMeta("AzStorAcCustomKeys", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]    
     internal class AzStorAcCustomKeys : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

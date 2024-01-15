@@ -40,7 +40,6 @@ namespace AzRanger.Output
             {
                 ResultJSONItem item = new ResultJSONItem();
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
@@ -69,11 +68,11 @@ namespace AzRanger.Output
                     item.CISDocument = "CIS M365";
                 }
 
-                if (cisAzRule != null)
+                if (CISAzInfo.TryGet(check.GetType().Name, out CISAzInfo azInfo))
                 {
-                    item.Version = cisAzRule.Version;
-                    item.Section = cisAzRule.Section;
-                    item.Level = cisAzRule.Level.ToString();
+                    item.Version = azInfo.Version;
+                    item.Section = azInfo.Section;
+                    item.Level = azInfo.Level.ToString();
                     item.CISDocument = "CIS Azure";
                 }
 
@@ -98,7 +97,6 @@ namespace AzRanger.Output
             {
                 ResultJSONItem item = new ResultJSONItem();
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
@@ -127,11 +125,11 @@ namespace AzRanger.Output
                     item.CISDocument = "CIS M365";
                 }
 
-                if (cisAzRule != null)
+                if (CISAzInfo.TryGet(check.GetType().Name, out CISAzInfo azInfo))
                 {
-                    item.Version = cisAzRule.Version;
-                    item.Section = cisAzRule.Section;
-                    item.Level = cisAzRule.Level.ToString();
+                    item.Version = azInfo.Version;
+                    item.Section = azInfo.Section;
+                    item.Level = azInfo.Level.ToString();
                     item.CISDocument = "CIS Azure";
                 }
                 NoFindingList.Add(item);
@@ -141,7 +139,6 @@ namespace AzRanger.Output
             {
                 ResultJSONItem item = new ResultJSONItem();
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
@@ -170,11 +167,11 @@ namespace AzRanger.Output
                     item.CISDocument = "CIS M365";
                 }
 
-                if (cisAzRule != null)
+                if (CISAzInfo.TryGet(check.GetType().Name, out CISAzInfo azInfo))
                 {
-                    item.Version = cisAzRule.Version;
-                    item.Section = cisAzRule.Section;
-                    item.Level = cisAzRule.Level.ToString();
+                    item.Version = azInfo.Version;
+                    item.Section = azInfo.Section;
+                    item.Level = azInfo.Level.ToString();
                     item.CISDocument = "CIS Azure";
                 }
                 ErrorList.Add(item);
@@ -184,7 +181,6 @@ namespace AzRanger.Output
             {
                 ResultJSONItem item = new ResultJSONItem();
                 RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
@@ -213,11 +209,11 @@ namespace AzRanger.Output
                     item.CISDocument = "CIS M365";
                 }
 
-                if (cisAzRule != null)
+                if (CISAzInfo.TryGet(check.GetType().Name, out CISAzInfo azInfo))
                 {
-                    item.Version = cisAzRule.Version;
-                    item.Section = cisAzRule.Section;
-                    item.Level = cisAzRule.Level.ToString();
+                    item.Version = azInfo.Version;
+                    item.Section = azInfo.Section;
+                    item.Level = azInfo.Level.ToString();
                     item.CISDocument = "CIS Azure";
                 }
 

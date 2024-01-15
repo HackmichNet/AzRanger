@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertCreateOrUpdateSecuritySolution", ScopeEnum.Azure, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
-    [CISAZ("5.2.5", "", CISLevel.L1, "v2.0")]
-    
+    [RuleMeta("AzActLogAlertCreateOrUpdateSecuritySolution", ScopeEnum.Azure, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]    
     internal class AzActLogAlertCreateOrUpdateSecuritySolution : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

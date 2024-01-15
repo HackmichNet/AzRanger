@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcMinTLS12", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.12", "Ensure the 'Minimum TLS version' is set to 'Version 1.2'", CISLevel.L1, "v1.4")]
-    
+    [RuleMeta("AzStorAcMinTLS12", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]    
     internal class AzStorAcMinTLS12 : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

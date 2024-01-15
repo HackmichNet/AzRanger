@@ -67,6 +67,47 @@ namespace AzRanger.Properties {
         ///solution = &quot;You have to enable Password hash sync on the server where you have installed you Azure AD Connect tool. During the setup under *Optional Features* **Password hash synchronization** can be enabled.&quot;
         ///.
         /// </summary>
+        internal static string CISAzureInfoData {
+            get {
+                return ResourceManager.GetString("CISAzureInfoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [ADPasswordHashSyncEnabled]
+        ///section = &quot;1.1.12&quot;
+        ///title = &quot;&lt;EMPTY&gt;&quot;
+        ///level = &quot;L1&quot;
+        ///version = &quot;2.0&quot;
+        ///
+        ///[ADPasswordProtection]
+        ///section = &quot;1.1.10&quot;
+        ///title = &quot;&lt;EMPTY&gt;&quot;
+        ///level = &quot;L1&quot;
+        ///version = &quot;2.0&quot;
+        ///
+        ///[AzAppRegistration]
+        ///section = &quot;2.2&quot;
+        ///title = &quot;&lt;EMPTY&gt;&quot;
+        ///level = &quot;L2&quot;
+        ///version = &quot;2.0&quot;
+        ///
+        ///[AzB2BPolicy]
+        ///section = &quot;1.1.17&quot;
+        ///title = &quot;&lt;EMPTY&gt;&quot;
+        ///level = &quot;L2&quot;
+        ///version = &quot;2.0&quot;
+        ///
+        ///[AzPasswordPolicy]
+        ///section = &quot;1.4&quot;
+        ///title = &quot;&lt;EMPTY&gt;&quot;
+        ///level = &quot;L1&quot;
+        ///version = &quot;2.0&quot;
+        ///
+        ///[AzSecurityDefaultsO365]
+        ///section = &quot;1.1.1&quot;
+        ///titl [rest of string was truncated]&quot;;.
+        /// </summary>
         internal static string CISM365InfoData {
             get {
                 return ResourceManager.GetString("CISM365InfoData", resourceCulture);

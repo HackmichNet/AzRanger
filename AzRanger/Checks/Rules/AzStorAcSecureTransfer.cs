@@ -3,9 +3,7 @@ using AzRanger.Models.AzMgmt;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcSecureTransfer", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.1", "", CISLevel.L1, "v2.0")]
-    
+    [RuleMeta("AzStorAcSecureTransfer", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]    
     internal class AzStorAcSecureTransfer : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -2,9 +2,7 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserNotifyUserOnPasswordReset", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/PasswordResetMenuBlade/~/Notifications")]
-    [CISAZ("1.9", "", CISLevel.L1, "v2.0")]
-    
+    [RuleMeta("UserNotifyUserOnPasswordReset", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/PasswordResetMenuBlade/~/Notifications")]    
     class UserNotifyUserOnPasswordReset : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

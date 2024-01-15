@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertCreateOrUpdatePublicIPAddressRule", ScopeEnum.Azure, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
-    [CISAZ("5.2.9", "", CISLevel.L1, "v2.0")]
-    
+    [RuleMeta("AzActLogAlertCreateOrUpdatePublicIPAddressRule", ScopeEnum.Azure, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]    
     internal class AzActLogAlertCreateOrUpdatePublicIPAddressRule : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

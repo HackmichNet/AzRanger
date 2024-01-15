@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcAccessKeyAge", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.2", "Ensure That Storage Account Access Keys are Periodically Regenerated", CISLevel.L1, "v1.4")]
-    
+    [RuleMeta("AzStorAcAccessKeyAge", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]    
     internal class AzStorAcAccessKeyAge : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

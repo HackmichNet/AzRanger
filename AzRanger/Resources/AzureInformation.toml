@@ -1,0 +1,401 @@
+[AzActLogAlertChangeNetworkSecGrp]
+section = "5.2.3"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzActLogAlertChangeSQLServerFWRule]
+section = "5.2.7"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzActLogAlertCreateOrUpdatePublicIPAddressRule]
+section = "5.2.9"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzActLogAlertCreateOrUpdateSecuritySolution]
+section = "5.2.5"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzActLogAlertCreatePolicyAssignment]
+section = "5.2.1"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzActLogAlertDeleteNetworkSecGrp]
+section = "5.2.4"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzActLogAlertDeletePolicyAssignment]
+section = "5.2.2"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzActLogAlertDeletePublicIPAddressRule]
+section = "5.2.10"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzActLogAlertDeleteSecuritySolution]
+section = "5.2.6"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzActLogAlertDeleteSQLFirewallRule]
+section = "5.2.8"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzActNSGRDPLimitiation]
+section = "6.1"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzActNSGSSHLimitiation]
+section = "6.2"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzAppRegistration]
+section = "1.14"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[AzASCDefaultPolicy]
+section = "2.1.14"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzAutoprovisioning]
+section = "2.2.15"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzGuestInvite]
+section = "1.16"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[AzGuestRestrictions]
+section = "1.15"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[AzKeyVKeyExpirationNonRBAC]
+section = "8.2"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzKeyVKeyExpirationRBAC]
+section = "8.1"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzKeyVLogging]
+section = "5.1.5"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzKeyVSecretExpirationNonRBAC]
+section = "8.4"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzKeyVSecretExpirationRBAC]
+section = "8.3"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzKeyVSoftDelete]
+section = "8.5"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzPSQLLogCheckpoints]
+section = "4.3.2"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzPSQLLogConnections]
+section = "4.3.3"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzPSQLLogConnectionThrottling]
+section = "4.3.5"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzPSQLLogDisconnections]
+section = "4.3.4"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzRestrictUserAccessGroupFeature]
+section = "1.18"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[AzSecurityContacts]
+section = "2.13"
+title = "Ensure 'Additional email addresses' is Configured with a Security Contact Email"
+level = "L1"
+version = "1.4"
+
+[AzSecurityContactsNotifiedForHigh]
+section = "2.14"
+title = "Ensure That 'Notify about alerts with the following severity' is Set to 'High'"
+level = "L1"
+version = "1.4"
+
+[AzSecurityContactsNotifyOwner]
+section = "2.15"
+title = "Ensure That 'All users with the following roles' is set to 'Owner'"
+level = "L1"
+version = "1.4"
+
+[AzSQLAuditingEnabled]
+section = "4.1.1"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzSQLAuditingRetention]
+section = "4.1.6"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzSQLServerAzADAdmin]
+section = "4.1.4"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzSQLServerInboundTraffic]
+section = "4.1.2"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzStorAcAccessKeyAge]
+section = "3.2"
+title = "Ensure That Storage Account Access Keys are Periodically Regenerated"
+level = "L1"
+version = "1.4"
+
+[AzStorAcAllowTrustedServices]
+section = "3.9"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[AzStorAcContainerPublicAccess]
+section = "3.7"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzStorAcCustomKeys]
+section = "3.12"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[AzStorAcInfraEncrypt]
+section = "3.2"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[AzStorAcKeyLastRotation]
+section = "3.4"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzStorAcKeyRotationReminder]
+section = "3.3"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzStorAcMinTLS12]
+section = "3.12"
+title = "Ensure the 'Minimum TLS version' is set to 'Version 1.2'"
+level = "L1"
+version = "1.4"
+
+[AzStorAcMinTLSVersion]
+section = "3.15"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzStorAcNetworkAccess]
+section = "3.8"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[AzStorAcSecureTransfer]
+section = "3.1"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzStorAcSoftDelete]
+section = "3.11"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[AzSubscriptionPolicy]
+section = "1.25"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[AzVirtMManagedDiskUsage]
+section = "7.2"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[DfCEAdditionalMailAlert]
+section = "2.1.19"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[DfCEAdditionalMailAlertSeverity]
+section = "2.1.20"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[DfCEMailSecAlerts]
+section = "2.1.18"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[GroupAllowsSelfService]
+section = "1.20"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[GroupAllowUserToCreateSecGroups]
+section = "1.19"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[GroupM365GroupManagement]
+section = "1.21"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[UserAllAdminsHaveMFA]
+section = "1.1.2"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserAllowCreationOfAzureTenants]
+section = "1.3"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserAllUserHaveMFA]
+section = "1.1.3"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[UserCanAddGalleryApps]
+section = "1.13"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[UserConsent]
+section = "1.11"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[UserNotifyAdminOnPasswordReset]
+section = "1.10"
+title = "<EMPTY>"
+level = "L2"
+version = "2.0"
+
+[UserNotifyUserOnPasswordReset]
+section = "1.9"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserPasswordBadPasswordList]
+section = "1.7"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserPasswordResetRequires2Methods]
+section = "1.6"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserReconfirmAuthenticationInformation]
+section = "1.8"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserRequireMFADevJoin]
+section = "1.22"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"
+
+[UserRestrictAccessToAdminPortal]
+section = "1.17"
+title = "<EMPTY>"
+level = "L1"
+version = "2.0"

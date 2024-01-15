@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("GroupM365GroupManagement", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/General/menuId/General")]
-    [CISAZ("1.21", "", CISLevel.L2, "v2.0")]
-    
+    [RuleMeta("GroupM365GroupManagement", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/General/menuId/General")]    
     internal class GroupM365GroupManagement : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

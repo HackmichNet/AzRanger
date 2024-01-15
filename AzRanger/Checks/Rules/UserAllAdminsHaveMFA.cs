@@ -8,7 +8,6 @@ using System.Linq;
 namespace AzRanger.Checks.Rules
 {
     [RuleMeta("UserAllAdminsHaveMFA", ScopeEnum.AAD, MaturityLevel.Mature, null)]
-    [CISAZ("1.1.2", "", CISLevel.L1, "v2.0")]
     class UserAllAdminsHaveMFA : BaseCheck
     {
         private readonly String[] InterestingRoles = new String[] {

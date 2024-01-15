@@ -10,7 +10,6 @@ namespace AzRanger.Checks.Rules
 {
 
     [RuleMeta("UserAllUserHaveMFA", ScopeEnum.AAD)]
-    [CISAZ("1.1.3", "", CISLevel.L2, "v2.0")]
     class UserAllUserHaveMFA : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

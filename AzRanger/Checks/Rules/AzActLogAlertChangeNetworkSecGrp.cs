@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertChangeNetworkSecGrp", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
-    [CISAZ("5.2.3", "", CISLevel.L1, "v2.0")]
-    
+    [RuleMeta("AzActLogAlertChangeNetworkSecGrp", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]    
     internal class AzActLogAlertChangeNetworkSecGrp : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
