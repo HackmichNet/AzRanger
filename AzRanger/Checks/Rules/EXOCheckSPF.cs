@@ -3,7 +3,6 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOCheckSPF", ScopeEnum.EXO, MaturityLevel.Mature)]
     class EXOCheckSPF : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -3,9 +3,7 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    // Credits to https://github.com/soteria-security/365Inspect/blob/main/Inspectors/BypassingSafeLinks.ps1
-    [RuleMeta("EXOBypassSafeLinks", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.exchange.microsoft.com/#/transportrules")]
-    
+    // Credits to https://github.com/soteria-security/365Inspect/blob/main/Inspectors/BypassingSafeLinks.ps1    
     class EXOBypassSafeLinks : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

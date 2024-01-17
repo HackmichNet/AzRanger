@@ -7,9 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
-{
-    [RuleMeta("AzSQLServerMinimumTLSVersion", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", ServiceEnum.SQLServer)]
-    
+{    
     internal class AzSQLServerMinimumTLSVersion : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

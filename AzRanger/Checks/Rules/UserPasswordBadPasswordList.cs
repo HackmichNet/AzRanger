@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks
 {
-    [RuleMeta("UserPasswordBadPasswordList", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection")]
     class UserPasswordBadPasswordList : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

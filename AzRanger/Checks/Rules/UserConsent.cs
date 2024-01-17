@@ -8,7 +8,6 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserConsent", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/UserSettings")]
     class UserConsent : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

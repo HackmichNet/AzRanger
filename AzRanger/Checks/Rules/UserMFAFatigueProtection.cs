@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-
-    [RuleMeta("UserMFAFatigueProtection", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/AdminAuthMethods")]    
     class UserMFAFatigueProtection : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -2,7 +2,6 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOAdminAuditLogConfig", ScopeEnum.EXO, MaturityLevel.Mature, "https://compliance.microsoft.com/auditlogsearch")]
     class EXOAdminAuditLogConfig : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

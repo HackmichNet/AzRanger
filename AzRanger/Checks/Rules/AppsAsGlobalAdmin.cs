@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AppsAsGlobalAdmin", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/~/AppAppsPreview")]
     class AppsAsGlobalAdmin : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

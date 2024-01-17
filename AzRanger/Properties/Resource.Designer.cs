@@ -61,11 +61,32 @@ namespace AzRanger.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [ADPasswordHashSyncEnabled]
-        ///risk = &quot;If password hash sync is not enabled, there is a risk that the leak of user credentials remains unnoticed.&quot;
-        ///short = &quot;Password hash sync is not enabled&quot;
-        ///solution = &quot;You have to enable Password hash sync on the server where you have installed you Azure AD Connect tool. During the setup under *Optional Features* **Password hash synchronization** can be enabled.&quot;
-        ///.
+        ///   Looks up a localized string similar to [AzActLogAlertChangeNetworkSecGrp]
+        ///section = &quot;5.2.3&quot;
+        ///title = &quot;&lt;EMPTY&gt;&quot;
+        ///level = &quot;L1&quot;
+        ///version = &quot;2.0&quot;
+        ///
+        ///[AzActLogAlertChangeSQLServerFWRule]
+        ///section = &quot;5.2.7&quot;
+        ///title = &quot;&lt;EMPTY&gt;&quot;
+        ///level = &quot;L1&quot;
+        ///version = &quot;2.0&quot;
+        ///
+        ///[AzActLogAlertCreateOrUpdatePublicIPAddressRule]
+        ///section = &quot;5.2.9&quot;
+        ///title = &quot;&lt;EMPTY&gt;&quot;
+        ///level = &quot;L1&quot;
+        ///version = &quot;2.0&quot;
+        ///
+        ///[AzActLogAlertCreateOrUpdateSecuritySolution]
+        ///section = &quot;5.2.5&quot;
+        ///title = &quot;&lt;EMPTY&gt;&quot;
+        ///level = &quot;L1&quot;
+        ///version = &quot;2.0&quot;
+        ///
+        ///[AzActLogAlertCreatePolicyAssignment]
+        ///section = &quot;5.2.1&quot;        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CISAzureInfoData {
             get {
@@ -139,6 +160,19 @@ namespace AzRanger.Properties {
         internal static string RuleInfoData {
             get {
                 return ResourceManager.GetString("RuleInfoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [ADPasswordHashSyncEnabled]
+        ///risk = &quot;If password hash sync is not enabled, there is a risk that the leak of user credentials remains unnoticed.&quot;
+        ///short = &quot;Password hash sync is not enabled&quot;
+        ///solution = &quot;You have to enable Password hash sync on the server where you have installed you Azure AD Connect tool. During the setup under *Optional Features* **Password hash synchronization** can be enabled.&quot;
+        ///.
+        /// </summary>
+        internal static string RuleMetaData {
+            get {
+                return ResourceManager.GetString("RuleMetaData", resourceCulture);
             }
         }
     }

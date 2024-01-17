@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOOwaExternalStorageProvider", ScopeEnum.EXO, MaturityLevel.Mature)]    
     class EXOOwaExternalStorageProvider : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

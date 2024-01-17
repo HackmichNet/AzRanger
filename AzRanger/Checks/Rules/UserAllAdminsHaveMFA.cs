@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserAllAdminsHaveMFA", ScopeEnum.AAD, MaturityLevel.Mature, null)]
     class UserAllAdminsHaveMFA : BaseCheck
     {
+        // TODO add new roles
         private readonly String[] InterestingRoles = new String[] {
                 "Application administrator",
                 "Authentication administrator",

@@ -2,7 +2,6 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserAllowCreationOfAzureTenants", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings")]
     class UserAllowCreationOfAzureTenants : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

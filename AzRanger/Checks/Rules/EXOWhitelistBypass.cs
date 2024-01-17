@@ -3,7 +3,6 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOWhitelistBypass", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.exchange.microsoft.com/#/transportrules")]    
     class EXOWhitelistBypass : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

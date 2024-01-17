@@ -2,7 +2,6 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("CABlockLegacyAuth", ScopeEnum.AAD, MaturityLevel.Tentative, "https://entra.microsoft.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade/~/Overview/fromNav/Identity")]
     class CABlockLegacyAuth : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

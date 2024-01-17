@@ -3,7 +3,6 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOCommonAttachmentFilter", ScopeEnum.EXO, MaturityLevel.Tentative, "https://security.microsoft.com/antimalwarev2")]
     class EXOCommonAttachmentFilter : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

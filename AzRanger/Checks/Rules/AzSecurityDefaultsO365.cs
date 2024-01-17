@@ -2,7 +2,6 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzSecurityDefaultsO365", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/TenantOverview.ReactView")]
     class AzSecurityDefaultsO365 : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

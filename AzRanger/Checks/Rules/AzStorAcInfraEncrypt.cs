@@ -3,7 +3,6 @@ using AzRanger.Models.AzMgmt;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcInfraEncrypt", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]    
     internal class AzStorAcInfraEncrypt : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

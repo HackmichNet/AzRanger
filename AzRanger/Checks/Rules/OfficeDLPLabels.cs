@@ -3,7 +3,6 @@ using AzRanger.Models.ComplianceCenter;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("OfficeDLPLabels", ScopeEnum.AAD, MaturityLevel.Tentative, "https://compliance.microsoft.com/informationprotection/labelpolicies")]    
     class OfficeDLPLabels : BaseCheck
     {
         // TODO: Maybe we can check if they makes sense

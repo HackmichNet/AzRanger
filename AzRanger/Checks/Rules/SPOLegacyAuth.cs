@@ -2,7 +2,6 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("SPOLegacyAuth", ScopeEnum.SPO, MaturityLevel.Mature, "https://<YOURDOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/accessControl")]    
     class SPOLegacyAuth : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

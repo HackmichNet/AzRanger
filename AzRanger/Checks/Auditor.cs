@@ -2,10 +2,7 @@
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks
 {
@@ -40,20 +37,26 @@ namespace AzRanger.Checks
                     try
                     {
                         BaseCheck check = GetInstance(t);
-                        RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                        foreach (ScopeEnum scope in scopes) {
-                            if (ruleInfo.Scope.Equals(scope)){
-                                logger.Debug("[+] Auditor.Init: {0} successful instantiated and added.", ruleInfo.ShortName);
+                        if (RuleMeta.TryGet(check.GetType().Name, out RuleMeta metaData))
+                        {
+                            if (scopes.Contains(metaData.Scope))
+                            {
+                                logger.Debug($"[+] Auditor.Init: {metaData.ShortName} successful instantiated and added.");
                                 AllChecks.Add(check);
                             }
                         }
-                    }
-                    catch(Exception e) {
-                        
-                        logger.Debug("[-] Auditor.Init: CreateClass failed!");
-                        logger.Debug(e.Message);
+                        else
+                        {
+                            logger.Error($"[-] Auditor.Init: No RuleMeta defined for {check.GetType().Name}");
+                            continue;
+
+                        }
+                    } catch (Exception e)
+                    {
+                        logger.Error("[-] Auditor.Init: CreateClass Failed!");
+                        logger.Error($"[-] {e.Message}");
                         continue;
-                    }                    
+                    }
                 }
             }
         }
@@ -85,10 +88,10 @@ namespace AzRanger.Checks
                 }
                 catch (Exception e)
                 {
-                    RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                    logger.Warn("Failing to check: {0}", ruleInfo.ShortName);
-                    this.Error.Add(check);
+                    logger.Error($"Failed to check rule {check.GetType().Name}");
                     logger.Debug("Auditor.PerformAudit: " + e.Message);
+                    this.Error.Add(check);
+                    continue;
                 }
             }
         }

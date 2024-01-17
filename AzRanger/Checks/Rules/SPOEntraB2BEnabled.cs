@@ -2,7 +2,6 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("SPOEntraB2BEnabled", ScopeEnum.SPO, MaturityLevel.Mature)]    
     class SPOEntraB2BEnabled : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

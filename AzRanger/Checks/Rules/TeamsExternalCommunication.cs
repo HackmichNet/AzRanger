@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("TeamsExternalCommunication", ScopeEnum.Teams, MaturityLevel.Mature, "https://admin.teams.microsoft.com/company-wide-settings/external-communications")]
     // TODO
     class TeamsExternalCommunication : BaseCheck
     {

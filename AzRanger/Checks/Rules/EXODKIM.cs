@@ -3,7 +3,6 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXODKIM", ScopeEnum.EXO, MaturityLevel.Mature)]
     class EXODKIM : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

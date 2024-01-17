@@ -1,9 +1,7 @@
 ﻿using AzRanger.Models;
 
 namespace AzRanger.Checks.Rules
-{
-    [RuleMeta("UserCanViewOtherUsersProfile", ScopeEnum.AAD, MaturityLevel.Mature)]
-    
+{    
     class UserCanViewOtherUsersProfile : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

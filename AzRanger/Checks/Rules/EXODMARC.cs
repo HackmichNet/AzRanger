@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXODMARC", ScopeEnum.EXO, MaturityLevel.Mature)]
     class EXODMARC : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzSubscriptionPolicy", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/Microsoft_Azure_SubscriptionManagement/ManageSubscriptionPoliciesBlade")]    
     class AzSubscriptionPolicy : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

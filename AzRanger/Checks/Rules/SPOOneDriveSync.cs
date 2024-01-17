@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("SPOOneDriveSync", ScopeEnum.SPO, MaturityLevel.Mature, "https://<YOUR-DOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/settings/ODBSync")]    
     class SPOOneDriveSync : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

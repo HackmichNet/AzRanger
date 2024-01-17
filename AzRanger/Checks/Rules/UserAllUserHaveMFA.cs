@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-
-    [RuleMeta("UserAllUserHaveMFA", ScopeEnum.AAD)]
     class UserAllUserHaveMFA : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

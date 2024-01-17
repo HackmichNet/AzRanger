@@ -4,7 +4,6 @@ using AzRanger.Utilities;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserMax4GlobalAdmins", ScopeEnum.AAD, MaturityLevel.Mature, "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RolesAndAdministrators")]    
     class UserMax4GlobalAdmins : BaseCheck
     {
         int MaxGA = 4;

@@ -5,9 +5,7 @@ using System;
 using System.Collections.Generic;
 
 namespace AzRanger.Checks.Rules
-{
-    [RuleMeta("EXOCheckTransportRules", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.exchange.microsoft.com/#/transportrules")]
-    
+{    
     class EXOCheckTransportRules : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

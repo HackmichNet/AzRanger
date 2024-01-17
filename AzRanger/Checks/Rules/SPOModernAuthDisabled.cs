@@ -6,9 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
-{
-    [RuleMeta("SPOModernAuthDisabled", ScopeEnum.SPO, MaturityLevel.Mature)]
-    
+{    
     class SPOModernAuthDisabled : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

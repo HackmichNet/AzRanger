@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOAutomaticForwarding", ScopeEnum.EXO, MaturityLevel.Mature)]
     class EXOAutomaticForwarding : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

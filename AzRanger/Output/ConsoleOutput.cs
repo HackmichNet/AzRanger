@@ -1,12 +1,16 @@
 ﻿using AzRanger.Checks;
 using AzRanger.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace AzRanger.Output
 {
     public static class ConsoleOutput
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static void Print(Auditor auditor, bool WriteAllResults)
         {
             Console.WriteLine();
@@ -20,17 +24,21 @@ namespace AzRanger.Output
 
             foreach (BaseCheck result in auditor.Finding)
             {
-                
-                RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(result.GetType(), typeof(RuleMetaAttribute));
+                if (!RuleMeta.TryGet(result.GetType().Name, out RuleMeta meta))
+                {
+                    logger.Error($"[-] ConsoleOutput.Print: Failed to get meta data of {result.GetType().Name}");
+                    continue;
+                }
 
                 if (!RuleInfo.TryGet(result.GetType().Name, out RuleInfo info)) {
+                    logger.Error($"[-] ConsoleOutput.Print: Failed to get rule info of {result.GetType().Name}");
                     continue;
                 }
                 
                 Console.WriteLine("     [-] {0} - {1} ", info.ShortDescription, info.Risk);
-                if(ruleInfo.PortalUrl != null)
+                if(meta.PortalUrl != null)
                 {
-                    Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
+                    Console.WriteLine("         You can lookup the setting here: {0}", meta.PortalUrl);
                 }
                 if(info.ReferenceLink != null)
                 {
@@ -76,13 +84,19 @@ namespace AzRanger.Output
             List<BaseCheck> tentantiveChecks = new List<BaseCheck>();
             foreach (BaseCheck check in auditor.NoFinding)
             {
-                RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));  
-
-                if (ruleInfo == null)
+                if (!RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
                 {
+                    logger.Error($"[-] ConsoleOutput.Print: Failed to get meta data of {check.GetType().Name}");
                     continue;
                 }
-                if (ruleInfo.MaturityLevel == MaturityLevel.Tentative)
+
+                if (!RuleInfo.TryGet(check.GetType().Name, out RuleInfo info))
+                {
+                    logger.Error($"[-] ConsoleOutput.Print: Failed to get rule info of {check.GetType().Name}");
+                    continue;
+                }
+
+                if (meta.MaturityLevel == MaturityLevel.Tentative)
                 {
                     tentantiveChecks.Add(check);
                 }
@@ -94,16 +108,22 @@ namespace AzRanger.Output
                 foreach (BaseCheck check in tentantiveChecks)
                 {
 
-                    RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
+                    if (!RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
+                    {
+                        logger.Error($"[-] ConsoleOutput.Print: Failed to get meta data of {check.GetType().Name}");
+                        continue;
+                    }
+
                     if (!RuleInfo.TryGet(check.GetType().Name, out RuleInfo info))
                     {
+                        logger.Error($"[-] ConsoleOutput.Print: Failed to get rule info of {check.GetType().Name}");
                         continue;
                     }
 
                     Console.WriteLine("     [-] {0}", info.ShortDescription);
-                    if (ruleInfo.PortalUrl != null)
+                    if (meta.PortalUrl != null)
                     {
-                        Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
+                        Console.WriteLine("         You can lookup the setting here: {0}", meta.PortalUrl);
                     }
                 }
 
@@ -114,9 +134,15 @@ namespace AzRanger.Output
                 foreach (BaseCheck check in auditor.NotApplicable)
                 {
                     Console.WriteLine("[+] The following checks were not applicable to your tenant:");
-                    RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
+                    if (!RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
+                    {
+                        logger.Error($"[-] ConsoleOutput.Print: Failed to get meta data of {check.GetType().Name}");
+                        continue;
+                    }
+
                     if (!RuleInfo.TryGet(check.GetType().Name, out RuleInfo info))
                     {
+                        logger.Error($"[-] ConsoleOutput.Print: Failed to get rule info of {check.GetType().Name}");
                         continue;
                     }
 
@@ -125,9 +151,9 @@ namespace AzRanger.Output
                     {
                         Console.WriteLine("         Reason: {0}", check.GetReason());
                     }
-                    if (ruleInfo.PortalUrl != null)
+                    if (meta.PortalUrl != null)
                     {
-                        Console.WriteLine("         You can lookup the setting here: {0}", ruleInfo.PortalUrl);
+                        Console.WriteLine("         You can lookup the setting here: {0}", meta.PortalUrl);
                     }
                 }
             }
@@ -137,11 +163,15 @@ namespace AzRanger.Output
                 Console.WriteLine("[+] The following checks failed for unknown reason - maybe you have not enough permissions:");
                 foreach(BaseCheck error in auditor.Error)
                 {
-                    RuleMetaAttribute ruleInfo = (RuleMetaAttribute)Attribute.GetCustomAttribute(error.GetType(), typeof(RuleMetaAttribute));
-                    Console.WriteLine("          - {0}", ruleInfo.ShortName);
-                    if (ruleInfo.PortalUrl != null)
+                    if (!RuleMeta.TryGet(error.GetType().Name, out RuleMeta meta))
                     {
-                        Console.WriteLine("         You can lookup the setting manually here: {0}", ruleInfo.PortalUrl);
+                        logger.Error($"[-] ConsoleOutput.Print: Failed to get meta data of {error.GetType().Name}");
+                        continue;
+                    }
+                    Console.WriteLine("          - {0}", meta.ShortName);
+                    if (meta.PortalUrl != null)
+                    {
+                        Console.WriteLine("         You can lookup the setting manually here: {0}", meta.PortalUrl);
                     }
                 }
 

@@ -7,9 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
-{
-    [RuleMeta("AzKeyVKeyExpiration", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults", ServiceEnum.KeyVault)]
-    
+{    
     internal class AzKeyVKeyExpiration : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

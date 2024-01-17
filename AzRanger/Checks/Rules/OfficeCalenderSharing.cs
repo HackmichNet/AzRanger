@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("OfficeCalenderSharing", ScopeEnum.AAD, MaturityLevel.Mature, "https://admin.microsoft.com/Adminportal/Home#/Settings/Services/:/Settings/L1/Calendar")]    
     class OfficeCalenderSharing : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -4,7 +4,6 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOMailboxAudit", ScopeEnum.EXO)]
     class EXOMailboxAudit : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

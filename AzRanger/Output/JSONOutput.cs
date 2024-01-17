@@ -1,5 +1,7 @@
 ﻿using AzRanger.Checks;
+using AzRanger.Checks.AzRanger.Checks;
 using AzRanger.Models;
+using AzRanger.Models.AzMgmt;
 using AzRanger.Models.Generic;
 using AzRanger.Utilities;
 using System;
@@ -39,7 +41,6 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.Finding)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
@@ -51,13 +52,13 @@ namespace AzRanger.Output
                     item.RiskScore = ruleInfo.RiskScore;
                 }
 
-                if (ruleMeta != null)
+                if (RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
                 {
-                    item.ShortName = ruleMeta.ShortName;
-                    item.PortalUrl = ruleMeta.PortalUrl;
-                    item.Service = ruleMeta.Service.ToString();
-                    item.Scope = ruleMeta.Scope.ToString();
-                    item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
+                    item.ShortName = meta.ShortName;
+                    item.PortalUrl = meta.PortalUrl;
+                    item.Service = meta.Service.ToString();
+                    item.Scope = meta.Scope.ToString();
+                    item.MaturityLevel = meta.MaturityLevel.ToString();
                 }
 
                 if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
@@ -96,7 +97,6 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.NoFinding)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
@@ -108,13 +108,13 @@ namespace AzRanger.Output
                     item.RiskScore = ruleInfo.RiskScore;
                 }
 
-                if (ruleMeta != null)
+                if (RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
                 {
-                    item.ShortName = ruleMeta.ShortName;
-                    item.PortalUrl = ruleMeta.PortalUrl;
-                    item.Service = ruleMeta.Service.ToString();
-                    item.Scope = ruleMeta.Scope.ToString();
-                    item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
+                    item.ShortName = meta.ShortName;
+                    item.PortalUrl = meta.PortalUrl;
+                    item.Service = meta.Service.ToString();
+                    item.Scope = meta.Scope.ToString();
+                    item.MaturityLevel = meta.MaturityLevel.ToString();
                 }
 
                 if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
@@ -138,7 +138,6 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.Error)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
@@ -150,13 +149,13 @@ namespace AzRanger.Output
                     item.RiskScore = ruleInfo.RiskScore;
                 }
 
-                if (ruleMeta != null)
+                if (RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
                 {
-                    item.ShortName = ruleMeta.ShortName;
-                    item.PortalUrl = ruleMeta.PortalUrl;
-                    item.Service = ruleMeta.Service.ToString();
-                    item.Scope = ruleMeta.Scope.ToString();
-                    item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
+                    item.ShortName = meta.ShortName;
+                    item.PortalUrl = meta.PortalUrl;
+                    item.Service = meta.Service.ToString();
+                    item.Scope = meta.Scope.ToString();
+                    item.MaturityLevel = meta.MaturityLevel.ToString();
                 }
 
                 if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
@@ -180,7 +179,6 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.NotApplicable)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
 
                 if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
@@ -192,13 +190,13 @@ namespace AzRanger.Output
                     item.RiskScore = ruleInfo.RiskScore;
                 }
 
-                if (ruleMeta != null)
+                if (RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
                 {
-                    item.ShortName = ruleMeta.ShortName;
-                    item.PortalUrl = ruleMeta.PortalUrl;
-                    item.Service = ruleMeta.Service.ToString();
-                    item.Scope = ruleMeta.Scope.ToString();
-                    item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
+                    item.ShortName = meta.ShortName;
+                    item.PortalUrl = meta.PortalUrl;
+                    item.Service = meta.Service.ToString();
+                    item.Scope = meta.Scope.ToString();
+                    item.MaturityLevel = meta.MaturityLevel.ToString();
                 }
 
                 if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzVirtMManagedDiskUsage", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Compute%2FVirtualMachines", ServiceEnum.VirtualMachine)]
     internal class AzVirtMManagedDiskUsage : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

@@ -7,9 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
-{
-    [RuleMeta("EXOBasicAuth", ScopeEnum.EXO, MaturityLevel.Mature, "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/ModernAuthentication")]
-    
+{    
     class EXOBasicAuth : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

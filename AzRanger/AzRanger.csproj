@@ -321,8 +321,9 @@
     <Compile Include="Checks\CISM365InfoData.cs" />
     <Compile Include="Checks\RuleInfo.cs" />
     <Compile Include="Checks\RuleInfoData.cs" />
+    <Compile Include="Checks\RuleMeta.cs" />
+    <Compile Include="Checks\RuleMetaData.cs" />
     <Compile Include="Checks\TomlInfoWrapper.cs" />
-    <Compile Include="Checks\RuleMetaAttribute.cs" />
     <Compile Include="Checks\Rules\ADPasswordHashSyncEnabled.cs" />
     <Compile Include="Checks\Rules\ADPasswordProtection.cs" />
     <Compile Include="Checks\Rules\AppsAsGlobalAdmin.cs" />
@@ -629,6 +630,7 @@
     <None Include="Properties\app.manifest" />
     <None Include="Resources\AzureInformation.toml" />
     <None Include="Resources\CISM365Information.toml" />
+    <None Include="Resources\Meta.toml" />
     <None Include="Resources\ReportTemplate.zip" />
     <None Include="Resources\RuleInformation.toml" />
   </ItemGroup>

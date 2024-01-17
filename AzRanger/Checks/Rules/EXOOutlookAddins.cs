@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("EXOOutlookAddins", ScopeEnum.EXO, MaturityLevel.Tentative, "https://outlook.office365.com/ecp/?form=eac&mkt=en-US")]    
     class EXOOutlookAddins : BaseCheck
     {
         private String Check1 = "My ReadWriteMailbox Apps";

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertDeletePolicyAssignment", ScopeEnum.Azure, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]    internal class AzActLogAlertDeletePolicyAssignment : BaseCheck
+    internal class AzActLogAlertDeletePolicyAssignment : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzAppRegistration", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings")]    class AzAppRegistration : BaseCheck
+    internal class AzAppRegistration : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {

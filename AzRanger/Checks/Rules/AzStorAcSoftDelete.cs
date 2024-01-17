@@ -3,7 +3,6 @@ using AzRanger.Models.AzMgmt;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcSoftDelete", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]    
     internal class AzStorAcSoftDelete : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

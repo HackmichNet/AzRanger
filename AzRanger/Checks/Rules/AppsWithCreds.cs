@@ -3,7 +3,6 @@ using AzRanger.Models.MSGraph;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AppsWithCreds", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM")]
     
     class AppsWithCreds : BaseCheck
     {

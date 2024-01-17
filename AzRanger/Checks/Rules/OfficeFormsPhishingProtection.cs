@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("OfficeFormsPhishingProtection", ScopeEnum.AAD, MaturityLevel.Mature, "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/OfficeForms")]    
     class OfficeFormsPhishingProtection : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

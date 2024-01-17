@@ -6,9 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
-{
-    [RuleMeta("DirSyncSoftMatch", ScopeEnum.AAD, MaturityLevel.Mature, "https://www.semperis.com/blog/smtp-matching-abuse-in-azure-ad/")]
-    
+{    
     class DirSyncSoftMatch : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
