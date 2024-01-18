@@ -1,0 +1,771 @@
+[ADPasswordHashSyncEnabled]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/DirectoriesADConnectBlade"
+
+[ADPasswordProtection]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection"
+
+[AppsAsGlobalAdmin]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/~/AppAppsPreview"
+
+[AppsDangerousPerms]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM"
+
+[AppsUserCanAddCredsHighPrivApp]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM"
+
+[AppsUserCanAddCredsHighPrivService]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade/~/AppAppsPreview"
+
+[AppsWithCreds]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM"
+
+[AppsWithHighPrives]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM"
+
+[AzActLogAlertChangeNetworkSecGrp]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2"
+service = "StorageAccount"
+
+[AzActLogAlertChangeSQLServerFWRule]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2"
+service = "StorageAccount"
+
+[AzActLogAlertCreateOrUpdatePublicIPAddressRule]
+scope = "Azure"
+maturity = 0
+portal = "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2"
+service = "StorageAccount"
+
+[AzActLogAlertCreateOrUpdateSecuritySolution]
+scope = "Azure"
+maturity = 0
+portal = "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2"
+service = "StorageAccount"
+
+[AzActLogAlertCreatePolicyAssignment]
+scope = "Azure"
+maturity = 0
+portal = "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2"
+service = "StorageAccount"
+
+[AzActLogAlertDeleteNetworkSecGrp]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2"
+service = "StorageAccount"
+
+[AzActLogAlertDeletePolicyAssignment]
+scope = "Azure"
+maturity = 0
+portal = "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2"
+service = "StorageAccount"
+
+[AzActLogAlertDeletePublicIPAddressRule]
+scope = "Azure"
+maturity = 0
+portal = "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2"
+service = "StorageAccount"
+
+[AzActLogAlertDeleteSecuritySolution]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2"
+service = "StorageAccount"
+
+[AzActLogAlertDeleteSQLFirewallRule]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2"
+service = "StorageAccount"
+
+[AzActNSGRDPLimitiation]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups"
+service = "NetworksSecurityGroup"
+
+[AzActNSGSSHLimitiation]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups"
+service = "NetworksSecurityGroup"
+
+[AzActNSGSUnrestrictedDestionationPort]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups"
+service = "NetworksSecurityGroup"
+
+[AzActNSGSUnrestrictedSourceAccess]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups"
+service = "NetworksSecurityGroup"
+
+[AzAppRegistration]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings"
+
+[AzASCDefaultPolicy]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/?l=en.en-us#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Overview"
+
+[AzAutoprovisioning]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings"
+
+[AzB2BPolicy]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AllowlistPolicyBlade"
+
+[AzGuestInvite]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AllowlistPolicyBlade"
+
+[AzGuestRestrictions]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AllowlistPolicyBlade"
+
+[AzKeyVKeyExpiration]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
+service = "KeyVault"
+
+[AzKeyVKeyExpirationNonRBAC]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
+service = "KeyVault"
+
+[AzKeyVKeyExpirationRBAC]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
+service = "KeyVault"
+
+[AzKeyVLogging]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
+service = "KeyVault"
+
+[AzKeyVSecretExpiration]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
+service = "KeyVault"
+
+[AzKeyVSecretExpirationNonRBAC]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
+service = "KeyVault"
+
+[AzKeyVSecretExpirationRBAC]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
+service = "KeyVault"
+
+[AzKeyVSoftDelete]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
+service = "KeyVault"
+
+[AzMgmtGroupCreation]
+scope = "AAD"
+maturity = 1
+portal = "https://portal.azure.com/#blade/Microsoft_Azure_ManagementGroups/ManagementGroupBrowseBlade/MGBrowse_settingsItem"
+
+[AzPasswordPolicy]
+scope = "AAD"
+maturity = 1
+portal = "https://admin.microsoft.com/#/Settings/SecurityPrivacy/:/Settings/L1/PasswordPolicy"
+
+[AzPSQLLogCheckpoints]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DBforPostgreSQL%2Fservers"
+service = "PSQLServer"
+
+[AzPSQLLogConnections]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DBforPostgreSQL%2Fservers"
+service = "PSQLServer"
+
+[AzPSQLLogConnectionThrottling]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DBforPostgreSQL%2Fservers"
+service = "PSQLServer"
+
+[AzPSQLLogDisconnections]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.DBforPostgreSQL%2Fservers"
+service = "PSQLServer"
+
+[AzRestrictUserAccessGroupFeature]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/General/menuId/General"
+
+[AzSecurityContacts]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/?l=en.en-us#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Overview"
+
+[AzSecurityContactsNotifiedForHigh]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/?l=en.en-us#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Overview"
+
+[AzSecurityContactsNotifyOwner]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/?l=en.en-us#view/Microsoft_Azure_Policy/PolicyMenuBlade/~/Overview"
+
+[AzSecurityDefaultsO365]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/TenantOverview.ReactView"
+
+[AzSQLAuditingEnabled]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers"
+service = "SQLServer"
+
+[AzSQLAuditingRetention]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers"
+service = "SQLServer"
+
+[AzSQLServerAzADAdmin]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers"
+service = "SQLServer"
+
+[AzSQLServerInboundTraffic]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers"
+service = "SQLServer"
+
+[AzSQLServerMinimumTLSVersion]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers"
+service = "SQLServer"
+
+[AzStorAcAccessKeyAge]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzStorAcAllowTrustedServices]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzStorAcContainerPublicAccess]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzStorAcCustomKeys]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzStorAcInfraEncrypt]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzStorAcKeyLastRotation]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzStorAcKeyRotationReminder]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzStorAcMinTLS12]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzStorAcMinTLSVersion]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzStorAcNetworkAccess]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzStorAcSecureTransfer]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzStorAcSoftDelete]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts"
+service = "StorageAccount"
+
+[AzSubscriptionPolicy]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#view/Microsoft_Azure_SubscriptionManagement/ManageSubscriptionPoliciesBlade"
+
+[AzVirtMManagedDiskUsage]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Compute%2FVirtualMachines"
+service = "VirtualMachine"
+
+[CABlockLegacyAuth]
+scope = "AAD"
+maturity = 0
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade/~/Overview/fromNav/Identity"
+
+[DfCEAdditionalMailAlert]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings"
+
+[DfCEAdditionalMailAlertSeverity]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings"
+
+[DfCEMailSecAlerts]
+scope = "Azure"
+maturity = 1
+portal = "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings"
+
+[DirSyncSoftMatch]
+scope = "AAD"
+maturity = 1
+portal = "https://www.semperis.com/blog/smtp-matching-abuse-in-azure-ad/"
+
+[EXOAdminAuditLogConfig]
+scope = "EXO"
+maturity = 1
+portal = "https://compliance.microsoft.com/auditlogsearch"
+
+[EXOAutomaticForwarding]
+scope = "EXO"
+maturity = 1
+
+[EXOBasicAuth]
+scope = "EXO"
+maturity = 1
+portal = "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/ModernAuthentication"
+
+[EXOBypassSafeAttachments]
+scope = "EXO"
+maturity = 1
+portal = "https://admin.exchange.microsoft.com/#/transportrules"
+
+[EXOBypassSafeLinks]
+scope = "EXO"
+maturity = 1
+portal = "https://admin.exchange.microsoft.com/#/transportrules"
+
+[EXOCheckSPF]
+scope = "EXO"
+maturity = 1
+
+[EXOCheckTransportRules]
+scope = "EXO"
+maturity = 1
+portal = "https://admin.exchange.microsoft.com/#/transportrules"
+
+[EXOClientForwardingIsBlocked]
+scope = "EXO"
+maturity = 0
+portal = "https://admin.exchange.microsoft.com/#/transportrules"
+
+[EXOCommonAttachmentFilter]
+scope = "EXO"
+maturity = 0
+portal = "https://security.microsoft.com/antimalwarev2"
+
+[EXODKIM]
+scope = "EXO"
+maturity = 1
+
+[EXODMARC]
+scope = "EXO"
+maturity = 1
+
+[EXOMailboxAudit]
+scope = "EXO"
+maturity = 1
+
+[EXOMailTipps]
+scope = "EXO"
+maturity = 1
+
+[EXOModernauthentication]
+scope = "EXO"
+maturity = 1
+portal = "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/ModernAuthentication"
+
+[EXONotifcationUsersSendingMalware]
+scope = "EXO"
+maturity = 1
+portal = "https://security.microsoft.com/antimalwarev2"
+
+[EXOOutlookAddins]
+scope = "EXO"
+maturity = 0
+portal = "https://outlook.office365.com/ecp/?form=eac&mkt=en-US"
+
+[EXOOwaExternalStorageProvider]
+scope = "EXO"
+maturity = 1
+
+[EXOSpamPolicy]
+scope = "EXO"
+maturity = 1
+portal = "https://security.microsoft.com/antispam"
+
+[EXOWhitelistBypass]
+scope = "EXO"
+maturity = 1
+portal = "https://admin.exchange.microsoft.com/#/transportrules"
+
+[GroupAllowsSelfService]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/General/menuId/General"
+
+[GroupAllowUserToCreateSecGroups]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/General/menuId/General"
+
+[GroupLifecycle]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/Lifecycle/menuId/General"
+
+[GroupM365GroupManagement]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/General/menuId/General"
+
+[GroupPublic]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/AllGroups/menuId/AllGroups"
+
+[M365WebStorageProvider]
+scope = "Azure"
+maturity = 1
+portal = "https://admin.microsoft.com/Adminportal/Home#/Settings/Services/:/Settings/L1/OfficeOnline"
+
+[MDMAlphanumericPasswords]
+scope = "MDM"
+maturity = 0
+portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles"
+
+[MDMDevicePolicySet]
+scope = "MDM"
+maturity = 0
+portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles"
+
+[MDMDeviceWipe]
+scope = "MDM"
+maturity = 0
+portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles"
+
+[MDMJailBreake]
+scope = "MDM"
+maturity = 0
+portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles"
+
+[MDMLockScreen]
+scope = "MDM"
+maturity = 0
+portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles"
+
+[MDMManagedMail]
+scope = "MDM"
+maturity = 0
+portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesComplianceMenu/policies"
+
+[MDMPasswordComplexity]
+scope = "MDM"
+maturity = 0
+portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles"
+
+[MDMPasswordNeverExpired]
+scope = "MDM"
+maturity = 0
+portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles"
+
+[MDMPasswordReuse]
+scope = "MDM"
+maturity = 0
+portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles"
+
+[MDMSimplePasswords]
+scope = "MDM"
+maturity = 0
+portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles"
+
+[MDMStorageEncryption]
+scope = "MDM"
+maturity = 0
+portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesComplianceMenu/policies"
+
+[OfficeAddIns]
+scope = "AAD"
+maturity = 1
+portal = "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/Store"
+
+[OfficeCalenderSharing]
+scope = "AAD"
+maturity = 1
+portal = "https://admin.microsoft.com/Adminportal/Home#/Settings/Services/:/Settings/L1/Calendar"
+
+[OfficeDLPLabels]
+scope = "AAD"
+maturity = 0
+portal = "https://compliance.microsoft.com/informationprotection/labelpolicies"
+
+[OfficeDLPPolicies]
+scope = "AAD"
+maturity = 0
+portal = "https://compliance.microsoft.com/datalossprevention?viewid=policies"
+
+[OfficeFormsPhishingProtection]
+scope = "AAD"
+maturity = 1
+portal = "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/OfficeForms"
+
+[OfficeSwaySettings]
+scope = "AAD"
+maturity = 1
+portal = "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/Sway"
+
+[SPOEntraB2BEnabled]
+scope = "SPO"
+maturity = 1
+
+[SPOExpireExternalLinks]
+scope = "SPO"
+maturity = 1
+service = "https://<YOURDOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/sharing"
+
+[SPOGuestSharing]
+scope = "SPO"
+maturity = 1
+portal = "https://<YOURDOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/sharing"
+
+[SPOLegacyAuth]
+scope = "SPO"
+maturity = 1
+portal = "https://<YOURDOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/accessControl"
+
+[SPOModernAuthDisabled]
+scope = "SPO"
+maturity = 1
+
+[SPOOneDriveSync]
+scope = "SPO"
+maturity = 1
+portal = "https://<YOUR-DOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/settings/ODBSync"
+
+[SPOSharing]
+scope = "SPO"
+maturity = 1
+portal = "https://<YOURDOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHome.aspx#/sharing"
+
+[TeamsExternalCommunication]
+scope = "Teams"
+maturity = 1
+portal = "https://admin.teams.microsoft.com/company-wide-settings/external-communications"
+
+[TeamsExternalCommunicationFederated]
+scope = "Teams"
+maturity = 1
+portal = "https://admin.teams.microsoft.com/company-wide-settings/external-communications"
+
+[TeamsExternalCommunicationSkype]
+scope = "Teams"
+maturity = 1
+portal = "https://admin.teams.microsoft.com/company-wide-settings/external-communications"
+
+[TeamsExternalCommunicationTeams]
+scope = "Teams"
+maturity = 1
+portal = "https://admin.teams.microsoft.com/company-wide-settings/external-communications"
+
+[TeamsExternalCommunicationInbound]
+scope = "Teams"
+maturity = 1
+portal = "https://admin.teams.microsoft.com/company-wide-settings/external-communications"
+
+[TeamsExternalSharingProvider]
+scope = "Teams"
+maturity = 1
+portal = "https://admin.teams.microsoft.com/company-wide-settings/teams-settings"
+
+[UserAdminConsent]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/AdminConsentSettings"
+
+[UserAllAdminsHaveMFA]
+scope = "AAD"
+maturity = 1
+service = "null"
+
+[UserAllowAdHocSubscriptions]
+scope = "AAD"
+maturity = 1
+
+[UserAllowCreationOfAzureTenants]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings"
+
+[UserAllUserHaveMFA]
+scope = "AAD"
+maturity = 0
+
+[UserBitLockerSelfService]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_Devices/DevicesMenuBlade/~/DeviceSettings/menuId/recoveryKeys"
+
+[UserCanAddGalleryApps]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/FeatureSettingsBlade"
+
+[UserCanViewOtherUsersProfile]
+scope = "AAD"
+maturity = 1
+
+[UserConsent]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/UserSettings"
+
+[UserGuestWithHighPrivRole]
+scope = "AAD"
+maturity = 1
+portal = "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RolesAndAdministrators"
+
+[UserLinkedInConnection]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings"
+
+[UserMax4GlobalAdmins]
+scope = "AAD"
+maturity = 1
+portal = "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RolesAndAdministrators"
+
+[UserMFAFatigueProtection]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/AdminAuthMethods"
+
+[UserNotifyAdminOnPasswordReset]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/PasswordResetMenuBlade/~/Notifications"
+
+[UserNotifyUserOnPasswordReset]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/PasswordResetMenuBlade/~/Notifications"
+
+[UserPasswordBadPasswordList]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection"
+
+[UserPasswordResetRequires2Methods]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/PasswordResetMenuBlade/~/AuthenticationMethods"
+
+[UserPasswordSelfService]
+scope = "AAD"
+maturity = 1
+portal = "https://portal.azure.com/#blade/Microsoft_AAD_IAM/PasswordResetMenuBlade/Properties"
+
+[UserReconfirmAuthenticationInformation]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/PasswordResetMenuBlade/~/Registration"
+
+[UserRemainSignIn]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings"
+
+[UserRequireMFADevJoin]
+scope = "AAD"
+maturity = 1
+portal = "https://portal.azure.com/#view/Microsoft_AAD_Devices/DevicesMenuBlade/~/DeviceSettings/menuId~/null"
+
+[UserRestrictAccessToAdminPortal]
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings"

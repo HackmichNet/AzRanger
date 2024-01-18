@@ -1,8 +1,12 @@
 ﻿using AzRanger.Checks;
+using AzRanger.Checks.AzRanger.Checks;
 using AzRanger.Models;
+using AzRanger.Models.AzMgmt;
 using AzRanger.Models.Generic;
+using AzRanger.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -37,43 +41,39 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.Finding)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
-                RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
-                CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
-                if (ruleInfo != null)
+                if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
                     item.ShortDescription = ruleInfo.ShortDescription;
-                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.Risk = ruleInfo.Risk;
-                    item.RiskScore = ruleInfo.RiskScore;
-                    item.Solution = ruleInfo.Solution;
+                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.LongDescription = ruleInfo.LongDescription;
+                    item.Solution = ruleInfo.Solution;
+                    item.RiskScore = ruleInfo.RiskScore;
                 }
 
-                if (ruleMeta != null)
+                if (RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
                 {
-                    item.ShortName = ruleMeta.ShortName;
-                    item.PortalUrl = ruleMeta.PortalUrl;
-                    item.Service = ruleMeta.Service.ToString();
-                    item.Scope = ruleMeta.Scope.ToString();
-                    item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
+                    item.ShortName = meta.ShortName;
+                    item.PortalUrl = meta.PortalUrl;
+                    item.Service = meta.Service.ToString();
+                    item.Scope = meta.Scope.ToString();
+                    item.MaturityLevel = meta.MaturityLevel.ToString();
                 }
 
-                if (cisM365Rule != null)
+                if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
                 {
-                    item.Version = cisM365Rule.Version;
-                    item.Section = cisM365Rule.Section;
-                    item.Level = cisM365Rule.Level.ToString();
+                    item.Version = info.Version;
+                    item.Section = info.Section;
+                    item.Level = info.Level.ToString();
                     item.CISDocument = "CIS M365";
                 }
 
-                if (cisAzRule != null)
+                if (CISAzInfo.TryGet(check.GetType().Name, out CISAzInfo azInfo))
                 {
-                    item.Version = cisAzRule.Version;
-                    item.Section = cisAzRule.Section;
-                    item.Level = cisAzRule.Level.ToString();
+                    item.Version = azInfo.Version;
+                    item.Section = azInfo.Section;
+                    item.Level = azInfo.Level.ToString();
                     item.CISDocument = "CIS Azure";
                 }
 
@@ -97,43 +97,39 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.NoFinding)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
-                RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
-                CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
-                if (ruleInfo != null)
+                if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
                     item.ShortDescription = ruleInfo.ShortDescription;
-                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.Risk = ruleInfo.Risk;
-                    item.RiskScore = ruleInfo.RiskScore;
-                    item.Solution = ruleInfo.Solution;
+                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.LongDescription = ruleInfo.LongDescription;
+                    item.Solution = ruleInfo.Solution;
+                    item.RiskScore = ruleInfo.RiskScore;
                 }
 
-                if (ruleMeta != null)
+                if (RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
                 {
-                    item.ShortName = ruleMeta.ShortName;
-                    item.PortalUrl = ruleMeta.PortalUrl;
-                    item.Service = ruleMeta.Service.ToString();
-                    item.Scope = ruleMeta.Scope.ToString();
-                    item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
+                    item.ShortName = meta.ShortName;
+                    item.PortalUrl = meta.PortalUrl;
+                    item.Service = meta.Service.ToString();
+                    item.Scope = meta.Scope.ToString();
+                    item.MaturityLevel = meta.MaturityLevel.ToString();
                 }
 
-                if (cisM365Rule != null)
+                if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
                 {
-                    item.Version = cisM365Rule.Version;
-                    item.Section = cisM365Rule.Section;
-                    item.Level = cisM365Rule.Level.ToString();
+                    item.Version = info.Version;
+                    item.Section = info.Section;
+                    item.Level = info.Level.ToString();
                     item.CISDocument = "CIS M365";
                 }
 
-                if (cisAzRule != null)
+                if (CISAzInfo.TryGet(check.GetType().Name, out CISAzInfo azInfo))
                 {
-                    item.Version = cisAzRule.Version;
-                    item.Section = cisAzRule.Section;
-                    item.Level = cisAzRule.Level.ToString();
+                    item.Version = azInfo.Version;
+                    item.Section = azInfo.Section;
+                    item.Level = azInfo.Level.ToString();
                     item.CISDocument = "CIS Azure";
                 }
                 NoFindingList.Add(item);
@@ -142,43 +138,39 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.Error)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
-                RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
-                CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
-                if (ruleInfo != null)
+                if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
                     item.ShortDescription = ruleInfo.ShortDescription;
-                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.Risk = ruleInfo.Risk;
-                    item.RiskScore = ruleInfo.RiskScore;
-                    item.Solution = ruleInfo.Solution;
+                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.LongDescription = ruleInfo.LongDescription;
+                    item.Solution = ruleInfo.Solution;
+                    item.RiskScore = ruleInfo.RiskScore;
                 }
 
-                if (ruleMeta != null)
+                if (RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
                 {
-                    item.ShortName = ruleMeta.ShortName;
-                    item.PortalUrl = ruleMeta.PortalUrl;
-                    item.Service = ruleMeta.Service.ToString();
-                    item.Scope = ruleMeta.Scope.ToString();
-                    item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
+                    item.ShortName = meta.ShortName;
+                    item.PortalUrl = meta.PortalUrl;
+                    item.Service = meta.Service.ToString();
+                    item.Scope = meta.Scope.ToString();
+                    item.MaturityLevel = meta.MaturityLevel.ToString();
                 }
 
-                if (cisM365Rule != null)
+                if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
                 {
-                    item.Version = cisM365Rule.Version;
-                    item.Section = cisM365Rule.Section;
-                    item.Level = cisM365Rule.Level.ToString();
+                    item.Version = info.Version;
+                    item.Section = info.Section;
+                    item.Level = info.Level.ToString();
                     item.CISDocument = "CIS M365";
                 }
 
-                if (cisAzRule != null)
+                if (CISAzInfo.TryGet(check.GetType().Name, out CISAzInfo azInfo))
                 {
-                    item.Version = cisAzRule.Version;
-                    item.Section = cisAzRule.Section;
-                    item.Level = cisAzRule.Level.ToString();
+                    item.Version = azInfo.Version;
+                    item.Section = azInfo.Section;
+                    item.Level = azInfo.Level.ToString();
                     item.CISDocument = "CIS Azure";
                 }
                 ErrorList.Add(item);
@@ -187,43 +179,39 @@ namespace AzRanger.Output
             foreach (BaseCheck check in auditor.NotApplicable)
             {
                 ResultJSONItem item = new ResultJSONItem();
-                RuleInfoAttribute ruleInfo = (RuleInfoAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleInfoAttribute));
-                RuleMetaAttribute ruleMeta = (RuleMetaAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(RuleMetaAttribute));
-                CISM365Attribute cisM365Rule = (CISM365Attribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISM365Attribute));
-                CISAZAttribute cisAzRule = (CISAZAttribute)Attribute.GetCustomAttribute(check.GetType(), typeof(CISAZAttribute));
 
-                if (ruleInfo != null)
+                if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo ruleInfo))
                 {
                     item.ShortDescription = ruleInfo.ShortDescription;
-                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.Risk = ruleInfo.Risk;
-                    item.RiskScore = ruleInfo.RiskScore;
-                    item.Solution = ruleInfo.Solution;
+                    item.ReferenceLink = ruleInfo.ReferenceLink;
                     item.LongDescription = ruleInfo.LongDescription;
+                    item.Solution = ruleInfo.Solution;
+                    item.RiskScore = ruleInfo.RiskScore;
                 }
 
-                if (ruleMeta != null)
+                if (RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
                 {
-                    item.ShortName = ruleMeta.ShortName;
-                    item.PortalUrl = ruleMeta.PortalUrl;
-                    item.Service = ruleMeta.Service.ToString();
-                    item.Scope = ruleMeta.Scope.ToString();
-                    item.MaturityLevel = ruleMeta.MaturityLevel.ToString();
+                    item.ShortName = meta.ShortName;
+                    item.PortalUrl = meta.PortalUrl;
+                    item.Service = meta.Service.ToString();
+                    item.Scope = meta.Scope.ToString();
+                    item.MaturityLevel = meta.MaturityLevel.ToString();
                 }
 
-                if (cisM365Rule != null)
+                if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
                 {
-                    item.Version = cisM365Rule.Version;
-                    item.Section = cisM365Rule.Section;
-                    item.Level = cisM365Rule.Level.ToString();
+                    item.Version = info.Version;
+                    item.Section = info.Section;
+                    item.Level = info.Level.ToString();
                     item.CISDocument = "CIS M365";
                 }
 
-                if (cisAzRule != null)
+                if (CISAzInfo.TryGet(check.GetType().Name, out CISAzInfo azInfo))
                 {
-                    item.Version = cisAzRule.Version;
-                    item.Section = cisAzRule.Section;
-                    item.Level = cisAzRule.Level.ToString();
+                    item.Version = azInfo.Version;
+                    item.Section = azInfo.Section;
+                    item.Level = azInfo.Level.ToString();
                     item.CISDocument = "CIS Azure";
                 }
 

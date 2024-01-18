@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcKeyRotationReminder", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.3", "", Level.L1, "v2.0")]
-    [RuleInfo("StorageAccount key rotation is not configured", "If the Storage Accounts Access Keys are not regularly changed potentially compromised keys can result in long-term exploitable credential.", 1, null, null, @"Go to Storage Accounts and for each Storage Account go to Access Key and click the ""Set rotation reminder"".")]
     internal class AzStorAcKeyRotationReminder : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

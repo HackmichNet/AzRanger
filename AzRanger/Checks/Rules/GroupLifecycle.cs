@@ -6,9 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
-{
-    [RuleMeta("GroupLifecycle", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/Lifecycle/menuId/General")]
-    [RuleInfo("Temporary groups do not expire", "This can result in a high number of groups over the time.", 3, "https://docs.microsoft.com/en-us/microsoft-365/solutions/plan-organization-lifecycle-governance?view=o365-worldwide", null, @"Go to the Portal URL and set ""Enable expiration for these Microsoft 365 groups"" to ""Yes"".")]
+{    
     class GroupLifecycle : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

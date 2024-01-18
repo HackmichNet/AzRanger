@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzStorAcNetworkAccess", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts", ServiceEnum.StorageAccount)]
-    [CISAZ("3.8", "", Level.L2, "v2.0")]
-    [RuleInfo("Storage Account allows access from arbitrary networks", "This can be lead to unwanted data loss.", 1, null, null, "Restrict the access to only choosen networks.")]
     internal class AzStorAcNetworkAccess : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

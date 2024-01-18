@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("MDMPasswordNeverExpired", Scope.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
-    [CISM365("7.3", "Ensure that mobile devices are set to never expire passwords", Level.L1, "v1.4")]
+    // TODO
     class MDMPasswordNeverExpired : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

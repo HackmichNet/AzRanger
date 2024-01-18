@@ -85,6 +85,9 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.4.2.13, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.1.4.2\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Markdig, Version=0.34.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Markdig.0.34.0\lib\net462\Markdig.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -285,6 +288,9 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Tomlyn, Version=0.17.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tomlyn.0.17.0\lib\netstandard2.0\Tomlyn.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzCollectors\AdminCenterCollector.cs" />
@@ -309,10 +315,15 @@
     <Compile Include="AzCollectors\TeamsCollector.cs" />
     <Compile Include="Checks\Auditor.cs" />
     <Compile Include="Checks\BaseCheck.cs" />
-    <Compile Include="Checks\CISAZAttribute.cs" />
-    <Compile Include="Checks\CISM365Attribute.cs" />
-    <Compile Include="Checks\RuleInfoAttribute.cs" />
-    <Compile Include="Checks\RuleMetaAttribute.cs" />
+    <Compile Include="Checks\CISAzInfo.cs" />
+    <Compile Include="Checks\CISAzInfoData.cs" />
+    <Compile Include="Checks\CISM365Info.cs" />
+    <Compile Include="Checks\CISM365InfoData.cs" />
+    <Compile Include="Checks\RuleInfo.cs" />
+    <Compile Include="Checks\RuleInfoData.cs" />
+    <Compile Include="Checks\RuleMeta.cs" />
+    <Compile Include="Checks\RuleMetaData.cs" />
+    <Compile Include="Checks\TomlInfoWrapper.cs" />
     <Compile Include="Checks\Rules\ADPasswordHashSyncEnabled.cs" />
     <Compile Include="Checks\Rules\ADPasswordProtection.cs" />
     <Compile Include="Checks\Rules\AppsAsGlobalAdmin.cs" />
@@ -334,10 +345,19 @@
     <Compile Include="Checks\Rules\AzActNSGRDPLimitiation.cs" />
     <Compile Include="Checks\Rules\AzActNSGSSHLimitiation.cs" />
     <Compile Include="Checks\Rules\AzActNSGSUnrestrictedDestionationPort.cs" />
+    <Compile Include="Checks\Rules\AzASCDefaultPolicy.cs" />
     <Compile Include="Checks\Rules\AzKeyVSoftDelete.cs" />
+    <Compile Include="Checks\Rules\AzPSQLLogConnections.cs" />
+    <Compile Include="Checks\Rules\AzPSQLLogConnectionThrottling.cs" />
+    <Compile Include="Checks\Rules\AzPSQLLogDisconnections.cs" />
+    <Compile Include="Checks\Rules\AzSecurityContacts.cs" />
+    <Compile Include="Checks\Rules\AzSecurityContactsNotifiedForHigh.cs" />
+    <Compile Include="Checks\Rules\AzSecurityContactsNotifyOwner.cs" />
     <Compile Include="Checks\Rules\AzSQLAuditingRetention.cs" />
     <Compile Include="Checks\Rules\AzSQLServerAzADAdmin.cs" />
     <Compile Include="Checks\Rules\AzPSQLLogCheckpoints.cs" />
+    <Compile Include="Checks\Rules\AzStorAcAccessKeyAge.cs" />
+    <Compile Include="Checks\Rules\AzStorAcMinTLS12.cs" />
     <Compile Include="Checks\Rules\AzStorAcMinTLSVersion.cs" />
     <Compile Include="Checks\Rules\AzStorAcKeyLastRotation.cs" />
     <Compile Include="Checks\Rules\AzStorAcKeyRotationReminder.cs" />
@@ -400,6 +420,17 @@
     <Compile Include="Checks\Rules\GroupLifecycle.cs" />
     <Compile Include="Checks\Rules\GroupM365GroupManagement.cs" />
     <Compile Include="Checks\Rules\GroupPublic.cs" />
+    <Compile Include="Checks\Rules\MDMAlphanumericPasswords.cs" />
+    <Compile Include="Checks\Rules\MDMDevicePolicySet.cs" />
+    <Compile Include="Checks\Rules\MDMDeviceWipe.cs" />
+    <Compile Include="Checks\Rules\MDMJailBreake.cs" />
+    <Compile Include="Checks\Rules\MDMLockScreen.cs" />
+    <Compile Include="Checks\Rules\MDMManagedMail.cs" />
+    <Compile Include="Checks\Rules\MDMPasswordComplexity.cs" />
+    <Compile Include="Checks\Rules\MDMPasswordNeverExpired.cs" />
+    <Compile Include="Checks\Rules\MDMPasswordReuse.cs" />
+    <Compile Include="Checks\Rules\MDMSimplePasswords.cs" />
+    <Compile Include="Checks\Rules\MDMStorageEncryption.cs" />
     <Compile Include="Checks\Rules\OfficeAddIns.cs" />
     <Compile Include="Checks\Rules\OfficeCalenderSharing.cs" />
     <Compile Include="Checks\Rules\OfficeDLPLabels.cs" />
@@ -588,6 +619,7 @@
     <Compile Include="Utilities\CommandlineOptions.cs" />
     <Compile Include="Utilities\DirectoryRoleTemplateID.cs" />
     <Compile Include="Utilities\HttpFactoryWithProxy.cs" />
+    <Compile Include="Utilities\MarkdownRenderer.cs" />
     <Compile Include="Utilities\ODataTypes.cs" />
     <Compile Include="Utilities\RetryHandler.cs" />
   </ItemGroup>
@@ -596,7 +628,11 @@
     <None Include="AzRanger_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
+    <None Include="Resources\AzureInformation.toml" />
+    <None Include="Resources\CISM365Information.toml" />
+    <None Include="Resources\Meta.toml" />
     <None Include="Resources\ReportTemplate.zip" />
+    <None Include="Resources\RuleInformation.toml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">

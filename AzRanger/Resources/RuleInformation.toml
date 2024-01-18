@@ -1,0 +1,865 @@
+[ADPasswordHashSyncEnabled]
+score = 3
+risk = "If password hash sync is not enabled, there is a risk that the leak of user credentials remains unnoticed."
+short = "Password hash sync is not enabled"
+solution = "You have to enable Password hash sync on the server where you have installed you Azure AD Connect tool. During the setup under *Optional Features* *Password hash synchronization* can be enabled."
+
+[ADPasswordProtection]
+score = 3
+short = "Entra ID Password Protection is not enabled"
+risk = "Entra ID Password Protection protects user using weak or leaked passwords."
+solution = "To enabled Entra ID Directory Password protection go to [https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection](https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection) and enable *Enable password protection on Windows Server Active Directory*."
+
+[AppsAsGlobalAdmin]
+score = 9
+short = "Service principals which are member of the Roles \"Global Admin\" or \"Privileged Authentication Administrator\""
+risk = "A user with *owner* rights to the service principal or with the role *Application administrator* or *Cloud application administrator* can use this configuration to elevate its privileges."
+link = "https://posts.specterops.io/azure-privilege-escalation-via-service-principal-abuse-210ae2be2a5"
+solution = "Remove the service principals from these roles."
+
+[AppsDangerousPerms]
+score = 9
+short = "Some service principals have dangerous permissions"
+risk = "A user with *owner* rights to the service principal or with the role *Application administrator* or *Cloud application administrator* can use this configuration to elevate its privileges."
+link = "https://posts.specterops.io/azure-privilege-escalation-via-azure-api-permissions-abuse-74aee1006f48"
+long = "In your tenant exists Service principals with dangerous permissions like: *RoleManagement.ReadWrite.Directory* or *AppRoleAssignment.ReadWrite.All*"
+solution = "Check if these permissions are really needed by the application."
+
+[AppsWithHighPrives]
+score = 9
+short = "Service principals with high privileged roles assigned"
+risk = "A user with *owner* rights to the service principal or with the role *Application administrator* or *Cloud application administrator* can use this configuration to elevate its privileges."
+solution = "Check if the service principals needs these roles or if they can be removed."
+
+[AzActNSGSUnrestrictedDestionationPort]
+score = 0
+short = "Network Security Group without inbound port restriction"
+risk = "The service protected by the Network Security Group is exposed to the internet."
+solution = "Configure the Network Security Group that only needed inbound ports are allowed."
+
+[AzActNSGSUnrestrictedSourceAccess]
+score = 0
+short = "Network Security Group allows access from everywhere"
+risk = "The service protected by the Network Security Group is exposed to the internet."
+solution = "Check if the source address can be restricted."
+
+[AzAppRegistration]
+score = 7
+short = "Users are allowed to register own applications"
+risk = "Allowing user to register their own applications allows an attacker to persist access or to register an internal malicious applications."
+link = "https://www.cloud-architekt.net/detection-and-mitigation-consent-grant-attacks-azuread/"
+solution = "Go to [https://portal.azure.com/#blade/Microsoft_AAD_IAM/UsersManagementMenuBlade/UserSettings](https://portal.azure.com/#blade/Microsoft_AAD_IAM/UsersManagementMenuBlade/UserSettings) and switch the button *Users can register applications* to *No*."
+
+[AzB2BPolicy]
+score = 5
+short = "Guest users are not restricted to specific domains"
+risk = "Guest users can be invited from all tenants. This could lead to an unwanted data loss."
+solution = "Go to the Portal URL and set check *Allow invitations only to the specified domains (most restrictive)*."
+
+[AzGuestInvite]
+score = 2
+short = "Guest Invitation is not restricted"
+risk = "This may lead to an unwanted number of guests in the tenant."
+long = "Either everyone (including guests) or all activeMembers of the tenant can invite guests."
+solution = "Go to *External Identities | External collaboration settings* and set the *Guest invite restrictions* to *Only users assigned to specific admin roles can invite guest users* or *No one in the organization can invite guest users including admins (most restrictive)"
+
+[AzGuestRestrictions]
+score = 2
+short = "Guest are not maximal restricted"
+risk = "Currently guests can enumerate the whole tenant."
+link = "https://danielchronlund.com/2021/11/18/scary-azure-ad-tenant-enumeration-using-regular-b2b-guest-accounts/"
+solution = "Go to *External Identities -> External collaboration settings* and set *Guest user access restrictions* to *Guest user access is restricted to properties and memberships of their own directory objects (most restrictive)."
+
+[AzPSQLLogCheckpoints]
+score = 1
+short = "Log Checkpoints are disabled"
+risk = "You might miss problems and errors in PSQLQueries."
+solution = "For each PSQLServer go to *Settings -> Server parameters* and search for *log_checkpoints*. Set the value to *On*."
+
+[AzPSQLLogConnections]
+score = 1
+short = "Log Connection are disabled"
+risk = "You might miss problems and errors in PSQLQueries."
+solution = "For each PSQLServer go to *Settings -> Server* parameters and search for *log_connections*. Set the value to *On*."
+
+[AzPSQLLogConnectionThrottling]
+score = 1
+short = "Log Disconnection are disabled"
+risk = "You might miss problems and errors in PSQLQueries."
+solution = "For each PSQLServer go to *Settings -> Server* parameters and search for *connection_throttling*. Set the value to *On*."
+
+[AzPSQLLogDisconnections]
+score = 1
+short = "Log Disconnection are disabled"
+risk = "You might miss problems and errors in PSQLQueries."
+solution = "For each PSQLServer go to *Settings -> Server* parameters and search for *log_disconnections*. Set the value to *On*."
+
+[AzRestrictUserAccessGroupFeature]
+score = 2
+short = "User can do self-service group management"
+risk = "In the current configuration users can perform self-service for their groups. This can result in an unwanted configuration."
+solution = "Go to the link in the reference and ensure that *Restrict user ability to access groups features in My Groups.* is set to *Yes*. "
+
+[AzSecurityDefaultsO365]
+score = 0
+short = "Security Defaults should be disabled."
+risk = "Security Defaults prevents you from using more advanced security features."
+solution = "Disable Security Defaults and use more advance security features."
+
+[AzSQLAuditingRetention]
+score = 1
+short = "SQL Server Auditretention is smaller than 90 days"
+risk = "In case of an incident audit logs might help to investigate it. If the retention time is too short some data might be missing."
+solution = "In the Azure Portal go to *SQL Servers* and click on *Auditing* on the left menu under *Security* for each instance. Under *Stoarge* expand *Advanced properties* and seht *Retention (days)* to higher than 90 or to 0 for unlimited retention."
+
+[AzSQLServerAzADAdmin]
+score = 1
+short = "Azure AD Authentication is not enabled for SQL-Server"
+risk = "This could be an addtional risk to the SQL Server. It eases attacks like password bruteforce."
+solution = "For each SQL-Server go to *Settings* and *Azure Active Directory*. Here click on *Set Admin* and choose an admin."
+
+[AzSQLServerInboundTraffic]
+score = 1
+short = "SQL Server is exposed to the internet"
+risk = "This could be an addtional risk to the SQL Server. It eases attacks like password bruteforce."
+solution = "Use the SQL Server Firewall to limit the traffic to the SQL Server for your needs."
+
+[AzSQLServerMinimumTLSVersion]
+score = 1
+short = "SQL Server allows connections with TLS 1.1 or TLS 1.0"
+risk = "There exist some theoretical attacks on TLS 1.0 and TLS 1.1."
+long = "There is no need nowadays to offer TLS ciphers lower than 1.2."
+solution = "For each SQLServer go to *Security -> Networking -> Connectivity* and set *Minimum TLS version* to *TLS1.2*."
+
+[AzStorAcAccessKeyAge]
+score = 1
+short = "Old access key for storage account"
+risk = "If an attacker gets the access key he can access the sotrage account as long as it is vaild."
+solution = "Change the access key for your Sotrage Accounts regularly"
+
+[AzStorAcContainerPublicAccess]
+score = 1
+short = "Storage Account Container with \"Public Access Level\""
+risk = "This can lead to data loss."
+solution = "Ensure that only intended public container listed below."
+
+[AzStorAcInfraEncrypt]
+score = 0
+short = "Storage Accounts does not require infrastructure encryption"
+risk = "Encrypting data on the hardware level provides an additional protection against data loss."
+solution = "You cannot enable this for already existent Storage Accounts. You must create new one and on the tap *Encryption* choose the right options."
+
+[AzStorAcKeyLastRotation]
+score = 1
+short = "Storage Account key is too old"
+risk = "If the Storage Accounts Access Keys are not regularly changed potentially compromised keys can result in long-term exploitable credential."
+solution = "Go to Storage Accounts and for each Storage Account go to *Access Key* and click *Rotate Key* for *key1* and *key2*."
+
+[AzStorAcKeyRotationReminder]
+score = 1
+short = "Storage Account key rotation is not configured"
+risk = "If the Storage Accounts Access Keys are not regularly changed potentially compromised keys can result in long-term exploitable credential."
+solution = "Go to Storage Accounts and for each Storage Account go to *Access Key* and click the *Set rotation reminder*."
+
+[AzStorAcMinTLS12]
+score = 1
+short = "This Storage Accounts allows access with TL1.0 or TLS.1.1."
+risk = "There exists theoretical attacks for TLS1.2."
+solution = "Enable TLS1.2 for the here shown Sotrage Accounts."
+
+[AzStorAcMinTLSVersion]
+score = 1
+short = "Storage Account does allow legacy TLS protocols"
+risk = "TLS 1.0 has some known vulnerabilities. Using this legacy protocol can reduce the security of data in transit."
+solution = "For each Storage Account under *Settings* go to *Configuration* and set the *Minimum TLS version* to *1.2*."
+
+[AzStorAcNetworkAccess]
+score = 1
+short = "Storage Account allows access from arbitrary networks"
+risk = "This can be lead to unwanted data loss."
+solution = "Restrict the access to only choosen networks."
+
+[AzVirtMManagedDiskUsage]
+score = 0
+short = "Virtual Machine does not use Managed Disk"
+risk = "The Virtual Machine does not use a Managed Disk. Managed disks are encrypted by default and are more resilient against failure."
+solution = "Check if a migration to Managed Disk is possible."
+
+[DfCEAdditionalMailAlert]
+score = 4
+short = "No additional E-Mail Address for Defender Alert is configured"
+risk = "Only the owner or nobody does receive E-Mail Notification from Microsoft if Defender for Cloud detects sometinhg malicious."
+solution = "To ensure that your secrutiy team receives notficiations from Defender for Cloud go to [https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings](https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings) and choose a Subscription or Resource Group. Then click on *Email notification* and enter in the field *Additional email addresses* the addresses you want."
+
+[DfCEAdditionalMailAlertSeverity]
+score = 0
+short = "Email Security Alerts for a subscription are not configured correctly"
+risk = "Your security team and subscription owners might receive to much Mails regarding security issues."
+solution = "Go to [https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings](https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings) and choose a Subscription or Resource Group. Then check *Notify about alerts with the following severity* and choose *High*."
+
+[DfCEMailSecAlerts]
+score = 4
+short = "E-Mail Security Alerts for a subscription are disabled or not configured"
+risk = "The owner of a subscription is not configured to receive E-Mail Notification from Microsoft if Defender for Cloud detects something malicious."
+solution = "Go to [https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings](https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings) and choose a Subscription or Resource Group. Then click on *Email notification* and set *All users with the following roles* to *Owner*."
+
+[DirSyncSoftMatch]
+score = 5
+short = "Your Tenant uses soft (SMTP)-match to synchronize on-premise user and cloud user."
+risk = "It is possible to use SMTP matching to synchronize on-premise users to Azure AD users that are eligible for administrative roles. Attackers who have gained on-premise access can use this approach to compromise Azure AD."
+link = "https://docs.microsoft.com/en-us/powershell/module/msonline/set-msoldirsyncfeature?view=azureadps-1.0#example-2-block-soft-matching-for-the-tenant"
+solution = "Disable SMTP matching with the PowerShell commandlet written in the reference."
+
+[EXOAdminAuditLogConfig]
+score = 7
+short = "Unified AuditLog is turned off"
+risk = "Attacks on Exchange Online can go unnoticed."
+link = "https://learn.microsoft.com/en-us/purview/audit-log-enable-disable?view=o365-worldwide"
+solution = "Go to Microsoft PureView and select *Audit*. Afterwards click *Start recording user and admin activity*. As an alternative you can use the PowerShell Exchange Online Management Module and use the following command: `Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true`."
+
+[EXOBasicAuth]
+score = 5
+short = "Basic Authentication is enabled for ExchangeOnline"
+risk = "This expose your tenant to attacks like Password brute force or Password Spray."
+link = "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/disable-basic-authentication-in-exchange-online"
+long = "Basic authentication does not support secure authentication mechanism like MFA"
+solution = "Go to the reference link and disable Basic Authentication for Exchange. If Basic Authentication is deactivated in the GUI check the PowerShell Command *AllowBasicAuthOutlookService*."
+
+[EXOBypassSafeAttachments]
+score = 3
+short = "Transport Rules in EXO bypasses SafeAttachment checking"
+risk = "This expose your organization an additional risk."
+link = "https://www.undocumented-features.com/2018/05/10/atp-safe-attachments-safe-links-and-anti-phishing-policies-or-all-the-policies-you-can-shake-a-stick-at/#Bypass_Safe_Attachments_Processing"
+solution = "Go to the portal URL and check the mentioned transport rules."
+
+[EXOBypassSafeLinks]
+score = 3
+short = "Transport Rules in Exchange Online bypasses SafeLink checking"
+risk = "This expose your organization an additional risk for Phishing."
+link = "https://www.undocumented-features.com/2018/05/10/atp-safe-attachments-safe-links-and-anti-phishing-policies-or-all-the-policies-you-can-shake-a-stick-at/#Bypass_Safe_Attachments_Processing"
+solution = "See reference."
+
+[EXOCheckSPF]
+score = 3
+short = "Missing SPF for Domains used in Exchange Online"
+risk = "The Sender Policy Framework can prevent that someone impersonates your domain."
+solution = "You must set the SPF records at your DNS provider's portal."
+
+[EXOCheckTransportRules]
+score = 5
+short = "Transport rules seems to forward mails to external domains"
+risk = "This can lead to unwanted data loss."
+long = "Data are automatically sent outside of the organization."
+solution = "Check and disable the rules shown below."
+
+[EXOClientForwardingIsBlocked]
+score = 4
+short = "Autoforwarding on the client site is not prevent by Exchange Online"
+risk = "This can lead to an unwanted data loss."
+long = "No mail flow rule detected"
+solution = "that blocks auto forwarding on the client site. User might be able automatically forward mails outside the organization."
+
+[EXOCommonAttachmentFilter]
+score = 3
+short = "Common Attachment Filter is not active"
+risk = "This increases the risk that your company is compromised with malicious attachments."
+solution = "Go to the link in the reference and ensure that in the policy with the highest priority the value for *Enable the common attachments filter* is *On*. "
+
+[EXOMailTipps]
+score = 1
+short = "Not all Mailbox Tips are enabled"
+risk = "Mailbox Tips can prevent a user to sent mails to too many recipients or sending mails outside the organization."
+solution = "Use the Exchange Online PowerShell Module to connect to Exchange Online. Then run the following code `Set-OrganizationConfig -MailTipsAllTipsEnabled $true -MailTipsExternalRecipientsTipsEnabled $true -MailTipsGroupMetricsEnabled $true -MailTipsLargeAudienceThreshold \"25\"`."
+
+[EXOOutlookAddins]
+score = 1
+short = "Users can install Outlook Add-Ins"
+risk = "Outlook Add-Ins can contain malicious functions."
+link = "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/add-ins-for-outlook/specify-who-can-install-and-manage-add-ins"
+solution = "See reference."
+
+[EXOOwaExternalStorageProvider]
+score = 1
+short = "Users can use external storage for Outlook Web"
+risk = "This increases the risk of unwanted data loss."
+link = "https://docs.microsoft.com/en-us/powershell/module/exchange/set-owamailboxpolicy?view=exchange-ps"
+solution = "Connect to Exchange Online using `Connect-ExchangeOnline` CMDLET and run the following code: `Set-OwaMailboxPolicy -Identity OwaMailboxPolicy-Default -AdditionalStorageProvidersAvailable $false`."
+
+[EXOSpamPolicy]
+score = 1
+short = "Exchange Online Spam policy does not notify admins if a mail is blocked"
+risk = "The increases the reaction time in case a user's account starts to send malicious mails."
+solution = "Go to the Security Center and change or add the needed Anti-Spam Policy."
+
+[GroupAllowsSelfService]
+score = 2
+short = "Users can manage the group membership of their own security groups"
+risk = "This may result in unwanted groups configurations or group memberships."
+solution = "Go to the Portal URL and set *Owners can manage group membership requests in My Groups* is set to *No*."
+
+[GroupLifecycle]
+score = 3
+short = "Temporary groups do not expire"
+risk = "This can result in a high number of groups over the time."
+link = "https://docs.microsoft.com/en-us/microsoft-365/solutions/plan-organization-lifecycle-governance?view=o365-worldwide"
+solution = "Go to the Portal URL and set *Enable expiration for these Microsoft 365 groups* to *Yes*."
+
+[M365WebStorageProvider]
+score = 1
+short = "Third-party storage services are not restricted in M365 web"
+risk = "This increases the risk of unwanted data loss."
+solution = "Go to the portal link and ensure that *Let users open files stored in third-party storage services in Microsoft 365 on the web* is not checked."
+
+[OfficeDLPLabels]
+score = 0
+short = "The tenant has no DLP Label Policies"
+risk = "This increases the risk of unwanted data loss."
+link = "https://learn.microsoft.com/en-us/microsoft-365/compliance/dlp-learn-about-dlp?view=o365-worldwide#deploy-your-policies-in-production"
+solution = "Go to the Portal URL and set the DLP label policies according to your needs."
+
+[OfficeDLPPolicies]
+score = 0
+short = "The tenant has no DLP Policies"
+risk = "This increases the risk of unwanted data loss."
+link = "https://learn.microsoft.com/en-us/microsoft-365/compliance/dlp-learn-about-dlp?view=o365-worldwide#deploy-your-policies-in-production"
+solution = "Configure DLP policies according to your needs."
+
+[OfficeFormsPhishingProtection]
+score = 2
+short = "Phishing protection for Microsoft Forms is not enabled"
+risk = "This prevents attackers using Microsoft Forms to asking your users for personal information."
+link = "https://support.microsoft.com/en-us/office/microsoft-forms-and-proactive-phishing-prevention-b3950a20-296d-4e8e-96f5-594ced998a90"
+solution = "Go to the Portal URL and mark *Add internal phishing protection*."
+
+[OfficeSwaySettings]
+score = 3
+short = "Users can share Sways with external users"
+risk = "This increases the risk of data loss."
+link = "https://support.microsoft.com/en-us/office/administrator-settings-for-sway-d298e79b-b6ab-44c6-9239-aa312f5784d4"
+solution = "Go to the Portal URL and unmark the line *Let people in your organization share their sways with people outside your organization*."
+
+[SPOEntraB2BEnabled]
+score = 3
+short = "SharePoint and OneDrive are not integrated to Entra ID B2B"
+risk = "This makes the auditing of Guest access harder and does not allow to apply Azure Access Policies to them."
+link = "https://learn.microsoft.com/en-us/sharepoint/sharepoint-azureb2b-integration#enabling-the-integration"
+solution = "You can enable Azure AD B2B Integration by using the following command `Set-SPOTenant -EnableAzureADB2BIntegration $true`."
+
+[SPOExpireExternalLinks]
+score = 4
+short = "Anonymous shared link will not expire or the expiry time is too long"
+risk = "Users with access to the link have unlimited access to the data."
+link = "https://learn.microsoft.com/en-us/sharepoint/turn-external-sharing-on-or-off"
+solution = "Go to the SharePoint Online Admin Panel and mark under *Choose expiration and permissions options for Anyone links.* the line *These links must expire within this many days*. Set the value to your needs."
+
+[SPOLegacyAuth]
+score = 10
+short = "SharePoint Online allows to use legacy authentication protocol"
+risk = "This increases the attack surface against user credentials."
+solution = "Go tot the Portal URL and under *Apps that don't use modern authentication* set the value to *Block access*."
+
+[SPOSharing]
+score = 4
+short = "SharePoint Online allows sharing documents with arbitrary domains"
+risk = "This can lead to data leakage."
+link = "https://www.michev.info/Blog/Post/969/you-can-now-control-external-sharing-in-sharepoint-online-per-domain"
+solution = "Go to your SharePoint Admin Center and check the sharing settings carefully. You can find more information under the reference section."
+
+[TeamsExternalCommunicationFederated]
+score = 2
+short = "Teams allow communication with arbitrary other company teams user"
+risk = "Allowing user to communicate outside the organization increases the risk of phishing and data leakage."
+link = "https://danielchronlund.com/2021/02/22/manage-teams-external-access-for-allowed-domains-using-powershell-and-teams-approvals/"
+solution = "Go to the Portal Url and check the setting under *Choose which external domains your users have access to* either to *Allow only specific external domains* or *Block all external domains*."
+
+[TeamsExternalCommunicationSkype]
+score = 7
+short = "Teams communication with skype users outside your organization is allowed"
+risk = "Allowing user to communicate outside the organization increases the risk of phishing and data leakage."
+link = "https://danielchronlund.com/2021/02/22/manage-teams-external-access-for-allowed-domains-using-powershell-and-teams-approvals/"
+solution = "See reference link."
+
+[TeamsExternalCommunicationTeams]
+score = 7
+short = "Teams communication with teams user outside your organization is allowed"
+risk = "Allowing user to communicate outside the organization increases the risk of phishing and data leakage."
+link = "https://danielchronlund.com/2021/02/22/manage-teams-external-access-for-allowed-domains-using-powershell-and-teams-approvals/"
+solution = "Go to the Portal Url and check the setting under *Teams accounts not managed by an organization*."
+
+[TeamsExternalCommunicationInbound]
+score = 7
+short = "Teams inbound communication with users outside your organization is allowed"
+risk = "Allowing user to communicate outside the organization increases the risk of phishing and data leakage."
+link = "https://danielchronlund.com/2021/02/22/manage-teams-external-access-for-allowed-domains-using-powershell-and-teams-approvals/"
+solution = "Go to the Portal Url and check the setting under *Teams accounts not managed by an organization*."
+
+[UserAllowAdHocSubscriptions]
+score = 1
+short = "User can create trial subscriptions."
+risk = "This can result in a high number of uncontrolled subscriptions."
+link = "https://docs.microsoft.com/en-us/azure/active-directory/authentication/tutorial-enable-sspr"
+solution = "See the link in the reference section."
+
+[UserAllowCreationOfAzureTenants]
+score = 2
+short = "User can create their own tenant"
+risk = "User can create their own tenants."
+link = "https://twitter.com/JeffreyAppel7/status/1593219049215127555?s=20&t=LH-3XsLy4td6QumFXe9AnA"
+solution = "Go to the *User Settings* in the Entra Admin Portal and set *Restrict non-admin users from creating tenants* to *No*."
+
+[UserAllUserHaveMFA]
+score = 7
+short = "Not all users using MFA"
+risk = "Users with MFA are way easier victims to phishing attacks."
+link = "https://learn.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa"
+solution = "Think about to implement MFA for all your users."
+
+[UserBitLockerSelfService]
+score = 8
+short = "BitLocker Self-Service is enabled"
+risk = "User can see their BitLocker Keys in Azure. This gives the user an easy way to escalate their privileges to local Admin."
+link = "https://learn.microsoft.com/en-us/azure/active-directory/devices/device-management-azure-portal#block-users-from-viewing-their-bitlocker-keys-preview"
+solution = "Use the link in the reference below to disable this."
+
+[UserCanAddGalleryApps]
+score = 1
+short = "User can add arbitrary apps to \"My Apps\""
+risk = "When a user adds an App within your tenant it shares internal information with the tenant."
+solution = "Go to the Portal Link and set *Set Users can add gallery apps to My Apps* to *No*."
+
+[UserGuestWithHighPrivRole]
+score = 9
+short = "Guests are member of Global Admin/Privileged Authentication Admin role"
+risk = "Having guests with these roles increases the risk that you lose control over your tenant."
+solution = "Check if these guest account needs these roles."
+
+[UserLinkedInConnection]
+score = 7
+short = "User can connect their accounts to LinkedIn"
+risk = "Allowing users to sync their account with LinkedIn could disclose useful information for an attacker."
+link = "https://learn.microsoft.com/en-us/azure/active-directory/enterprise-users/linkedin-integration"
+solution = "Go to the Portal Url and set the value under *LinkedIn account connections* to *No*."
+
+[UserNotifyAdminOnPasswordReset]
+score = 1
+short = "Admins are not notified when their password is changed"
+risk = "A malicious password reset might stay unnoticed."
+solution = "Open the link under Portal URL and set *Notify all admins when other admins reset their password?* to Yes"
+
+[UserNotifyUserOnPasswordReset]
+score = 1
+short = "User are not notified when their password is changed"
+risk = "A malicious password reset might stay unnoticed."
+solution = "Open the link under Portal URL and set *Notify users on password resets?* to Yes"
+
+[UserPasswordSelfService]
+score = 1
+short = "Password Self-Service is disabled"
+risk = "No risk at all. But this can help to reduce calls to the Helpdesk."
+link = "https://docs.microsoft.com/en-us/azure/active-directory/authentication/tutorial-enable-sspr"
+long = "Allowing to use a secure password reset mechanism reduces the number of calls in your self-service."
+solution = "Use the link in the reference below."
+
+[UserRequireMFADevJoin]
+score = 0
+short = "Users do not require MFA to join devices"
+risk = "Joining a device is often used by threat actors to persist its access."
+solution = """
+1. Go to *Azure Active Directory*
+2. Go to *Devices*
+3. Go to *Device settings*
+4. Set *Require Multi-Factor Authentication to register or join devices with Azure AD* to *Yes*
+"""
+
+[AzKeyVKeyExpiration]
+score = 1
+short = "KeyVault key will never expire"
+risk = "If the key is lost or stolen, the attacker can use the key as long as someone changes it. What can be a very long time."
+solution = "You can set the expiration date either manually in the Portal (Portal Link) for each Key Vault or you can use the followin code: `az keyvault key set-attributes --name <keyName> --vault-name <vaultName> --expires Y-m-dTH:M:SZ`"
+
+[EXOAutomaticForwarding]
+score = 5
+short = "Auto forwarding is not disabled"
+risk = "An attacker can use auto forwarding to exfiltrate data."
+link = "https://docs.microsoft.com/en-us/archive/blogs/exovoice/disable-automatic-forwarding-in-office-365-and-exchange-server-to-prevent-information-leakage "
+
+[UserCanViewOtherUsersProfile]
+score = 1
+short = "User can see profile information about other users"
+risk = "This can help to perform further phishing attacks or to collect other relevant data."
+link = "https://docs.microsoft.com/en-us/powershell/module/msonline/set-msolcompanysettings?view=azureadps-1.0"
+
+[CABlockLegacyAuth]
+score = 7
+short = "Legacy Authentication methods is not blocked by Conditional Access"
+risk = "This can expose your tenant to password brute force or password spraying attacks."
+long = "Legacy authentication does not support techniques like MFA."
+
+[AzSecurityContacts]
+score = 2
+short = "Subscribion without security contact"
+risk = "In case of an incident, this could increase the time span to identify the legitimate owner or responsible person for a subscription."
+
+[AzKeyVSecretExpiration]
+score = 1
+short = "Key Vault secret will never expire"
+risk = "If the secret is lost or stolen, the attacker can use the secret as long as someone changes it. What can be a very long time."
+
+[AzKeyVLogging]
+score = 1
+short = "Key Vault without active logging"
+risk = "Without active logging and monitoring, incidence or unauthorized access to the Key Vault can go unnoticed."
+
+[AzActLogAlertChangeNetworkSecGrp]
+score = 0
+short = "No Activity Log Alert for *Create or Update Network Security Group*"
+risk = "Unwanted changes for Network Security Groups can go unnoticed."
+
+[AzActLogAlertCreateOrUpdatePublicIPAddressRule]
+score = 0
+short = "No Activity Log Alert for *Create or Update Public IP Address rule*"
+risk = "Unwanted changes for Public IP Address Rules can go unnoticed."
+
+[AzActLogAlertDeletePublicIPAddressRule]
+score = 0
+short = "No Activity Log Alert for *Delete Public IP Address rule*"
+risk = "Unwanted deletion of Public IP Address Rules can go unnoticed."
+
+[AzMgmtGroupCreation]
+score = 2
+short = "Everyone can create Management Groups"
+risk = "This may lead to an unwanted number of Management Groups in the tenant."
+solution = "Go to [https://portal.azure.com/#view/Microsoft_Azure_ManagementGroups/ManagementGroupBrowseBlade/~/MGBrowse_settingsItem](https://portal.azure.com/#view/Microsoft_Azure_ManagementGroups/ManagementGroupBrowseBlade/~/MGBrowse_settingsItem) and toogle *Require write permissions for creating new management groups.* to *Off.*"
+
+[AzActLogAlertChangeSQLServerFWRule]
+score = 0
+short = "No Activity Log Alert for \"Create or Update or Delete SQL Server Firewall Rule\""
+risk = "Unwanted changes for *Create or Update or Delete SQL Server Firewall Rule* can go unnoticed."
+
+[AzActLogAlertCreateOrUpdateSecuritySolution]
+score = 0
+short = "No Activity Log Alert for \"Create or Update Security Solutions\""
+risk = "Unwanted changes for in the Security Solution might stay unnoticed."
+
+[AzActLogAlertCreatePolicyAssignment]
+score = 0
+short = "No Activity Log Alert for \"Create Policy Assignment\""
+risk = "Unwanted changes for Create Policy Assignment can go unnoticed."
+
+[AzActLogAlertDeleteNetworkSecGrp]
+score = 0
+short = "No Activity Log Alert for \"Deleting a Network Security Group\""
+risk = "Unwanted changes for Deleting a Network Security Group can go unnoticed."
+
+[AzActLogAlertDeletePolicyAssignment]
+score = 0
+short = "No Activity Log Alert for \"Delete Policy Assignment\""
+risk = "Unwanted changes for Delete Policy Assignment can go unnoticed."
+
+[AzActLogAlertDeleteSecuritySolution]
+score = 0
+short = "No Activity Log Alert for \"Deleting Security Solution\""
+risk = "Unwanted changes for Deleting Security Solution can go unnoticed."
+
+[AzActLogAlertDeleteSQLFirewallRule]
+score = 0
+short = "No Activity Log Alert for \"Delete SQL Server Firewall Rule\""
+risk = "Unwanted changes for Delete SQL Server Firewall Rule can go unnoticed."
+
+[AzAutoprovisioning]
+score = 2
+short = "LogAnalytics Agent is not automatically deployed on VMs"
+risk = "If no logAnalytics Agent is deployed on a VM a lot of security related events can go unoticed."
+
+[AzSecurityContactsNotifiedForHigh]
+score = 2
+short = "The owner is not notified in case of a \"High\" security alert"
+risk = "This can increase the time when an incident could be handled."
+
+[AzSecurityContactsNotifyOwner]
+score = 2
+short = "The Owner of a subscription does not get security alerts via email"
+risk = "This can increase the time when an incident could be handled."
+
+[AzStorAcSecureTransfer]
+score = 1
+short = "StorageAccounts does not require a secure connection"
+risk = "User can use plaintext protocolls to access Storage Accounts. This can lead to potential data loss."
+
+[AppsUserCanAddCredsHighPrivApp]
+short = "Low privileged user can add credentials to apps with high privileged roles"
+risk = "This could lead privileges escalation within your tenant, please check *Roles and administrators -> Preview*."
+score = 9
+link = "https://posts.specterops.io/azure-privilege-escalation-via-azure-api-permissions-abuse-74aee1006f48"
+long = "Users with low privileges can add credentials to apps with high privileges."
+solution = """
+1. Check if the high privileges are required by the app
+2. Check if you can remove the rights from the user to add credentials
+"""
+
+[AppsUserCanAddCredsHighPrivService]
+short = "Low priv user can add credentials to service principals with high privileged roles"
+risk = "This could lead privileges escalation within your tenant, please check *Roles and administrators -> Preview*."
+score = 9
+link = "https://posts.specterops.io/azure-privilege-escalation-via-azure-api-permissions-abuse-74aee1006f48"
+long = "Users with low privileges can add credentials to service principals with high privileges."
+solution = """
+1. Check if the high privileges are required by the service principal
+2. Check if you can remove the rights from the user to add credentials.
+"""
+
+[AppsWithCreds]
+short = "Apps with credentials"
+risk = "If an app has higher privileges than the user created the credentials, then this can lead to privilege escalation. Additional this could be abused as backdoor."
+score = 3
+link = "https://posts.specterops.io/azure-privilege-escalation-via-service-principal-abuse-210ae2be2a5"
+long = "If an apps contain credentials, a user who knows this credenitals is able to authenticate as this app"
+solution = "Check and remove the credentials from the app if they are not needed by any application"
+
+[AzActNSGRDPLimitiation]
+score = 0
+short = "Network Security Group allows unrestricted RDP access"
+risk = "This increases the risk, that the service is exploited by a threat actor."
+solution = "Configure the Network Security Group that at least access to the servie is IP restricted."
+
+[AzActNSGSSHLimitiation]
+score = 0
+short = "Network Security Group allows unrestricted SSH access"
+risk = "This increases the risk, that the service is exploited by a threat actor."
+solution = "Configure the Network Security Group that at least access to the servie is IP restricted."
+
+[AzASCDefaultPolicy]
+score = 2
+short = "The Default Azure Policy is disabled"
+risk = "Having the Security Default Policy enabled could increase the security of a subscription."
+long = "The Default Azure Policy is disabled builts a security baseline for each subscriptions"
+solution = """
+1. Go to Azure Policy
+2. On Policy Overview blade, Click on Policy ASC Default (Subscription: Subscription_ID)
+3.On ASC Default blade, Click on Edit Assignments
+4.In section Basics, drab down to Policy Enforcements setting and check if it is set to Enabled
+"""
+
+[AzKeyVSoftDelete]
+score = 1
+short = "Key Vault without purge protection"
+risk = "In case a user inadvertently deletes a Azure KeyVault Key, it is not possible to recover it."
+solution = "Go to each Azure KeyVaul and ensure that *Soft delete has been enabled on this key vault* is checked."
+
+[AzPasswordPolicy]
+score = 5
+short = "Passwords can expire"
+risk = "Users tend to use weak passwords, when they have to change password to often."
+link = "https://pages.nist.gov/800-63-3/sp800-63b.html"
+solution = "Go to [https://admin.microsoft.com/#/Settings/SecurityPrivacy/:/Settings/L1/PasswordPolicy](https://admin.microsoft.com/#/Settings/SecurityPrivacy/:/Settings/L1/PasswordPolicy) and mark the box for *Set passwords to never expire (recommended)*"
+
+[AzSQLAuditingEnabled]
+score = 1
+short = "No SQLServer Auditing is enabled"
+risk = "Irregular Database activities, anomalies and security violations might stay unnoticed."
+solution = "In the Azure Portal go to *SQL Servers* and click on *Auditing* for each instance."
+
+[AzStorAcAllowTrustedServices]
+score = 1
+short = "Storage Account block network access for Trusted Microsoft StorageAccountServices"
+risk = "This may prevent functions like Azure Backup or Azure Monitoring from correct working."
+solution = "When you are using services from Microsoft like Logging or Backup, allow the network access for these services."
+
+[AzStorAcCustomKeys]
+score = 1
+short = "Storage Account is encrypted with Microsoft Managed Keys"
+risk = "Microsoft may have access to your encrypted data."
+solution = "If you want to have control over your keys, you should use custom keys."
+
+[AzStorAcSoftDelete]
+score = 1
+short = "Storage Accounts without soft delete"
+risk = "This can lead to unwanted data loss, if someone accidentally deletes data."
+long = "When soft delete is disabled, data cannot be recovered if they are accidentally deleted."
+solution = "Enable *Soft Delete* for all Storage Accounts."
+
+[AzSubscriptionPolicy]
+score = 6
+short = "User can move Subscriptions in and out of Azure Active Directory"
+risk = "This increases the risk, that a bad actor moves an subscription to a Tenant, where he has more permissions."
+link = "https://www.cloud-architekt.net/detection-and-mitigation-consent-grant-attacks-azuread/"
+solution = "Go to the reference lin an set *Subscription leaving AAD directory* and *Subscription entering AAD directory* to *Permit no one*."
+
+[EXODKIM]
+score = 5
+short = "Not all of the Exchange Online Domains have DKIM enabled"
+risk = "This increases the risk, that an attacker can impersonate your domain."
+solution = "Configure DKIM for all your domains."
+
+[EXODMARC]
+score = 5
+short = "Not all of Exchange Online Domains have DMARC enabled"
+risk = "This increases the risk, that an attacker can impersonate your domain."
+solution = "Enable DMARC for all your domains."
+
+[EXOMailboxAudit]
+score = 6
+short = "Not all mailboxes have audit enabled"
+risk = "Malicious behavior can go unnoticed."
+link = "https://docs.microsoft.com/en-us/microsoft-365/compliance/enable-mailbox-auditing?view=o365-worldwide"
+solution = "To enable logging, see the reference link."
+
+[EXOModernauthentication]
+score = 10
+short = "Exchange Online Modern Authentication is not enabled"
+risk = "If modern authentication is disabled, the users cannot use a more secure authentication mechanism."
+link = "https://docs.microsoft.com/en-us/exchange/clients-and-mobile-in-exchange-online/enable-or-disable-modern-authentication-in-exchange-online"
+solution = "Go to Portal URL and check *Turn on modern authentication for Outlook 2013 for Windows and later (recommended)*."
+
+[EXONotifcationUsersSendingMalware]
+score = 5
+short = "No one is notified if a user sends potentially malicious mail"
+risk = "Sending malicious mail is often an indication of an infected computer. Thus, not notifying admins in the case increases the investigation time."
+link = "https://docs.microsoft.com/en-us/microsoft-365/security/office-365-security/configure-anti-malware-policies?view=o365-worldwide"
+solution = "See reference."
+
+[EXOWhitelistBypass]
+score = 3
+short = "Your EXO has Transport Rules, that can bypass anti-spam and anti-malware scanning by whitelisting certain domains"
+risk = "This expose your organization an additional risk."
+link = "https://docs.microsoft.com/en-us/Exchange/security-and-compliance/mail-flow-rules/mail-flow-rules"
+solution = "Go to the Exchange Admin Center and check the rules."
+
+[GroupAllowUserToCreateSecGroups]
+score = 2
+short = "All users can create security groups using the Azure Portal, API or PowerShell"
+risk = "This can result in a high number of groups over the time."
+solution = "Go to the Portal URL and set *Users can create security groups in Azure portals, API or PowerShell* to *No*."
+
+[GroupM365GroupManagement]
+score = 1
+short = "All member can create Microsoft 365 Groups in Azure portals, API or PowerShell"
+risk = "This may result in unwanted groups configurations or group memberships."
+solution = "Go to the Portal URL and set *Users can create Microsoft 365 groups in Azure portals, API or PowerShell* to *No*."
+
+[GroupPublic]
+score = 3
+short = "Your tenant contains public groups"
+risk = "This can bypass some security controls for group protected data, if every user can add himself to a group."
+link = "https://www.dummies.com/software/microsoft-office/office-365-groups/"
+solution = "Go to the Portal URL and review all public groups and check if they are needed."
+
+[OfficeAddIns]
+score = 4
+short = "Word, Excel and PowerPoint add-ins are allowed"
+risk = "Attackers can misuse add-ins for malicious purpose."
+solution = "Go to the Portal URL and uncheck *Let users access the Office Store* and *Let users start trials on behalf of your organization*."
+
+[OfficeCalenderSharing]
+score = 4
+short = "User can share their calendar with external users"
+risk = "This increases the risk, that external user gain personal information about your users."
+solution = "Go to the Portal URL and unmark *Let your users share their calendars with people outside of your organization who have Office 365 or Exchange*."
+
+[SPOGuestSharing]
+score = 4
+short = "Guests can share data, they do not own"
+risk = "This increases the risk that you lose control over your data in SharePoint."
+solution = "Go to the Portal URL and under *More external sharing settings* unmark the section *Allow guests to share items they don't own*"
+
+[SPOModernAuthDisabled]
+score = 1
+short = "Modern authentication for SharePoint is disabled"
+risk = "This increases the risk, that an attacker gain unauthorized access to your SharePoint instance."
+link = "https://docs.microsoft.com/en-us/powershell/module/sharepoint-online/set-spotenant?view=sharepoint-ps"
+solution = "You have to use the PowerShell and Set-SPOTenant to activate modern authentication."
+
+[SPOOneDriveSync]
+score = 7
+short = "OneDrive can be synced with unmanaged devices"
+risk = "This can lead to data loss."
+solution = "Go to the Portal URL and add your on-premise domain GUID (Get-ADDomain) to the list of *Allow syncing only on computers joined to specific domains*. If you do not have an on-premise domain, use conditional access to block access to OneDrive from unmanaged devices."
+
+[UserAdminConsent]
+score = 1
+short = "Admin Consent workflow is not enabled in your organization"
+risk = "No direct risk at all."
+link = "https://learn.microsoft.com/en-us/azure/active-directory/manage-apps/configure-admin-consent-workflow"
+long = "Not allowing your users to use other applications with their credential, can lead to a lot of angry calls. However, your admins should check each request carefully."
+solution = "Go to the Portal Url and set *Users can request admin consent to apps they are unable to consent* to *Yes*."
+
+[UserAllAdminsHaveMFA]
+score = 10
+short = "Not all privileged accounts uses MFA"
+risk = "This increases the risk, that one of your admins becomes a victim of a phishing attack."
+link = "https://learn.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-admin-mfa"
+solution = "No discussion here. Force them to use MFA!"
+
+[UserConsent]
+score = 10
+short = "User can consent to apps accessing data on their behalf"
+risk = "Malicious apps are often used in phishing scenarios. Thus, allowing users to consent to applications increases the risk for a successful attack."
+link = "https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/configure-user-consent?tabs=azure-portal"
+solution = "Go to the Portal URL and set *Users can request admin consent to apps they are unable to consent* to *No*."
+
+[UserMax4GlobalAdmins]
+score = 10
+short = "Your organization has more than four or less then two global admins"
+risk = "Too fewer admins increases the risk, that you lose the control over your tenant. Too many admins increases the risk that your tenant is compromised."
+solution = "Try to have only between two and four global admins. The most of the tasks can be performed using other roles."
+
+[UserMFAFatigueProtection]
+score = 7
+short = "Users protection against MFA fatigue could be improved"
+risk = "Users tend to approve MFA request, in case they receive to many or it is not obvious that the requests are fake."
+link = "https://techcommunity.microsoft.com/t5/microsoft-entra-azure-ad-blog/defend-your-users-from-mfa-fatigue-attacks/ba-p/2365677"
+solution = "Go to the reference link. Then click on *Microsoft Authenticator* an go to *Configure*. Here ensure that *Show application name in push and passwordless notifications* and *Show geographic location in push and passwordless notifications* are enabled."
+
+[UserPasswordBadPasswordList]
+score = 4
+short = "The Tenant is no configured for a bad password list"
+risk = "This increases the risk, users uses easy guessable password."
+solution = """
+1. Go to Entra Admin Center
+2. Go to Protection
+3. Go to Authentication methods
+4. Go to Password protection
+5. Ensure Enforce custom list is set to Yes.
+"""
+
+[UserPasswordResetRequires2Methods]
+score = 1
+short = "Password Self-Service does not require two methods for reset"
+risk = "This increases the risk, that a threat actor can perform a password reset for a user."
+solution = """
+1. Go to Entra ID
+2. Go to Protection
+3. Go to Password reset
+4. Go to Authentication methods
+5. Set the Number of methods required to reset to 2.
+"""
+
+[UserReconfirmAuthenticationInformation]
+score = 1
+short = "User must never reconfirm authentication information"
+risk = "User must never update their authentication information. This increases the risk, that stolen information are valid forever."
+solution = "Go to *Entra Portal -> Protection -> Password reset -> Registration* and set the value for *Number of days before users are asked to re-confirm their authentication information* to a value that fits for you."
+
+[UserRemainSignIn]
+score = 4
+short = "User sees the 'Remains Sign-In' Button"
+risk = "Allowing a user to use this option, it might happen that they use is on a public computer. So the risk that the user session is compromised increases."
+solution = "Go to the Portal Url and ensure that *Show keep user signed in* is set to *No*."
+
+[UserRestrictAccessToAdminPortal]
+score = 1
+short = "User can access the Entra admin portal"
+risk = "The Entra admin portal may contain sensitive information."
+long = "Entra Admin portal contains sensitive information, which not everyone should be able to see."
+solution = """
+1. Go to Entra admin center
+2. Go to Users
+3. Go to User settings
+4. Set Restrict access to Azure AD administration portal to *Yes*.
+"""
+
+[TeamsExternalSharingProvider]
+short = "Teams allows to use Box, DropBox, GoogleDrive, CitrixFiles or Egnyte as cloud storage provider"
+risk = "Allowing third-party storage provider increases the risk of data leakage."
+score = 3
+solution = "Go to [https://admin.teams.microsoft.com/company-wide-settings/teams-settings](Teams Settings) and choose under *Files* you wanted storage provider."

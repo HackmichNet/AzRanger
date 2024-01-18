@@ -7,12 +7,9 @@ using System.Linq;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserAllAdminsHaveMFA", ScopeEnum.AAD, MaturityLevel.Mature, null)]
-    [CISM365("1.1.2", "", Level.L1, "v2.0")]
-    [CISAZ("1.1.2", "", Level.L1, "v2.0")]
-    [RuleInfo("Not all privileged accounts uses MFA", "This increases the risk, that one of your admins becomes a victim of a phishing attack.", 10, "https://learn.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-admin-mfa", null, "No discussion here. Force them to use MFA!")]
     class UserAllAdminsHaveMFA : BaseCheck
     {
+        // TODO add new roles
         private readonly String[] InterestingRoles = new String[] {
                 "Application administrator",
                 "Authentication administrator",
