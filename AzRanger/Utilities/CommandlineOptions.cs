@@ -9,31 +9,31 @@ namespace AzRanger.Utilities
     class CommandlineOptions
     {
         [Option('u', "username", HelpText = "Specify the username.")]
-        public String Username{ get; set; }
+        public string Username{ get; set; }
 
         [Option('p', "password", HelpText = "Specifiy the password.")]
-        public String Password { get; set; }
+        public string Password { get; set; }
 
         [Option('c', "clientid", HelpText = "Specify the client id.")]
-        public String ClientId { get; set; }
+        public string ClientId { get; set; }
 
         [Option('s', "secret", HelpText = "Specify the client secret.")]
-        public String ClientSecret { get; set; }
+        public string ClientSecret { get; set; }
 
         [Option('t', "tenant", HelpText = "Specify a tenant.")]
-        public String TenantId { get; set; }
+        public string TenantId { get; set; }
 
         [Option(Required = false, HelpText = "Specify a proxy.")]
-        public String Proxy { get; set; }
+        public string Proxy { get; set; }
 
         [Option(Required = false, HelpText = "Enable verbose logging.")]
         public bool Debug { get; set; }
 
         [Option(Required = false, HelpText = "Set the logfile path.")]
-        public String Logfile{ get; set; }
+        public string Logfile { get; set; }
 
         [Option(Required = false, HelpText = "Path/File to write results.")]
-        public String OutPath { get; set; }
+        public string OutPath { get; set; }
 
         [Option(Required = false, HelpText = "Write all results to console. Can result in a very large output.")]
         public bool WriteAllResults { get; set; }
