@@ -64,7 +64,7 @@ namespace AzRanger.Output
             return item;
         }
 
-        public static string createJSON(Auditor auditor)
+        internal static ResultJSONList createJSON(Auditor auditor)
         {
             List<ResultJSONItem> FindingList = new List<ResultJSONItem>();
 
@@ -100,14 +100,7 @@ namespace AzRanger.Output
                 .Select(x => GetResultJSONItem(x))
                 .OrderBy(x => x.RiskScore).ToList();
 
-            var options = new JsonSerializerOptions
-            {
-                MaxDepth = 16,
-                IncludeFields = true,
-                WriteIndented = true
-            };
-
-            return JsonSerializer.Serialize(FinalList, options);
+            return FinalList;
         }
     }
 }

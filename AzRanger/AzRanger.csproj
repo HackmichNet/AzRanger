@@ -604,7 +604,6 @@
     <Compile Include="Models\WinGraph\StrongAuthenticationDetail.cs" />
     <Compile Include="Output\AffectedItem.cs" />
     <Compile Include="Output\ConsoleOutput.cs" />
-    <Compile Include="Output\Dumper.cs" />
     <Compile Include="Output\HTMLReportingOutput.cs" />
     <Compile Include="Output\JSONOutput.cs" />
     <Compile Include="Program.cs" />
@@ -619,6 +618,7 @@
     <Compile Include="Utilities\CommandlineOptions.cs" />
     <Compile Include="Utilities\DirectoryRoleTemplateID.cs" />
     <Compile Include="Utilities\HttpFactoryWithProxy.cs" />
+    <Compile Include="Utilities\JSONDumper.cs" />
     <Compile Include="Utilities\MarkdownRenderer.cs" />
     <Compile Include="Utilities\ODataTypes.cs" />
     <Compile Include="Utilities\RetryHandler.cs" />

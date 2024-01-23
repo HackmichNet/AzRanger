@@ -1,5 +1,6 @@
 ﻿using AzRanger.Checks;
 using AzRanger.Models;
+using AzRanger.Utilities;
 using ICSharpCode.SharpZipLib.Zip;
 using NLog;
 using System;
@@ -70,23 +71,8 @@ namespace AzRanger.Output
                 logger.Debug("[-] " + e1.Message);
             }
 
-            using (StreamWriter file = File.CreateText(Path.Combine(outPath, "js/data.js")))
-            {
-                var options = new JsonSerializerOptions
-                {
-                    MaxDepth = 16,
-                    IncludeFields = true,
-                    WriteIndented = true
-                };
-                var json = JsonSerializer.Serialize(tenant, options);
-                file.Write("var tenantData = " + json);
-            }
-
-            using (StreamWriter file = File.CreateText(Path.Combine(outPath, "js/report.js")))
-            {
-                var json = JSONOutput.createJSON(auditor);
-                file.Write("var reportData = " + json);
-            }
+            JSONDumper.WriteToFile(tenant, Path.Combine(outPath, "js/data.js"), "var tenantData = ");
+            JSONDumper.WriteToFile(JSONOutput.createJSON(auditor), Path.Combine(outPath, "js/report.js"), "var reportData = ");
         }
     }
 }

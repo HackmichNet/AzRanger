@@ -40,17 +40,6 @@ namespace AzRanger
             return result;
         }
 
-        public static String ObjectToJson(object obj)
-        {
-            var options = new JsonSerializerOptions
-            {
-                MaxDepth = 16,
-                IncludeFields = true,
-                WriteIndented = true
-            };
-            return JsonSerializer.Serialize(obj, options);
-        }
-
         internal static string GetOpenIDConfiguration(string domain, string proxy)
         {
             string uri = "/" + domain + "/.well-known/openid-configuration";
