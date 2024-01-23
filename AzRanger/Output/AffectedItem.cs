@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AzRanger.Output
+﻿namespace AzRanger.Output
 {
     public class AffectedItem
     {
@@ -15,6 +9,6 @@ namespace AzRanger.Output
         }
 
         public string Name { get; }
-        public String Id { get; }
+        public string Id { get; }
     }
 }

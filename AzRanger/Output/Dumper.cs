@@ -15,8 +15,6 @@ namespace AzRanger.Output
                 outPath = ".";
             }
 
-            string outFile = outPath + "/dump.json";
-
             using (StreamWriter file = File.CreateText(outPath))
             {
                 var options = new JsonSerializerOptions

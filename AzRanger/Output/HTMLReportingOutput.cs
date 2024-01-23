@@ -3,14 +3,9 @@ using AzRanger.Models;
 using ICSharpCode.SharpZipLib.Zip;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Resources;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace AzRanger.Output
 {
@@ -33,9 +28,6 @@ namespace AzRanger.Output
             }
             try
             {
-                //ResourceManager objResMgr = new ResourceManager
-                //    ("namespace.resource_filename", Assembly.GetExecutingAssembly());
-                //byte[] objData = (byte[])objResMgr.GetObject("ReportTemplate");
                 byte[] objData = Properties.Resource.ReportTemplate;
                 MemoryStream objMS = new MemoryStream(objData);
                 ZipInputStream objZIP = new ZipInputStream(objMS);
