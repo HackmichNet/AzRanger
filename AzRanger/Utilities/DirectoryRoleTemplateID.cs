@@ -32,6 +32,13 @@
         public static string SharePointAdmin = "f28a1f50-f6e7-4571-818b-6a12f2af6b6c";
         public static string TeamsAdmin = "69091246-20e8-4a56-aa4d-066075b2a7a8";
 
+        // Others
+        public static string BilingAdministrator = "b0f54661-2d74-4c50-afa3-1ec803f12efe";
+        public static string SkypeAdministrator = "75941009-915a-4869-abe7-691bff18279e";
+        public static string DynamicsAdministrator = "44367163-eba1-44c3-98af-f5787879f96a";
+        public static string PowerPlatformAdministrator = "11648597-926c-4cf3-9c36-bcebb0ba8dcc";
+        public static string FabricAdministrator = "a9ea8996-122f-4c74-9520-8edcd192826c";
+
         //https://posts.specterops.io/azure-privilege-escalation-via-service-principal-abuse-210ae2be2a5
         public static string[] RolesAllowingAddCreds = {
                 DirectoryRoleTemplateID.CloudApplicationAdministrator,
