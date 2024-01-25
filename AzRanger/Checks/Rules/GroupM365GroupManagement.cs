@@ -20,7 +20,7 @@ namespace AzRanger.Checks.Rules
                     {
                         if (value.name == "EnableGroupCreation")
                         {
-                            if (value.value == "false")
+                            if (value.value.ToLower() == "false")
                             {
                                 return CheckResult.NoFinding;
                             }

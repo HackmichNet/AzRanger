@@ -36,5 +36,6 @@ namespace AzRanger.Models.Generic
         public String CISDocument { get; set; }
         public List<AffectedItem> AffectedItems { get; set; }
         public String RawData { get; set; }
+        public String Reason { get; set; }
     }
 }

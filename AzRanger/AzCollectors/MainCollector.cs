@@ -239,7 +239,7 @@ namespace AzRanger.AzScanner
                     {
                         foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
                         {
-                            List<PIMRoleAssignments> roleAssignments = await AzrbacScanner.GetRoleAssignemts(Guid.Parse(this.TenantId), Guid.Parse(role.roleTemplateId));
+                            List<PIMRoleAssignments> roleAssignments = await AzrbacScanner.GetRoleAssignments(Guid.Parse(this.TenantId), Guid.Parse(role.roleTemplateId));
                             foreach (PIMRoleAssignments assignment in roleAssignments)
                             {
                                 // Calculate which user has which role

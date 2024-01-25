@@ -88,6 +88,17 @@ namespace AzRanger.Output
                 FindingList.Add(item);
             }
 
+            List<ResultJSONItem> NotApplicableList = new List<ResultJSONItem>();
+            foreach(BaseCheck check in auditor.NotApplicable)
+            {
+                ResultJSONItem item = GetResultJSONItem(check);
+                if(check.Reason != null)
+                {
+                    item.Reason = check.Reason;
+                }
+                NotApplicableList.Add(item);
+            }
+
             ResultJSONList FinalList = new ResultJSONList();
             FinalList.Finding = FindingList.OrderBy(x => x.RiskScore).ToList();
             FinalList.NoFinding = auditor.NoFinding
@@ -96,10 +107,7 @@ namespace AzRanger.Output
             FinalList.Error = auditor.Error
                 .Select(x => GetResultJSONItem(x))
                 .OrderBy(x => x.RiskScore).ToList();
-            FinalList.NotApplicable = auditor.NotApplicable
-                .Select(x => GetResultJSONItem(x))
-                .OrderBy(x => x.RiskScore).ToList();
-
+            FinalList.NotApplicable = NotApplicableList.OrderBy(x => x.RiskScore).ToList();
             return FinalList;
         }
     }
