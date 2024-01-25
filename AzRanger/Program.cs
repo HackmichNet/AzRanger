@@ -38,7 +38,7 @@ namespace AzRanger
             {
                 h.AdditionalNewLineAfterOption = false;
                 h.Heading = "AzRanger 0.1.0"; //change header
-                h.Copyright = "";
+                h.Copyright = "@HackmichNet";
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
             Console.WriteLine(helpText);

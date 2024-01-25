@@ -57,9 +57,9 @@ namespace AzRanger
             return GetFrom("https://login.microsoftonline.com", uri, proxy);
         }
 
-        internal static string GetFrom(string baseAdress, string uri, String proxy)
+        internal static string GetFrom(string baseAddress, string uri, string proxy)
         {
-            using (var message = new HttpRequestMessage(HttpMethod.Get, baseAdress + uri))
+            using (var message = new HttpRequestMessage(HttpMethod.Get, baseAddress + uri))
             using (var client = Helper.GetDefaultClient(null, proxy))
             {
                 var response = client.SendAsync(message).Result;
