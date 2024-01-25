@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("MDMLockScreen", Scope.MDM, MaturityLevel.Tentative, "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesMenu/configurationProfiles")]
-    [CISM365("7.7", " Ensure that settings are enable to lock devices after a period of inactivity to prevent unauthorized access", Level.L1, "v1.4")]
+    // TODO
     class MDMLockScreen : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

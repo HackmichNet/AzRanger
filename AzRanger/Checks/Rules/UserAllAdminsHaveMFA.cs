@@ -2,37 +2,34 @@
 using AzRanger.Models.Generic;
 using AzRanger.Models.MSGraph;
 using AzRanger.Utilities;
-using System;
 using System.Linq;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("UserAllAdminsHaveMFA", ScopeEnum.AAD, MaturityLevel.Mature, null)]
-    [CISM365("1.1.2", "", Level.L1, "v2.0")]
-    [CISAZ("1.1.2", "", Level.L1, "v2.0")]
-    [RuleInfo("Not all privileged accounts uses MFA", "This increases the risk, that one of your admins becomes a victim of a phishing attack.", 10, "https://learn.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-admin-mfa", null, "No discussion here. Force them to use MFA!")]
     class UserAllAdminsHaveMFA : BaseCheck
     {
-        private readonly String[] InterestingRoles = new String[] {
-                "Application administrator",
-                "Authentication administrator",
-                "Cloud application administrator",
-                "Conditional Access administrator",
-                "Global Administrator",
-                "Billing Administrator",
-                "Exchange Administrator",
-                "SharePoint Administrator",
-                "Password Administrator",
-                "Skype for Business Administrator",
-                "User Administrator",
-                "Dynamics 365 Service Administrator",
-                "Power BI Administrator",
-                "Global reader",
-                "Helpdesk administrator",
-                "Privileged authentication administrator",
-                "Privileged role administrator",
-                "Security administrator",
-                "User administrator"
+
+        private readonly string[] Roles = new string[]
+        {
+            DirectoryRoleTemplateID.ApplicationAdministrator,
+            DirectoryRoleTemplateID.AuthenticationAdministrator,
+            DirectoryRoleTemplateID.CloudApplicationAdministrator,
+            DirectoryRoleTemplateID.ConditionalAccessAdministrator,
+            DirectoryRoleTemplateID.GlobalAdministrator,
+            DirectoryRoleTemplateID.BilingAdministrator,
+            DirectoryRoleTemplateID.ExchangeAdministrator,
+            DirectoryRoleTemplateID.SharePointAdmin,
+            DirectoryRoleTemplateID.PasswordAdministrator,
+            DirectoryRoleTemplateID.SkypeAdministrator,
+            DirectoryRoleTemplateID.UserAdministrator,
+            DirectoryRoleTemplateID.DynamicsAdministrator,
+            DirectoryRoleTemplateID.PowerPlatformAdministrator,
+            DirectoryRoleTemplateID.FabricAdministrator,
+            DirectoryRoleTemplateID.GlobalReader,
+            DirectoryRoleTemplateID.HelpdeskAdministrator,
+            DirectoryRoleTemplateID.PrivilegedAuthenticationAdministrator,
+            DirectoryRoleTemplateID.PrivilegedRoleAdministrator,
+            DirectoryRoleTemplateID.SecurityAdministrator,
         };
 
         public override CheckResult Audit(Tenant tenant)
@@ -40,7 +37,7 @@ namespace AzRanger.Checks.Rules
             bool passed = true;
             foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values.ToList())
             {
-                if (InterestingRoles.Any(x=>x == role.displayName) )
+                if (Roles.Any(x=>x == role.id.ToString()) )
                 {
                     DirectoryRole TmpRole = new DirectoryRole(role.id, role.displayName, null, null);
                     foreach (AzurePrincipal member in role.GetMembers())

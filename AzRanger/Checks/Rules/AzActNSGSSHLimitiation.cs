@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActNSGSSHLimitiation", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Network%2FNetworkSecurityGroups", ServiceEnum.NetworksSecurityGroup)]
-    [CISAZ("6.2", "", Level.L1, "v2.0")]
-    [RuleInfo("Network Security Group allows unrestricted SSH access", "This increases the risk, that the service is exploited by a threat actor.", 0, null, null, "Configure the Network Security Group that at least access to the servie is IP restricted.")]
     internal class AzActNSGSSHLimitiation : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

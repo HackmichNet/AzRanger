@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzKeyVSoftDelete", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults", ServiceEnum.KeyVault)]
-    [CISAZ("8.5", "", Level.L1, "v2.0")]
-    [RuleInfo("Key Vault without purge protection", "In case a user inadvertently deletes a Azure KeyVault Key, it is not possible to recover it.", 1, null, null, @"Go to each Azure KeyVaul and ensure that ""Soft delete has been enabled on this key vault"" is checked.")]
     internal class AzKeyVSoftDelete : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

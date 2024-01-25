@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AppsDangerousPerms", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM")]
-    [RuleInfo("Some service principals have dangerous permissions", @"A user with ""owner"" rights to the service principal or with the role ""Application administrator"" or ""Cloud application administrator"" can use this configuration to elevate its privileges.", 9, "https://posts.specterops.io/azure-privilege-escalation-via-azure-api-permissions-abuse-74aee1006f48", @"In your tenant exists Service principals with dangerous permissions like: RoleManagement.ReadWrite.Directory or AppRoleAssignment.ReadWrite.All", "Check if these permissions are really needed by the application.")]
     class AppsDangerousPerms : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

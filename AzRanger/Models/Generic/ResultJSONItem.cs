@@ -15,6 +15,8 @@ namespace AzRanger.Models.Generic
         public List<ResultJSONItem> Error;
         public List<ResultJSONItem> NotApplicable;
     }
+
+    // TODO support multiple CIS Documents
     internal class ResultJSONItem
     {
         public String Section { get; set; }

@@ -2,9 +2,6 @@
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzSecurityDefaultsO365", ScopeEnum.AAD, MaturityLevel.Mature, "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/TenantOverview.ReactView")]
-    [CISM365("1.1.1", "", Level.L1, "v2.0")]
-    [RuleInfo("Security Defaults should be disabled.", "Security Defaults prevents you from using more advanced security features.", 0, null, null, "Disable Security Defaults and use more advance security features.")]
     class AzSecurityDefaultsO365 : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

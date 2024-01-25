@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzKeyVLogging", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults", ServiceEnum.KeyVault)]
-    [CISAZ("5.1.5", "", Level.L1, "v2.0")]
-    [RuleInfo("Key Vault without active logging", "Without active logging and monitoring, incidence or unauthorized access to the Key Vault can go unnoticed.", 1)]
     internal class AzKeyVLogging : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

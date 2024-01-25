@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzActLogAlertCreatePolicyAssignment", ScopeEnum.Azure, MaturityLevel.Tentative, "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/alertsV2", ServiceEnum.StorageAccount)]
-    [CISAZ("5.2.1", "", Level.L1, "v2.0")]
-    [RuleInfo("No Activity Log Alert for 'Create Policy Assignment'", @"Unwanted changes for ""Create Policy Assignment"" can go unnoticed.", 0)]
     internal class AzActLogAlertCreatePolicyAssignment : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

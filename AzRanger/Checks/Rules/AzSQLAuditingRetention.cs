@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
-    [RuleMeta("AzSQLAuditingRetention", ScopeEnum.Azure, MaturityLevel.Mature, "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Sql%2Fservers", ServiceEnum.SQLServer)]
-    [CISAZ("4.1.6", "", Level.L1, "v2.0")]
-    [RuleInfo("SQL Server Auditretention is smaller than 90 days", "In case of an incident audit logs might help to investigate it. If the retention time is too short some data might be missing.", 1, null, null, @"In the Azure Portal go to ""SQL Servers"" and click on ""Auditing"" on the left menu under ""Security"" for each instance. Under ""Stoarge"" expand ""Advanced properties"" and seht ""Retention (days)"" to higher than 90 or to 0 for unlimited retention.")]
     internal class AzSQLAuditingRetention : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
