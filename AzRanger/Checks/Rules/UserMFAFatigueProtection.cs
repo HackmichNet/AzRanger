@@ -1,18 +1,21 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.MSGraph;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NLog;
 
 namespace AzRanger.Checks.Rules
 {
     class UserMFAFatigueProtection : BaseCheck
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public override CheckResult Audit(Tenant tenant)
         {
-            foreach(Authenticationmethodconfiguration method in tenant.TenantSettings.AuthenticationMethodsPolicy.authenticationMethodConfigurations)
+            if (tenant.TenantSettings.AuthenticationMethodsPolicy == null)
+            {
+                logger.Error("Check.UserMFAFatigueProtection: No AuthenticationMethodsPolicy found. Possibly insufficient privileges");
+                return CheckResult.Error;
+            }
+
+            foreach (Authenticationmethodconfiguration method in tenant.TenantSettings.AuthenticationMethodsPolicy.authenticationMethodConfigurations)
             {
                 if (method.id.Equals("MicrosoftAuthenticator"))
                 {

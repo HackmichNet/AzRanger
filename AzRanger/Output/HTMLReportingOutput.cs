@@ -1,16 +1,12 @@
 ﻿using AzRanger.Checks;
 using AzRanger.Models;
+using AzRanger.Utilities;
 using ICSharpCode.SharpZipLib.Zip;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Resources;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace AzRanger.Output
 {
@@ -33,9 +29,6 @@ namespace AzRanger.Output
             }
             try
             {
-                //ResourceManager objResMgr = new ResourceManager
-                //    ("namespace.resource_filename", Assembly.GetExecutingAssembly());
-                //byte[] objData = (byte[])objResMgr.GetObject("ReportTemplate");
                 byte[] objData = Properties.Resource.ReportTemplate;
                 MemoryStream objMS = new MemoryStream(objData);
                 ZipInputStream objZIP = new ZipInputStream(objMS);
@@ -78,23 +71,8 @@ namespace AzRanger.Output
                 logger.Debug("[-] " + e1.Message);
             }
 
-            using (StreamWriter file = File.CreateText(Path.Combine(outPath, "js/data.js")))
-            {
-                var options = new JsonSerializerOptions
-                {
-                    MaxDepth = 16,
-                    IncludeFields = true,
-                    WriteIndented = true
-                };
-                var json = JsonSerializer.Serialize(tenant, options);
-                file.Write("var tenantData = " + json);
-            }
-
-            using (StreamWriter file = File.CreateText(Path.Combine(outPath, "js/report.js")))
-            {
-                var json = JSONOutput.createJSON(auditor);
-                file.Write("var reportData = " + json);
-            }
+            JSONDumper.WriteToFile(tenant, Path.Combine(outPath, "js/data.js"), "var tenantData = ");
+            JSONDumper.WriteToFile(JSONOutput.createJSON(auditor), Path.Combine(outPath, "js/report.js"), "var reportData = ");
         }
     }
 }

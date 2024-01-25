@@ -1,5 +1,6 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.ExchangeOnline;
+using AzRanger.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace AzRanger.Checks.Rules
                         {
                             defaultPolicyPassed = true;
                         }
-                        this.RawData = Helper.ObjectToJson(policy);
+                        this.RawData = JSONDumper.GetSerialized(policy);
                     }
                 }
             }

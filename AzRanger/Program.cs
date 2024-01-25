@@ -213,7 +213,7 @@ namespace AzRanger
                 }
                 if (opts.Mode == AzRangerModes.DumpAll)
                 {
-                    Dumper.DumpTenant(tenant, outputPath);
+                    JSONDumper.WriteToFile(tenant, outputPath);
                     Console.WriteLine("[+] Successfully written to " + outputPath);
                 }
             }
@@ -224,7 +224,7 @@ namespace AzRanger
                 Tenant settings = await scanner.ScanTenant(scopes);
                 watch.Stop();
                 Console.WriteLine($"[+] Scan Time: {watch.ElapsedMilliseconds} ms");
-                Dumper.DumpTenantSettings(settings, outputPath);
+                JSONDumper.WriteToFile(settings, outputPath);
                 Console.WriteLine("[+] Successfully written to " + outputPath);
             }
 

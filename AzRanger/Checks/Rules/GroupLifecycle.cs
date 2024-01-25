@@ -1,9 +1,4 @@
 ﻿using AzRanger.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {    
@@ -11,6 +6,12 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
+            // Policy is not set
+            if (tenant.TenantSettings.LCMSettings == null)
+            {
+                return CheckResult.Finding;
+            }
+
             // Policy is not set
             if(tenant.TenantSettings.LCMSettings.policyIdentifier == "00000000-0000-0000-0000-000000000000")
             {

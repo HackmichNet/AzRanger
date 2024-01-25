@@ -3,7 +3,6 @@ using AzRanger.Models;
 using NLog;
 using System;
 using System.Collections.Generic;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace AzRanger.Output
 {
