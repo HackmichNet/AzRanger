@@ -35,16 +35,14 @@ namespace AzRanger.Output
                 item.LongDescription = ruleInfo.LongDescription;
                 item.Solution = ruleInfo.Solution;
                 item.RiskScore = ruleInfo.RiskScore;
+                item.ShortName = ruleInfo.ShortName;
+                item.PortalUrl = ruleInfo.PortalUrl;
+                item.Service = ruleInfo.Service.ToString();
+                item.Scope = ruleInfo.Scope.ToString();
+                item.MaturityLevel = ruleInfo.MaturityLevel.ToString();
             }
 
-            if (RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
-            {
-                item.ShortName = meta.ShortName;
-                item.PortalUrl = meta.PortalUrl;
-                item.Service = meta.Service.ToString();
-                item.Scope = meta.Scope.ToString();
-                item.MaturityLevel = meta.MaturityLevel.ToString();
-            }
+            
 
             if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
             {

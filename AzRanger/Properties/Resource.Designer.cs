@@ -151,28 +151,13 @@ namespace AzRanger.Properties {
         ///risk = &quot;If password hash sync is not enabled, there is a risk that the leak of user credentials remains unnoticed.&quot;
         ///short = &quot;Password hash sync is not enabled&quot;
         ///solution = &quot;You have to enable Password hash sync on the server where you have installed you Azure AD Connect tool. During the setup under *Optional Features* *Password hash synchronization* can be enabled.&quot;
-        ///
-        ///[ADPasswordProtection]
-        ///score = 3
-        ///short = &quot;Entra ID Password Protection is not enabled&quot;
-        ///risk = &quot;E [rest of string was truncated]&quot;;.
+        ///scope = &quot;AAD&quot;
+        ///maturity = 1
+        ///portal = &quot;https://entra.microsoft.com/#view/Microsoft_AAD_IAM/Directorie [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string RuleInfoData {
             get {
                 return ResourceManager.GetString("RuleInfoData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to [ADPasswordHashSyncEnabled]
-        ///risk = &quot;If password hash sync is not enabled, there is a risk that the leak of user credentials remains unnoticed.&quot;
-        ///short = &quot;Password hash sync is not enabled&quot;
-        ///solution = &quot;You have to enable Password hash sync on the server where you have installed you Azure AD Connect tool. During the setup under *Optional Features* **Password hash synchronization** can be enabled.&quot;
-        ///.
-        /// </summary>
-        internal static string RuleMetaData {
-            get {
-                return ResourceManager.GetString("RuleMetaData", resourceCulture);
             }
         }
     }

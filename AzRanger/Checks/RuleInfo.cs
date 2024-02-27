@@ -1,7 +1,35 @@
 ﻿using AzRanger.Utilities;
+using System;
 
 namespace AzRanger.Checks
 {
+    public enum ScopeEnum
+    {
+        AAD,
+        Azure,
+        MDM,
+        EXO,
+        SPO,
+        Teams
+    }
+
+    public enum ServiceEnum
+    {
+        None,
+        StorageAccount,
+        KeyVault,
+        Monitoring,
+        NetworksSecurityGroup,
+        SQLServer,
+        VirtualMachine,
+        PSQLServer
+    }
+
+    public enum MaturityLevel
+    {
+        Tentative = 0,
+        Mature = 1
+    }
     internal class RuleInfo 
     {
         public string ShortDescription { get; private set; }
@@ -9,7 +37,12 @@ namespace AzRanger.Checks
         public string ReferenceLink { get; private set; }
         public string Solution { get; private set; }
         public string LongDescription { get; private set; }
-
+        public string ShortName { get; private set; }
+        public ScopeEnum Scope { get; private set; }
+        // Indicates How good a rule is
+        public MaturityLevel MaturityLevel { get; private set; }
+        public string PortalUrl { get; private set; }
+        public ServiceEnum Service { get; private set; }
         // Value between 0 and 10
         public int RiskScore { get; private set; }
 
@@ -34,6 +67,32 @@ namespace AzRanger.Checks
             ruleInfo.ReferenceLink = section.GetStringOrNull("link");
             ruleInfo.LongDescription = MarkdownRenderer.Render(section.GetStringOrNull("long"));
             ruleInfo.Solution = MarkdownRenderer.Render(section.GetStringOrNull("solution"));
+            ruleInfo.ShortName = identifier;
+            ruleInfo.Service = ServiceEnum.None;
+            ruleInfo.PortalUrl = section.GetStringOrNull("portal");
+
+            var serviceString = section.GetStringOrNull("service");
+            if (serviceString != null)
+            {
+                if (Enum.TryParse(serviceString, out ServiceEnum service))
+                {
+                    ruleInfo.Service = service;
+                }
+            }
+
+            if (!Enum.TryParse(section.GetStringOrThrow("scope"), out ScopeEnum scope))
+            {
+                ruleInfo = null;
+                return false;
+            }
+            if (!Enum.TryParse(section.GetIntOrThrow("maturity").ToString(), out MaturityLevel maturity))
+            {
+                ruleInfo = null;
+                return false;
+            }
+
+            ruleInfo.Scope = scope;
+            ruleInfo.MaturityLevel = maturity;
             return true;
         }
     }

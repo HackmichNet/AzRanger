@@ -321,8 +321,6 @@
     <Compile Include="Checks\CISM365InfoData.cs" />
     <Compile Include="Checks\RuleInfo.cs" />
     <Compile Include="Checks\RuleInfoData.cs" />
-    <Compile Include="Checks\RuleMeta.cs" />
-    <Compile Include="Checks\RuleMetaData.cs" />
     <Compile Include="Checks\TomlInfoWrapper.cs" />
     <Compile Include="Checks\Rules\ADPasswordHashSyncEnabled.cs" />
     <Compile Include="Checks\Rules\ADPasswordProtection.cs" />

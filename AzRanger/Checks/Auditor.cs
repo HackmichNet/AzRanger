@@ -37,11 +37,11 @@ namespace AzRanger.Checks
                     try
                     {
                         BaseCheck check = GetInstance(t);
-                        if (RuleMeta.TryGet(check.GetType().Name, out RuleMeta metaData))
+                        if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo info))
                         {
-                            if (scopes.Contains(metaData.Scope))
+                            if (scopes.Contains(info.Scope))
                             {
-                                logger.Debug($"[+] Auditor.Init: {metaData.ShortName} successful instantiated and added.");
+                                logger.Debug($"[+] Auditor.Init: {info.ShortName} successful instantiated and added.");
                                 AllChecks.Add(check);
                             }
                         }

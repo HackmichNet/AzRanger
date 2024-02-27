@@ -23,21 +23,15 @@ namespace AzRanger.Output
 
             foreach (BaseCheck result in auditor.Finding)
             {
-                if (!RuleMeta.TryGet(result.GetType().Name, out RuleMeta meta))
-                {
-                    logger.Error($"[-] ConsoleOutput.Print: Failed to get meta data of {result.GetType().Name}");
-                    continue;
-                }
-
                 if (!RuleInfo.TryGet(result.GetType().Name, out RuleInfo info)) {
                     logger.Error($"[-] ConsoleOutput.Print: Failed to get rule info of {result.GetType().Name}");
                     continue;
                 }
                 
                 Console.WriteLine("     [-] {0} - {1} ", info.ShortDescription, info.Risk);
-                if(meta.PortalUrl != null)
+                if(info.PortalUrl != null)
                 {
-                    Console.WriteLine("         You can lookup the setting here: {0}", meta.PortalUrl);
+                    Console.WriteLine("         You can lookup the setting here: {0}", info.PortalUrl);
                 }
                 if(info.ReferenceLink != null)
                 {
@@ -83,19 +77,13 @@ namespace AzRanger.Output
             List<BaseCheck> tentantiveChecks = new List<BaseCheck>();
             foreach (BaseCheck check in auditor.NoFinding)
             {
-                if (!RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
-                {
-                    logger.Error($"[-] ConsoleOutput.Print: Failed to get meta data of {check.GetType().Name}");
-                    continue;
-                }
-
                 if (!RuleInfo.TryGet(check.GetType().Name, out RuleInfo info))
                 {
                     logger.Error($"[-] ConsoleOutput.Print: Failed to get rule info of {check.GetType().Name}");
                     continue;
                 }
 
-                if (meta.MaturityLevel == MaturityLevel.Tentative)
+                if (info.MaturityLevel == MaturityLevel.Tentative)
                 {
                     tentantiveChecks.Add(check);
                 }
@@ -106,13 +94,6 @@ namespace AzRanger.Output
                 Console.WriteLine();
                 foreach (BaseCheck check in tentantiveChecks)
                 {
-
-                    if (!RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
-                    {
-                        logger.Error($"[-] ConsoleOutput.Print: Failed to get meta data of {check.GetType().Name}");
-                        continue;
-                    }
-
                     if (!RuleInfo.TryGet(check.GetType().Name, out RuleInfo info))
                     {
                         logger.Error($"[-] ConsoleOutput.Print: Failed to get rule info of {check.GetType().Name}");
@@ -120,9 +101,9 @@ namespace AzRanger.Output
                     }
 
                     Console.WriteLine("     [-] {0}", info.ShortDescription);
-                    if (meta.PortalUrl != null)
+                    if (info.PortalUrl != null)
                     {
-                        Console.WriteLine("         You can lookup the setting here: {0}", meta.PortalUrl);
+                        Console.WriteLine("         You can lookup the setting here: {0}", info.PortalUrl);
                     }
                 }
 
@@ -133,12 +114,7 @@ namespace AzRanger.Output
                 foreach (BaseCheck check in auditor.NotApplicable)
                 {
                     Console.WriteLine("[+] The following checks were not applicable to your tenant:");
-                    if (!RuleMeta.TryGet(check.GetType().Name, out RuleMeta meta))
-                    {
-                        logger.Error($"[-] ConsoleOutput.Print: Failed to get meta data of {check.GetType().Name}");
-                        continue;
-                    }
-
+                    
                     if (!RuleInfo.TryGet(check.GetType().Name, out RuleInfo info))
                     {
                         logger.Error($"[-] ConsoleOutput.Print: Failed to get rule info of {check.GetType().Name}");
@@ -150,9 +126,9 @@ namespace AzRanger.Output
                     {
                         Console.WriteLine("         Reason: {0}", check.GetReason());
                     }
-                    if (meta.PortalUrl != null)
+                    if (info.PortalUrl != null)
                     {
-                        Console.WriteLine("         You can lookup the setting here: {0}", meta.PortalUrl);
+                        Console.WriteLine("         You can lookup the setting here: {0}", info.PortalUrl);
                     }
                 }
             }
@@ -162,15 +138,15 @@ namespace AzRanger.Output
                 Console.WriteLine("[+] The following checks failed for unknown reason - maybe you have not enough permissions:");
                 foreach(BaseCheck error in auditor.Error)
                 {
-                    if (!RuleMeta.TryGet(error.GetType().Name, out RuleMeta meta))
+                    if (!RuleInfo.TryGet(error.GetType().Name, out RuleInfo info))
                     {
                         logger.Error($"[-] ConsoleOutput.Print: Failed to get meta data of {error.GetType().Name}");
                         continue;
                     }
-                    Console.WriteLine("          - {0}", meta.ShortName);
-                    if (meta.PortalUrl != null)
+                    Console.WriteLine("          - {0}", info.ShortName);
+                    if (info.PortalUrl != null)
                     {
-                        Console.WriteLine("         You can lookup the setting manually here: {0}", meta.PortalUrl);
+                        Console.WriteLine("         You can lookup the setting manually here: {0}", info.PortalUrl);
                     }
                 }
 
