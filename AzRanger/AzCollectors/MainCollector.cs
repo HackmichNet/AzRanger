@@ -11,9 +11,9 @@ using AzRanger.Models.MSGraph;
 using AzRanger.Models.Provision;
 using AzRanger.Models.Teams;
 using AzRanger.Utilities;
+using AzRanger.Utilities.EnrichmentEngine;
 using NLog;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -233,17 +233,26 @@ namespace AzRanger.AzScanner
                     Console.WriteLine("[+] You have {0} groups in your tenant", Result.AllGroups.Count);
                 }               
 
+                // Calculate role membership and if a user can add creds to an application
                 if (Result.AllDirectoryRoles != null)
                 {
                     if (HasP2License)
                     {
                         foreach (DirectoryRole role in Result.AllDirectoryRoles.Values)
                         {
-                            List<PIMRoleAssignments> roleAssignments = await AzrbacScanner.GetRoleAssignments(Guid.Parse(this.TenantId), Guid.Parse(role.roleTemplateId));
-                            foreach (PIMRoleAssignments assignment in roleAssignments)
+                            // Maybe it will work some day...again
+                            List<PIMRoleAssignments> roleAssignmentsTmp = await AzrbacScanner.GetRoleAssignments(Guid.Parse(this.TenantId), Guid.Parse(role.roleTemplateId));
+                            // This is for eligible roles only
+                            List<DirectoryRoleAssignments> roleAssignments = await MsGraphScanner.GetDirectoryRoleAssignments(TenantId, role.roleTemplateId);
+                            foreach (DirectoryRoleAssignments assignment in roleAssignments)
                             {
+                                // Skipping active assignments, because here scoping is possible
+                                if (assignment.assignmentState.Equals("Active"))
+                                {
+                                    continue;
+                                }
                                 // Calculate which user has which role
-                                List<AzurePrincipal> principalsToAssigne = new List<AzurePrincipal>();
+                                List<AzurePrincipal> principalsToAssign = new List<AzurePrincipal>();
                                 AzurePrincipalType aztype;
                                 switch (assignment.subject.type)
                                 {
@@ -264,65 +273,132 @@ namespace AzRanger.AzScanner
                                 }
                                 if (aztype == AzurePrincipalType.Group)
                                 {
-                                    List<AzurePrincipal> members = await MsGraphScanner.GetAllGroupMemberTransitiv(assignment.subjectId);
+                                    List<AzurePrincipal> members = Result.AllGroups[assignment.subjectId].members;
+                                    // List<AzurePrincipal> members = await MsGraphScanner.GetAllGroupMemberTransitiv(assignment.subjectId);
                                     foreach (AzurePrincipal member in members)
                                     {
-                                        principalsToAssigne.Add(member);
+                                        // To avoid having only references
+                                        principalsToAssign.Add(new AzurePrincipal(member.id, member.PrincipalType));
                                     }
                                 }
                                 else
                                 {
-                                    principalsToAssigne.Add(new AzurePrincipal(assignment.subjectId, aztype));
+                                    principalsToAssign.Add(new AzurePrincipal(assignment.subjectId, aztype));
                                 }
                                 // Global recourse
-                                if (assignment.scopedResourceId == null)
+                                // Because MS changed access to another API, we have to stick with that. No Scoping at the moment for eligible entities, check later again.
+                                // Assign user to role
+                                foreach (AzurePrincipal p in principalsToAssign)
                                 {
-                                    // Assign user to role
-                                    if (assignment.assignmentState.Equals("Active"))
+                                    role.AddEligibleMember(p);
+                                }
+                                // Calculate which user can add credentials to App or ServicePrincipal
+                                // If a user can add creds, assign to applications and service principal
+                                if (DirectoryRoleTemplateID.RolesAllowingAddCreds.Contains(role.roleTemplateId))
+                                {
+                                    foreach (ServicePrincipal s in Result.AllServicePrincipals.Values)
                                     {
-                                        foreach (AzurePrincipal p in principalsToAssigne)
+                                        if (s.appOwnerOrganizationId == this.TenantId)
                                         {
-                                            role.AddActiveMember(p);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        foreach (AzurePrincipal p in principalsToAssigne)
-                                        {
-                                            role.AddEligibleMember(p);
-                                        }
-                                    }
-                                    // Calculate which user can add credentials to App or ServicePrincipal
-                                    // If a user can add creds, assign to applications and service principal
-                                    if (DirectoryRoleTemplateID.RolesAllowingAddCreds.Contains(role.roleTemplateId))
-                                    {
-                                        foreach (ServicePrincipal s in Result.AllServicePrincipals.Values)
-                                        {
-                                            if (s.appOwnerOrganizationId == this.TenantId)
+                                            foreach (AzurePrincipal azPrincipal in principalsToAssign)
                                             {
-                                                s.AddUserAbleToAddCreds(new AzurePrincipal(assignment.subjectId, aztype));
+                                                s.AddUserAbleToAddCreds(new AzurePrincipal(azPrincipal.id, azPrincipal.PrincipalType));
                                             }
                                         }
-                                        foreach (Application a in Result.AllApplications.Values)
+                                    }
+                                    foreach (Application a in Result.AllApplications.Values)
+                                    {
+                                        foreach (AzurePrincipal azPrincipal in principalsToAssign)
                                         {
                                             a.AddUserAbleToAddCreds(new AzurePrincipal(assignment.subjectId, aztype));
                                         }
                                     }
                                 }
+                            }
+
+                            // For active assignments we have "scopedMembers", so we can add this
+                            List<ScopedRoleMember> scopedRoleMembers = await MsGraphScanner.GetScopedRoleMember(role.id.ToString());
+                            foreach(ScopedRoleMember member in scopedRoleMembers)
+                            {
+                                // Since we do not have the type, need to find it
+                                List<AzurePrincipal> principalsToAssign = new List<AzurePrincipal>();
+                                AzurePrincipalType aztype = AzurePrincipalType.Unknown;
+                                if (Result.AllUsers.ContainsKey(Guid.Parse(member.roleMemberInfo.id)))
+                                {
+                                    aztype = AzurePrincipalType.User;
+                                }
+                                if (Result.AllServicePrincipals.ContainsKey(Guid.Parse(member.roleMemberInfo.id)))
+                                {
+                                    aztype = AzurePrincipalType.ServicePrincipal;
+                                }
+                                if (Result.AllApplications.ContainsKey(Guid.Parse(member.roleMemberInfo.id)))
+                                {
+                                    aztype = AzurePrincipalType.Application;
+                                }
+                                if (Result.AllGroups.ContainsKey(Guid.Parse(member.roleMemberInfo.id)))
+                                {
+                                    aztype = AzurePrincipalType.Group;
+                                }
+                                if(aztype == AzurePrincipalType.Unknown)
+                                {
+                                    continue;
+                                }
+                                if(aztype == AzurePrincipalType.Group)
+                                {
+                                    List<AzurePrincipal> members = Result.AllGroups[Guid.Parse(member.roleMemberInfo.id)].members;
+                                    foreach (AzurePrincipal groupMember in members)
+                                    {
+                                        // To avoid having only references
+                                        principalsToAssign.Add(new AzurePrincipal(groupMember.id, groupMember.PrincipalType));
+                                    }
+                                }
                                 else
                                 {
-                                    if (assignment.scopedResource.type == "Application")
+                                    principalsToAssign.Add(new AzurePrincipal(Guid.Parse(member.roleMemberInfo.id), aztype));
+                                }
+
+                                // Find scope and create an AzurePrincipal
+                                AzurePrincipal scopedPrincipal = null; 
+                                if (Result.AllApplications.ContainsKey(Guid.Parse(member.administrativeUnitId))){
+                                    scopedPrincipal = new AzurePrincipal(Guid.Parse(member.administrativeUnitId), AzurePrincipalType.Application);
+                                }
+                                if (Result.AllServicePrincipals.ContainsKey(Guid.Parse(member.administrativeUnitId))){
+                                    scopedPrincipal = new AzurePrincipal(Guid.Parse(member.administrativeUnitId), AzurePrincipalType.ServicePrincipal);
+                                }
+                                if (Result.AllGroups.ContainsKey(Guid.Parse(member.administrativeUnitId))){
+                                    scopedPrincipal = new AzurePrincipal(Guid.Parse(member.administrativeUnitId), AzurePrincipalType.Group);
+                                }
+
+                                if(scopedPrincipal == null) { 
+                                    // Should not happen
+                                    continue;
+                                }
+
+                                foreach (AzurePrincipal principal in principalsToAssign)
+                                {
+                                    role.AddActiveMemberScopes(new Tuple<AzurePrincipal, AzurePrincipal>(principal, scopedPrincipal));
+                                }
+
+                                // Now we need to find out what the scope is and if it can add credentials
+                                if (DirectoryRoleTemplateID.RolesAllowingAddCreds.Contains(role.roleTemplateId))
+                                {
+                                    if (Result.AllApplications.ContainsKey(Guid.Parse(member.administrativeUnitId)))
                                     {
-                                        foreach (AzurePrincipal p in principalsToAssigne)
+                                        Application a = Result.AllApplications[Guid.Parse(member.administrativeUnitId)];
+                                        foreach (AzurePrincipal principal in principalsToAssign)
                                         {
-                                            Result.AllApplications[Guid.Parse(assignment.scopedResource.id)].AddUserAbleToAddCreds(p);
+                                            a.AddUserAbleToAddCreds(new AzurePrincipal(principal.id, principal.PrincipalType));
                                         }
                                     }
-                                    if (assignment.scopedResource.type == "ServicePrincipal")
+                                    if (Result.AllServicePrincipals.ContainsKey(Guid.Parse(member.administrativeUnitId)))
                                     {
-                                        foreach (AzurePrincipal p in principalsToAssigne)
+                                        ServicePrincipal s = Result.AllServicePrincipals[Guid.Parse(member.administrativeUnitId)];
+                                        if (s.appOwnerOrganizationId == this.TenantId)
                                         {
-                                            Result.AllServicePrincipals[Guid.Parse(assignment.scopedResource.id)].AddUserAbleToAddCreds(p);
+                                            foreach (AzurePrincipal principal in principalsToAssign)
+                                            {
+                                                s.AddUserAbleToAddCreds(new AzurePrincipal(Guid.Parse(member.roleMemberInfo.id), aztype));
+                                            }
                                         }
                                     }
                                 }
@@ -710,7 +786,7 @@ namespace AzRanger.AzScanner
                 }   
             }
 
-            // Ignore infos not availabe
+            // Ignore infos not available
             if (scopes.Contains(ScopeEnum.MDM))
             {
                 MDMScanner = new MDMScanner(this);
@@ -722,6 +798,10 @@ namespace AzRanger.AzScanner
                     mdmSettings.MobileDeviceCompliancePolicies = await MDMScanner.GetMobileDeviceCompliancePolicies();
                     Result.MDMSettings = mdmSettings;
                 }
+            }
+
+            if (Result.AllUsers != null && Result.AllUsers.Count > 0 && Result.AllCAPolicies != null && Result.AllCAPolicies.Count > 0) {
+                EnrichUserWithCAPolicies.Enrich(Result);
             }
 
             Console.WriteLine("[+] Finished collecting information.");

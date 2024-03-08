@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AzRanger.Models.WinGraph;
 using System.Linq;
 using System.Net;
+using System.Diagnostics.Metrics;
 
 namespace AzRanger.AzScanner
 {
@@ -22,6 +23,8 @@ namespace AzRanger.AzScanner
         public const String DirectoryRolesMembersUsers = "/v1.0/directoryRoles/{0}/members/microsoft.graph.user";
         public const String DirectoryRolesMembersAll = "/beta/directoryRoles/{0}/members";
         public const String DirectoryRolesMembersGroups = "/v1.0/directoryRoles/{0}/members/microsoft.graph.group";
+        public const String DirectoryScopedRoleMembers = "/beta/directoryRoles/{0}/scopedMembers";
+        public const String DirectoryRoleAssignments = "/beta/privilegedAccess/aadRoles/resources/{0}/roleAssignments?$filter=RoleDefinitionId eq '{1}'&$expand=subject";
         public const String CredentialUserRegistrationDetailsBeta = "/beta/reports/credentialUserRegistrationDetails";
         public const String GroupsBeta = "/beta/groups";
         public const String GroupMemberTransitiv = "/beta/groups/{0}/transitiveMembers";
@@ -123,7 +126,7 @@ namespace AzRanger.AzScanner
                     }
                     catch (Exception ex)
                     {
-                        logger.Warn("[-] An error occured. Don't panic...");
+                        logger.Warn("[-] An error occurred. Don't panic...");
                         logger.Debug("MSGraphScanner.GetAllUser.StrongAuth failed.");
                         logger.Debug(ex.Message);
                         continue;
@@ -200,7 +203,7 @@ namespace AzRanger.AzScanner
             Dictionary<Guid, DirectoryRole> Result = new Dictionary<Guid, DirectoryRole>();
             foreach (DirectoryRole role in roles)
             {
-                role.SetMember( await GetAllRoleMember(role.id));
+                role.SetMember(await GetAllRoleMember(role.id));
                 Result.Add(role.id, role);
             }
             return Result;
@@ -293,6 +296,11 @@ namespace AzRanger.AzScanner
             return Result;
         }
 
+        public Task<List<ScopedRoleMember>> GetScopedRoleMember(string id)
+        {
+            return GetAllOf<ScopedRoleMember>(String.Format(DirectoryScopedRoleMembers, id));
+        }
+
         public Task<List<Domain>> GetAzDomains()
         {
             return GetAllOf<Domain>(MSGraphCollector.GetDomains);
@@ -303,7 +311,7 @@ namespace AzRanger.AzScanner
             List< ConditionalAccessPolicy> policies = await GetAllOf<ConditionalAccessPolicy>(MSGraphCollector.ConditionalAccessPoliciesBeta);
             if(policies == null)
             {
-                logger.Warn("MSGraphScanner.GetAllConditionalAccessPolicies: Cannot find Conditional Access Policies. Do you have th correct rights?");
+                logger.Warn("MSGraphScanner.GetAllConditionalAccessPolicies: Cannot find Conditional Access Policies. Do you have the correct rights?");
                 return null;
             }
             Dictionary<Guid, ConditionalAccessPolicy> result = new Dictionary<Guid, ConditionalAccessPolicy>();
@@ -375,6 +383,7 @@ namespace AzRanger.AzScanner
             Dictionary<Guid, Group> Result = new Dictionary<Guid, Group>();
             foreach (Group group in allGroups)
             {
+                group.members = await GetAllGroupMemberTransitiv(group.id);
                 Result.Add(group.id, group);
             }
             return Result;
@@ -386,9 +395,24 @@ namespace AzRanger.AzScanner
             List<IDTypeResponse> groupMember = await GetAllOf<IDTypeResponse>(string.Format(GroupMemberTransitiv, groupId.ToString()), "?$select=id");
             List<AzurePrincipal> result = new List<AzurePrincipal>();
 
-            foreach (IDTypeResponse user in groupMember)
+            foreach (IDTypeResponse principal in groupMember)
             {
-                result.Add(new AzurePrincipal(user.id, AzurePrincipalType.User));
+                if (principal.odatatype == "#microsoft.graph.user")
+                {
+                    AzurePrincipal p = new AzurePrincipal(principal.id, AzurePrincipalType.User);
+                    if (!result.Contains(p))
+                    {
+                        result.Add(p);
+                    }
+                }
+                if (principal.odatatype == "#microsoft.graph.servicePrincipal")
+                {
+                    AzurePrincipal p = new AzurePrincipal(principal.id, AzurePrincipalType.ServicePrincipal);
+                    if (!result.Contains(p))
+                    {
+                        result.Add(p);
+                    }
+                }
             }
             return result;
         }
@@ -397,6 +421,11 @@ namespace AzRanger.AzScanner
         {
             return Get<AuthenticationMethodsPolicy>(AuthenticationMethodsPolicy);
 
+        }
+
+        internal Task<List<DirectoryRoleAssignments>> GetDirectoryRoleAssignments(String tenantId, String roleId)
+        {
+            return GetAllOf<DirectoryRoleAssignments>(String.Format(DirectoryRoleAssignments,tenantId, roleId));
         }
 
 

@@ -50,7 +50,7 @@ namespace AzRanger.AzScanner
                 logger.Debug(String.Format("ExchangeOnlineScanner.GetOrganizationConfig() is null."));
                 return null;
             }
-            if (result.Count > 1)
+            if (result.Count < 1)
             {
                 logger.Debug(String.Format("ExchangeOnlineScanner.GetOrganizationConfig() has {0} results.", result.Count));
                 return null;
@@ -66,7 +66,7 @@ namespace AzRanger.AzScanner
                 logger.Debug(String.Format("ExchangeOnlineScanner.GetOwaMailboxPolicy() is null."));
                 return null;
             }
-            if (result.Count > 1)
+            if (result.Count < 1)
             {
                 logger.Debug(String.Format("ExchangeOnlineScanner.GetOwaMailboxPolicy() has {0} results.", result.Count));
                 return null;
@@ -131,7 +131,7 @@ namespace AzRanger.AzScanner
                 logger.Debug(String.Format("ExchangeOnlineScanner.GetAdminAuditLogConfig() is null."));
                 return null;
             }
-            if (result.Count > 1)
+            if (result.Count < 1)
             {
                 logger.Debug(String.Format("ExchangeOnlineScanner.GetAdminAuditLogConfig() has {0} results.", result.Count));
                 return null;
@@ -232,6 +232,7 @@ namespace AzRanger.AzScanner
                         logger.Debug("ExchangeOnlineScanner.GetAllOf: {0} was not successfull", typeof(T).ToString());
                         logger.Debug("ExchangeOnlineScanner.GetAllOf: Status Code {0}", response.StatusCode);
                         logger.Debug(await response.Content.ReadAsStringAsync());
+                        url = null;
                     }
                     catch { }
                 }

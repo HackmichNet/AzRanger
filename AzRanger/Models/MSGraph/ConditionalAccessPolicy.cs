@@ -34,8 +34,8 @@ namespace AzRanger.Models
     }
     public class Users
     {
-        public string[] includeUsers { get; set; }
-        public string[] excludeUsers { get; set; }
+        public object[] includeUsers { get; set; }
+        public object[] excludeUsers { get; set; }
         public object[] includeGroups { get; set; }
         public object[] excludeGroups { get; set; }
         public object[] includeRoles { get; set; }

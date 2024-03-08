@@ -16,7 +16,7 @@ namespace AzRanger.AzScanner
         public const String DLPPolicies = "/Psws/service.svc/DlpCompliancePolicy";
         public const String DLPLabels = "/Psws/service.svc/Label";
         public const String PowerShellLiveId = "/Powershell-LiveId";
-        public const String InitBaseAdress = "https://ps.compliance.protection.outlook.com";
+        public const String InitBaseAddress = "https://ps.compliance.protection.outlook.com";
         public ComplianceCenterCollector(MainCollector scanner)
         {
             this.Scanner = scanner;
@@ -44,7 +44,7 @@ namespace AzRanger.AzScanner
                 return null;
             }
             this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            string url = InitBaseAdress + PowerShellLiveId;
+            string url = InitBaseAddress + PowerShellLiveId;
             var response = await client.GetAsync(url);
             if (response.StatusCode == HttpStatusCode.Redirect)
             {

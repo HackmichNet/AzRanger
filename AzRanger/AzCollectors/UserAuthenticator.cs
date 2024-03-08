@@ -16,7 +16,7 @@ namespace AzRanger.AzScanner
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private readonly string Authority = "https://login.microsoftonline.com";
         IPublicClientApplication App;
-        // AzurePowerShell = "1950a258-227b-4e31-a9cf-717495945fc2"
+        // String AzurePowerShell = "1950a258-227b-4e31-a9cf-717495945fc2";
         // GlobalPowerShell = "1b730954-1685-4b74-9bfd-dac224a7b894"
         private const String ClientId = "1b730954-1685-4b74-9bfd-dac224a7b894";
         private String Username;
@@ -35,7 +35,7 @@ namespace AzRanger.AzScanner
                 if (proxy != null)
                 {
                     IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                    App = PublicClientApplicationBuilder.Create(ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().Build();
+                    App = PublicClientApplicationBuilder.Create(ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().Build();                 
                 }
                 else
                 {
@@ -145,14 +145,12 @@ namespace AzRanger.AzScanner
                             return null;
                         }
                     }
-
                     logger.Warn(ex.ErrorCode);
                     logger.Warn(ex.Message);
                     semaphoreSlim.Release();
                     return null;
                 }
             }
-
             try
             {
                 if (this.Username == null && this.Password == null)

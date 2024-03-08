@@ -321,6 +321,7 @@
     <Compile Include="Checks\CISM365InfoData.cs" />
     <Compile Include="Checks\RuleInfo.cs" />
     <Compile Include="Checks\RuleInfoData.cs" />
+    <Compile Include="Checks\Rules\UserWithoutCAPolicy.cs" />
     <Compile Include="Checks\TomlInfoWrapper.cs" />
     <Compile Include="Checks\Rules\ADPasswordHashSyncEnabled.cs" />
     <Compile Include="Checks\Rules\ADPasswordProtection.cs" />
@@ -557,6 +558,7 @@
     <Compile Include="Models\MSGraph\Device.cs" />
     <Compile Include="Models\MSGraph\DeviceRegistrationPolicy.cs" />
     <Compile Include="Models\MSGraph\DirectoryRole.cs" />
+    <Compile Include="Models\MSGraph\DirectoryRoleAssignments.cs" />
     <Compile Include="Models\MSGraph\Domain.cs" />
     <Compile Include="Models\MSGraph\EnterpriseApplicationUserSettings.cs" />
     <Compile Include="Models\MSGraph\Group.cs" />
@@ -580,6 +582,7 @@
     <Compile Include="Models\MSGraph\Oauth2PermissionGrants.cs" />
     <Compile Include="Models\MSGraph\Oauth2permissionscopes.cs" />
     <Compile Include="Models\MSGraph\Passwordcredential.cs" />
+    <Compile Include="Models\MSGraph\ScopedRoleMember.cs" />
     <Compile Include="Models\MSGraph\ServiceConfigurationRecords.cs" />
     <Compile Include="Models\MSGraph\ServicePrincipal.cs" />
     <Compile Include="Models\MSGraph\Signinactivity.cs" />
@@ -615,6 +618,8 @@
     <Compile Include="Utilities\AzRangerOutput.cs" />
     <Compile Include="Utilities\CommandlineOptions.cs" />
     <Compile Include="Utilities\DirectoryRoleTemplateID.cs" />
+    <Compile Include="Utilities\EnrichmentEngine\EnrichUserWithCAPolicies.cs" />
+    <Compile Include="Utilities\EnrichmentEngine\IEnrichmentEngine.cs" />
     <Compile Include="Utilities\HttpFactoryWithProxy.cs" />
     <Compile Include="Utilities\JSONDumper.cs" />
     <Compile Include="Utilities\MarkdownRenderer.cs" />

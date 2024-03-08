@@ -1,6 +1,7 @@
 ﻿using AzRanger.Models.WinGraph;
 using AzRanger.Output;
 using System;
+using System.Collections.Generic;
 
 namespace AzRanger.Models.MSGraph
 {
@@ -14,13 +15,14 @@ namespace AzRanger.Models.MSGraph
         public bool accountEnabled { get; set; }
         public Signinactivity signInActivity { get; set; }
 
-        // MFA is registert
+        // MFA is registered
         public bool isMFAEnabled = false;
 
-        // isRegistered => is Registered
+        // isRegistered => is registered
         public bool isAbleTodoPasswordReset { get; set; }
         public object onPremisesSyncEnabled { get; set; }
         public StrongAuthenticationDetailDetails strongAuthenticationDetail { get; set; }
+        public List<Guid> assignedCAPolicies { get; set; }
 
         public override string ToString()
         {

@@ -1,5 +1,7 @@
-﻿using AzRanger.Output;
+﻿using AzRanger.Models.Generic;
+using AzRanger.Output;
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace AzRanger.Models
@@ -12,6 +14,7 @@ namespace AzRanger.Models
         public string displayName { get; set; }
         public bool securityEnabled { get; set; }
         public object visibility { get; set; }
+        public List<AzurePrincipal> members { get; set; }
 
         public string PrintConsole()
         {

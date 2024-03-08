@@ -11,6 +11,7 @@ namespace AzRanger.Models.Generic
         User,
         Group,
         Application,
-        ServicePrincipal
+        ServicePrincipal,
+        Unknown
     }
 }

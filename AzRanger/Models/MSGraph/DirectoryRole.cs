@@ -14,6 +14,9 @@ namespace AzRanger.Models.MSGraph
         public object deletedDateTime { get; set; }
         public string description { get; set; }
         public string roleTemplateId { get; set; }
+        //                  Id              Scope
+        public List<Tuple<AzurePrincipal, AzurePrincipal>> activeMembersScoped { get; set; }
+        public List<Tuple<AzurePrincipal, AzurePrincipal>> eligibleMembersScoped { get; set; }
 
 
         public DirectoryRole(Guid id, string displayName, String description, string roleTemplateId)
@@ -24,6 +27,8 @@ namespace AzRanger.Models.MSGraph
             this.roleTemplateId = roleTemplateId;
             this.activeMembers = new List<AzurePrincipal>();
             this.eligibleMembers = new List<AzurePrincipal>();
+            this.activeMembersScoped = new List<Tuple<AzurePrincipal, AzurePrincipal>>();
+            this.eligibleMembersScoped = new List<Tuple<AzurePrincipal, AzurePrincipal>>();
         }
 
         public void AddActiveMember(AzurePrincipal az)
@@ -46,6 +51,25 @@ namespace AzRanger.Models.MSGraph
             }
         }
 
+        public void AddActiveMemberScopes(Tuple<AzurePrincipal, AzurePrincipal> member)
+        {
+            if (!PricipalIsInActiveMembersScopes(member.Item1.id, member.Item2.id))
+            {
+                this.activeMembersScoped.Add(member);   
+            }
+        }
+        public void AddEligibleMemberScoped(Tuple<AzurePrincipal, AzurePrincipal> member)
+        {
+            // First check if in active members, if so ignore the user (active > elligble)
+            if (!PricipalIsInActiveMembersScopes(member.Item1.id, member.Item2.id))
+            {
+                if (!PricipalIsInEligibleMembersScopes(member.Item1.id, member.Item2.id))
+                {
+                    this.eligibleMembersScoped.Add(member);
+                }
+            }
+        }
+
         public void SetMember(List<AzurePrincipal> members)
         {
             this.activeMembers = members;
@@ -54,6 +78,30 @@ namespace AzRanger.Models.MSGraph
         public List<AzurePrincipal> GetMembers()
         {
             return this.activeMembers;
+        }
+
+        public bool PricipalIsInActiveMembersScopes(Guid id, Guid scope)
+        {
+            foreach (Tuple<AzurePrincipal, AzurePrincipal> entity in this.activeMembersScoped)
+            {
+                if (entity.Item1.id == id && entity.Item2.id == scope)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool PricipalIsInEligibleMembersScopes(Guid id, Guid scope)
+        {
+            foreach (Tuple<AzurePrincipal, AzurePrincipal> entity in this.eligibleMembersScoped)
+            {
+                if (entity.Item1.id == id && entity.Item2.id == scope)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool PricipalIsInActiveMembers(Guid id)
