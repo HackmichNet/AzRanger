@@ -558,7 +558,7 @@
     <Compile Include="Models\MSGraph\Device.cs" />
     <Compile Include="Models\MSGraph\DeviceRegistrationPolicy.cs" />
     <Compile Include="Models\MSGraph\DirectoryRole.cs" />
-    <Compile Include="Models\MSGraph\DirectoryRoleAssignments.cs" />
+    <Compile Include="Models\MSGraph\DirectoryRoleAssignment.cs" />
     <Compile Include="Models\MSGraph\Domain.cs" />
     <Compile Include="Models\MSGraph\EnterpriseApplicationUserSettings.cs" />
     <Compile Include="Models\MSGraph\Group.cs" />
@@ -618,6 +618,9 @@
     <Compile Include="Utilities\AzRangerOutput.cs" />
     <Compile Include="Utilities\CommandlineOptions.cs" />
     <Compile Include="Utilities\DirectoryRoleTemplateID.cs" />
+    <Compile Include="Utilities\EnrichmentEngine\AssignEligibleUserToRole.cs" />
+    <Compile Include="Utilities\EnrichmentEngine\AssignUserCanAddCreds.cs" />
+    <Compile Include="Utilities\EnrichmentEngine\AssignUserToRole.cs" />
     <Compile Include="Utilities\EnrichmentEngine\EnrichUserWithCAPolicies.cs" />
     <Compile Include="Utilities\EnrichmentEngine\IEnrichmentEngine.cs" />
     <Compile Include="Utilities\HttpFactoryWithProxy.cs" />

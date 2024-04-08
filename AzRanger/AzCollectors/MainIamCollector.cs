@@ -21,12 +21,13 @@ namespace AzRanger.AzScanner
         private const String LoginTenantBrandings = "/api/LoginTenantBrandings";
         private const String OnPremisesPasswordResetPolicies = "/api/PasswordReset/OnPremisesPasswordResetPolicies";
 
-        public MainIamCollector(MainCollector scanner)
+        public MainIamCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
-            this.Scanner = scanner;
-            this.BaseAdresse = "https://main.iam.ad.ext.azure.com";
+            this.Authenticator = authenticator;
+            this.TenantId = tenantId;
+            this.BaseAddress = "https://main.iam.ad.ext.azure.com";
             this.Scope = new string[] { "74658136-14ec-4630-ad9b-26e160ff0fc6/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, proxy);
         }
 
         public Task<OnPremisesPasswordResetPolicy> GetOnPremisesPasswordResetPolicy()

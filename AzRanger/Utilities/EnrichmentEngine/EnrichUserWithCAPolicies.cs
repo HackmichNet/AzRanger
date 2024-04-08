@@ -35,19 +35,20 @@ namespace AzRanger.Utilities.EnrichmentEngine
 
                 if (policy.conditions.users.excludeUsers.Any())
                 {
-                    foreach (Guid userId in policy.conditions.users.excludeUsers)
+                    foreach (Object userId in policy.conditions.users.excludeUsers)
                     {
-                        usersInThePolicy.Remove(userId);
+                        usersInThePolicy.Remove(Guid.Parse(userId.ToString()));
                     }
                 }
 
                 if (policy.conditions.users.includeRoles.Any())
                 {
-                    foreach (Guid roleId in policy.conditions.users.includeRoles)
+                    foreach (Object roleId in policy.conditions.users.includeRoles)
                     {
+
                         foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values)
                         {
-                            if (roleId.Equals(role.roleTemplateId))
+                            if (roleId.ToString().Equals(role.roleTemplateId))
                             {
                                 foreach (AzurePrincipal user in role.activeMembers)
                                 {
@@ -63,11 +64,11 @@ namespace AzRanger.Utilities.EnrichmentEngine
                 }
                 if (policy.conditions.users.excludeRoles.Any())
                 {
-                    foreach (Guid roleId in policy.conditions.users.excludeRoles)
+                    foreach (Object roleId in policy.conditions.users.excludeRoles)
                     {
                         foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values)
                         {
-                            if (roleId.Equals(role.roleTemplateId))
+                            if (roleId.ToString().Equals(role.roleTemplateId))
                             {
                                 foreach (AzurePrincipal user in role.activeMembers)
                                 {
@@ -83,9 +84,9 @@ namespace AzRanger.Utilities.EnrichmentEngine
                 }
                 if (policy.conditions.users.includeGroups.Any())
                 {
-                    foreach (Guid groupId in policy.conditions.users.includeGroups)
+                    foreach (Object groupId in policy.conditions.users.includeGroups)
                     {
-                        Group group = tenant.AllGroups[groupId];
+                        Group group = tenant.AllGroups[Guid.Parse(groupId.ToString())];
                         if (group != null)
                         {
                             foreach (AzurePrincipal principal in group.members)
@@ -100,9 +101,9 @@ namespace AzRanger.Utilities.EnrichmentEngine
                 }
                 if (policy.conditions.users.excludeGroups.Any())
                 {
-                    foreach (Guid groupId in policy.conditions.users.excludeGroups)
+                    foreach (Object groupId in policy.conditions.users.excludeGroups)
                     {
-                        Group group = tenant.AllGroups[groupId];
+                        Group group = tenant.AllGroups[Guid.Parse(groupId.ToString())];
                         if (group != null)
                         {
                             foreach (AzurePrincipal principal in group.members)

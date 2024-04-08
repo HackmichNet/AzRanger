@@ -17,28 +17,29 @@ namespace AzRanger.AzScanner
         public const String DLPLabels = "/Psws/service.svc/Label";
         public const String PowerShellLiveId = "/Powershell-LiveId";
         public const String InitBaseAddress = "https://ps.compliance.protection.outlook.com";
-        public ComplianceCenterCollector(MainCollector scanner)
+        public ComplianceCenterCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
-            this.Scanner = scanner;
+            this.Authenticator = authenticator;
+            this.TenantId = tenantId;
             this.Scope = new String[] { "https://ps.compliance.protection.outlook.com/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, proxy);
         }
 
         public Task<List<DlpCompliancePolicy>> GetDLPPolicies()
         {
-            if(BaseAdresse == null) return null;
+            if(BaseAddress == null) return null;
             return GetAllOf<DlpCompliancePolicy>(DLPPolicies, null, null);
         }
 
         public Task<List<DlpLabel>> GetDLPLabels()
         {
-            if (BaseAdresse == null) return null;
+            if (BaseAddress == null) return null;
             return GetAllOf<DlpLabel>(DLPLabels, null, null);
         }
 
         public async Task<String> GetBaseAddress()
         {
-            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            String accessToken = await this.Authenticator.GetAccessToken(this.Scope);
             if (accessToken == null)
             {
                 return null;

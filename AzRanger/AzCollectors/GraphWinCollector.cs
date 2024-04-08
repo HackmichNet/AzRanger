@@ -14,26 +14,27 @@ namespace AzRanger.AzScanner
         public const String UsersInternal = "/{0}/users/{1}";
         public const String RoleDefinitions = "/myorganization/roleDefinitions";
 
-        public GraphWinCollector(MainCollector scanner)
+        public GraphWinCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
-            this.Scanner = scanner;
-            this.BaseAdresse = "https://graph.windows.net";
+            this.Authenticator = authenticator;
+            this.TenantId = tenantId;
+            this.BaseAddress = "https://graph.windows.net";
             this.Scope = new string[] { "https://graph.windows.net/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, proxy);
         }
-        public Task<List<RoleDefinition>> GetRoleDefinitons()
+        public Task<List<RoleDefinition>> GetRoleDefinitions()
         {
-            return GetAllOf<RoleDefinition>(RoleDefinitions, "?api-version=1.61-internal&$select=objectId,displayName,isBuilt,InisEnabled");
+            return GetAllOf<RoleDefinition>(RoleDefinitions, "?api-version=1.61-internal&$select=objectId,displayName,isBuilt,isEnabled");
         }
         public Task<StrongAuthenticationDetail> GetStrongAuthenticationDetail(Guid objectId)
         {
-            String endPoint = string.Format(UsersInternal, this.Scanner.TenantId, objectId);
+            String endPoint = string.Format(UsersInternal, this.TenantId, objectId);
             return Get<StrongAuthenticationDetail>(endPoint, "?api-version=1.61-internal&$select=strongAuthenticationDetail,objectId");
         }
 
         internal async override Task<List<T>> GetAllOf<T>(string endPoint, string query = null, List<Tuple<string, string>> additionalHeaders = null)
         {
-            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            String accessToken = await this.Authenticator.GetAccessToken(this.Scope);
             if (accessToken == null)
             {
                 return new List<T>();
@@ -53,7 +54,7 @@ namespace AzRanger.AzScanner
             }
             /// Create the result list
             List<T> resultList = new List<T>();
-            string url = BaseAdresse + usedEndpoint;
+            string url = BaseAddress + usedEndpoint;
             while (url != null)
             {
 

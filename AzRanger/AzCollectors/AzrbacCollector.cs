@@ -11,17 +11,18 @@ namespace AzRanger.AzScanner
     class AzrbacCollector : AbstractCollector
     {
         private const String RoleAssignmentForDirectory = "/api/v2/privilegedAccess/aadroles/roleAssignments";
-        public AzrbacCollector(MainCollector scanner)
+        public AzrbacCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
-            this.Scanner = scanner;
-            this.BaseAdresse = "https://api.azrbac.mspim.azure.com";
+            this.Authenticator = authenticator;
+            this.TenantId = tenantId;
+            this.BaseAddress = "https://api.azrbac.mspim.azure.com";
             this.Scope = new String[] { "01fc33a7-78ba-4d2f-a4b7-768e336e890e/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, proxy);
         }
 
-        public Task<List<PIMRoleAssignments>> GetRoleAssignments(Guid tenantID, Guid roleDefinition)
+        public Task<List<PIMRoleAssignments>> GetRoleAssignments(Guid roleDefinition)
         {
-            String query = String.Format(@"$filter=(roleDefinition/resource/id eq '{0}') and (roleDefinition/id eq '{1}')&$expand=subject,scopedResource", tenantID.ToString(), roleDefinition.ToString());
+            String query = String.Format(@"$filter=(roleDefinition/resource/id eq '{0}') and (roleDefinition/id eq '{1}')&$expand=subject,scopedResource", TenantId.ToString(), roleDefinition.ToString());
             return GetAllOf<PIMRoleAssignments>(RoleAssignmentForDirectory, query); ;
         }
     }

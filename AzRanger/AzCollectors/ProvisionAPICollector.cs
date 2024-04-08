@@ -15,14 +15,15 @@ namespace AzRanger.AzScanner
 {
 	class ProvisionAPICollector : AbstractCollector
 	{
-		public const String Endpoint = "/provisioningwebservice.svc";
+		private const String Endpoint = "/provisioningwebservice.svc";
 
-		public ProvisionAPICollector(MainCollector scanner)
-		{
-			this.Scanner = scanner;
-			this.BaseAdresse = "https://provisioningapi.microsoftonline.com";
-			this.Scope = new String[] { "https://graph.windows.net/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+        public ProvisionAPICollector(IAuthenticator authenticator, String tenantId, String proxy)
+        {
+            this.Authenticator = authenticator;
+            this.TenantId = tenantId;
+			this.BaseAddress = "https://provisioningapi.microsoftonline.com";
+            this.Scope = new String[] { "https://graph.windows.net/.default", "offline_access" };
+            this.client = Helper.GetDefaultClient(additionalHeaders, proxy);
         }
 
         public async Task<DirSyncFeatures> GetDirSyncFeatures()
@@ -181,7 +182,7 @@ namespace AzRanger.AzScanner
         
 		private async Task<String> PostToProvisioninApi(string command, string requestElement)
 		{
-            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            String accessToken = await this.Authenticator.GetAccessToken(this.Scope);
             if (accessToken == null)
             {
                 return null;
@@ -190,7 +191,7 @@ namespace AzRanger.AzScanner
             logger.Debug("ProvisionApiScanner.PostToProvisionApi: {0}|{1}", command, requestElement);
 			string content = CreateEnvelop(this.client.DefaultRequestHeaders.Authorization.ToString().Split(' ')[1], command, requestElement);
 			StringContent message = new StringContent(content.Replace("\\n", "").Replace("\\t", ""), Encoding.UTF8, "application/soap+xml");
-			String url = this.BaseAdresse + Endpoint;
+			String url = BaseAddress + Endpoint;
 			var response = await client.PostAsync(url, message);
 			if (response.IsSuccessStatusCode)
 			{
@@ -239,7 +240,7 @@ namespace AzRanger.AzScanner
 
 		public async Task<SharePointInformation> GetSharepointInformation()
 		{
-            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            String accessToken = await this.Authenticator.GetAccessToken(this.Scope);
             if (accessToken == null)
             {
                 return null;

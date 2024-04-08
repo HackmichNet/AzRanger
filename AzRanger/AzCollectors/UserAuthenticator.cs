@@ -16,9 +16,7 @@ namespace AzRanger.AzScanner
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private readonly string Authority = "https://login.microsoftonline.com";
         IPublicClientApplication App;
-        // String AzurePowerShell = "1950a258-227b-4e31-a9cf-717495945fc2";
-        // GlobalPowerShell = "1b730954-1685-4b74-9bfd-dac224a7b894"
-        private const String ClientId = "1b730954-1685-4b74-9bfd-dac224a7b894";
+        private String ClientId;
         private String Username;
         private SecureString Password;
         private int FailedInteractiveLogonCounter = 0;
@@ -26,20 +24,19 @@ namespace AzRanger.AzScanner
         public readonly static string CacheDir = MsalCacheHelper.UserRootDirectory;
         // https://blog.cdemi.io/async-waiting-inside-c-sharp-locks/#:~:text=The%20lock%20keyword%20can%20only,is%20used%20pretty%20much%20everywhere.
         static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
-        public UserAuthenticator(string tenantId, string proxy)
+        public UserAuthenticator(string tenantId, string proxy, string clientID)
         {
-            //var storageProperties = new StorageCreationPropertiesBuilder(CacheFileName, CacheDir).Build();
-            //var cacheHelper = MsalCacheHelper.CreateAsync(storageProperties).Result;
+            this.ClientId = clientID;
             if (tenantId == null)
             {
                 if (proxy != null)
                 {
                     IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                    App = PublicClientApplicationBuilder.Create(ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().Build();                 
+                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().Build();                 
                 }
                 else
                 {
-                    App = PublicClientApplicationBuilder.Create(ClientId).WithDefaultRedirectUri().Build();
+                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithDefaultRedirectUri().Build();
                 }
             }
             else
@@ -47,18 +44,18 @@ namespace AzRanger.AzScanner
                 this.Authority = Authority + "/" + tenantId + "/";
                 if (proxy != null) {
                     IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                    App = PublicClientApplicationBuilder.Create(ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithDefaultRedirectUri().Build();
+                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithDefaultRedirectUri().Build();
                 }
                 else
                 {
-                    App = PublicClientApplicationBuilder.Create(ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithDefaultRedirectUri().Build();
+                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithDefaultRedirectUri().Build();
                 }
             }
-            //cacheHelper.RegisterCache(App.UserTokenCache);
         }
 
-        public UserAuthenticator(String Username, String Password, string tenantId, string proxy)
+        public UserAuthenticator(String Username, String Password, string tenantId, string proxy, string clientID)
         {
+            this.ClientId = clientID;
             this.Authority = Authority + "/" + tenantId + "/";
             this.Username = Username;
             this.Password = new SecureString();
@@ -68,11 +65,11 @@ namespace AzRanger.AzScanner
             }
             if (proxy != null) {
                 IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                App = PublicClientApplicationBuilder.Create(ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+                App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
             }
             else
             {
-                App = PublicClientApplicationBuilder.Create(ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+                App = PublicClientApplicationBuilder.Create(this.ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
             }
         }
 
@@ -161,7 +158,7 @@ namespace AzRanger.AzScanner
                 }
                 else
                 {
-                    result = await App.AcquireTokenByUsernamePassword(scopes, this.Username, this.Password).ExecuteAsync();
+                    result = await App.AcquireTokenByUsernamePassword(scopes, Username, Password).ExecuteAsync();
                     semaphoreSlim.Release();
                     return result;
                 }

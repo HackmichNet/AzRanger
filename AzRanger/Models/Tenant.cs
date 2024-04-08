@@ -26,6 +26,7 @@ namespace AzRanger.Models
         public Dictionary<Guid, ServicePrincipal> AllServicePrincipals { get; set; }
         public Dictionary<Guid, Group> AllGroups { get; set; }
         public List<EnterpriseApplicationUserSettings> EnterpriseApplicationUserSettings { get; set; }
+        public List<PIMRoleAssignments> PIMRoleAssignments { get; set; }
         public M365Settings TenantSettings { get; set; }
         public Dictionary<Guid, ConditionalAccessPolicy> AllCAPolicies { get; set; }
         public SharePointInformation SharePointInformation { get; set; }

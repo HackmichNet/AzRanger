@@ -16,6 +16,14 @@ namespace AzRanger
 {
     class Program
     {
+        // String AzurePowerShell = "1950a258-227b-4e31-a9cf-717495945fc2";
+        // Azure Active Directory Powershell = "1b730954-1685-4b74-9bfd-dac224a7b894"
+        // AzureCli = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
+        // MS Graph CommandLineTool = "14d82eec-204b-4c2f-b7e8-296a70dab67e"
+        // PowerAutomate = "386ce8c0-7421-48c9-a1df-2a532400339f"
+
+        private static string ClientID = "1b730954-1685-4b74-9bfd-dac224a7b894";
+        private static string PowerAutomateID = "386ce8c0-7421-48c9-a1df-2a532400339f";
         private static Logger logger = LogManager.GetCurrentClassLogger();
         static async Task Main(string[] args)
         {
@@ -129,8 +137,9 @@ namespace AzRanger
                 }
                 if (TenantId != null)
                 {
-                    UserAuthenticator authenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy);
-                    scanner = new MainCollector(authenticator, opts.Proxy, TenantId);
+                    UserAuthenticator aadPowerShellUserAuthenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy, ClientID);
+                    UserAuthenticator powerAutomateUserAuthenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy, PowerAutomateID);
+                    scanner = new MainCollector(aadPowerShellUserAuthenticator, powerAutomateUserAuthenticator,opts.Proxy, TenantId);
                 }
                 else
                 {
@@ -154,11 +163,11 @@ namespace AzRanger
                     return;
                 }
                 AppAuthenticator authenticator = new AppAuthenticator(opts.ClientId, opts.ClientSecret, opts.TenantId, opts.Proxy);
-                scanner = new MainCollector(authenticator, opts.Proxy, opts.TenantId);
+                scanner = new MainCollector(authenticator, null,opts.Proxy, opts.TenantId);
             }
             else
             {
-                scanner = new MainCollector(new UserAuthenticator(opts.TenantId, opts.Proxy), opts.Proxy, opts.TenantId);
+                scanner = new MainCollector(new UserAuthenticator(opts.TenantId, opts.Proxy, ClientID), new UserAuthenticator(opts.TenantId, opts.Proxy, ClientID), opts.Proxy, opts.TenantId);
             }
 
             if (opts.Mode == AzRangerModes.Audit | opts.Mode == AzRangerModes.DumpAll)

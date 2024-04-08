@@ -24,7 +24,8 @@ namespace AzRanger.AzScanner
         public const String DirectoryRolesMembersAll = "/beta/directoryRoles/{0}/members";
         public const String DirectoryRolesMembersGroups = "/v1.0/directoryRoles/{0}/members/microsoft.graph.group";
         public const String DirectoryScopedRoleMembers = "/beta/directoryRoles/{0}/scopedMembers";
-        public const String DirectoryRoleAssignments = "/beta/privilegedAccess/aadRoles/resources/{0}/roleAssignments?$filter=RoleDefinitionId eq '{1}'&$expand=subject";
+        public const String DirectoryRoleAssignmentsEligible = "/beta/roleManagement/directory/roleEligibilitySchedules";
+        public const String DirectoryRoleAssignments = "/beta/roleManagement/directory/roleAssignmentSchedules";
         public const String CredentialUserRegistrationDetailsBeta = "/beta/reports/credentialUserRegistrationDetails";
         public const String GroupsBeta = "/beta/groups";
         public const String GroupMemberTransitiv = "/beta/groups/{0}/transitiveMembers";
@@ -44,12 +45,13 @@ namespace AzRanger.AzScanner
         //https://learn.microsoft.com/en-us/graph/api/authentication-list-methods?view=graph-rest-1.0&tabs=http
         public const String AuthenticationMethods = "/{0}/authentication/methods";
 
-        public MSGraphCollector(MainCollector scanner)
+        public MSGraphCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
-            this.Scanner = scanner;
-            this.BaseAdresse = "https://graph.microsoft.com";
+            this.Authenticator = authenticator;
+            this.TenantId = tenantId;
+            this.BaseAddress = "https://graph.microsoft.com";
             this.Scope = new String[] { "https://graph.microsoft.com/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, proxy);
         }
 
         public Task<AuthorizationPolicy> GetAuthorizationPolicy()
@@ -77,10 +79,10 @@ namespace AzRanger.AzScanner
             }
             return Result;
         }
-        public async Task<Dictionary<Guid, User>> GetAllUsers()
+        public async Task<Dictionary<Guid, User>> GetAllUsers(bool hasP1License, GraphWinCollector graphWinCollector)
         {
             List<User> allUsers;
-            if (this.Scanner.HasP1License)
+            if (hasP1License)
             {
                 allUsers = await GetAllOf<User>(MSGraphCollector.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,signInActivity,onPremisesSyncEnabled");
             }
@@ -113,7 +115,7 @@ namespace AzRanger.AzScanner
                 {
                     if (user.strongAuthenticationDetail == null)
                     {
-                        tasks.Add(this.Scanner.GraphWinScanner.GetStrongAuthenticationDetail(user.id));
+                        tasks.Add(graphWinCollector.GetStrongAuthenticationDetail(user.id));
                     }
                 }
 
@@ -170,10 +172,10 @@ namespace AzRanger.AzScanner
             }
             return true;
         }
-        public async Task<Dictionary<Guid, User>> GetAllGuests()
+        public async Task<Dictionary<Guid, User>> GetAllGuests(bool hasP1Licnse)
         {
             List<User> allUsers;
-            if (this.Scanner.HasP1License)
+            if (hasP1Licnse)
             {
                 allUsers = await GetAllOf<User>(MSGraphCollector.UsersBeta, "?$Filter=UserType eq 'Guest'&$select=id,userPrincipalName,displayName,userType,ExternalUserState,ExternalUserStateChangeDateTime,CreatedDateTime,CreationType,AccountEnabled,signInActivity");
             }
@@ -203,7 +205,7 @@ namespace AzRanger.AzScanner
             Dictionary<Guid, DirectoryRole> Result = new Dictionary<Guid, DirectoryRole>();
             foreach (DirectoryRole role in roles)
             {
-                role.SetMember(await GetAllRoleMember(role.id));
+                role.SetActiveMember(await GetAllRoleMember(role.id));
                 Result.Add(role.id, role);
             }
             return Result;
@@ -423,9 +425,14 @@ namespace AzRanger.AzScanner
 
         }
 
-        internal Task<List<DirectoryRoleAssignments>> GetDirectoryRoleAssignments(String tenantId, String roleId)
+        internal Task<List<DirectoryRoleAssignment>> GetDirectoryRoleAssignments(String tenantId, String roleId)
         {
-            return GetAllOf<DirectoryRoleAssignments>(String.Format(DirectoryRoleAssignments,tenantId, roleId));
+            return GetAllOf<DirectoryRoleAssignment>(String.Format(DirectoryRoleAssignments,tenantId), String.Format("$Filter=roleDefinitionId+eq+'{0}'&$expand=principal,directoryScope", roleId));
+        }
+
+        internal Task<List<DirectoryRoleAssignment>> GetDirectoryRoleAssignmentsEligible(String tenantId, String roleId)
+        {
+            return GetAllOf<DirectoryRoleAssignment>(String.Format(DirectoryRoleAssignmentsEligible, tenantId), String.Format("$Filter=roleDefinitionId+eq+'{0}'&$expand=principal,directoryScope", roleId));
         }
 
 

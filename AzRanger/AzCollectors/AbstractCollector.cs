@@ -14,8 +14,9 @@ namespace AzRanger.AzScanner
     public abstract class AbstractCollector
     {
         internal static Logger logger = LogManager.GetCurrentClassLogger();
-        internal MainCollector Scanner;
-        internal String BaseAdresse;
+        internal IAuthenticator Authenticator;
+        internal String TenantId;
+        internal String BaseAddress;
         internal String[] Scope;
         internal List<Tuple<string, string>> additionalHeaders = null;
         //https://www.aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/
@@ -23,7 +24,7 @@ namespace AzRanger.AzScanner
 
         internal async virtual Task<T> Get<T>(String endPoint, string query = null)
         {
-            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            String accessToken = await Authenticator.GetAccessToken(this.Scope);
             if (accessToken == null)
             {
                 return default;
@@ -41,7 +42,7 @@ namespace AzRanger.AzScanner
                     usedEndpoint = endPoint + "?" + query;
                 }
             }
-            string url = BaseAdresse + usedEndpoint;
+            string url = BaseAddress + usedEndpoint;
             logger.Debug("IScanner.Get: {0}|{1}", typeof(T).ToString(), url);
             HttpResponseMessage response = null;
             try
@@ -90,7 +91,7 @@ namespace AzRanger.AzScanner
         }
         internal async virtual Task<List<T>> GetAllOf<T>(string endPoint, string query = null, List<Tuple<string, string>> additionalHeaders = null)
         {
-            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            String accessToken = await Authenticator.GetAccessToken(this.Scope);
             if (accessToken == null)
             {
                 return new List<T>();
@@ -108,7 +109,7 @@ namespace AzRanger.AzScanner
                     usedEndpoint = endPoint + "?" + query;
                 }
             }
-            string url = BaseAdresse + usedEndpoint;
+            string url = BaseAddress + usedEndpoint;
             List<T> resultList = new List<T>();
             int taskCancelCounter = 0;
             int maxRetries = 3;

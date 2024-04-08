@@ -33,23 +33,24 @@ namespace AzRanger.AzScanner
         private const String PostgreSQL = "/subscriptions/{0}/providers/Microsoft.DBforPostgreSQL/flexibleServers/?api-version=2022-03-08-preview";
         private const String PostgreSQLParamters = "{0}/configurations?api-version=2021-06-01";
         private const String PolicyAssignment = "/subscriptions/{0}/providers/Microsoft.Authorization/policyAssignments?api-version=2019-09-01";
-        public AzMgmtCollector(MainCollector scanner)
+        public AzMgmtCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
-            this.Scanner = scanner;
-            this.BaseAdresse = "https://management.azure.com/";
+            this.Authenticator = authenticator;
+            this.TenantId = tenantId;
+            this.BaseAddress = "https://management.azure.com/";
             this.Scope = new string[] { "https://management.azure.com/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, proxy);
         }
 
 
         public Task<ManagementGroupSettings> GetManagementGroupSettings()
         {
-            return Get<ManagementGroupSettings>(String.Format(ManagementGroupSettings, this.Scanner.TenantId));
+            return Get<ManagementGroupSettings>(String.Format(ManagementGroupSettings, TenantId));
         }
 
         public Task<ManagementGroup> GetRootManagementGroup()
         {
-            return Get<ManagementGroup>(String.Format(ManagementGroup, this.Scanner.TenantId));
+            return Get<ManagementGroup>(String.Format(ManagementGroup, TenantId));
         }
 
         public Task<ManagementGroup> GetManagementGroup(String name)
@@ -61,7 +62,7 @@ namespace AzRanger.AzScanner
         {
             Stack<String> GroupsToProcess = new Stack<String>();
             Dictionary<String, ManagementGroup> Result = new Dictionary<string, ManagementGroup>();
-            GroupsToProcess.Push(this.Scanner.TenantId);
+            GroupsToProcess.Push(this.TenantId);
             while (GroupsToProcess.Count > 0)
             {
                 String currentManagementGroup = GroupsToProcess.Pop();

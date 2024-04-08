@@ -12,13 +12,14 @@ namespace AzRanger.AzScanner
         private const String TeamsClientConfiguration = "/Skype.Policy/configurations/TeamsClientConfiguration";
         private const String TenantFederationSettings = "/Skype.Policy/configurations/TenantFederationSettings/configuration/global";
 
-        public TeamsCollector(MainCollector scanner)
+        public TeamsCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
-            this.Scanner = scanner;
-            this.BaseAdresse = "https://api.interfaces.records.teams.microsoft.com";
+            this.Authenticator = authenticator;
+            this.TenantId = tenantId;
+            this.BaseAddress = "https://api.interfaces.records.teams.microsoft.com";
             //this.Scope = new string[] { "48ac35b8-9aa8-4d74-927d-1f4a14a0b239/user_impersonation", "offline_access" };
             this.Scope = new string[] { "48ac35b8-9aa8-4d74-927d-1f4a14a0b239/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(additionalHeaders, this.Scanner.Proxy);
+            this.client = Helper.GetDefaultClient(additionalHeaders, proxy);
         }
         public Task<TeamsClientConfiguration> GetTeamsClientConfiguration()
         {

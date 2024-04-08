@@ -1,4 +1,5 @@
-﻿using AzRanger.Models;
+﻿using AzRanger.AzScanner;
+using AzRanger.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

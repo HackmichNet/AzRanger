@@ -1,4 +1,5 @@
-﻿using AzRanger.Models.Generic;
+﻿using AzRanger.Models.Azrbac;
+using AzRanger.Models.Generic;
 using AzRanger.Output;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace AzRanger.Models.MSGraph
         //                  Id              Scope
         public List<Tuple<AzurePrincipal, AzurePrincipal>> activeMembersScoped { get; set; }
         public List<Tuple<AzurePrincipal, AzurePrincipal>> eligibleMembersScoped { get; set; }
+        public List<DirectoryRoleAssignment> pimRoleAssignments { get; set; }
+        public List<DirectoryRoleAssignment> pimRoleAssignmentsEligible { get; set; }
 
 
         public DirectoryRole(Guid id, string displayName, String description, string roleTemplateId)
@@ -70,14 +73,31 @@ namespace AzRanger.Models.MSGraph
             }
         }
 
-        public void SetMember(List<AzurePrincipal> members)
+        public void SetActiveMember(List<AzurePrincipal> members)
         {
             this.activeMembers = members;
         }
 
         public List<AzurePrincipal> GetMembers()
         {
-            return this.activeMembers;
+            List<AzurePrincipal> allMembers = new List<AzurePrincipal>();
+            foreach(var member in this.activeMembers)
+            {
+                allMembers.Add(member);
+            }
+            foreach(var member in this.eligibleMembers)
+            {
+                allMembers.Add(member);
+            }
+            foreach (var member in this.activeMembersScoped)
+            {
+                allMembers.Add(member.Item1);
+            }
+            foreach(var member in this.eligibleMembersScoped)
+            {
+                allMembers.Add(member.Item1);
+            }
+            return allMembers;
         }
 
         public bool PricipalIsInActiveMembersScopes(Guid id, Guid scope)

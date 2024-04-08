@@ -24,10 +24,14 @@ namespace AzRanger.Models.MSGraph
 
         public void AddUserAbleToAddCreds(AzurePrincipal p)
         {
-            if (!UserAbleToAddCreds.Contains(p))
+            foreach(AzurePrincipal entry in this.UserAbleToAddCreds)
             {
-                this.UserAbleToAddCreds.Add(p);
+                if (entry.id.Equals(p.id))
+                {
+                    return;
+                }
             }
+            this.UserAbleToAddCreds.Add(p);
         }
 
         public List<AzurePrincipal> GetUserAbleToAddCreds()

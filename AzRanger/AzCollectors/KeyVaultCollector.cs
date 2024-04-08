@@ -11,12 +11,13 @@ namespace AzRanger.AzScanner
     {
         private const String Keys = "/keys/?api-version=7.3";
         private const String Secrets = "/secrets/?api-version=7.3";
-        public KeyVaultCollector(MainCollector scanner, String vaultUri)
+        public KeyVaultCollector(IAuthenticator authenticator, String vaultUri, String tenantId, String proxy)
         {
-            this.Scanner = scanner;
-            this.BaseAdresse = vaultUri;
+            this.Authenticator = authenticator;
+            this.BaseAddress = vaultUri;
+            this.TenantId = tenantId;
             this.Scope = new string[] { "https://vault.azure.net/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, proxy);
         }
 
         public Task<List<KeyVaultKey>> GetKeyVaultKeys()

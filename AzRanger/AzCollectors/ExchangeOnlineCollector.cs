@@ -28,13 +28,14 @@ namespace AzRanger.AzScanner
         private const String OwaMailboxPolicy = "Get-OwaMailboxPolicy";
         private String EndPoint;
 
-        public ExchangeOnlineCollector(MainCollector scanner)
+        public ExchangeOnlineCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
-            this.Scanner = scanner;
-            this.BaseAdresse = "https://outlook.office365.com";
-            this.EndPoint = "/adminapi/beta/" + scanner.TenantId + "/InvokeCommand";
+            this.Authenticator = authenticator;
+            this.TenantId = tenantId;
+            this.BaseAddress = "https://outlook.office365.com";
+            this.EndPoint = "/adminapi/beta/" + tenantId + "/InvokeCommand";
             this.Scope = new String[] { "https://outlook.office365.com/.default", "offline_access" };
-            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, proxy);
         }
 
         public object GetExoUsers()
@@ -161,7 +162,7 @@ namespace AzRanger.AzScanner
 
         internal async Task<List<T>> GetAllOf<T>(string command, List<Tuple<string, string>> parameters = null)
         {
-            String accessToken = await this.Scanner.Authenticator.GetAccessToken(this.Scope);
+            String accessToken = await this.Authenticator.GetAccessToken(this.Scope);
             if (accessToken == null)
             {
                 return new List<T>();
@@ -169,7 +170,7 @@ namespace AzRanger.AzScanner
             this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             logger.Debug("ExchangeOnlineScanner.GetAllOf: {0}|{1}", typeof(T).ToString(), command );
-            String url = this.BaseAdresse + this.EndPoint;
+            String url = this.BaseAddress + this.EndPoint;
             List<T> resultList = new List<T>();
             while (url != null)
             {

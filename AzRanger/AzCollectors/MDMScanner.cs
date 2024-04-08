@@ -17,7 +17,7 @@ namespace AzRanger.AzScanner
         public const String DeviceCompliancePolicies = "/beta/deviceManagement/deviceCompliancePolicies"; //?$select=id,displayName;
         public const String DeviceCompliancePolicy = "/beta/deviceManagement/deviceCompliancePolicies/{0}"; //$expand=assignments
 
-        public MDMScanner(MainCollector scanner) : base(scanner)
+        public MDMScanner(IAuthenticator authenticator, string tenantId, string proxy) : base(authenticator, tenantId, proxy)
         {
         }
 

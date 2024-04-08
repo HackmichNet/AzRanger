@@ -37,12 +37,12 @@ namespace AzRanger.AzScanner
 
         public const String Officeonline = "/admin/api/settings/apps/officeonline";
 
-        public AdminCenterCollector(MainCollector scanner)
+        public AdminCenterCollector(IAuthenticator authenticator, String proxy)
         {
-            this.Scanner = scanner;
-            this.BaseAdresse = "https://admin.microsoft.com";
+            this.Authenticator = authenticator;
+            this.BaseAddress = "https://admin.microsoft.com";
             this.Scope = new String[]{"https://admin.microsoft.com/.default", "offline_access"};
-            this.client = Helper.GetDefaultClient(this.additionalHeaders, scanner.Proxy);
+            this.client = Helper.GetDefaultClient(this.additionalHeaders, proxy);
         }
 
         public Task<Officeonline> GetOfficeonline()
