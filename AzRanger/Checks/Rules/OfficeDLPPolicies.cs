@@ -8,9 +8,9 @@ namespace AzRanger.Checks.Rules
         // TODO: Maybe we can check if they makes sense
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.TenantSettings.OfficeDLPPolicies != null)
+            if (tenant.TenantSettings.OfficeDLPPolicies != null)
             {
-                foreach(DlpCompliancePolicy policy in tenant.TenantSettings.OfficeDLPPolicies)
+                foreach (DlpCompliancePolicy policy in tenant.TenantSettings.OfficeDLPPolicies)
                 {
                     if (policy.Enabled)
                     {

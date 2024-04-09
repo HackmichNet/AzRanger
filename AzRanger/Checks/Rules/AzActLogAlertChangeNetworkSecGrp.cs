@@ -2,9 +2,6 @@
 using AzRanger.Models.AzMgmt;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -17,15 +14,15 @@ namespace AzRanger.Checks.Rules
             foreach (Subscription sub in tenant.Subscriptions.Values)
             {
                 List<string> scopes = new List<string>();
-                foreach(ActivityLogAlert alert in sub.Resources.ActivityLogAlerts)
+                foreach (ActivityLogAlert alert in sub.Resources.ActivityLogAlerts)
                 {
-                    if(alert.location == "Global" && alert.properties.enabled)
+                    if (alert.location == "Global" && alert.properties.enabled)
                     {
-                        foreach(ActivityLogAlertAllof condition in alert.properties.condition.allOf)
+                        foreach (ActivityLogAlertAllof condition in alert.properties.condition.allOf)
                         {
-                            if(condition.field == "operationName" && condition.equals.ToLower() == operationCondition)
+                            if (condition.field == "operationName" && condition.equals.ToLower() == operationCondition)
                             {
-                                foreach(String scope in alert.properties.scopes)
+                                foreach (String scope in alert.properties.scopes)
                                 {
                                     if (!scopes.Contains(scope))
                                     {
@@ -37,10 +34,10 @@ namespace AzRanger.Checks.Rules
                     }
                 }
 
-                foreach(NetworkSecurityGroup resource in sub.Resources.NetworkSecurityGroups)
+                foreach (NetworkSecurityGroup resource in sub.Resources.NetworkSecurityGroups)
                 {
                     bool isInscope = false;
-                    foreach(String scope in scopes)
+                    foreach (String scope in scopes)
                     {
                         if (resource.id.Contains(scope))
                         {
@@ -55,7 +52,7 @@ namespace AzRanger.Checks.Rules
                     }
                 }
             }
-            
+
             if (passed)
             {
                 return CheckResult.NoFinding;

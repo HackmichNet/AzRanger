@@ -1,10 +1,6 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.ExchangeOnline;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -16,12 +12,12 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            foreach(RoleAssignmentPolicy policy in tenant.ExchangeOnlineSettings.RoleAssignmentPolicies)
+            foreach (RoleAssignmentPolicy policy in tenant.ExchangeOnlineSettings.RoleAssignmentPolicies)
             {
                 bool insertToAffected = false;
-                foreach(String AssignedRole in policy.AssignedRoles)
+                foreach (String AssignedRole in policy.AssignedRoles)
                 {
-                    if(AssignedRole == Check1 | AssignedRole == Check2 | AssignedRole == Check3)
+                    if (AssignedRole == Check1 | AssignedRole == Check2 | AssignedRole == Check3)
                     {
                         passed = true;
                         if (!insertToAffected)

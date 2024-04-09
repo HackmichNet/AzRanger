@@ -4,7 +4,6 @@ using AzRanger.Models.Generic;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 
 namespace AzRanger.Output
 {
@@ -12,18 +11,18 @@ namespace AzRanger.Output
     {
         public static void Print(Auditor auditor, string outPath)
         {
-            if(outPath == null | outPath.Length == 0)
+            if (outPath == null | outPath.Length == 0)
             {
                 outPath = ".";
             }
-            string outFile = Path.Combine(outPath,  "report.json");
+            string outFile = Path.Combine(outPath, "report.json");
             using (StreamWriter file = File.CreateText(outFile))
             {
-                var json = createJSON(auditor);                
+                var json = createJSON(auditor);
                 file.Write(json);
             }
         }
-        
+
         private static ResultJSONItem GetResultJSONItem(BaseCheck check)
         {
             ResultJSONItem item = new ResultJSONItem();
@@ -42,7 +41,7 @@ namespace AzRanger.Output
                 item.MaturityLevel = ruleInfo.MaturityLevel.ToString();
             }
 
-            
+
 
             if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
             {
@@ -87,10 +86,10 @@ namespace AzRanger.Output
             }
 
             List<ResultJSONItem> NotApplicableList = new List<ResultJSONItem>();
-            foreach(BaseCheck check in auditor.NotApplicable)
+            foreach (BaseCheck check in auditor.NotApplicable)
             {
                 ResultJSONItem item = GetResultJSONItem(check);
-                if(check.Reason != null)
+                if (check.Reason != null)
                 {
                     item.Reason = check.Reason;
                 }

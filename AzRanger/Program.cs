@@ -1,15 +1,15 @@
-﻿using AzRanger.Checks;
+﻿using AzRanger.AzScanner;
+using AzRanger.Checks;
 using AzRanger.Models;
 using AzRanger.Output;
 using AzRanger.Utilities;
 using CommandLine;
-using System;
-using System.Collections.Generic;
-using AzRanger.AzScanner;
+using CommandLine.Text;
+using NLog;
 using NLog.Config;
 using NLog.Targets;
-using NLog;
-using CommandLine.Text;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AzRanger
@@ -139,7 +139,7 @@ namespace AzRanger
                 {
                     UserAuthenticator aadPowerShellUserAuthenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy, ClientID);
                     UserAuthenticator powerAutomateUserAuthenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy, PowerAutomateID);
-                    scanner = new MainCollector(aadPowerShellUserAuthenticator, powerAutomateUserAuthenticator,opts.Proxy, TenantId);
+                    scanner = new MainCollector(aadPowerShellUserAuthenticator, powerAutomateUserAuthenticator, opts.Proxy, TenantId);
                 }
                 else
                 {
@@ -163,7 +163,7 @@ namespace AzRanger
                     return;
                 }
                 AppAuthenticator authenticator = new AppAuthenticator(opts.ClientId, opts.ClientSecret, opts.TenantId, opts.Proxy);
-                scanner = new MainCollector(authenticator, null,opts.Proxy, opts.TenantId);
+                scanner = new MainCollector(authenticator, null, opts.Proxy, opts.TenantId);
             }
             else
             {

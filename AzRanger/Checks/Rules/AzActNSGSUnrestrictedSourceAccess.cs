@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.AzMgmt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -13,13 +8,13 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            
-            foreach(Subscription sub in tenant.Subscriptions.Values)
+
+            foreach (Subscription sub in tenant.Subscriptions.Values)
             {
-                
+
                 foreach (NetworkSecurityGroup nsg in sub.Resources.NetworkSecurityGroups)
                 {
-                    foreach(NetworkSecurityGroupSecurityrule rule in nsg.properties.securityRules)
+                    foreach (NetworkSecurityGroupSecurityrule rule in nsg.properties.securityRules)
                     {
                         if (rule.properties.direction == "Inbound")
                         {
@@ -40,9 +35,9 @@ namespace AzRanger.Checks.Rules
                         }
                     }
                 }
-                
+
             }
-            
+
             if (passed)
             {
                 return CheckResult.NoFinding;

@@ -4,12 +4,9 @@ using AzRanger.Models.MSGraph;
 using AzRanger.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
-{    
+{
     class UserGuestWithHighPrivRole : BaseCheck
     {
         bool passed = true;
@@ -18,7 +15,7 @@ namespace AzRanger.Checks.Rules
             List<DirectoryRole> globalAdminRoles = new List<DirectoryRole>();
             foreach (String highPrivRole in DirectoryRoleTemplateID.GlobalAdmins)
             {
-                foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values)
+                foreach (DirectoryRole role in tenant.DirectoryRoles.Values)
                 {
                     if (role.roleTemplateId == highPrivRole)
                     {
@@ -28,15 +25,15 @@ namespace AzRanger.Checks.Rules
                 }
             }
 
-            foreach(DirectoryRole role in globalAdminRoles)
+            foreach (DirectoryRole role in globalAdminRoles)
             {
-                foreach(AzurePrincipal principal in role.GetMembers())
+                foreach (AzurePrincipal principal in role.GetMembers())
                 {
                     if (principal.PrincipalType == AzurePrincipalType.User)
                     {
-                        if(tenant.AllGuests.ContainsKey(principal.id))
+                        if (tenant.Guests.ContainsKey(principal.id))
                         {
-                            this.AddAffectedEntity(tenant.AllGuests[principal.id]);
+                            this.AddAffectedEntity(tenant.Guests[principal.id]);
                             passed = false;
                         }
                     }

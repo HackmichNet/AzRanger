@@ -1,5 +1,4 @@
-﻿using AzRanger.Models.Azrbac;
-using AzRanger.Models.Generic;
+﻿using AzRanger.Models.Generic;
 using AzRanger.Output;
 using System;
 using System.Collections.Generic;
@@ -58,7 +57,7 @@ namespace AzRanger.Models.MSGraph
         {
             if (!PricipalIsInActiveMembersScopes(member.Item1.id, member.Item2.id))
             {
-                this.activeMembersScoped.Add(member);   
+                this.activeMembersScoped.Add(member);
             }
         }
         public void AddEligibleMemberScoped(Tuple<AzurePrincipal, AzurePrincipal> member)
@@ -81,11 +80,11 @@ namespace AzRanger.Models.MSGraph
         public List<AzurePrincipal> GetMembers()
         {
             List<AzurePrincipal> allMembers = new List<AzurePrincipal>();
-            foreach(var member in this.activeMembers)
+            foreach (var member in this.activeMembers)
             {
                 allMembers.Add(member);
             }
-            foreach(var member in this.eligibleMembers)
+            foreach (var member in this.eligibleMembers)
             {
                 allMembers.Add(member);
             }
@@ -93,7 +92,7 @@ namespace AzRanger.Models.MSGraph
             {
                 allMembers.Add(member.Item1);
             }
-            foreach(var member in this.eligibleMembersScoped)
+            foreach (var member in this.eligibleMembersScoped)
             {
                 allMembers.Add(member.Item1);
             }
@@ -126,9 +125,9 @@ namespace AzRanger.Models.MSGraph
 
         public bool PricipalIsInActiveMembers(Guid id)
         {
-            foreach(AzurePrincipal azure in this.activeMembers)
+            foreach (AzurePrincipal azure in this.activeMembers)
             {
-                if(azure.id == id)
+                if (azure.id == id)
                 {
                     return true;
                 }
@@ -138,7 +137,7 @@ namespace AzRanger.Models.MSGraph
 
         public bool PricipalIsInEligibleMembers(Guid id)
         {
-            if(this.eligibleMembers == null)
+            if (this.eligibleMembers == null)
             {
                 this.eligibleMembers = new List<AzurePrincipal>();
             }

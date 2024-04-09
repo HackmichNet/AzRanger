@@ -6,7 +6,7 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.TenantSettings.AuthorizationPolicy.allowInvitesFrom == "adminsAndGuestInviters" | tenant.TenantSettings.AuthorizationPolicy.allowInvitesFrom == "none")
+            if (tenant.TenantSettings.AuthorizationPolicy.allowInvitesFrom == "adminsAndGuestInviters" | tenant.TenantSettings.AuthorizationPolicy.allowInvitesFrom == "none")
             {
                 return CheckResult.NoFinding;
             }

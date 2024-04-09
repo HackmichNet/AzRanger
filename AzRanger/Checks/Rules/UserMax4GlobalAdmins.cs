@@ -10,11 +10,11 @@ namespace AzRanger.Checks.Rules
         int MinGA = 2;
         public override CheckResult Audit(Tenant tenant)
         {
-            foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values)
+            foreach (DirectoryRole role in tenant.DirectoryRoles.Values)
             {
-                if(role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
+                if (role.roleTemplateId == DirectoryRoleTemplateID.GlobalAdministrator)
                 {
-                    if(role.GetMembers().Count > MaxGA | role.GetMembers().Count < MinGA)
+                    if (role.GetMembers().Count > MaxGA | role.GetMembers().Count < MinGA)
                     {
                         return CheckResult.Finding;
                     }

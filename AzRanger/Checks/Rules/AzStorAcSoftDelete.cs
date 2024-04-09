@@ -8,12 +8,12 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            
-            foreach(Subscription sub in tenant.Subscriptions.Values)
+
+            foreach (Subscription sub in tenant.Subscriptions.Values)
             {
-                foreach(StorageAccount account in sub.Resources.StorageAccounts)
-                {  
-                    if(account.Default.properties.deleteRetentionPolicy.enabled == false || 
+                foreach (StorageAccount account in sub.Resources.StorageAccounts)
+                {
+                    if (account.Default.properties.deleteRetentionPolicy.enabled == false ||
                         account.Default.properties.containerDeleteRetentionPolicy.enabled == false ||
                         account.Default.properties.deleteRetentionPolicy.days == 0 ||
                         account.Default.properties.containerDeleteRetentionPolicy.days == 0
@@ -21,7 +21,7 @@ namespace AzRanger.Checks.Rules
                     {
                         passed = false;
                         this.AddAffectedEntity(account);
-                    }  
+                    }
                 }
             }
             if (passed)

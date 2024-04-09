@@ -3,7 +3,6 @@ using NLog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -48,7 +47,8 @@ namespace AzRanger.AzScanner
             try
             {
                 response = await client.GetAsync(url);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 logger.Debug("IScanner.Get: {0}|{1} failed...return", typeof(T).ToString(), url);
                 logger.Debug(e.Message);
@@ -81,7 +81,7 @@ namespace AzRanger.AzScanner
                     logger.Debug(await response.Content.ReadAsStringAsync());
                 }
                 catch { }
-            }                
+            }
             return default;
         }
 
@@ -120,7 +120,8 @@ namespace AzRanger.AzScanner
                 try
                 {
                     response = await client.GetAsync(url);
-                }catch(TaskCanceledException excancel)
+                }
+                catch (TaskCanceledException excancel)
                 {
                     logger.Debug("IScanner.GetAllOf: {0}|{1} canceled...", typeof(T).ToString(), url);
                     logger.Debug(excancel.Message);
@@ -186,7 +187,7 @@ namespace AzRanger.AzScanner
                     {
                         return new List<T>();
                     }
-                }  
+                }
             }
             return resultList;
         }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AzRanger.Models.Teams
+﻿namespace AzRanger.Models.Teams
 {
     // https://admin.teams.microsoft.com/company-wide-settings/external-communications
     public class TenantFederationSettings

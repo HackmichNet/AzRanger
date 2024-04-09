@@ -5,11 +5,7 @@ using AzRanger.Models.MSGraph;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms.VisualStyles;
 
 namespace AzRanger.Utilities.EnrichmentEngine
 {
@@ -18,7 +14,7 @@ namespace AzRanger.Utilities.EnrichmentEngine
         private static Logger logger = LogManager.GetCurrentClassLogger();
         public static async Task<bool> Enrich(Tenant tenant, MSGraphCollector collector)
         {
-            foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values)
+            foreach (DirectoryRole role in tenant.DirectoryRoles.Values)
             {
                 foreach (DirectoryRoleAssignment assignment in role.pimRoleAssignments)
                 {
@@ -67,7 +63,7 @@ namespace AzRanger.Utilities.EnrichmentEngine
                         Guid scopeId = Guid.Parse(assignment.directoryScopeId.Substring(1));
                         if (assignment.directoryScope.odatatype.Equals("#microsoft.graph.application"))
                         {
-                            foreach(AzurePrincipal p in principalsToAssign)
+                            foreach (AzurePrincipal p in principalsToAssign)
                             {
                                 role.AddActiveMemberScopes(new Tuple<AzurePrincipal, AzurePrincipal>(p, new AzurePrincipal(scopeId, AzurePrincipalType.Application)));
                             }
@@ -75,7 +71,7 @@ namespace AzRanger.Utilities.EnrichmentEngine
                         }
                         if (assignment.directoryScope.odatatype.Equals("#microsoft.graph.servicePrincipal"))
                         {
-                            if (tenant.AllServicePrincipals[scopeId].appOwnerOrganizationId == tenant.TenantId)
+                            if (tenant.ServicePrincipals[scopeId].appOwnerOrganizationId == tenant.TenantId)
                             {
                                 foreach (AzurePrincipal p in principalsToAssign)
                                 {

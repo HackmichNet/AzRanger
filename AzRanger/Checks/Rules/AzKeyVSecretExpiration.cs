@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.AzMgmt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -13,22 +8,22 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            
-            foreach(Subscription sub in tenant.Subscriptions.Values)
+
+            foreach (Subscription sub in tenant.Subscriptions.Values)
             {
-                foreach(KeyVault vault in sub.Resources.KeyVaults)
+                foreach (KeyVault vault in sub.Resources.KeyVaults)
                 {
-                        foreach (KeyVaultSecret secret in vault.Secrets)
+                    foreach (KeyVaultSecret secret in vault.Secrets)
+                    {
+                        if (secret.attributes.exp == null)
                         {
-                            if (secret.attributes.exp == null)
-                            {
-                                passed = false;
-                                this.AddAffectedEntity(secret);
-                            }
+                            passed = false;
+                            this.AddAffectedEntity(secret);
                         }
+                    }
                 }
             }
-            
+
             if (passed)
             {
                 return CheckResult.NoFinding;

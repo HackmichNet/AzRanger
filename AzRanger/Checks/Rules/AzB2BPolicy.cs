@@ -1,9 +1,4 @@
 ﻿using AzRanger.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -12,7 +7,7 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             // If not set it can be null
-            if(tenant.TenantSettings.B2BPolicy == null)
+            if (tenant.TenantSettings.B2BPolicy == null)
             {
                 return CheckResult.Finding;
             }

@@ -32,7 +32,7 @@ namespace AzRanger.AzScanner
                 if (proxy != null)
                 {
                     IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().Build();                 
+                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().Build();
                 }
                 else
                 {
@@ -42,13 +42,14 @@ namespace AzRanger.AzScanner
             else
             {
                 this.Authority = Authority + "/" + tenantId + "/";
-                if (proxy != null) {
+                if (proxy != null)
+                {
                     IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithDefaultRedirectUri().Build();
+                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).WithDefaultRedirectUri().Build();
                 }
                 else
                 {
-                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithDefaultRedirectUri().Build();
+                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).WithDefaultRedirectUri().Build();
                 }
             }
         }
@@ -60,10 +61,11 @@ namespace AzRanger.AzScanner
             this.Username = Username;
             this.Password = new SecureString();
             foreach (char c in Password)
-            {       
+            {
                 this.Password.AppendChar(c);
             }
-            if (proxy != null) {
+            if (proxy != null)
+            {
                 IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
                 App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
             }
@@ -117,10 +119,11 @@ namespace AzRanger.AzScanner
                     result = await App.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync();
                     semaphoreSlim.Release();
                     return result;
-                }catch(MsalException ex)
+                }
+                catch (MsalException ex)
                 {
                     // Under some circumstances, a lot of logons failing, then we don't logon anymore and skip the rest.
-                    if(FailedInteractiveLogonCounter > 4)
+                    if (FailedInteractiveLogonCounter > 4)
                     {
                         semaphoreSlim.Release();
                         return null;
@@ -133,7 +136,8 @@ namespace AzRanger.AzScanner
                             result = await App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync();
                             semaphoreSlim.Release();
                             return result;
-                        }catch(MsalServiceException ex2)
+                        }
+                        catch (MsalServiceException ex2)
                         {
                             logger.Warn(ex2.ErrorCode);
                             logger.Warn(ex2.Message);

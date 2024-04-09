@@ -30,7 +30,7 @@ namespace AzRanger.Checks
         Tentative = 0,
         Mature = 1
     }
-    internal class RuleInfo 
+    internal class RuleInfo
     {
         public string ShortDescription { get; private set; }
         public string Risk { get; private set; }
@@ -55,7 +55,8 @@ namespace AzRanger.Checks
             }
 
             var section = RuleInfoData.GetSectionOrNull(identifier);
-            if (section == null) {
+            if (section == null)
+            {
                 ruleInfo = null;
                 return false;
             }

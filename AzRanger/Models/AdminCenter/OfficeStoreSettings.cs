@@ -7,7 +7,7 @@ namespace AzRanger.Models.AdminCenter
         public bool LetUserStartTrialsInBehalfOfTheOrg;
         public bool LetUserAutoClaimLicencis;
 
-        public OfficeStoreSettings (bool LetUserAccessTheOfficeStore, bool LetUserStartTrialsInBehalfOfTheOrg, bool LetUserAutoClaimLicencis)
+        public OfficeStoreSettings(bool LetUserAccessTheOfficeStore, bool LetUserStartTrialsInBehalfOfTheOrg, bool LetUserAutoClaimLicencis)
         {
             this.LetUserAccessTheOfficeStore = LetUserAccessTheOfficeStore;
             this.LetUserStartTrialsInBehalfOfTheOrg = LetUserStartTrialsInBehalfOfTheOrg;

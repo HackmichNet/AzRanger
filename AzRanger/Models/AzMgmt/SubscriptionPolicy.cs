@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AzRanger.Models.AzMgmt
+﻿namespace AzRanger.Models.AzMgmt
 {
 
     // https://management.azure.com/providers/Microsoft.Subscription/policies/default?api-version=2021-01-01-privatepreview

@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.AzMgmt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -13,32 +8,32 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            
-            foreach(Subscription sub in tenant.Subscriptions.Values)
+
+            foreach (Subscription sub in tenant.Subscriptions.Values)
             {
-                
+
                 foreach (NetworkSecurityGroup nsg in sub.Resources.NetworkSecurityGroups)
                 {
-                    foreach(NetworkSecurityGroupSecurityrule rule in nsg.properties.securityRules)
+                    foreach (NetworkSecurityGroupSecurityrule rule in nsg.properties.securityRules)
                     {
                         if (rule.properties.direction == "Inbound")
                         {
                             bool isPort22 = false;
-                            if(rule.properties.destinationPortRange != null && rule.properties.destinationPortRange == "22")
+                            if (rule.properties.destinationPortRange != null && rule.properties.destinationPortRange == "22")
                             {
                                 isPort22 = true;
                             }
-                            if(rule.properties.destinationPortRanges != null)
+                            if (rule.properties.destinationPortRanges != null)
                             {
-                                foreach(var port in rule.properties.destinationPortRanges)
+                                foreach (var port in rule.properties.destinationPortRanges)
                                 {
-                                    if(port.ToString() == "22")
+                                    if (port.ToString() == "22")
                                     {
                                         isPort22 = true;
                                     }
                                 }
                             }
-                            if(isPort22)
+                            if (isPort22)
                             {
                                 if (rule.properties.sourceAddressPrefix != null)
                                 {
@@ -57,9 +52,9 @@ namespace AzRanger.Checks.Rules
                         }
                     }
                 }
-                
+
             }
-            
+
             if (passed)
             {
                 return CheckResult.NoFinding;

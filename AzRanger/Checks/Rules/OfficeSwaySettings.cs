@@ -6,7 +6,7 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.TenantSettings.AdminCenterSettings.SwaySettings.ExternalSharingEnabled == false)
+            if (tenant.TenantSettings.AdminCenterSettings.SwaySettings.ExternalSharingEnabled == false)
             {
                 return CheckResult.NoFinding;
             }

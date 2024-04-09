@@ -1,10 +1,6 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.MSGraph.MDM;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -20,7 +16,7 @@ namespace AzRanger.Checks.Rules
 
             foreach (AndroidDeviceOwnerGeneralDeviceConfiguration config in tenant.MDMSettings.MobileDeviceConfigurations.GetAndroidDeviceOwnerGeneralDeviceConfigurations())
             {
-                if ((config.passwordRequiredType != null && (String)config.passwordRequiredType=="alphanumeric") ||
+                if ((config.passwordRequiredType != null && (String)config.passwordRequiredType == "alphanumeric") ||
                     config.workProfilePasswordRequiredType != null && (String)config.workProfilePasswordRequiredType == "alphanumeric")
                 {
                     androidPassed = true;

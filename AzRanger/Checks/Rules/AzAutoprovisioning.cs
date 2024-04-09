@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.AzMgmt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -13,13 +8,13 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            foreach(Subscription sub in tenant.Subscriptions.Values)
+            foreach (Subscription sub in tenant.Subscriptions.Values)
             {
-                foreach(AutoProvisioningSettings settings in sub.AutoProvisioningSettings)
+                foreach (AutoProvisioningSettings settings in sub.AutoProvisioningSettings)
                 {
-                    if(settings.name == "default")
+                    if (settings.name == "default")
                     {
-                        if(settings.properties.autoProvision == "Off")
+                        if (settings.properties.autoProvision == "Off")
                         {
                             passed = false;
                             this.AddAffectedEntity(sub);
@@ -32,7 +27,7 @@ namespace AzRanger.Checks.Rules
             {
                 return CheckResult.NoFinding;
             }
-            return CheckResult.Finding;  
+            return CheckResult.Finding;
         }
     }
 }

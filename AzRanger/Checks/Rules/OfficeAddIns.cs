@@ -1,7 +1,7 @@
 ﻿using AzRanger.Models;
 
 namespace AzRanger.Checks.Rules
-{    
+{
     class OfficeAddIns : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)

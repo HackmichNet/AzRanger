@@ -1,16 +1,8 @@
-﻿using AzRanger.Models.AdminCenter;
-using AzRanger.Models.AzMgmt;
-using AzRanger.Models.Azrbac;
-using AzRanger.Models.ComplianceCenter;
-using AzRanger.Models.MainIAM;
+﻿using AzRanger.Models.AzMgmt;
 using AzRanger.Models.MSGraph;
-using AzRanger.Models.Provision;
 using AzRanger.Models.WinGraph;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Models
 {
@@ -19,16 +11,15 @@ namespace AzRanger.Models
         public string TenantId { get; set; }
         public string Username { get; set; }
         public List<Domain> Domains;
-        public Dictionary<Guid, User> AllUsers { get; set; }
-        public Dictionary<Guid, User> AllGuests { get; set; }
-        public Dictionary<Guid, MSGraph.DirectoryRole> AllDirectoryRoles { get; set; }
-        public Dictionary<Guid, Application> AllApplications { get; set; }
-        public Dictionary<Guid, ServicePrincipal> AllServicePrincipals { get; set; }
-        public Dictionary<Guid, Group> AllGroups { get; set; }
+        public Dictionary<Guid, User> Users { get; set; }
+        public Dictionary<Guid, User> Guests { get; set; }
+        public Dictionary<Guid, MSGraph.DirectoryRole> DirectoryRoles { get; set; }
+        public Dictionary<Guid, Application> Applications { get; set; }
+        public Dictionary<Guid, ServicePrincipal> ServicePrincipals { get; set; }
+        public Dictionary<Guid, Group> Groups { get; set; }
         public List<EnterpriseApplicationUserSettings> EnterpriseApplicationUserSettings { get; set; }
-        public List<PIMRoleAssignments> PIMRoleAssignments { get; set; }
         public M365Settings TenantSettings { get; set; }
-        public Dictionary<Guid, ConditionalAccessPolicy> AllCAPolicies { get; set; }
+        public Dictionary<Guid, ConditionalAccessPolicy> CAPolicies { get; set; }
         public SharePointInformation SharePointInformation { get; set; }
         public ExchangeOnlineSettings ExchangeOnlineSettings { get; set; }
         public TeamsSettings TeamsSettings { get; set; }

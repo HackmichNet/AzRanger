@@ -32,7 +32,7 @@ namespace AzRanger.Checks
             string RuleNamepace = "AzRanger.Checks.Rules";
             foreach (var t in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if(t.IsClass && t.Namespace == RuleNamepace && t.IsSubclassOf(typeof(BaseCheck)))
+                if (t.IsClass && t.Namespace == RuleNamepace && t.IsSubclassOf(typeof(BaseCheck)))
                 {
                     try
                     {
@@ -51,7 +51,8 @@ namespace AzRanger.Checks
                             continue;
 
                         }
-                    } catch (Exception e)
+                    }
+                    catch (Exception e)
                     {
                         logger.Error($"[-] Auditor.Init: CreateClass failed for {t.GetType().Name}!");
                         logger.Error($"[-] {e.Message}");
@@ -63,7 +64,7 @@ namespace AzRanger.Checks
 
         public void PerformAudit()
         {
-            foreach(BaseCheck check in AllChecks)
+            foreach (BaseCheck check in AllChecks)
             {
                 try
                 {
@@ -77,7 +78,7 @@ namespace AzRanger.Checks
                             this.NoFinding.Add(check);
                             break;
                         case CheckResult.NotApplicable:
-                              this.NotApplicable.Add(check);
+                            this.NotApplicable.Add(check);
                             break;
                         case CheckResult.Error:
                             this.Error.Add(check);

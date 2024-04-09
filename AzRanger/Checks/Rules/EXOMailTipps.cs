@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.ExchangeOnline;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -14,8 +9,8 @@ namespace AzRanger.Checks.Rules
         {
             OrganizationConfig config = tenant.ExchangeOnlineSettings.OrganizationConfig;
 
-            if(config.MailTipsAllTipsEnabled &&
-                config.MailTipsExternalRecipientsTipsEnabled && 
+            if (config.MailTipsAllTipsEnabled &&
+                config.MailTipsExternalRecipientsTipsEnabled &&
                 config.MailTipsGroupMetricsEnabled &&
                 config.MailTipsLargeAudienceThreshold <= 25)
             {

@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.MSGraph.MDM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -31,7 +26,7 @@ namespace AzRanger.Checks.Rules
                     androidPrivate = true;
                 }
             }
-            
+
             foreach (MacOSCompliancePolicy policy in tenant.MDMSettings.MobileDeviceCompliancePolicies.GetMacOSCompliancePolicies())
             {
                 if (policy.storageRequireEncryption != null && (bool)policy.storageRequireEncryption == true)

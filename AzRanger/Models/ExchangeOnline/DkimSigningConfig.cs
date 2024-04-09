@@ -48,7 +48,7 @@ namespace AzRanger.Models.ExchangeOnline
 
         public string PrintConsole()
         {
-            return String.Format("{0}", Domain );
+            return String.Format("{0}", Domain);
         }
 
         public string PrintCSV()

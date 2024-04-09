@@ -17,7 +17,7 @@ namespace AzRanger.Checks.Rules
                 return CheckResult.NoFinding;
             }
             bool passed = true;
-            foreach(DkimSigningConfig config in tenant.ExchangeOnlineSettings.DkimSigningConfigs)
+            foreach (DkimSigningConfig config in tenant.ExchangeOnlineSettings.DkimSigningConfigs)
             {
                 if (config.Domain.EndsWith(".onmicrosoft.com"))
                 {
@@ -25,7 +25,7 @@ namespace AzRanger.Checks.Rules
                 }
                 else
                 {
-                    if(config.Enabled == false)
+                    if (config.Enabled == false)
                     {
                         passed = false;
                         this.AddAffectedEntity(config);

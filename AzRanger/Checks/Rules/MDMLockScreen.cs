@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.MSGraph.MDM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -45,7 +40,7 @@ namespace AzRanger.Checks.Rules
             }
             foreach (MacOSGeneralDeviceConfiguration config in tenant.MDMSettings.MobileDeviceConfigurations.GetMacOSGeneralDeviceConfigurations())
             {
-                if ((config.passwordMinutesOfInactivityBeforeScreenTimeout != null && (int)config.passwordMinutesOfInactivityBeforeScreenTimeout <= 5)&&
+                if ((config.passwordMinutesOfInactivityBeforeScreenTimeout != null && (int)config.passwordMinutesOfInactivityBeforeScreenTimeout <= 5) &&
                     (config.passwordMinutesOfInactivityBeforeLock != null && (int)config.passwordMinutesOfInactivityBeforeLock == 0))
                 {
                     MacPassed = true;

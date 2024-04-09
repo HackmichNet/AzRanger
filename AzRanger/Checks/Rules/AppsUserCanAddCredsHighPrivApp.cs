@@ -4,9 +4,6 @@ using AzRanger.Models.MSGraph;
 using AzRanger.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -19,7 +16,7 @@ namespace AzRanger.Checks.Rules
             List<DirectoryRole> globalAdminRoles = new List<DirectoryRole>();
             foreach (String highPrivRole in DirectoryRoleTemplateID.GlobalAdmins)
             {
-                foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values)
+                foreach (DirectoryRole role in tenant.DirectoryRoles.Values)
                 {
                     if (role.roleTemplateId == highPrivRole)
                     {
@@ -33,26 +30,26 @@ namespace AzRanger.Checks.Rules
             // Get User with global admin role
             List<ServicePrincipal> serviceWithGlobalAdminRole = new List<ServicePrincipal>();
             List<Guid> globalAdminEntity = new List<Guid>();
-            foreach(DirectoryRole role in globalAdminRoles)
+            foreach (DirectoryRole role in globalAdminRoles)
             {
-                foreach(AzurePrincipal principal in role.GetMembers())
+                foreach (AzurePrincipal principal in role.GetMembers())
                 {
-                    if(principal.PrincipalType == AzurePrincipalType.ServicePrincipal)
+                    if (principal.PrincipalType == AzurePrincipalType.ServicePrincipal)
                     {
-                        serviceWithGlobalAdminRole.Add(tenant.AllServicePrincipals[principal.id]);
+                        serviceWithGlobalAdminRole.Add(tenant.ServicePrincipals[principal.id]);
                     }
                     globalAdminEntity.Add(principal.id);
                 }
             }
             // Check if userAbleToAddCreds is in Global Admin group for app
-            foreach(ServicePrincipal servicePrincipal in serviceWithGlobalAdminRole)
+            foreach (ServicePrincipal servicePrincipal in serviceWithGlobalAdminRole)
             {
                 // If corresponding app resides in own tenant
-                if(servicePrincipal.appOwnerOrganizationId == tenant.TenantId)
+                if (servicePrincipal.appOwnerOrganizationId == tenant.TenantId)
                 {
-                    foreach(Application app in tenant.AllApplications.Values)
+                    foreach (Application app in tenant.Applications.Values)
                     {
-                        if(app.appId == servicePrincipal.appId)
+                        if (app.appId == servicePrincipal.appId)
                         {
                             foreach (AzurePrincipal principal in app.GetUserAbleToAddCreds())
                             {
@@ -63,7 +60,7 @@ namespace AzRanger.Checks.Rules
                                     break;
                                 }
                             }
-                            foreach(IDTypeResponse principal in app.owners)
+                            foreach (IDTypeResponse principal in app.owners)
                             {
                                 if (!globalAdminEntity.Contains(principal.id))
                                 {

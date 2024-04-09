@@ -46,7 +46,7 @@ namespace AzRanger.AzScanner
         public async Task<OrganizationConfig> GetOrganizationConfig()
         {
             List<OrganizationConfig> result = await GetAllOf<OrganizationConfig>(OrganizationConfig);
-            if(result == null)
+            if (result == null)
             {
                 logger.Debug(String.Format("ExchangeOnlineScanner.GetOrganizationConfig() is null."));
                 return null;
@@ -98,7 +98,7 @@ namespace AzRanger.AzScanner
         public Task<List<Mailbox>> GetMailboxes()
         {
             List<Tuple<String, String>> parameters = new List<Tuple<String, String>>();
-            parameters.Add(new Tuple<String,String>("ResultSize","unlimited"));
+            parameters.Add(new Tuple<String, String>("ResultSize", "unlimited"));
             return GetAllOf<Mailbox>(Mailbox, parameters);
         }
 
@@ -169,7 +169,7 @@ namespace AzRanger.AzScanner
             }
             this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            logger.Debug("ExchangeOnlineScanner.GetAllOf: {0}|{1}", typeof(T).ToString(), command );
+            logger.Debug("ExchangeOnlineScanner.GetAllOf: {0}|{1}", typeof(T).ToString(), command);
             String url = this.BaseAddress + this.EndPoint;
             List<T> resultList = new List<T>();
             while (url != null)
@@ -237,7 +237,7 @@ namespace AzRanger.AzScanner
                     }
                     catch { }
                 }
-                
+
             }
             return resultList;
         }
@@ -251,7 +251,7 @@ namespace AzRanger.AzScanner
             else
             {
                 String commandString = String.Format(@"{{""CmdletInput"":{{""CmdletName"":""{0}"",""Parameters"":{{", command);
-                foreach(Tuple<String, String> tuple in parameters)
+                foreach (Tuple<String, String> tuple in parameters)
                 {
                     commandString = commandString + String.Format(@" ""{0}"":""{1}"",", tuple.Item1, tuple.Item2);
                 }

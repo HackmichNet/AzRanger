@@ -1,10 +1,6 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.AzMgmt;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -13,13 +9,13 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            
-            foreach(Subscription sub in tenant.Subscriptions.Values)
+
+            foreach (Subscription sub in tenant.Subscriptions.Values)
             {
                 bool wantedAllertRuleExist = false;
                 foreach (ActivityLogAlert alert in sub.Resources.ActivityLogAlerts)
                 {
-                    if(alert.location == "Global" && alert.properties.enabled == true)
+                    if (alert.location == "Global" && alert.properties.enabled == true)
                     {
                         bool scopeIsEntireSubscription = false;
                         foreach (String scope in alert.properties.scopes)
@@ -31,9 +27,9 @@ namespace AzRanger.Checks.Rules
                         }
                         if (scopeIsEntireSubscription)
                         {
-                            foreach(ActivityLogAlertAllof allOf in alert.properties.condition.allOf)
+                            foreach (ActivityLogAlertAllof allOf in alert.properties.condition.allOf)
                             {
-                                if(allOf.field == "operationName" && allOf.equals.ToLower() == "microsoft.network/publicipaddresses/write")
+                                if (allOf.field == "operationName" && allOf.equals.ToLower() == "microsoft.network/publicipaddresses/write")
                                 {
                                     wantedAllertRuleExist = true;
                                 }
@@ -41,13 +37,13 @@ namespace AzRanger.Checks.Rules
                         }
                     }
                 }
-                if(wantedAllertRuleExist == false)
+                if (wantedAllertRuleExist == false)
                 {
                     this.AddAffectedEntity(sub);
                     passed = false;
                 }
             }
-            
+
             if (passed)
             {
                 return CheckResult.NoFinding;

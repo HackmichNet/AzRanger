@@ -7,7 +7,7 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            foreach(HostedOutboundSpamFilterPolicy policy in tenant.ExchangeOnlineSettings.HostedOutboundSpamFilterPolicy)
+            foreach (HostedOutboundSpamFilterPolicy policy in tenant.ExchangeOnlineSettings.HostedOutboundSpamFilterPolicy)
             {
                 /*
                     You can use outbound spam filter policies to control automatic forwarding to external recipients. Three settings are available:
@@ -20,20 +20,20 @@ namespace AzRanger.Checks.Rules
                 // Rule "Default" is always on
                 if (policy.Name == "Default")
                 {
-                    if(policy.AutoForwardingMode == "Automatic" || policy.AutoForwardingMode == "Off")
+                    if (policy.AutoForwardingMode == "Automatic" || policy.AutoForwardingMode == "Off")
                     {
                         return CheckResult.NoFinding;
                     }
                 }
             }
-            foreach(TransportRule rule in tenant.ExchangeOnlineSettings.TransportRules)
+            foreach (TransportRule rule in tenant.ExchangeOnlineSettings.TransportRules)
             {
                 if (rule.State == "Enabled" & rule.Mode == "Enforce")
                 {
-                    if ((rule.FromScope != null && (string) rule.FromScope.ToString() == "InOrganization" ) &&
+                    if ((rule.FromScope != null && (string)rule.FromScope.ToString() == "InOrganization") &&
                         (rule.SentTo != null && (string)rule.SentToScope.ToString() == "NotInOrganization") &&
-                        (rule.MessageTypeMatches != null && (string) rule.MessageTypeMatches.ToString() == "AutoForward") &&
-                        (rule.State != null && (string) rule.State.ToString() == "Enabled"))
+                        (rule.MessageTypeMatches != null && (string)rule.MessageTypeMatches.ToString() == "AutoForward") &&
+                        (rule.State != null && (string)rule.State.ToString() == "Enabled"))
                     {
                         foreach (string action in rule.Actions)
                         {

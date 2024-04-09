@@ -8,11 +8,11 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            foreach(Subscription sub in tenant.Subscriptions.Values)
+            foreach (Subscription sub in tenant.Subscriptions.Values)
             {
-                foreach(StorageAccount account in sub.Resources.StorageAccounts)
+                foreach (StorageAccount account in sub.Resources.StorageAccounts)
                 {
-                    if(account.properties.supportsHttpsTrafficOnly == false)
+                    if (account.properties.supportsHttpsTrafficOnly == false)
                     {
                         passed = false;
                         this.AddAffectedEntity(account);

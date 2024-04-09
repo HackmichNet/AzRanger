@@ -6,7 +6,6 @@ using NLog;
 using System;
 using System.IO;
 using System.Resources;
-using System.Text.Json;
 
 namespace AzRanger.Output
 {

@@ -35,24 +35,24 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values.ToList())
+            foreach (DirectoryRole role in tenant.DirectoryRoles.Values.ToList())
             {
-                if (Roles.Any(x=>x == role.id.ToString()) )
+                if (Roles.Any(x => x == role.id.ToString()))
                 {
                     DirectoryRole TmpRole = new DirectoryRole(role.id, role.displayName, null, null);
                     foreach (AzurePrincipal member in role.GetMembers())
                     {
                         if (member.PrincipalType == AzurePrincipalType.User)
                         {
-                            if (tenant.AllUsers.ContainsKey(member.id) && tenant.AllUsers[member.id].isMFAEnabled == false)
+                            if (tenant.Users.ContainsKey(member.id) && tenant.Users[member.id].isMFAEnabled == false)
                             {
-                                this.AddAffectedEntity(tenant.AllUsers[member.id]);
+                                this.AddAffectedEntity(tenant.Users[member.id]);
                                 passed = false;
                             }
                             // Assuming guest does not have MFA
-                            if (tenant.AllGuests.ContainsKey(member.id))
+                            if (tenant.Guests.ContainsKey(member.id))
                             {
-                                this.AddAffectedEntity(tenant.AllGuests[member.id]);
+                                this.AddAffectedEntity(tenant.Guests[member.id]);
                                 passed = false;
                             }
                         }

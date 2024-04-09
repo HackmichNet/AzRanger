@@ -1,7 +1,7 @@
 ﻿using AzRanger.Models;
 
 namespace AzRanger.Checks.Rules
-{    
+{
     class GroupLifecycle : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
@@ -13,7 +13,7 @@ namespace AzRanger.Checks.Rules
             }
 
             // Policy is not set
-            if(tenant.TenantSettings.LCMSettings.policyIdentifier == "00000000-0000-0000-0000-000000000000")
+            if (tenant.TenantSettings.LCMSettings.policyIdentifier == "00000000-0000-0000-0000-000000000000")
             {
                 return CheckResult.Finding;
             }
@@ -27,7 +27,7 @@ namespace AzRanger.Checks.Rules
             }
 
             // No admin will be notified
-            if(tenant.TenantSettings.LCMSettings.adminNotificationEmails == null || tenant.TenantSettings.LCMSettings.adminNotificationEmails == "")
+            if (tenant.TenantSettings.LCMSettings.adminNotificationEmails == null || tenant.TenantSettings.LCMSettings.adminNotificationEmails == "")
             {
                 return CheckResult.Finding;
             }

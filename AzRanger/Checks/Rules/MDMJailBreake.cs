@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.MSGraph.MDM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 // Very unreliable, do only check if a policy exist does not check if policy is assigned
 
@@ -22,13 +17,13 @@ namespace AzRanger.Checks.Rules
 
             foreach (AndroidDeviceOwnerCompliancePolicy policy in tenant.MDMSettings.MobileDeviceCompliancePolicies.GetAndroidDeviceOwnerCompliancePolicies())
             {
-                if((policy.securityRequireSafetyNetAttestationBasicIntegrity != null && (bool)policy.securityRequireSafetyNetAttestationBasicIntegrity)
+                if ((policy.securityRequireSafetyNetAttestationBasicIntegrity != null && (bool)policy.securityRequireSafetyNetAttestationBasicIntegrity)
                     || (policy.securityRequireSafetyNetAttestationCertifiedDevice != null && (bool)policy.securityRequireSafetyNetAttestationCertifiedDevice))
                 {
                     androidPass = true;
                 }
             }
-            foreach(AndroidWorkProfileCompliancePolicy policy in tenant.MDMSettings.MobileDeviceCompliancePolicies.GetAndroidWorkProfileCompliancePolicies())
+            foreach (AndroidWorkProfileCompliancePolicy policy in tenant.MDMSettings.MobileDeviceCompliancePolicies.GetAndroidWorkProfileCompliancePolicies())
             {
                 if ((policy.securityRequireSafetyNetAttestationBasicIntegrity != null && (bool)policy.securityRequireSafetyNetAttestationBasicIntegrity)
                     || (policy.securityRequireSafetyNetAttestationCertifiedDevice != null && (bool)policy.securityRequireSafetyNetAttestationCertifiedDevice))
@@ -36,9 +31,9 @@ namespace AzRanger.Checks.Rules
                     androidPrivate = true;
                 }
             }
-            foreach(IosCompliancePolicy policy in tenant.MDMSettings.MobileDeviceCompliancePolicies.GetIosCompliancePolicies())
+            foreach (IosCompliancePolicy policy in tenant.MDMSettings.MobileDeviceCompliancePolicies.GetIosCompliancePolicies())
             {
-                if(policy.securityBlockJailbrokenDevices != null && (bool)policy.securityBlockJailbrokenDevices)
+                if (policy.securityBlockJailbrokenDevices != null && (bool)policy.securityBlockJailbrokenDevices)
                 {
                     iosPass = true;
                 }
@@ -50,7 +45,7 @@ namespace AzRanger.Checks.Rules
                     macPass = true;
                 }
             }
-            if(androidPass & androidPrivate & iosPass & macPass)
+            if (androidPass & androidPrivate & iosPass & macPass)
             {
                 return CheckResult.NoFinding;
             }

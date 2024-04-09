@@ -41,7 +41,7 @@ namespace AzRanger.AzScanner
         {
             this.Authenticator = authenticator;
             this.BaseAddress = "https://admin.microsoft.com";
-            this.Scope = new String[]{"https://admin.microsoft.com/.default", "offline_access"};
+            this.Scope = new String[] { "https://admin.microsoft.com/.default", "offline_access" };
             this.client = Helper.GetDefaultClient(this.additionalHeaders, proxy);
         }
 

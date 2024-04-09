@@ -9,15 +9,15 @@ namespace AzRanger.Checks.Rules
         {
             MalwareFilterRule highestPriority = null;
 
-            foreach(MalwareFilterRule rule in tenant.ExchangeOnlineSettings.MalwareFilterRule)
+            foreach (MalwareFilterRule rule in tenant.ExchangeOnlineSettings.MalwareFilterRule)
             {
-                if(rule.State == "Enabled" && highestPriority == null)
+                if (rule.State == "Enabled" && highestPriority == null)
                 {
                     highestPriority = rule;
                 }
                 else
                 {
-                    if(rule.State == "Enabled" && highestPriority.Priority < rule.Priority)
+                    if (rule.State == "Enabled" && highestPriority.Priority < rule.Priority)
                     {
                         highestPriority = rule;
                     }
@@ -25,12 +25,12 @@ namespace AzRanger.Checks.Rules
             }
 
             // If we have no rule, then it is a finding.
-            if(highestPriority == null)
+            if (highestPriority == null)
             {
                 return CheckResult.Finding;
             }
 
-            foreach(MalwareFilterPolicy m in tenant.ExchangeOnlineSettings.MalwareFilterPolicy)
+            foreach (MalwareFilterPolicy m in tenant.ExchangeOnlineSettings.MalwareFilterPolicy)
             {
                 if (m.Identity == highestPriority.Identity)
                 {

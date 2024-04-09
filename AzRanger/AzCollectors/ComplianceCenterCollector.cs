@@ -1,12 +1,8 @@
-﻿using AzRanger.Models;
-using AzRanger.Models.ComplianceCenter;
+﻿using AzRanger.Models.ComplianceCenter;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
@@ -27,7 +23,7 @@ namespace AzRanger.AzScanner
 
         public Task<List<DlpCompliancePolicy>> GetDLPPolicies()
         {
-            if(BaseAddress == null) return null;
+            if (BaseAddress == null) return null;
             return GetAllOf<DlpCompliancePolicy>(DLPPolicies, null, null);
         }
 
@@ -62,7 +58,7 @@ namespace AzRanger.AzScanner
             {
                 logger.Warn("ComplianceCenterScanner.GetBaseAddress: Failed getting base url");
                 logger.Debug("ComplianceCenterScanner.GetBaseAddress: Status code: ", (int)response.StatusCode);
-            }  
+            }
             return null;
         }
     }

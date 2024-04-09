@@ -1,8 +1,6 @@
 ﻿using AzRanger.Models.AzMgmt;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
@@ -72,15 +70,15 @@ namespace AzRanger.AzScanner
                     continue;
                 }
                 Result.Add(group.name, group);
-                if(group.properties.children == null)
+                if (group.properties.children == null)
                 {
                     continue;
                 }
-                foreach(ManagementGroupChild childGroup in group.properties.children)
+                foreach (ManagementGroupChild childGroup in group.properties.children)
                 {
                     if (!Result.ContainsKey(childGroup.name) && childGroup.type == "Microsoft.Management/managementGroups")
                     {
-                        GroupsToProcess.Push((String)childGroup.name);  
+                        GroupsToProcess.Push((String)childGroup.name);
                     }
                 }
             }
@@ -110,7 +108,7 @@ namespace AzRanger.AzScanner
                 foreach (StorageAccount account in Result)
                 {
                     account.StorageContainers = await GetAllOf<StorageContainer>(String.Format(StorageContainers, account.id));
-                    account.Default = (StorageAccountDefault) (await Get<StorageAccountDefault>(String.Format(StorageDefault, account.id)));
+                    account.Default = (StorageAccountDefault)(await Get<StorageAccountDefault>(String.Format(StorageDefault, account.id)));
                     account.Subscription = Guid.Parse(subscription);
                 }
             }
@@ -118,7 +116,7 @@ namespace AzRanger.AzScanner
 
         }
 
-        public async Task<List<KeyVault>> GetKeyVaults (String subscription)
+        public async Task<List<KeyVault>> GetKeyVaults(String subscription)
         {
             List<KeyVault> Result = await GetAllOf<KeyVault>(String.Format(KeyVaults, subscription));
             if (Result != null)
@@ -147,7 +145,7 @@ namespace AzRanger.AzScanner
         public async Task<List<SQLServer>> GetSQLServers(String subscription)
         {
             List<SQLServer> Result = await GetAllOf<SQLServer>(String.Format(SQLServers, subscription));
-            if(Result == null)
+            if (Result == null)
             {
                 return null;
             }
@@ -159,7 +157,7 @@ namespace AzRanger.AzScanner
                 server.SQLDatabases = await GetAllOf<SQLDatabase>(String.Format(SQLDatabases, server.id));
                 foreach (SQLDatabase database in server.SQLDatabases)
                 {
-                    database.transparentDataEncryption = (SQLDatabaseTransparentDataEncryption) (await Get<SQLDatabaseTransparentDataEncryption>(String.Format(TransparentDataEncryption, database.id)));
+                    database.transparentDataEncryption = (SQLDatabaseTransparentDataEncryption)(await Get<SQLDatabaseTransparentDataEncryption>(String.Format(TransparentDataEncryption, database.id)));
                 }
             }
             return Result;
@@ -193,11 +191,11 @@ namespace AzRanger.AzScanner
         public async Task<List<PostgreSQLFlexibleServers>> GetPostgreSQLFlexibleServers(String subscription)
         {
             List<PostgreSQLFlexibleServers> servers = await GetAllOf<PostgreSQLFlexibleServers>(String.Format(PostgreSQL, subscription));
-            if(servers == null)
+            if (servers == null)
             {
                 return null;
             }
-            foreach(PostgreSQLFlexibleServers server in servers)
+            foreach (PostgreSQLFlexibleServers server in servers)
             {
                 server.Paramters = await GetAllOf<PostgreSQLFlexibleServersParameters>(String.Format(PostgreSQLParamters, server.id));
             }

@@ -23,23 +23,24 @@ namespace AzRanger.Output
 
             foreach (BaseCheck result in auditor.Finding)
             {
-                if (!RuleInfo.TryGet(result.GetType().Name, out RuleInfo info)) {
+                if (!RuleInfo.TryGet(result.GetType().Name, out RuleInfo info))
+                {
                     logger.Error($"[-] ConsoleOutput.Print: Failed to get rule info of {result.GetType().Name}");
                     continue;
                 }
-                
+
                 Console.WriteLine("     [-] {0} - {1} ", info.ShortDescription, info.Risk);
-                if(info.PortalUrl != null)
+                if (info.PortalUrl != null)
                 {
                     Console.WriteLine("         You can lookup the setting here: {0}", info.PortalUrl);
                 }
-                if(info.ReferenceLink != null)
+                if (info.ReferenceLink != null)
                 {
                     Console.WriteLine("         You can find more information here: {0}", info.ReferenceLink);
                 }
-                
 
-                if(result.GetAffectedEntity().Count > 0)
+
+                if (result.GetAffectedEntity().Count > 0)
                 {
                     Console.WriteLine("          - The following objects are affected: ");
 
@@ -47,7 +48,7 @@ namespace AzRanger.Output
                     {
                         foreach (IReporting entity in result.GetAffectedEntity())
                         {
-       
+
                             Console.WriteLine("              - " + entity.PrintConsole());
                         }
                     }
@@ -73,7 +74,7 @@ namespace AzRanger.Output
                 Console.WriteLine();
 
             }
-            
+
             List<BaseCheck> tentantiveChecks = new List<BaseCheck>();
             foreach (BaseCheck check in auditor.NoFinding)
             {
@@ -88,7 +89,7 @@ namespace AzRanger.Output
                     tentantiveChecks.Add(check);
                 }
             }
-            if(tentantiveChecks.Count > 0)
+            if (tentantiveChecks.Count > 0)
             {
                 Console.WriteLine("[+] You may haved passed the following checks. Anyway I recommend to look it up in the portal:");
                 Console.WriteLine();
@@ -114,7 +115,7 @@ namespace AzRanger.Output
                 foreach (BaseCheck check in auditor.NotApplicable)
                 {
                     Console.WriteLine("[+] The following checks were not applicable to your tenant:");
-                    
+
                     if (!RuleInfo.TryGet(check.GetType().Name, out RuleInfo info))
                     {
                         logger.Error($"[-] ConsoleOutput.Print: Failed to get rule info of {check.GetType().Name}");
@@ -122,7 +123,7 @@ namespace AzRanger.Output
                     }
 
                     Console.WriteLine("     [+] {0}", info.ShortDescription);
-                    if(check.GetReason() != null && check.GetReason().Length > 0)
+                    if (check.GetReason() != null && check.GetReason().Length > 0)
                     {
                         Console.WriteLine("         Reason: {0}", check.GetReason());
                     }
@@ -136,7 +137,7 @@ namespace AzRanger.Output
             if (auditor.Error.Count > 0)
             {
                 Console.WriteLine("[+] The following checks failed for unknown reason - maybe you have not enough permissions:");
-                foreach(BaseCheck error in auditor.Error)
+                foreach (BaseCheck error in auditor.Error)
                 {
                     if (!RuleInfo.TryGet(error.GetType().Name, out RuleInfo info))
                     {

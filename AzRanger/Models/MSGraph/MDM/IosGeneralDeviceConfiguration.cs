@@ -1,10 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using AzRanger.Output;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AzRanger.Output;
+using System.Text.Json.Serialization;
 
 namespace AzRanger.Models.MSGraph.MDM
 {

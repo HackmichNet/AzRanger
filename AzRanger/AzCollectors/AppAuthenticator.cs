@@ -2,7 +2,6 @@
 using Microsoft.Identity.Client;
 using NLog;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner

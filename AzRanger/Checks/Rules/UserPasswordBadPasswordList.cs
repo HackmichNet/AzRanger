@@ -1,9 +1,4 @@
 ﻿using AzRanger.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks
 {
@@ -16,7 +11,7 @@ namespace AzRanger.Checks
                 this.SetReason("Password Reset is not configured");
                 return CheckResult.NotApplicable;
             }
-            if (tenant.TenantSettings.PasswordPolicy.enforceCustomBannedPasswords == false )
+            if (tenant.TenantSettings.PasswordPolicy.enforceCustomBannedPasswords == false)
             {
                 return CheckResult.Finding;
             }

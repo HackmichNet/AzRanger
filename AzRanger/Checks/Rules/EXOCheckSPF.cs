@@ -8,7 +8,7 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            foreach(AcceptedDomain domain in tenant.ExchangeOnlineSettings.AcceptedDomains)
+            foreach (AcceptedDomain domain in tenant.ExchangeOnlineSettings.AcceptedDomains)
             {
                 if (!domain.HasSPF)
                 {

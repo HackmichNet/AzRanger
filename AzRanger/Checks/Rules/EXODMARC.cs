@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.ExchangeOnline;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -13,7 +8,7 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            foreach(AcceptedDomain domain in tenant.ExchangeOnlineSettings.AcceptedDomains)
+            foreach (AcceptedDomain domain in tenant.ExchangeOnlineSettings.AcceptedDomains)
             {
                 if (domain.HasDMARC == false)
                 {

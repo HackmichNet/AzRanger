@@ -1,13 +1,11 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.Generic;
 using AzRanger.Models.MSGraph;
-using System.Collections.Generic;
-using System;
-using System.Threading.Tasks;
 using AzRanger.Models.WinGraph;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Diagnostics.Metrics;
+using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
@@ -73,7 +71,7 @@ namespace AzRanger.AzScanner
         {
             List<Device> allDevices = await GetAllOf<Device>(MSGraphCollector.DevicesBeta, "$select=id,displayname,isCompliant,isManaged,operatingSystem,enrollmentType,profileType,deviceId,deviceOwnership,onPremisesSyncEnabled&$expand=registeredOwners($select=id)");
             Dictionary<Guid, Device> Result = new Dictionary<Guid, Device>();
-            foreach(Device device in allDevices)
+            foreach (Device device in allDevices)
             {
                 Result.Add(device.id, device);
             }
@@ -90,12 +88,12 @@ namespace AzRanger.AzScanner
             {
                 allUsers = await GetAllOf<User>(MSGraphCollector.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,onPremisesSyncEnabled");
             }
-            if(allUsers == null)
+            if (allUsers == null)
             {
                 return null;
             }
             Dictionary<Guid, User> resultingUsers = new Dictionary<Guid, User>();
-            
+
             foreach (User user in allUsers)
             {
                 resultingUsers.Add(user.id, user);
@@ -107,7 +105,7 @@ namespace AzRanger.AzScanner
             int counter = 0;
             while (!DoesAllUserHaveStrongAuthDetails(resultingUsers.Values.ToList()))
             {
-                if(counter >= 5)
+                if (counter >= 5)
                 {
                     return resultingUsers;
                 }
@@ -150,7 +148,7 @@ namespace AzRanger.AzScanner
                             {
                                 resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = false;
                             }
-                            
+
                         }
                     }
                     tasks.Remove(finishedTask);
@@ -161,11 +159,11 @@ namespace AzRanger.AzScanner
         }
 
 
-        private bool DoesAllUserHaveStrongAuthDetails(List<User>UserList)
+        private bool DoesAllUserHaveStrongAuthDetails(List<User> UserList)
         {
-            foreach(User user in UserList)
+            foreach (User user in UserList)
             {
-                if(user.strongAuthenticationDetail  == null)
+                if (user.strongAuthenticationDetail == null)
                 {
                     return false;
                 }
@@ -183,13 +181,13 @@ namespace AzRanger.AzScanner
             {
                 allUsers = await GetAllOf<User>(MSGraphCollector.UsersBeta, "?$Filter=UserType eq 'Guest'&$select=id,userPrincipalName,displayName,userType,ExternalUserState,ExternalUserStateChangeDateTime,CreatedDateTime,CreationType,AccountEnabled");
             }
-            if(allUsers == null)
+            if (allUsers == null)
             {
                 return null;
             }
             Dictionary<Guid, User> Result = new Dictionary<Guid, User>();
             foreach (User user in allUsers)
-            { 
+            {
                 Result.Add(user.id, user);
             }
             return Result;
@@ -258,7 +256,7 @@ namespace AzRanger.AzScanner
                             if (!Result.Contains(p))
                             {
                                 Result.Add(p);
-                            }    
+                            }
                         }
                         else if (user.odatatype == "#microsoft.graph.servicePrincipal")
                         {
@@ -282,7 +280,8 @@ namespace AzRanger.AzScanner
                     {
                         Result.Add(p);
                     }
-                }else if(member.odatatype == "#microsoft.graph.servicePrincipal")
+                }
+                else if (member.odatatype == "#microsoft.graph.servicePrincipal")
                 {
                     AzurePrincipal p = new AzurePrincipal(member.id, AzurePrincipalType.ServicePrincipal);
                     if (!Result.Contains(p))
@@ -293,7 +292,7 @@ namespace AzRanger.AzScanner
                 else
                 {
                     logger.Debug("MSGraphScanner.GetAllRoleMember: Find unknown type of member: {}", member.odatatype);
-                }                
+                }
             }
             return Result;
         }
@@ -310,8 +309,8 @@ namespace AzRanger.AzScanner
 
         public async Task<Dictionary<Guid, ConditionalAccessPolicy>> GetAllCondtionalAccessPolicies()
         {
-            List< ConditionalAccessPolicy> policies = await GetAllOf<ConditionalAccessPolicy>(MSGraphCollector.ConditionalAccessPoliciesBeta);
-            if(policies == null)
+            List<ConditionalAccessPolicy> policies = await GetAllOf<ConditionalAccessPolicy>(MSGraphCollector.ConditionalAccessPoliciesBeta);
+            if (policies == null)
             {
                 logger.Warn("MSGraphScanner.GetAllConditionalAccessPolicies: Cannot find Conditional Access Policies. Do you have the correct rights?");
                 return null;
@@ -327,7 +326,7 @@ namespace AzRanger.AzScanner
         public async Task<Dictionary<Guid, Application>> GetAllApplications()
         {
             Dictionary<Guid, Application> result = new Dictionary<Guid, Application>();
-            List<Application> allApps = await GetAllOf<Application>( MSGraphCollector.Applications, "?$select=id,displayName,appId,passwordCredentials,keyCredentials,publisherDomain,signInAudience&$expand=owners($select=id)");
+            List<Application> allApps = await GetAllOf<Application>(MSGraphCollector.Applications, "?$select=id,displayName,appId,passwordCredentials,keyCredentials,publisherDomain,signInAudience&$expand=owners($select=id)");
 
             foreach (Application app in allApps)
             {
@@ -359,14 +358,14 @@ namespace AzRanger.AzScanner
             }
 
             List<Oauth2PermissionGrant> grants = await GetAllOf<Oauth2PermissionGrant>(OAuth2PermissionGrants);
-            foreach(Oauth2PermissionGrant grant in grants)
+            foreach (Oauth2PermissionGrant grant in grants)
             {
                 // I know not the best implementation....maybe think about later.
-                foreach(ServicePrincipal principal in result.Values)
+                foreach (ServicePrincipal principal in result.Values)
                 {
-                    if(principal.id == grant.clientId)
+                    if (principal.id == grant.clientId)
                     {
-                        if(principal.oauth2PermissionGrants == null)
+                        if (principal.oauth2PermissionGrants == null)
                         {
                             principal.oauth2PermissionGrants = new List<Oauth2PermissionGrant>();
                         }
@@ -381,7 +380,7 @@ namespace AzRanger.AzScanner
 
         internal async Task<Dictionary<Guid, Group>> GetAllGroups()
         {
-            List <Group> allGroups = await GetAllOf<Group>(GroupsBeta, "?$select=id,displayName,securityEnabled,Visibility");
+            List<Group> allGroups = await GetAllOf<Group>(GroupsBeta, "?$select=id,displayName,securityEnabled,Visibility");
             Dictionary<Guid, Group> Result = new Dictionary<Guid, Group>();
             foreach (Group group in allGroups)
             {
@@ -427,7 +426,7 @@ namespace AzRanger.AzScanner
 
         internal Task<List<DirectoryRoleAssignment>> GetDirectoryRoleAssignments(String tenantId, String roleId)
         {
-            return GetAllOf<DirectoryRoleAssignment>(String.Format(DirectoryRoleAssignments,tenantId), String.Format("$Filter=roleDefinitionId+eq+'{0}'&$expand=principal,directoryScope", roleId));
+            return GetAllOf<DirectoryRoleAssignment>(String.Format(DirectoryRoleAssignments, tenantId), String.Format("$Filter=roleDefinitionId+eq+'{0}'&$expand=principal,directoryScope", roleId));
         }
 
         internal Task<List<DirectoryRoleAssignment>> GetDirectoryRoleAssignmentsEligible(String tenantId, String roleId)

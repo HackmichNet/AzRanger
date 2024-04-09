@@ -3,23 +3,18 @@ using AzRanger.Utilities;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace AzRanger
 {
     static class Helper
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        
+
         public static String GetTenantIdToDomain(string domain, string proxy)
         {
             String result = null;

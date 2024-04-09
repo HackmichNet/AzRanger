@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AzRanger.Models.Teams
+﻿namespace AzRanger.Models.Teams
 {
     public class TeamsClientConfiguration
     {
@@ -28,8 +22,8 @@ namespace AzRanger.Models.Teams
     }
 
 
-   
-    
+
+
 
 
     public class Teamsclientconfiguration

@@ -42,16 +42,16 @@ namespace AzRanger.Models.MSGraph
 
         public bool CanAddCredentials(Guid id)
         {
-            foreach(IDTypeResponse response in this.owners)
+            foreach (IDTypeResponse response in this.owners)
             {
-                if(response.id == id)
+                if (response.id == id)
                 {
                     return true;
                 }
             }
-            foreach(AzurePrincipal user in this.UserAbleToAddCreds)
+            foreach (AzurePrincipal user in this.UserAbleToAddCreds)
             {
-                if(user.id == id)
+                if (user.id == id)
                 {
                     return true;
                 }

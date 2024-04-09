@@ -45,21 +45,21 @@ namespace AzRanger.AzScanner
             List<IosCompliancePolicy> ios = new List<IosCompliancePolicy>();
             List<MacOSCompliancePolicy> mac = new List<MacOSCompliancePolicy>();
 
-            foreach(GenericCompliancePolicy policy in policies)
+            foreach (GenericCompliancePolicy policy in policies)
             {
-                if(policy.odatatype == "#microsoft.graph.androidDeviceOwnerCompliancePolicy")
+                if (policy.odatatype == "#microsoft.graph.androidDeviceOwnerCompliancePolicy")
                 {
-                    android.Add((AndroidDeviceOwnerCompliancePolicy) await Get<AndroidDeviceOwnerCompliancePolicy>(String.Format(DeviceCompliancePolicies, policy.id), "?$expand=assignments"));
+                    android.Add((AndroidDeviceOwnerCompliancePolicy)await Get<AndroidDeviceOwnerCompliancePolicy>(String.Format(DeviceCompliancePolicies, policy.id), "?$expand=assignments"));
                     continue;
                 }
                 if (policy.odatatype == "#microsoft.graph.androidWorkProfileCompliancePolicy")
                 {
-                    androidPrivate.Add((AndroidWorkProfileCompliancePolicy) await Get<AndroidWorkProfileCompliancePolicy>(String.Format(DeviceCompliancePolicies, policy.id), "?$expand=assignments"));
+                    androidPrivate.Add((AndroidWorkProfileCompliancePolicy)await Get<AndroidWorkProfileCompliancePolicy>(String.Format(DeviceCompliancePolicies, policy.id), "?$expand=assignments"));
                     continue;
                 }
                 if (policy.odatatype == "#microsoft.graph.iosCompliancePolicy")
                 {
-                    ios.Add((IosCompliancePolicy) await Get<IosCompliancePolicy>(String.Format(DeviceCompliancePolicies, policy.id), "?$expand=assignments"));
+                    ios.Add((IosCompliancePolicy)await Get<IosCompliancePolicy>(String.Format(DeviceCompliancePolicies, policy.id), "?$expand=assignments"));
                     continue;
                 }
                 if (policy.odatatype == "#microsoft.graph.macOSCompliancePolicy")
@@ -74,7 +74,7 @@ namespace AzRanger.AzScanner
 
         public async Task<MobileDeviceConfigurations> GetMobileDeviceConfigurations()
         {
-            
+
             List<GenericDeviceConfigurations> allConfigs = await GetAllOf<GenericDeviceConfigurations>(DeviceConfigurations, "$select=id,displayName");
             List<AndroidDeviceOwnerGeneralDeviceConfiguration> android = new List<AndroidDeviceOwnerGeneralDeviceConfiguration>();
             List<IosGeneralDeviceConfiguration> IOS = new List<IosGeneralDeviceConfiguration>();
@@ -83,29 +83,29 @@ namespace AzRanger.AzScanner
 
             foreach (GenericDeviceConfigurations config in allConfigs)
             {
-                if(config.odatatype == "#microsoft.graph.androidDeviceOwnerGeneralDeviceConfiguration")
+                if (config.odatatype == "#microsoft.graph.androidDeviceOwnerGeneralDeviceConfiguration")
                 {
-                    android.Add((AndroidDeviceOwnerGeneralDeviceConfiguration) await Get<AndroidDeviceOwnerGeneralDeviceConfiguration>(String.Format(DeviceConfiguration, config.id), "?$expand=assignments"));
+                    android.Add((AndroidDeviceOwnerGeneralDeviceConfiguration)await Get<AndroidDeviceOwnerGeneralDeviceConfiguration>(String.Format(DeviceConfiguration, config.id), "?$expand=assignments"));
                     continue;
                 }
                 if (config.odatatype == "#microsoft.graph.androidWorkProfileGeneralDeviceConfiguration")
                 {
-                    androidPrivate.Add((AndroidWorkProfileGeneralDeviceConfiguration) await Get<AndroidWorkProfileGeneralDeviceConfiguration>(String.Format(DeviceConfiguration, config.id), "?$expand=assignments"));
+                    androidPrivate.Add((AndroidWorkProfileGeneralDeviceConfiguration)await Get<AndroidWorkProfileGeneralDeviceConfiguration>(String.Format(DeviceConfiguration, config.id), "?$expand=assignments"));
                     continue;
                 }
                 if (config.odatatype == "#microsoft.graph.iosGeneralDeviceConfiguration")
                 {
-                    IOS.Add((IosGeneralDeviceConfiguration) await Get<IosGeneralDeviceConfiguration>(String.Format(DeviceConfiguration, config.id), "?$expand=assignments"));
+                    IOS.Add((IosGeneralDeviceConfiguration)await Get<IosGeneralDeviceConfiguration>(String.Format(DeviceConfiguration, config.id), "?$expand=assignments"));
                     continue;
                 }
-                if(config.odatatype == "#microsoft.graph.macOSGeneralDeviceConfiguration")
+                if (config.odatatype == "#microsoft.graph.macOSGeneralDeviceConfiguration")
                 {
-                    MAC.Add((MacOSGeneralDeviceConfiguration) await Get<MacOSGeneralDeviceConfiguration>(String.Format(DeviceConfiguration, config.id), "?$expand=assignments"));
+                    MAC.Add((MacOSGeneralDeviceConfiguration)await Get<MacOSGeneralDeviceConfiguration>(String.Format(DeviceConfiguration, config.id), "?$expand=assignments"));
                     continue;
                 }
                 logger.Debug("Unknown Mobile Device Type: " + config.odatatype);
             }
-            return new MobileDeviceConfigurations(androidPrivate ,android, IOS, MAC);
+            return new MobileDeviceConfigurations(androidPrivate, android, IOS, MAC);
         }
 
         public Task<List<ConfigurationPolicy>> GetConfigurationPolicies()

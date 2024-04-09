@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Models.Generic
 {
     public class AzurePrincipal
     {
         public Guid id { get; }
-        public AzurePrincipalType PrincipalType { get; } 
+        public AzurePrincipalType PrincipalType { get; }
 
         public AzurePrincipal(Guid id, AzurePrincipalType principalType)
         {

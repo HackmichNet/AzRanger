@@ -8,7 +8,7 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            foreach(TransportRule rule in tenant.ExchangeOnlineSettings.TransportRules)
+            foreach (TransportRule rule in tenant.ExchangeOnlineSettings.TransportRules)
             {
                 if (rule.State != "Enabled")
                 {

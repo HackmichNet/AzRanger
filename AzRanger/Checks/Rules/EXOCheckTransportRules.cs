@@ -5,19 +5,19 @@ using System;
 using System.Collections.Generic;
 
 namespace AzRanger.Checks.Rules
-{    
+{
     class EXOCheckTransportRules : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
             // Check Tenant.ExchangeOnlineSettings.TransportRules.RedirectMessageTo[]
             List<String> domainsToCheck = new List<string>();
-            foreach(Domain domain in tenant.Domains)
+            foreach (Domain domain in tenant.Domains)
             {
                 domainsToCheck.Add(domain.id);
             }
             bool passed = true;
-            foreach(TransportRule rule in tenant.ExchangeOnlineSettings.TransportRules)
+            foreach (TransportRule rule in tenant.ExchangeOnlineSettings.TransportRules)
             {
                 bool allDomainsInAzDomain = true;
                 if (rule.RedirectMessageTo == null)
@@ -31,7 +31,7 @@ namespace AzRanger.Checks.Rules
                     string maildomain = addressToRedirectToStr.Split('@')[1];
                     foreach (String AZDomain in domainsToCheck)
                     {
-                        if(maildomain == AZDomain)
+                        if (maildomain == AZDomain)
                         {
                             domainIsInAzDomains = true;
                         }
@@ -41,13 +41,13 @@ namespace AzRanger.Checks.Rules
                             domainIsInAzDomains = true;
                         }
                     }
-                    if(domainIsInAzDomains == false)
+                    if (domainIsInAzDomains == false)
                     {
                         allDomainsInAzDomain = false;
                         passed = false;
                     }
                 }
-                if(allDomainsInAzDomain == false)
+                if (allDomainsInAzDomain == false)
                 {
                     this.AddAffectedEntity(rule);
                 }

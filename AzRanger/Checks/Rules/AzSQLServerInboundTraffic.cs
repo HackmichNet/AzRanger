@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.AzMgmt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -13,17 +8,17 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            
-            foreach(Subscription sub in tenant.Subscriptions.Values)
+
+            foreach (Subscription sub in tenant.Subscriptions.Values)
             {
-                if(sub.Resources.SQLServers == null)
+                if (sub.Resources.SQLServers == null)
                 {
                     this.SetReason("You do not have SQLServers or the user cannot access them.");
                     return CheckResult.NotApplicable;
                 }
-                foreach(SQLServer server in sub.Resources.SQLServers)
+                foreach (SQLServer server in sub.Resources.SQLServers)
                 {
-                    if(server.properties.publicNetworkAccess == "Enabled")
+                    if (server.properties.publicNetworkAccess == "Enabled")
                     {
                         if (server.firewallRules != null)
                         {

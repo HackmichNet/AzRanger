@@ -298,7 +298,6 @@
     <Compile Include="AzCollectors\PasswordResetCollector.cs" />
     <Compile Include="AzCollectors\UserAuthenticator.cs" />
     <Compile Include="AzCollectors\AzMgmtCollector.cs" />
-    <Compile Include="AzCollectors\AzrbacCollector.cs" />
     <Compile Include="AzCollectors\ComplianceCenterCollector.cs" />
     <Compile Include="AzCollectors\DNSCollector.cs" />
     <Compile Include="AzCollectors\ExchangeOnlineCollector.cs" />
@@ -504,9 +503,6 @@
     <Compile Include="Models\AzMgmt\Subscription.cs" />
     <Compile Include="Models\AzMgmt\SubscriptionPolicy.cs" />
     <Compile Include="Models\AzMgmt\VirtualMachine.cs" />
-    <Compile Include="Models\Azrbac\PIMRoleAssignments.cs" />
-    <Compile Include="Models\Azrbac\Scopedresource.cs" />
-    <Compile Include="Models\Azrbac\Subject.cs" />
     <Compile Include="Models\AzResources.cs" />
     <Compile Include="Models\ComplianceCenter\DlpCompliancePolicy.cs" />
     <Compile Include="Models\ComplianceCenter\DlpLabel.cs" />

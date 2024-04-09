@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace AzRanger.Checks.Rules
 {
@@ -13,13 +10,13 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             // Seems to be null now nowadays...
-            if(tenant.TenantSettings.UserSettings.usersCanAllowAppsToAccessData != null && tenant.TenantSettings.UserSettings.usersCanAllowAppsToAccessData == false)
+            if (tenant.TenantSettings.UserSettings.usersCanAllowAppsToAccessData != null && tenant.TenantSettings.UserSettings.usersCanAllowAppsToAccessData == false)
             {
                 return CheckResult.NoFinding;
             }
-            if(tenant.TenantSettings.UserSettings.usersCanAllowAppsToAccessData == null)
+            if (tenant.TenantSettings.UserSettings.usersCanAllowAppsToAccessData == null)
             {
-                if(tenant.TenantSettings.AuthorizationPolicy.permissionGrantPolicyIdsAssignedToDefaultUserRole != null)
+                if (tenant.TenantSettings.AuthorizationPolicy.permissionGrantPolicyIdsAssignedToDefaultUserRole != null)
                 {
                     List<String> data = tenant.TenantSettings.AuthorizationPolicy.permissionGrantPolicyIdsAssignedToDefaultUserRole.Select(s => (string)s.ToString()).ToList();
                     // String[] data = (String[])tenant.TenantSettings.AuthorizationPolicy.permissionGrantPolicyIdsAssignedToDefaultUserRole;

@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.AzMgmt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -13,30 +8,30 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            
-            foreach(Subscription sub in tenant.Subscriptions.Values)
+
+            foreach (Subscription sub in tenant.Subscriptions.Values)
             {
-                foreach(KeyVault vault in sub.Resources.KeyVaults)
+                foreach (KeyVault vault in sub.Resources.KeyVaults)
                 {
                     bool passedSettings = false;
-                    foreach(DiagnosticSettings diagnosticSettings in vault.DiagnosticSettings)
+                    foreach (DiagnosticSettings diagnosticSettings in vault.DiagnosticSettings)
                     {
-                        foreach(DiagnosticSettingsLog log in diagnosticSettings.properties.logs)
+                        foreach (DiagnosticSettingsLog log in diagnosticSettings.properties.logs)
                         {
-                            if(log.category == "AuditEvent" && log.retentionPolicy.enabled && log.retentionPolicy.days < 0)
+                            if (log.category == "AuditEvent" && log.retentionPolicy.enabled && log.retentionPolicy.days < 0)
                             {
                                 passedSettings = true;
                             }
                         }
                     }
-                    if(passedSettings == false)
+                    if (passedSettings == false)
                     {
                         passed = false;
                         this.AddAffectedEntity(vault);
                     }
                 }
             }
-            
+
             if (passed)
             {
                 return CheckResult.NoFinding;

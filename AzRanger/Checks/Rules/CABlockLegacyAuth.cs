@@ -6,12 +6,12 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.TenantSettings.SecurityDefaults.securityDefaultsEnabled == true)
+            if (tenant.TenantSettings.SecurityDefaults.securityDefaultsEnabled == true)
             {
                 this.SetReason("Security Defaults are enabled.");
                 return CheckResult.NotApplicable;
             }
-            foreach(ConditionalAccessPolicy policy in tenant.AllCAPolicies.Values)
+            foreach (ConditionalAccessPolicy policy in tenant.CAPolicies.Values)
             {
                 if (policy.state == "enabled")
                 {
@@ -31,7 +31,7 @@ namespace AzRanger.Checks.Rules
                             }
                         }
                     }
-                    if (!(exchangeActiveSyncMissing | otherMissing ))
+                    if (!(exchangeActiveSyncMissing | otherMissing))
                     {
                         if (policy.grantControls != null && policy.grantControls.builtInControls[0] == "block")
                         {

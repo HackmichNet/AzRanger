@@ -1,9 +1,6 @@
 ﻿using AzRanger.Output;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Models.AzMgmt
 {
@@ -19,7 +16,7 @@ namespace AzRanger.Models.AzMgmt
         // Custom Properties
         public List<DiagnosticSettings> DiagnosticSettings { get; set; }
         public List<KeyVaultKey> Keys { get; set; }
-        public List<KeyVaultSecret> Secrets{ get; set; }
+        public List<KeyVaultSecret> Secrets { get; set; }
 
         public AffectedItem GetAffectedItem()
         {
@@ -37,7 +34,7 @@ namespace AzRanger.Models.AzMgmt
         }
     }
 
-     public class KeyVaultProperties
+    public class KeyVaultProperties
     {
         public KeyVaultSku sku { get; set; }
         public string tenantId { get; set; }

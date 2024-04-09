@@ -1,6 +1,6 @@
 ﻿using System;
-using Tomlyn.Model;
 using Tomlyn;
+using Tomlyn.Model;
 
 namespace AzRanger.Checks
 {

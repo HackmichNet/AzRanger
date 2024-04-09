@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AzRanger.Models
+﻿namespace AzRanger.Models
 {
     public class ConditionalAccessPolicy
     {
@@ -14,25 +8,25 @@ namespace AzRanger.Models
         public object createdDateTime { get; set; }
         public object modifiedDateTime { get; set; }
         public string state { get; set; }
-        public Conditions conditions { get; set; }
-        public Grantcontrols grantControls { get; set; }
-        public Sessioncontrols sessionControls { get; set; }
+        public ConditionalAccessPolicyConditions conditions { get; set; }
+        public ConditionalAccessPolicyGrantcontrols grantControls { get; set; }
+        public ConditionalAccessPolicySessioncontrols sessionControls { get; set; }
     }
 
-    public class Conditions
+    public class ConditionalAccessPolicyConditions
     {
         public string[] userRiskLevels { get; set; }
         public string[] signInRiskLevels { get; set; }
         public string[] clientAppTypes { get; set; }
         public object deviceStates { get; set; }
         public object clientApplications { get; set; }
-        public Applications applications { get; set; }
-        public Users users { get; set; }
-        public Platforms platforms { get; set; }
-        public Locations locations { get; set; }
-        public Devices devices { get; set; }
+        public ConditionalAccessPolicyApplications applications { get; set; }
+        public ConditionalAccessPolicyUsers users { get; set; }
+        public ConditionalAccessPolicyPlatforms platforms { get; set; }
+        public ConditionalAccessPolicyLocations locations { get; set; }
+        public ConditionalAccessPolicyDevices devices { get; set; }
     }
-    public class Users
+    public class ConditionalAccessPolicyUsers
     {
         public object[] includeUsers { get; set; }
         public object[] excludeUsers { get; set; }
@@ -42,19 +36,19 @@ namespace AzRanger.Models
         public object[] excludeRoles { get; set; }
     }
 
-    public class Platforms
+    public class ConditionalAccessPolicyPlatforms
     {
         public string[] includePlatforms { get; set; }
         public string[] excludePlatforms { get; set; }
     }
 
-    public class Locations
+    public class ConditionalAccessPolicyLocations
     {
         public string[] includeLocations { get; set; }
         public string[] excludeLocations { get; set; }
     }
 
-    public class Devices
+    public class ConditionalAccessPolicyDevices
     {
         public object[] includeDeviceStates { get; set; }
         public object[] excludeDeviceStates { get; set; }
@@ -63,7 +57,7 @@ namespace AzRanger.Models
         public object deviceFilter { get; set; }
     }
 
-    public class Grantcontrols
+    public class ConditionalAccessPolicyGrantcontrols
     {
         public string _operator { get; set; }
         public string[] builtInControls { get; set; }
@@ -71,18 +65,18 @@ namespace AzRanger.Models
         public object[] termsOfUse { get; set; }
     }
 
-    public class Cloudappsecurity
+    public class ConditionalAccessPolicyCloudappsecurity
     {
         public string cloudAppSecurityType { get; set; }
         public bool isEnabled { get; set; }
     }
 
-    public class Persistentbrowser
+    public class ConditionalAccessPolicyPersistentbrowser
     {
         public string mode { get; set; }
         public bool isEnabled { get; set; }
     }
-    public class Sessioncontrols
+    public class ConditionalAccessPolicySessioncontrols
     {
         public object disableResilienceDefaults { get; set; }
         public object cloudAppSecurity { get; set; }
@@ -91,14 +85,14 @@ namespace AzRanger.Models
         public object continuousAccessEvaluation { get; set; }
         public object secureSignInSession { get; set; }
         public object networkAccessSecurity { get; set; }
-        public Applicationenforcedrestrictions applicationEnforcedRestrictions { get; set; }
+        public ConditionalAccessPolicyApplicationenforcedrestrictions applicationEnforcedRestrictions { get; set; }
     }
 
-    public class Applicationenforcedrestrictions
+    public class ConditionalAccessPolicyApplicationenforcedrestrictions
     {
         public bool isEnabled { get; set; }
     }
-    public class Applications
+    public class ConditionalAccessPolicyApplications
     {
         public string[] includeApplications { get; set; }
         public object[] excludeApplications { get; set; }

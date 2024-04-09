@@ -9,9 +9,9 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            foreach(Mailbox mailbox in tenant.ExchangeOnlineSettings.Mailboxes)
+            foreach (Mailbox mailbox in tenant.ExchangeOnlineSettings.Mailboxes)
             {
-                if(mailbox.AuditEnabled == false)
+                if (mailbox.AuditEnabled == false)
                 {
                     passed = false;
                     this.AddAffectedEntity(mailbox);

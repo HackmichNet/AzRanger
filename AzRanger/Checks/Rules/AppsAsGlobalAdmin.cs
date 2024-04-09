@@ -2,11 +2,7 @@
 using AzRanger.Models.Generic;
 using AzRanger.Models.MSGraph;
 using AzRanger.Utilities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -15,16 +11,16 @@ namespace AzRanger.Checks.Rules
         public override CheckResult Audit(Tenant tenant)
         {
             bool passed = true;
-            foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values)
+            foreach (DirectoryRole role in tenant.DirectoryRoles.Values)
             {
                 if (DirectoryRoleTemplateID.GlobalAdmins.Any(role.roleTemplateId.Contains))
                 {
-                    foreach(AzurePrincipal id in role.GetMembers())
+                    foreach (AzurePrincipal id in role.GetMembers())
                     {
-                        if(id.PrincipalType == AzurePrincipalType.ServicePrincipal)
+                        if (id.PrincipalType == AzurePrincipalType.ServicePrincipal)
                         {
                             passed = false;
-                            this.AddAffectedEntity(tenant.AllServicePrincipals[id.id]);
+                            this.AddAffectedEntity(tenant.ServicePrincipals[id.id]);
                         }
                     }
                 }

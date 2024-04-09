@@ -1,9 +1,6 @@
 ﻿using AzRanger.Output;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Models.AzMgmt
 {
@@ -21,7 +18,7 @@ namespace AzRanger.Models.AzMgmt
         public AzResources Resources = new AzResources();
         public List<AutoProvisioningSettings> AutoProvisioningSettings { get; set; }
         public SecurityCenterBuiltIn SecurityCenterBuiltIn { get; set; }
-        public List<SecurityContact> SecurityContact { get; set;  }
+        public List<SecurityContact> SecurityContact { get; set; }
         public List<PolicyAssignment> PolicyAssignment { get; set; }
 
         public string PrintConsole()

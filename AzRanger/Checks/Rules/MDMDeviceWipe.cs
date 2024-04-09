@@ -1,10 +1,5 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.MSGraph.MDM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -17,7 +12,7 @@ namespace AzRanger.Checks.Rules
             bool androidPrivate = false;
             bool androidPass = false;
             bool iosPass = false;
-            
+
             foreach (AndroidDeviceOwnerGeneralDeviceConfiguration config in tenant.MDMSettings.MobileDeviceConfigurations.GetAndroidDeviceOwnerGeneralDeviceConfigurations())
             {
                 if ((config.passwordSignInFailureCountBeforeFactoryReset != null && (long)config.passwordSignInFailureCountBeforeFactoryReset <= 10))
@@ -34,20 +29,20 @@ namespace AzRanger.Checks.Rules
             }
             foreach (IosGeneralDeviceConfiguration config in tenant.MDMSettings.MobileDeviceConfigurations.GetIosGeneralDeviceConfigurations())
             {
-                if (config.passcodeSignInFailureCountBeforeWipe != null && (int)config.passcodeSignInFailureCountBeforeWipe<=10)
+                if (config.passcodeSignInFailureCountBeforeWipe != null && (int)config.passcodeSignInFailureCountBeforeWipe <= 10)
                 {
                     iosPass = true;
                 }
             }
-            
+
             if (androidPass & androidPrivate & iosPass)
             {
                 return CheckResult.NoFinding;
             }
             return CheckResult.Finding;
-            
-            
-        
+
+
+
         }
     }
 }

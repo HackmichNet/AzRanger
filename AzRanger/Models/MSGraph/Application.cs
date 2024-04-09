@@ -2,9 +2,6 @@
 using AzRanger.Output;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Models.MSGraph
 {
@@ -12,7 +9,7 @@ namespace AzRanger.Models.MSGraph
     {
         public Guid id { get; set; }
         public string displayName { get; set; }
-        public bool credentialsCreated = false; 
+        public bool credentialsCreated = false;
         public Guid appId { get; set; }
         public string publisherDomain { get; set; }
         public string signInAudience { get; set; }
@@ -24,7 +21,7 @@ namespace AzRanger.Models.MSGraph
 
         public void AddUserAbleToAddCreds(AzurePrincipal p)
         {
-            foreach(AzurePrincipal entry in this.UserAbleToAddCreds)
+            foreach (AzurePrincipal entry in this.UserAbleToAddCreds)
             {
                 if (entry.id.Equals(p.id))
                 {

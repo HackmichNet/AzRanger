@@ -1,5 +1,4 @@
 ﻿using AzRanger.Models;
-using AzRanger.Models.MSGraph;
 using System;
 using System.Collections.Generic;
 
@@ -24,7 +23,7 @@ namespace AzRanger.Checks
 
         public void AddAffectedEntity(IReporting entity)
         {
-            if(BlackListAffectedEntity != null)
+            if (BlackListAffectedEntity != null)
             {
                 if (BlackListAffectedEntity.Contains(entity.ToString()))
                 {

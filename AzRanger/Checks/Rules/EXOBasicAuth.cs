@@ -1,25 +1,20 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.ExchangeOnline;
 using AzRanger.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
-{    
+{
     class EXOBasicAuth : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.TenantSettings.SecurityDefaults.securityDefaultsEnabled == true)
+            if (tenant.TenantSettings.SecurityDefaults.securityDefaultsEnabled == true)
             {
                 this.SetReason("Security Defaults are enables. All legacy authentication protocols should be blocked.");
                 return CheckResult.NotApplicable;
             }
             // Case 1: If no policy exist, not good => Check if Conditional Access applies
-            if(tenant.ExchangeOnlineSettings.AuthenticationPolicies == null)
+            if (tenant.ExchangeOnlineSettings.AuthenticationPolicies == null)
             {
                 return CheckResult.Finding;
             }
@@ -45,9 +40,9 @@ namespace AzRanger.Checks.Rules
                     }
                 }
             }
-            foreach(EXOUser user in tenant.ExchangeOnlineSettings.EXOUsers)
+            foreach (EXOUser user in tenant.ExchangeOnlineSettings.EXOUsers)
             {
-                if(user.AuthenticationPolicy != null)
+                if (user.AuthenticationPolicy != null)
                 {
                     userWithNoPolicy = false;
                     foreach (AuthenticationPolicy policy in tenant.ExchangeOnlineSettings.AuthenticationPolicies)
@@ -68,19 +63,19 @@ namespace AzRanger.Checks.Rules
                     }
                 }
             }
-            
+
             // Default policy is good and we have no user policy
-            if(defaultPolicyPassed && userWithNoPolicy)
+            if (defaultPolicyPassed && userWithNoPolicy)
             {
                 return CheckResult.NoFinding;
             }
             // User assigned policies are secure and all users have a custom policy
-            if(userPolicyPassed)
+            if (userPolicyPassed)
             {
                 return CheckResult.NoFinding;
             }
             return CheckResult.Finding;
-            
+
         }
 
         private bool IsPolicySafe(AuthenticationPolicy policy)

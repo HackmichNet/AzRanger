@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AzRanger.Models.MainIAM
-{    public class LoginTenantBranding
+﻿namespace AzRanger.Models.MainIAM
+{
+    public class LoginTenantBranding
     {
         public string locale { get; set; }
         public string signInUserIdLabel { get; set; }

@@ -34,7 +34,7 @@ namespace AzRanger.Checks
             info.Title = section.GetStringOrThrow("title");
             info.Section = section.GetStringOrThrow("section");
             info.Version = section.GetStringOrThrow("version");
-            
+
             if (!Enum.TryParse(section.GetStringOrThrow("level"), out CISLevel level))
             {
                 info = null;

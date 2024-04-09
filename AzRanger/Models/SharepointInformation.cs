@@ -8,7 +8,7 @@ namespace AzRanger.Models
     {
         public String AdminUrl;
         public String SharePointUrl;
-        public SPOInternalUseOnly SharePointInternalInfos; 
+        public SPOInternalUseOnly SharePointInternalInfos;
 
         public SharePointInformation(string AdminUrl, String SharePointUrl)
         {

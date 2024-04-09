@@ -1,6 +1,5 @@
 ﻿using AzRanger.Checks;
 using CommandLine;
-using System;
 using System.Collections.Generic;
 
 
@@ -9,7 +8,7 @@ namespace AzRanger.Utilities
     class CommandlineOptions
     {
         [Option('u', "username", HelpText = "Specify the username.")]
-        public string Username{ get; set; }
+        public string Username { get; set; }
 
         [Option('p', "password", HelpText = "Specifiy the password.")]
         public string Password { get; set; }
@@ -46,6 +45,6 @@ namespace AzRanger.Utilities
         [Option(Default = false, Required = false, HelpText = "Batch mode. Use for automatic runs.")]
         public bool Batch { get; set; }
         [Option(Required = false, HelpText = "AzRanger mode. Use audit, dumpall or dumpsettings. ", Default = AzRangerModes.Audit)]
-        public AzRangerModes Mode{ get; set; }
+        public AzRangerModes Mode { get; set; }
     }
 }

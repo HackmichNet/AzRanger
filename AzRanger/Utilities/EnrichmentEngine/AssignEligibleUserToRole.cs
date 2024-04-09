@@ -5,8 +5,6 @@ using AzRanger.Models.MSGraph;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AzRanger.Utilities.EnrichmentEngine
@@ -16,7 +14,7 @@ namespace AzRanger.Utilities.EnrichmentEngine
         private static Logger logger = LogManager.GetCurrentClassLogger();
         public static async Task<bool> Enrich(Tenant tenant, MSGraphCollector collector)
         {
-            foreach(DirectoryRole role in tenant.AllDirectoryRoles.Values)
+            foreach (DirectoryRole role in tenant.DirectoryRoles.Values)
             {
                 // This is for eligible assigned roles only
                 foreach (DirectoryRoleAssignment assignment in role.pimRoleAssignmentsEligible)
@@ -73,7 +71,7 @@ namespace AzRanger.Utilities.EnrichmentEngine
                         }
                         if (assignment.directoryScope.odatatype.Equals("#microsoft.graph.servicePrincipal"))
                         {
-                            if (tenant.AllServicePrincipals[scopeId].appOwnerOrganizationId == tenant.TenantId)
+                            if (tenant.ServicePrincipals[scopeId].appOwnerOrganizationId == tenant.TenantId)
                             {
                                 foreach (AzurePrincipal p in principalsToAssign)
                                 {

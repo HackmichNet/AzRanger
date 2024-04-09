@@ -83,12 +83,12 @@ namespace AzRanger.AzScanner
         public async Task<ADConnectStatus> GetADConnectStatus()
         {
             ADConnectStatus status = await Get<ADConnectStatus>(MainIamCollector.ADConnectStatus);
-            if(status == null)
+            if (status == null)
             {
                 logger.Warn("MainIamScanner.ADConnectStatus: Failed to get status");
                 return null;
             }
-            status.passwordHashSyncEnabled = (bool) await Get<bool>(MainIamCollector.DirSyncStatus);
+            status.passwordHashSyncEnabled = (bool)await Get<bool>(MainIamCollector.DirSyncStatus);
             return status;
         }
 

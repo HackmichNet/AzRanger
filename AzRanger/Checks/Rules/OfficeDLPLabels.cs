@@ -8,9 +8,9 @@ namespace AzRanger.Checks.Rules
         // TODO: Maybe we can check if they makes sense
         public override CheckResult Audit(Tenant tenant)
         {
-            if(tenant.TenantSettings.DlpLabels != null)
+            if (tenant.TenantSettings.DlpLabels != null)
             {
-                foreach(DlpLabel label in tenant.TenantSettings.DlpLabels)
+                foreach (DlpLabel label in tenant.TenantSettings.DlpLabels)
                 {
                     if (label.Disabled != false & label.Mode.Equals("Enforce"))
                     {

@@ -1,16 +1,13 @@
-﻿using AzRanger.Models;
-using AzRanger.Models.SharePoint;
+﻿using AzRanger.Models.SharePoint;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
 {
     class SharePointCollector : AbstractCollector
     {
-        private String BaseAddress; 
+        private String BaseAddress;
 
         public const String SPOInternalUseOnly = "/_api/SPOInternalUseOnly.Tenant";
 

@@ -3,10 +3,7 @@ using AzRanger.Models.Generic;
 using AzRanger.Models.MSGraph;
 using System;
 using System.Collections.Generic;
-using System.Drawing.Design;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Utilities.EnrichmentEngine
 {
@@ -14,7 +11,7 @@ namespace AzRanger.Utilities.EnrichmentEngine
     {
         public static void Enrich(Tenant tenant)
         {
-            foreach (ConditionalAccessPolicy policy in tenant.AllCAPolicies.Values)
+            foreach (ConditionalAccessPolicy policy in tenant.CAPolicies.Values)
             {
                 HashSet<Guid> usersInThePolicy = new HashSet<Guid>();
                 if (policy.state.ToLower().Equals("disabled") | policy.state.ToLower().Equals("enabledforreportingbutnotenforced"))
@@ -26,7 +23,7 @@ namespace AzRanger.Utilities.EnrichmentEngine
                 {
                     if (policy.conditions.users.includeUsers[0].ToString().ToLower().Equals("all"))
                     {
-                        foreach(User user in tenant.AllUsers.Values)
+                        foreach (User user in tenant.Users.Values)
                         {
                             usersInThePolicy.Add(user.id);
                         }
@@ -45,8 +42,7 @@ namespace AzRanger.Utilities.EnrichmentEngine
                 {
                     foreach (Object roleId in policy.conditions.users.includeRoles)
                     {
-
-                        foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values)
+                        foreach (DirectoryRole role in tenant.DirectoryRoles.Values)
                         {
                             if (roleId.ToString().Equals(role.roleTemplateId))
                             {
@@ -66,7 +62,7 @@ namespace AzRanger.Utilities.EnrichmentEngine
                 {
                     foreach (Object roleId in policy.conditions.users.excludeRoles)
                     {
-                        foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values)
+                        foreach (DirectoryRole role in tenant.DirectoryRoles.Values)
                         {
                             if (roleId.ToString().Equals(role.roleTemplateId))
                             {
@@ -86,7 +82,7 @@ namespace AzRanger.Utilities.EnrichmentEngine
                 {
                     foreach (Object groupId in policy.conditions.users.includeGroups)
                     {
-                        Group group = tenant.AllGroups[Guid.Parse(groupId.ToString())];
+                        Group group = tenant.Groups[Guid.Parse(groupId.ToString())];
                         if (group != null)
                         {
                             foreach (AzurePrincipal principal in group.members)
@@ -103,7 +99,7 @@ namespace AzRanger.Utilities.EnrichmentEngine
                 {
                     foreach (Object groupId in policy.conditions.users.excludeGroups)
                     {
-                        Group group = tenant.AllGroups[Guid.Parse(groupId.ToString())];
+                        Group group = tenant.Groups[Guid.Parse(groupId.ToString())];
                         if (group != null)
                         {
                             foreach (AzurePrincipal principal in group.members)
@@ -114,6 +110,14 @@ namespace AzRanger.Utilities.EnrichmentEngine
                                 }
                             }
                         }
+                    }
+                }
+                foreach(Guid userId in usersInThePolicy)
+                {
+                    User user = tenant.Users[userId];
+                    if (user != null)
+                    {
+                        user.assignedCAPolicies.Add(Guid.Parse(policy.id));
                     }
                 }
             }

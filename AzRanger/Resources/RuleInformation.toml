@@ -1377,3 +1377,11 @@ scope = "MDM"
 maturity = 0
 portal = "https://endpoint.microsoft.com/?ref=AdminCenter#blade/Microsoft_Intune_DeviceSettings/DevicesComplianceMenu/policies"
 
+[UserWithoutCAPolicy]
+score = 8
+short = "User without Conditional Access Policy"
+risk = "User without Conditional Access Policies assigned are not properly protected against identity related attacks."
+solution = """Set up proper Conditional Access Policies and assigne them to users."""
+scope = "AAD"
+maturity = 1
+portal = "https://portal.azure.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade/~/Policies"

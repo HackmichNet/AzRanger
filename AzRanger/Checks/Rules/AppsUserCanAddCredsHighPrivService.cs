@@ -4,9 +4,6 @@ using AzRanger.Models.MSGraph;
 using AzRanger.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AzRanger.Checks.Rules
 {
@@ -19,7 +16,7 @@ namespace AzRanger.Checks.Rules
             List<DirectoryRole> globalAdminRoles = new List<DirectoryRole>();
             foreach (String highPrivRole in DirectoryRoleTemplateID.GlobalAdmins)
             {
-                foreach (DirectoryRole role in tenant.AllDirectoryRoles.Values)
+                foreach (DirectoryRole role in tenant.DirectoryRoles.Values)
                 {
                     if (role.roleTemplateId == highPrivRole)
                     {
@@ -39,7 +36,7 @@ namespace AzRanger.Checks.Rules
                 {
                     if (principal.PrincipalType == AzurePrincipalType.ServicePrincipal)
                     {
-                        serviceWithGlobalAdminRole.Add(tenant.AllServicePrincipals[principal.id]);
+                        serviceWithGlobalAdminRole.Add(tenant.ServicePrincipals[principal.id]);
                     }
                     globalAdminEntities.Add(principal.id);
                 }
@@ -56,7 +53,7 @@ namespace AzRanger.Checks.Rules
                         break;
                     }
                 }
-                foreach(IDTypeResponse response in servicePrincipal.owners)
+                foreach (IDTypeResponse response in servicePrincipal.owners)
                 {
                     if (!globalAdminEntities.Contains(response.id))
                     {
