@@ -27,6 +27,7 @@ namespace AzRanger.AzScanner
 
         internal IAuthenticator AADPowerShellAuthenticator;
         internal IAuthenticator PowerAutomateAuthenticator;
+        internal IAuthenticator MSGraphCommandlineAuthenticator;
         internal String Domain;
         internal String TenantId;
         internal bool HasP1License = false;
@@ -43,12 +44,13 @@ namespace AzRanger.AzScanner
         internal TeamsCollector TeamsCollector;
         internal AzMgmtCollector AzMgmtCollector;
 
-        public MainCollector(IAuthenticator aadPowerShellUserAuthenticator, IAuthenticator powerAutomateUserAuthenticator, String proxy, String tenant = null)
+        public MainCollector(IAuthenticator aadPowerShellUserAuthenticator, IAuthenticator powerAutomateUserAuthenticator, IAuthenticator msGraphCommandlineAuthenticator ,String proxy, String tenant = null)
         {
             this.Proxy = proxy;
             this.TenantId = tenant;
             this.AADPowerShellAuthenticator = aadPowerShellUserAuthenticator;
             this.PowerAutomateAuthenticator = powerAutomateUserAuthenticator;
+            this.MSGraphCommandlineAuthenticator = msGraphCommandlineAuthenticator;
             if (this.TenantId == null)
             {
                 this.TenantId = this.AADPowerShellAuthenticator.GetTenantId().Result;
@@ -479,7 +481,7 @@ namespace AzRanger.AzScanner
                     {
                         Console.WriteLine("[+] Found SharePoint on: {0}", Result.SharePointInformation.SharePointUrl);
                         Console.WriteLine("[+] Found SharePoint-Admin on: {0}", Result.SharePointInformation.AdminUrl);
-                        SharePointCollector sharePointScanner = new SharePointCollector(AADPowerShellAuthenticator, Result.SharePointInformation.AdminUrl, TenantId, Proxy);
+                        SharePointCollector sharePointScanner = new SharePointCollector(MSGraphCommandlineAuthenticator, Result.SharePointInformation.AdminUrl, TenantId, Proxy);
                         Result.SharePointInformation.SharePointInternalInfos = await sharePointScanner.GetSharePointSettings();
                     }
                 }

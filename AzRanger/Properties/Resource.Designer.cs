@@ -86,7 +86,8 @@ namespace AzRanger.Properties {
         ///version = &quot;2.0&quot;
         ///
         ///[AzActLogAlertCreatePolicyAssignment]
-        ///section = &quot;5.2.1&quot;        /// [rest of string was truncated]&quot;;.
+        ///section = &quot;5.2.1&quot;
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CISAzureInfoData {
             get {

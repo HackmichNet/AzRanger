@@ -7,11 +7,7 @@ namespace AzRanger.AzScanner
 {
     class SharePointCollector : AbstractCollector
     {
-        private String BaseAddress;
-
         public const String SPOInternalUseOnly = "/_api/SPOInternalUseOnly.Tenant";
-
-
         public SharePointCollector(IAuthenticator authenticator, String baseAddress, String tenantId, String proxy)
         {
             this.Authenticator = authenticator;
