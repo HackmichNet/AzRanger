@@ -1385,3 +1385,18 @@ solution = """Set up proper Conditional Access Policies and assigne them to user
 scope = "AAD"
 maturity = 1
 portal = "https://portal.azure.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade/~/Policies"
+
+[EXOSharedMailboxNoLogin]
+score = 6
+short = "Login to shared mailboxes is not blocked"
+risk = "A shared mailbox is an EntraID user without known password. However an admistrator or an attacker with enough privileges can reset the password and login as that user."
+solution = """
+1. To disable shared mailboxes go to the Microsoft 365 admin center.
+2. Click on Users
+3. Go to Active users
+4. Search for the mailbox in the search bar
+5. Open the property page and click on Block sign-in
+"""
+scope = "AAD"
+maturity = 1
+portal = "https://admin.microsoft.com/#/SharedMailbox"

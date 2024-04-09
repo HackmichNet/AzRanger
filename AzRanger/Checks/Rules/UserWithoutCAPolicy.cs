@@ -36,7 +36,6 @@ namespace AzRanger.Checks.Rules
             {
                 return CheckResult.NoFinding;
             }
-
         }
     }
 }

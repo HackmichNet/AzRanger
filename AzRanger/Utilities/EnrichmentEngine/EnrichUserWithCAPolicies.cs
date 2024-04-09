@@ -114,10 +114,17 @@ namespace AzRanger.Utilities.EnrichmentEngine
                 }
                 foreach(Guid userId in usersInThePolicy)
                 {
-                    User user = tenant.Users[userId];
-                    if (user != null)
+                    if (tenant.Users.ContainsKey(userId))
                     {
-                        user.assignedCAPolicies.Add(Guid.Parse(policy.id));
+                        User user = tenant.Users[userId];
+                        if (user != null)
+                        {
+                            if (user.assignedCAPolicies == null)
+                            {
+                                user.assignedCAPolicies = new List<Guid>();
+                            }
+                            user.assignedCAPolicies.Add(Guid.Parse(policy.id));
+                        }
                     }
                 }
             }

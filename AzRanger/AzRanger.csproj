@@ -320,6 +320,7 @@
     <Compile Include="Checks\CISM365InfoData.cs" />
     <Compile Include="Checks\RuleInfo.cs" />
     <Compile Include="Checks\RuleInfoData.cs" />
+    <Compile Include="Checks\Rules\EXOSharedMailboxNoLogin.cs" />
     <Compile Include="Checks\Rules\UserWithoutCAPolicy.cs" />
     <Compile Include="Checks\TomlInfoWrapper.cs" />
     <Compile Include="Checks\Rules\ADPasswordHashSyncEnabled.cs" />
@@ -628,6 +629,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="AzRanger_TemporaryKey.pfx" />
+    <None Include="bin\Debug\09042024_AZRangerReport\ReportTemplate.zip" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Resources\AzureInformation.toml" />
