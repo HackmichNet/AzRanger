@@ -1108,7 +1108,7 @@ portal = "https://security.microsoft.com/antimalwarev2"
 [EXOWhitelistBypass]
 score = 3
 short = "Your EXO has Transport Rules, that can bypass anti-spam and anti-malware scanning by whitelisting certain domains"
-risk = "This expose your organization an additional risk."
+risk = "This exposes your organization an additional risk."
 link = "https://docs.microsoft.com/en-us/Exchange/security-and-compliance/mail-flow-rules/mail-flow-rules"
 solution = "Go to the Exchange Admin Center and check the rules."
 scope = "EXO"
@@ -1397,6 +1397,36 @@ solution = """
 4. Search for the mailbox in the search bar
 5. Open the property page and click on Block sign-in
 """
-scope = "AAD"
+scope = "EXO"
 maturity = 1
 portal = "https://admin.microsoft.com/#/SharedMailbox"
+
+[EXOOrganizationalMailboxAudit]
+score = 3
+short = "Default Mailbox Auditing is not enabled"
+risk = "Basic mailbox actions are not monitored if they are not explicitly configured on the mailbox itself."
+solution = """Enable default auditing for all maylboxes. Todo enable default auditing use the Exchange Online PowerShell Module with the command 'Set-OrganizationConfig -AuditDisabled $false'"""
+scope = "EXO"
+maturity = 1
+
+[EXOAuditBypassEnabled]
+score = 3
+short = "AuditBypass is enabled on some mailboxes"
+risk = "If audit bypass is enabled on some mailboxes, user or computer assiciated with the rule will not record any access or actions performed on the mailbox."
+solution = """
+1. Connect to Exchange Online with the Exchange Online PowerShell Module. 
+2. For all mailboxes in the 'Affected Objects' list, run the following command: Set-MailboxAuditBypassAssociation -Identity <ID> -AuditBypassEnabled $false.
+"""
+scope = "EXO"
+maturity = 1
+
+[EXOExternalSenderIdentified]
+score = 3
+short = "Mails from external senders are not marked"
+risk = "Marking mails from external senders as external, reduces the risk that users become a victim of phishing attacks."
+solution = """
+1. Connect to Exchange Online with the Exchange Online PowerShell Module. 
+2. Run the following command: Set-ExternalInOutlook -Enabled $true.
+"""
+scope = "EXO"
+maturity = 1

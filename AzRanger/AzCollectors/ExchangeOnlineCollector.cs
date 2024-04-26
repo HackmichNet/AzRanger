@@ -26,6 +26,8 @@ namespace AzRanger.AzScanner
         private const String Users = "Get-User";
         private const String AuthenticationPolicy = "Get-AuthenticationPolicy";
         private const String OwaMailboxPolicy = "Get-OwaMailboxPolicy";
+        private const String MailboxAuditBypassAssociation = "Get-MailboxAuditBypassAssociation";
+        private const String ExternalInOutlook = "Get-ExternalInOutlook";
         private String EndPoint;
 
         public ExchangeOnlineCollector(IAuthenticator authenticator, String tenantId, String proxy)
@@ -158,6 +160,16 @@ namespace AzRanger.AzScanner
         public Task<List<TransportRule>> GetTransportRules()
         {
             return GetAllOf<TransportRule>(ExchangeOnlineCollector.TransportRule);
+        }
+
+        public Task<List<MailboxAuditBypassAssociation>> GetMailboxAuditBypassAssociations()
+        {
+            return GetAllOf<MailboxAuditBypassAssociation>(ExchangeOnlineCollector.MailboxAuditBypassAssociation);
+        }
+
+        public Task<List<ExternalInOutlook>> GetExternalInOutlooks()
+        {
+            return GetAllOf<ExternalInOutlook>(ExchangeOnlineCollector.ExternalInOutlook);
         }
 
         internal async Task<List<T>> GetAllOf<T>(string command, List<Tuple<string, string>> parameters = null)

@@ -517,6 +517,8 @@ namespace AzRanger.AzScanner
                 exchangeTask.Add(ExchangeOnlineScanner.GetAuthenticationPolicies());
                 exchangeTask.Add(ExchangeOnlineScanner.GetEXOUsers());
                 exchangeTask.Add(ExchangeOnlineScanner.GetOwaMailboxPolicy());
+                exchangeTask.Add(ExchangeOnlineScanner.GetMailboxAuditBypassAssociations());
+                exchangeTask.Add(ExchangeOnlineScanner.GetExternalInOutlooks());
 
                 while (exchangeTask.Any())
                 {
@@ -579,6 +581,12 @@ namespace AzRanger.AzScanner
                             break;
                         case Task<OwaMailboxPolicy> getOwaMailboxPolicyTask:
                             Result.ExchangeOnlineSettings.OwaMailboxPolicy = await getOwaMailboxPolicyTask;
+                            break;
+                        case Task<List<MailboxAuditBypassAssociation>> getMailboxAuditBypassAssociationTask:
+                            Result.ExchangeOnlineSettings.MailboxAuditBypassAssociations = await getMailboxAuditBypassAssociationTask;
+                            break;
+                        case Task<List<ExternalInOutlook>> GetExternalInOutlooksTask:
+                            Result.ExchangeOnlineSettings.ExternalInOutlooks = await GetExternalInOutlooksTask;
                             break;
                         default:
                             Console.WriteLine("Scanner.ScanTennant: Hit default in exchangeTasks.");

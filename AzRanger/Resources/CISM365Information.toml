@@ -375,3 +375,21 @@ section = "1.2.2"
 title = "<EMPTY>"
 level = "L1"
 version = "3.0"
+
+[EXOOrganizationalMailboxAudit]
+section = "6.1.1"
+title = "<EMPTY>"
+level = "L1"
+version = "3.0"
+
+[EXOAuditBypassEnabled]
+section = "6.1.4"
+title = "<EMPTY>"
+level = "L1"
+version = "3.0"
+
+[EXOExternalSenderIdentified]
+section = "6.2.3"
+title = "<EMPTY>"
+level = "L1"
+version = "3.0"

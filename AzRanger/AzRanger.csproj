@@ -320,6 +320,9 @@
     <Compile Include="Checks\CISM365InfoData.cs" />
     <Compile Include="Checks\RuleInfo.cs" />
     <Compile Include="Checks\RuleInfoData.cs" />
+    <Compile Include="Checks\Rules\EXOAuditBypassEnabled.cs" />
+    <Compile Include="Checks\Rules\EXOOrganizationalMailboxAudit.cs" />
+    <Compile Include="Checks\Rules\EXOExternalSenderIdentified.cs" />
     <Compile Include="Checks\Rules\EXOSharedMailboxNoLogin.cs" />
     <Compile Include="Checks\Rules\UserWithoutCAPolicy.cs" />
     <Compile Include="Checks\TomlInfoWrapper.cs" />
@@ -513,8 +516,10 @@
     <Compile Include="Models\ExchangeOnline\AuthenticationPolicy.cs" />
     <Compile Include="Models\ExchangeOnline\DkimSigningConfig.cs" />
     <Compile Include="Models\ExchangeOnline\EXOUser.cs" />
+    <Compile Include="Models\ExchangeOnline\ExternalInOutlook.cs" />
     <Compile Include="Models\ExchangeOnline\HostedOutboundSpamFilterPolicy.cs" />
     <Compile Include="Models\ExchangeOnline\Mailbox.cs" />
+    <Compile Include="Models\ExchangeOnline\MailboxAuditBypassAssociation.cs" />
     <Compile Include="Models\ExchangeOnline\MalwareFilterPolicy.cs" />
     <Compile Include="Models\ExchangeOnline\MalwareFilterRule.cs" />
     <Compile Include="Models\ExchangeOnline\OrganizationConfig.cs" />

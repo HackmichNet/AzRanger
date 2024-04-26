@@ -21,6 +21,8 @@ namespace AzRanger.Models
         public List<AuthenticationPolicy> AuthenticationPolicies { get; set; }
         public List<EXOUser> EXOUsers { get; set; }
         public OwaMailboxPolicy OwaMailboxPolicy { get; set; }
+        public List<MailboxAuditBypassAssociation> MailboxAuditBypassAssociations { get; set; }
+        public List<ExternalInOutlook> ExternalInOutlooks { get; set; } 
 
     }
 }
