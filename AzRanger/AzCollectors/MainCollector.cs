@@ -247,6 +247,7 @@ namespace AzRanger.AzScanner
                         }
                     }
                     // If not Premium P2 ist much easier
+                    // TODO: Add to enrichment engine
                     else
                     {
                         foreach (DirectoryRole role in Result.DirectoryRoles.Values)
@@ -659,8 +660,9 @@ namespace AzRanger.AzScanner
             {
                 await AssignUserToRole.Enrich(Result, MSGraphCollector);
                 await AssignEligibleUserToRole.Enrich(Result, MSGraphCollector);
+                AssignUserCanAddCreds.Enrich(Result);
             }
-            AssignUserCanAddCreds.Enrich(Result);
+            
 
             Console.WriteLine("[+] Finished collecting information.");
             return Result;

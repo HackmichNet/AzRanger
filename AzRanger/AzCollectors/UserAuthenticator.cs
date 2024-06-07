@@ -31,12 +31,41 @@ namespace AzRanger.AzScanner
             {
                 if (proxy != null)
                 {
-                    IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().Build();
+                    // This is a dirty hack, because some redirect errors in the authentication occurs, have to fix that later
+                    if (clientID.Equals("386ce8c0-7421-48c9-a1df-2a532400339f"))
+                    {
+                        IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
+                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithRedirectUri("ms-appx-web://microsoft.aad.brokerplugin/386ce8c0-7421-48c9-a1df-2a532400339f").WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+
+                    }else if (clientID.Equals("14d82eec-204b-4c2f-b7e8-296a70dab67e"))
+                    {
+                        IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
+                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+
+                    }
+                    else
+                    {
+                        IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
+                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+
+                    }
                 }
                 else
                 {
-                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithDefaultRedirectUri().Build();
+                    if (clientID.Equals("386ce8c0-7421-48c9-a1df-2a532400339f"))
+                    {
+                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithRedirectUri("ms-appx-web://microsoft.aad.brokerplugin/386ce8c0-7421-48c9-a1df-2a532400339f").WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+
+                    }
+                    else if (clientID.Equals("14d82eec-204b-4c2f-b7e8-296a70dab67e"))
+                    {
+                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithDefaultRedirectUri().WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+
+                    }
+                    else
+                    {
+                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithDefaultRedirectUri().WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+                    }
                 }
             }
             else
@@ -45,11 +74,11 @@ namespace AzRanger.AzScanner
                 if (proxy != null)
                 {
                     IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).WithDefaultRedirectUri().Build();
+                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
                 }
                 else
                 {
-                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).WithDefaultRedirectUri().Build();
+                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
                 }
             }
         }

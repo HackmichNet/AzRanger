@@ -169,7 +169,10 @@ namespace AzRanger
             }
             else
             {
-                scanner = new MainCollector(new UserAuthenticator(opts.TenantId, opts.Proxy, ClientID), new UserAuthenticator(opts.TenantId, opts.Proxy, PowerAutomateID), new UserAuthenticator(opts.TenantId, opts.Proxy, MSGraphCommandline), opts.Proxy, opts.TenantId);
+                UserAuthenticator aadPowerShellUserAuthenticator = new UserAuthenticator(opts.TenantId, opts.Proxy, ClientID);
+                UserAuthenticator powerAutomateUserAuthenticator = new UserAuthenticator(opts.TenantId, opts.Proxy, PowerAutomateID);
+                UserAuthenticator msGraphCommandlineAuthenticator = new UserAuthenticator(opts.TenantId, opts.Proxy, MSGraphCommandline);
+                scanner = new MainCollector(aadPowerShellUserAuthenticator, powerAutomateUserAuthenticator, msGraphCommandlineAuthenticator, opts.Proxy, opts.TenantId);
             }
 
             if (opts.Mode == AzRangerModes.Audit | opts.Mode == AzRangerModes.DumpAll)
