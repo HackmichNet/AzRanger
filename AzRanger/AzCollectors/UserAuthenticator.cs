@@ -36,18 +36,22 @@ namespace AzRanger.AzScanner
                     {
                         IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
                         App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithRedirectUri("ms-appx-web://microsoft.aad.brokerplugin/386ce8c0-7421-48c9-a1df-2a532400339f").WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-
-                    }else if (clientID.Equals("14d82eec-204b-4c2f-b7e8-296a70dab67e"))
+                    }
+                    else if (clientID.Equals("14d82eec-204b-4c2f-b7e8-296a70dab67e"))
                     {
                         IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
                         App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
 
                     }
+                    else if (clientID.Equals("9bc3ab49-b65d-410a-85ad-de819febfddc"))
+                    {
+                        IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
+                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithRedirectUri("https://oauth.spops.microsoft.com/").WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+                    }
                     else
                     {
                         IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
                         App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-
                     }
                 }
                 else
