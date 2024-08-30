@@ -140,8 +140,8 @@ namespace AzRanger
                 if (TenantId != null)
                 {
                     UserAuthenticator aadPowerShellUserAuthenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy, ClientID);
-                    UserAuthenticator powerAutomateUserAuthenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy, PowerAutomateID);
-                    UserAuthenticator spoMgmtShellAuthenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy, SPOMgmtShell);
+                    UserAuthenticator powerAutomateUserAuthenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy, PowerAutomateID, "ms-appx-web://microsoft.aad.brokerplugin/386ce8c0-7421-48c9-a1df-2a532400339f");
+                    UserAuthenticator spoMgmtShellAuthenticator = new UserAuthenticator(opts.Username, opts.Password, TenantId, opts.Proxy, SPOMgmtShell, "https://oauth.spops.microsoft.com/");
                     scanner = new MainCollector(aadPowerShellUserAuthenticator, powerAutomateUserAuthenticator, spoMgmtShellAuthenticator, opts.Proxy, TenantId);
                 }
                 else
@@ -171,8 +171,8 @@ namespace AzRanger
             else
             {
                 UserAuthenticator aadPowerShellUserAuthenticator = new UserAuthenticator(opts.TenantId, opts.Proxy, ClientID);
-                UserAuthenticator powerAutomateUserAuthenticator = new UserAuthenticator(opts.TenantId, opts.Proxy, PowerAutomateID);
-                UserAuthenticator spoMgmtShellAuthenticator = new UserAuthenticator(opts.TenantId, opts.Proxy, SPOMgmtShell);
+                UserAuthenticator powerAutomateUserAuthenticator = new UserAuthenticator(opts.TenantId, opts.Proxy, PowerAutomateID, "ms-appx-web://microsoft.aad.brokerplugin/386ce8c0-7421-48c9-a1df-2a532400339f");
+                UserAuthenticator spoMgmtShellAuthenticator = new UserAuthenticator(opts.TenantId, opts.Proxy, SPOMgmtShell, "https://oauth.spops.microsoft.com/");
                 scanner = new MainCollector(aadPowerShellUserAuthenticator, powerAutomateUserAuthenticator, spoMgmtShellAuthenticator, opts.Proxy, opts.TenantId);
             }
 

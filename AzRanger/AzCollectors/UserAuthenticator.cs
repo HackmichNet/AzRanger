@@ -24,70 +24,43 @@ namespace AzRanger.AzScanner
         public readonly static string CacheDir = MsalCacheHelper.UserRootDirectory;
         // https://blog.cdemi.io/async-waiting-inside-c-sharp-locks/#:~:text=The%20lock%20keyword%20can%20only,is%20used%20pretty%20much%20everywhere.
         static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
-        public UserAuthenticator(string tenantId, string proxy, string clientID)
+        public UserAuthenticator(string tenantId, string proxy, string clientID, string redirectUrl = null)
         {
             this.ClientId = clientID;
-            if (tenantId == null)
-            {
-                if (proxy != null)
-                {
-                    // This is a dirty hack, because some redirect errors in the authentication occurs, have to fix that later
-                    if (clientID.Equals("386ce8c0-7421-48c9-a1df-2a532400339f"))
-                    {
-                        IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithRedirectUri("ms-appx-web://microsoft.aad.brokerplugin/386ce8c0-7421-48c9-a1df-2a532400339f").WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-                    }
-                    else if (clientID.Equals("14d82eec-204b-4c2f-b7e8-296a70dab67e"))
-                    {
-                        IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-
-                    }
-                    else if (clientID.Equals("9bc3ab49-b65d-410a-85ad-de819febfddc"))
-                    {
-                        IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithRedirectUri("https://oauth.spops.microsoft.com/").WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-                    }
-                    else
-                    {
-                        IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithDefaultRedirectUri().WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-                    }
-                }
-                else
-                {
-                    if (clientID.Equals("386ce8c0-7421-48c9-a1df-2a532400339f"))
-                    {
-                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithRedirectUri("ms-appx-web://microsoft.aad.brokerplugin/386ce8c0-7421-48c9-a1df-2a532400339f").WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-
-                    }
-                    else if (clientID.Equals("14d82eec-204b-4c2f-b7e8-296a70dab67e"))
-                    {
-                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithDefaultRedirectUri().WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-
-                    }
-                    else
-                    {
-                        App = PublicClientApplicationBuilder.Create(this.ClientId).WithDefaultRedirectUri().WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-                    }
-                }
-            }
-            else
+            PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(this.ClientId);
+            if(tenantId != null)
             {
                 this.Authority = Authority + "/" + tenantId + "/";
-                if (proxy != null)
-                {
-                    IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-                }
-                else
-                {
-                    App = PublicClientApplicationBuilder.Create(this.ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-                }
+                builder.WithTenantId(tenantId);
             }
-        }
+            
+            if(proxy != null)
+            {
+                IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
+                builder.WithHttpClientFactory(httpClientFactory);
+            }
+            if(redirectUrl != null)
+            {
+                builder.WithRedirectUri(redirectUrl);
+            }
+            builder.WithCacheOptions(CacheOptions.EnableSharedCacheOptions);
+            App = builder.Build();
 
-        public UserAuthenticator(String Username, String Password, string tenantId, string proxy, string clientID)
+                
+                    //if (clientID.Equals("386ce8c0-7421-48c9-a1df-2a532400339f"))
+                    //{
+                    //    IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
+                    //    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithRedirectUri("ms-appx-web://microsoft.aad.brokerplugin/386ce8c0-7421-48c9-a1df-2a532400339f").WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+                    //}
+                    //else if (clientID.Equals("9bc3ab49-b65d-410a-85ad-de819febfddc"))
+                    //{
+                    //    IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
+                    //    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithRedirectUri("https://oauth.spops.microsoft.com/").WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+                    //}
+
+        }
+                
+        public UserAuthenticator(String Username, String Password, string tenantId, string proxy, string clientID, string redirectUrl = null)
         {
             this.ClientId = clientID;
             this.Authority = Authority + "/" + tenantId + "/";
@@ -97,15 +70,22 @@ namespace AzRanger.AzScanner
             {
                 this.Password.AppendChar(c);
             }
+            PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(this.ClientId);
             if (proxy != null)
             {
                 IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+                builder.WithHttpClientFactory(httpClientFactory);
             }
-            else
+
+            builder.WithTenantId(tenantId);
+            builder.WithCacheOptions(CacheOptions.EnableSharedCacheOptions);
+            if(redirectUrl != null)
             {
-                App = PublicClientApplicationBuilder.Create(this.ClientId).WithAuthority(Authority).WithTenantId(tenantId).WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
+                builder.WithRedirectUri(redirectUrl);
             }
+
+            App = builder.Build();
+
         }
 
         public async Task<String> GetUserId()
