@@ -99,12 +99,14 @@ namespace AzRanger.AzScanner
         public async Task<String> GetTenantId()
         {
             AuthenticationResult result = await GetAuthenticationResult(null);
+            if (result == null) return null;
             return result.TenantId;
         }
 
         public async Task<String> GetUsername()
         {
             AuthenticationResult result = await GetAuthenticationResult(null);
+            if (result == null) return null;
             return result.Account.Username;
         }
         private async Task<AuthenticationResult> GetAuthenticationResult(String[] scopes)

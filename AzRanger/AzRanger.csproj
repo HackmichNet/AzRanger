@@ -639,7 +639,7 @@
     <None Include="bin\Debug\09042024_AZRangerReport\ReportTemplate.zip" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
-    <None Include="Resources\AzureInformation.toml" />
+    <None Include="Resources\CISAzureInformation.toml" />
     <None Include="Resources\CISM365Information.toml" />
     <None Include="Resources\ReportTemplate.zip" />
     <None Include="Resources\RuleInformation.toml" />
