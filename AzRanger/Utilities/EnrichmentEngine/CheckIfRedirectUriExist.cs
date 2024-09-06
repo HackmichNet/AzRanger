@@ -19,7 +19,6 @@ namespace AzRanger.Utilities.EnrichmentEngine
             {
                 if (application.web != null)
                 {
-                    bool isRegistered = true;
                     foreach (string redirectUri in application.web.redirectUris)
                     {
                         Uri uri = new Uri(redirectUri);
@@ -35,19 +34,15 @@ namespace AzRanger.Utilities.EnrichmentEngine
                             {
                                 if (result.HasError)
                                 {
-                                    isRegistered = false;
+                                    application.web.allRedirectUrisAreRegistered = false;
                                 }
                             }
                         }
                         catch
                         {
                             logger.Debug("CheckIfRedirectUriExist.enrich: Checking record {0} failed.", redirectUri);
-                            isRegistered = false;
+                            application.web.allRedirectUrisAreRegistered = false;
                         }
-                    }
-                    if (isRegistered)
-                    {
-                        application.web.allRedirectUrisAreRegistered = true;
                     }
                 }
             }

@@ -222,8 +222,6 @@ namespace AzRanger.AzScanner
                 if (Result.Applications != null)
                 {
                     Console.WriteLine("[+] You have {0} applications in your tenant", Result.Applications.Count);
-                }else
-                {
                     CheckIfRedirectUriExist.Enrich(Result);
                 }
                 Task<Dictionary<Guid, ServicePrincipal>> getAllServicePrincipals = MSGraphCollector.GetAllServicePrincipals();

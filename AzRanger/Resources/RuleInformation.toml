@@ -22,6 +22,7 @@ short = "Service principals which are member of the Roles \"Global Admin\" or \"
 risk = "A user with *owner* rights to the service principal or with the role *Application administrator* or *Cloud application administrator* can use this configuration to elevate its privileges."
 link = "https://posts.specterops.io/azure-privilege-escalation-via-service-principal-abuse-210ae2be2a5"
 solution = "Remove the service principals from these roles."
+scope = "AAD"
 
 [AppsDangerousPerms]
 score = 9
@@ -1429,4 +1430,12 @@ solution = """
 2. Run the following command: Set-ExternalInOutlook -Enabled $true.
 """
 scope = "EXO"
+maturity = 1
+
+[AppsWithNonExistendRedirectUrl]
+score = 8
+short = "Apps with a non-existent redirect urls exist"
+risk = "This eases phishing attacks, as an attacker only needs to register the url and convince the victims to enter his malicious URL. The already registered (and maybe by admin approved app) can then be used, so that the victims will authenticate themself against EntraId and send the access code to the malicious app."
+solution = "If you don't need the app anymore delete it. Otherwise configure the RedirectUrl to a proper value."
+scope = "AAD"
 maturity = 1

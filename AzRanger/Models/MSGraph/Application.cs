@@ -84,7 +84,8 @@ public class ApplicationWeb
     public ApplicationWebRedirecturisetting[] redirectUriSettings { get; set; }
 
     // Custom 
-    public bool allRedirectUrisAreRegistered = false;
+    // Default is true, because if an app has no URL it is easier to implement the check
+    public bool allRedirectUrisAreRegistered = true;
 }
 
 public class ApplicationWebImplicitgrantsettings
