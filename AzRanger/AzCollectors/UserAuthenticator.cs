@@ -20,6 +20,7 @@ namespace AzRanger.AzScanner
         private String Username;
         private SecureString Password;
         private int FailedInteractiveLogonCounter = 0;
+        private bool userCanceled = false;
         public const string CacheFileName = "azranger.cache";
         public readonly static string CacheDir = MsalCacheHelper.UserRootDirectory;
         // https://blog.cdemi.io/async-waiting-inside-c-sharp-locks/#:~:text=The%20lock%20keyword%20can%20only,is%20used%20pretty%20much%20everywhere.
@@ -111,28 +112,36 @@ namespace AzRanger.AzScanner
         }
         private async Task<AuthenticationResult> GetAuthenticationResult(String[] scopes)
         {
+            if (userCanceled)
+            {
+                return null;
+            }
             await semaphoreSlim.WaitAsync();
             var accounts = await App.GetAccountsAsync();
             AuthenticationResult result;
-            if (accounts.Any())
+            if (Username != null && Password != null)
             {
-                try
+                // Start with username password
+                if (accounts.Any())
                 {
-                    result = await App.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync();
-                    semaphoreSlim.Release();
-                    return result;
-                }
-                catch (MsalException ex)
-                {
-                    // Under some circumstances, a lot of logons failing, then we don't logon anymore and skip the rest.
-                    if (FailedInteractiveLogonCounter > 4)
+                    try
                     {
+                        result = await App.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync();
                         semaphoreSlim.Release();
-                        return null;
+                        return result;
                     }
-                    // May happen that we need do MFA again.
-                    if (this.Username == null && this.Password == null)
+                    catch (MsalUiRequiredException ex)
                     {
+                        // Can happen if we require UI because of MFA
+                        logger.Warn(ex.ErrorCode);
+                        logger.Warn(ex.Message);
+
+                        if (FailedInteractiveLogonCounter > 4)
+                        {
+                            semaphoreSlim.Release();
+                            return null;
+                        }
+
                         try
                         {
                             result = await App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync();
@@ -148,34 +157,53 @@ namespace AzRanger.AzScanner
                             return null;
                         }
                     }
-                    logger.Warn(ex.ErrorCode);
-                    logger.Warn(ex.Message);
-                    semaphoreSlim.Release();
-                    return null;
-                }
-            }
-            try
-            {
-                if (this.Username == null && this.Password == null)
-                {
-                    result = await App.AcquireTokenInteractive(scopes).WithUseEmbeddedWebView(true).ExecuteAsync();
-                    semaphoreSlim.Release();
-                    return result;
                 }
                 else
                 {
-                    result = await App.AcquireTokenByUsernamePassword(scopes, Username, Password).ExecuteAsync();
+                    try
+                    {
+                        result = await App.AcquireTokenByUsernamePassword(scopes, Username, Password).ExecuteAsync();
+                        semaphoreSlim.Release();
+                        return result;
+                    }
+                    catch (MsalException ex)
+                    {
+                        // More errors on: https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-desktop-acquire-token-username-password?tabs=dotnet
+                        logger.Warn(ex.ErrorCode);
+                        logger.Warn(ex.Message);
+                        semaphoreSlim.Release();
+                        return null;
+                    }
+                }
+            }
+            else
+            {
+                // Start interactively
+                try
+                {
+                    result = await App.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync();
                     semaphoreSlim.Release();
                     return result;
                 }
-            }
-            catch (MsalException ex)
-            {
-                // More errors on: https://docs.microsoft.com/en-us/azure/active-directory/develop/scenario-desktop-acquire-token-username-password?tabs=dotnet
-                logger.Warn(ex.ErrorCode);
-                logger.Warn(ex.Message);
-                semaphoreSlim.Release();
-                return null;
+                catch (MsalUiRequiredException)
+                {
+                    try
+                    {
+                        result = await App.AcquireTokenInteractive(scopes).ExecuteAsync();
+                        semaphoreSlim.Release();
+                        return result;
+                    }
+                    catch (MsalClientException ex)
+                    {
+                        if (ex.ErrorCode.Equals("authentication_canceled"))
+                        {
+                            userCanceled = true;
+                        }
+                        semaphoreSlim.Release();
+                        return null;
+                    }
+                }
+                
             }
         }
     }
