@@ -623,6 +623,7 @@
     <Compile Include="Utilities\EnrichmentEngine\AssignEligibleUserToRole.cs" />
     <Compile Include="Utilities\EnrichmentEngine\AssignUserCanAddCreds.cs" />
     <Compile Include="Utilities\EnrichmentEngine\AssignUserToRole.cs" />
+    <Compile Include="Utilities\EnrichmentEngine\CheckIfRedirectUriExist.cs" />
     <Compile Include="Utilities\EnrichmentEngine\EnrichUserWithCAPolicies.cs" />
     <Compile Include="Utilities\EnrichmentEngine\IEnrichmentEngine.cs" />
     <Compile Include="Utilities\HttpFactoryWithProxy.cs" />

@@ -46,18 +46,6 @@ namespace AzRanger.AzScanner
             builder.WithCacheOptions(CacheOptions.EnableSharedCacheOptions);
             App = builder.Build();
 
-                
-                    //if (clientID.Equals("386ce8c0-7421-48c9-a1df-2a532400339f"))
-                    //{
-                    //    IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                    //    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithRedirectUri("ms-appx-web://microsoft.aad.brokerplugin/386ce8c0-7421-48c9-a1df-2a532400339f").WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-                    //}
-                    //else if (clientID.Equals("9bc3ab49-b65d-410a-85ad-de819febfddc"))
-                    //{
-                    //    IMsalHttpClientFactory httpClientFactory = new HttpFactoryWithProxy(proxy);
-                    //    App = PublicClientApplicationBuilder.Create(this.ClientId).WithHttpClientFactory(httpClientFactory).WithRedirectUri("https://oauth.spops.microsoft.com/").WithCacheOptions(CacheOptions.EnableSharedCacheOptions).Build();
-                    //}
-
         }
                 
         public UserAuthenticator(String Username, String Password, string tenantId, string proxy, string clientID, string redirectUrl = null)
@@ -85,7 +73,6 @@ namespace AzRanger.AzScanner
             }
 
             App = builder.Build();
-
         }
 
         public async Task<String> GetUserId()
@@ -124,7 +111,7 @@ namespace AzRanger.AzScanner
         {
             await semaphoreSlim.WaitAsync();
             var accounts = await App.GetAccountsAsync();
-            AuthenticationResult result = null;
+            AuthenticationResult result;
             if (accounts.Any())
             {
                 try

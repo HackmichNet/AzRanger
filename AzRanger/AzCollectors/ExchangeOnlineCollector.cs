@@ -119,8 +119,8 @@ namespace AzRanger.AzScanner
             }
             foreach (AcceptedDomain domain in allDomains)
             {
-                domain.HasSPF = DNSCollector.hasSPF(domain.DomainName);
-                domain.HasDMARC = DNSCollector.hasDMARC(domain.DomainName);
+                domain.HasSPF = DNSCollector.HasSPF(domain.DomainName);
+                domain.HasDMARC = DNSCollector.HasDMARC(domain.DomainName);
             }
             return allDomains;
         }

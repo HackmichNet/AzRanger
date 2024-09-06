@@ -67,9 +67,11 @@ namespace AzRanger.AzScanner
                 return null;
             }
 
-            Tenant Result = new Tenant();
-            Result.TenantId = this.TenantId;
-            Result.Username = this.Username;
+            Tenant Result = new Tenant
+            {
+                TenantId = this.TenantId,
+                Username = this.Username
+            };
             String currentUserId = await this.AADPowerShellAuthenticator.GetUserId();
             bool isGlobalAdmin = false;
             bool isGlobalReader = false;
@@ -220,6 +222,9 @@ namespace AzRanger.AzScanner
                 if (Result.Applications != null)
                 {
                     Console.WriteLine("[+] You have {0} applications in your tenant", Result.Applications.Count);
+                }else
+                {
+                    CheckIfRedirectUriExist.Enrich(Result);
                 }
                 Task<Dictionary<Guid, ServicePrincipal>> getAllServicePrincipals = MSGraphCollector.GetAllServicePrincipals();
                 Result.ServicePrincipals = await getAllServicePrincipals;
@@ -287,40 +292,37 @@ namespace AzRanger.AzScanner
 
                 Result.TenantSettings.AdminCenterSettings = new AdminCenterSettings();
 
-                List<Task> officeTasks = new List<Task>();
-
-                officeTasks.Add(MSGraphCollector.GetSettings());
-                officeTasks.Add(MSGraphCollector.GetAuthorizationPolicy());
-                officeTasks.Add(MSGraphCollector.GetDeviceRegistrationPolicy());
-                officeTasks.Add(MSGraphCollector.GetAllCondtionalAccessPolicies());
-                officeTasks.Add(MSGraphCollector.GetAuthenticationMethodsPolicy());
-
-                officeTasks.Add(MainIamCollector.GetSecurityDefaults());
-                officeTasks.Add(MainIamCollector.GetDirectoryProperties());
-                officeTasks.Add(MainIamCollector.GetPasswordResetPolicies());
-                officeTasks.Add(MainIamCollector.GetPasswordPolicy());
-                officeTasks.Add(MainIamCollector.GetADConnectStatus());
-                officeTasks.Add(MainIamCollector.GetB2BPolicy());
-                officeTasks.Add(MainIamCollector.GetLCMSettings());
-                officeTasks.Add(MainIamCollector.GetUserSettings());
-                officeTasks.Add(MainIamCollector.GetSsgmProperties());
-                officeTasks.Add(MainIamCollector.GetLoginTenantBrandings());
-                officeTasks.Add(MainIamCollector.GetOnPremisesPasswordResetPolicy());
-
-                officeTasks.Add(ProvisionAPICollector.GetDirSyncFeatures());
-                officeTasks.Add(ProvisionAPICollector.GetMsolCompanyInformation());
-
-                officeTasks.Add(AdminCenterCollector.GetSkypeTeamsSettings());
-                officeTasks.Add(AdminCenterCollector.GetOfficeFormsSettings());
-                officeTasks.Add(AdminCenterCollector.GetOfficeStoreSettings());
-                officeTasks.Add(AdminCenterCollector.GetO365PasswordPolicy());
-                officeTasks.Add(AdminCenterCollector.GetSwaySettings());
-                officeTasks.Add(AdminCenterCollector.GetCalendarsharing());
-                officeTasks.Add(AdminCenterCollector.GetDirsyncManagement());
-                officeTasks.Add(AdminCenterCollector.GetOfficeonline());
-
-                officeTasks.Add(ComplianceCenterScanner.GetDLPPolicies());
-                officeTasks.Add(ComplianceCenterScanner.GetDLPLabels());
+                List<Task> officeTasks = new List<Task>
+                {
+                    MSGraphCollector.GetSettings(),
+                    MSGraphCollector.GetAuthorizationPolicy(),
+                    MSGraphCollector.GetDeviceRegistrationPolicy(),
+                    MSGraphCollector.GetAllCondtionalAccessPolicies(),
+                    MSGraphCollector.GetAuthenticationMethodsPolicy(),
+                    MainIamCollector.GetSecurityDefaults(),
+                    MainIamCollector.GetDirectoryProperties(),
+                    MainIamCollector.GetPasswordResetPolicies(),
+                    MainIamCollector.GetPasswordPolicy(),
+                    MainIamCollector.GetADConnectStatus(),
+                    MainIamCollector.GetB2BPolicy(),
+                    MainIamCollector.GetLCMSettings(),
+                    MainIamCollector.GetUserSettings(),
+                    MainIamCollector.GetSsgmProperties(),
+                    MainIamCollector.GetLoginTenantBrandings(),
+                    MainIamCollector.GetOnPremisesPasswordResetPolicy(),
+                    ProvisionAPICollector.GetDirSyncFeatures(),
+                    ProvisionAPICollector.GetMsolCompanyInformation(),
+                    AdminCenterCollector.GetSkypeTeamsSettings(),
+                    AdminCenterCollector.GetOfficeFormsSettings(),
+                    AdminCenterCollector.GetOfficeStoreSettings(),
+                    AdminCenterCollector.GetO365PasswordPolicy(),
+                    AdminCenterCollector.GetSwaySettings(),
+                    AdminCenterCollector.GetCalendarsharing(),
+                    AdminCenterCollector.GetDirsyncManagement(),
+                    AdminCenterCollector.GetOfficeonline(),
+                    ComplianceCenterScanner.GetDLPPolicies(),
+                    ComplianceCenterScanner.GetDLPLabels()
+                };
 
                 while (officeTasks.Any())
                 {
@@ -442,7 +444,7 @@ namespace AzRanger.AzScanner
 
                 while (teamsTasks.Any())
                 {
-                    Task result = null;
+                    Task result;
                     try
                     {
                         result = await Task.WhenAny(teamsTasks);
@@ -503,28 +505,30 @@ namespace AzRanger.AzScanner
 
                 Result.ExchangeOnlineSettings = new ExchangeOnlineSettings();
 
-                List<Task> exchangeTask = new List<Task>();
-                exchangeTask.Add(ExchangeOnlineScanner.GetAdminAuditLogConfig());
-                exchangeTask.Add(ExchangeOnlineScanner.GetHostedOutboundSpamFilterPolicies());
-                exchangeTask.Add(ExchangeOnlineScanner.GetMalwareFilterPolicies());
-                exchangeTask.Add(ExchangeOnlineScanner.GetTransportRules());
-                exchangeTask.Add(ExchangeOnlineScanner.GetAcceptedDomains());
-                exchangeTask.Add(ExchangeOnlineScanner.GetDkimSigningConfig());
-                exchangeTask.Add(AdminCenterCollector.GetExchangeModernAuthSettings());
-                exchangeTask.Add(ExchangeOnlineScanner.GetMalwareFilterRules());
-                exchangeTask.Add(ExchangeOnlineScanner.GeRoleAssignmentPolicies());
-                exchangeTask.Add(ExchangeOnlineScanner.GetRemoteDomains());
-                exchangeTask.Add(ExchangeOnlineScanner.GetMailboxes());
-                exchangeTask.Add(ExchangeOnlineScanner.GetOrganizationConfig());
-                exchangeTask.Add(ExchangeOnlineScanner.GetAuthenticationPolicies());
-                exchangeTask.Add(ExchangeOnlineScanner.GetEXOUsers());
-                exchangeTask.Add(ExchangeOnlineScanner.GetOwaMailboxPolicy());
-                exchangeTask.Add(ExchangeOnlineScanner.GetMailboxAuditBypassAssociations());
-                exchangeTask.Add(ExchangeOnlineScanner.GetExternalInOutlooks());
+                List<Task> exchangeTask = new List<Task>
+                {
+                    ExchangeOnlineScanner.GetAdminAuditLogConfig(),
+                    ExchangeOnlineScanner.GetHostedOutboundSpamFilterPolicies(),
+                    ExchangeOnlineScanner.GetMalwareFilterPolicies(),
+                    ExchangeOnlineScanner.GetTransportRules(),
+                    ExchangeOnlineScanner.GetAcceptedDomains(),
+                    ExchangeOnlineScanner.GetDkimSigningConfig(),
+                    AdminCenterCollector.GetExchangeModernAuthSettings(),
+                    ExchangeOnlineScanner.GetMalwareFilterRules(),
+                    ExchangeOnlineScanner.GeRoleAssignmentPolicies(),
+                    ExchangeOnlineScanner.GetRemoteDomains(),
+                    ExchangeOnlineScanner.GetMailboxes(),
+                    ExchangeOnlineScanner.GetOrganizationConfig(),
+                    ExchangeOnlineScanner.GetAuthenticationPolicies(),
+                    ExchangeOnlineScanner.GetEXOUsers(),
+                    ExchangeOnlineScanner.GetOwaMailboxPolicy(),
+                    ExchangeOnlineScanner.GetMailboxAuditBypassAssociations(),
+                    ExchangeOnlineScanner.GetExternalInOutlooks()
+                };
 
                 while (exchangeTask.Any())
                 {
-                    Task result = null;
+                    Task result;
                     try
                     {
                         result = await Task.WhenAny(exchangeTask);
@@ -667,31 +671,6 @@ namespace AzRanger.AzScanner
 
             Console.WriteLine("[+] Finished collecting information.");
             return Result;
-        }
-
-        private bool CheckP1License(List<LicenseDetails> licenses)
-        {
-            return CheckLicense(licenses, "AAD_PREMIUM");
-        }
-
-        private bool CheckP2License(List<LicenseDetails> licenses)
-        {
-            return CheckLicense(licenses, "AAD_PREMIUM_P2");
-        }
-
-        private bool CheckLicense(List<LicenseDetails> licenses, String licenseName)
-        {
-            foreach (LicenseDetails detail in licenses)
-            {
-                foreach (Serviceplan plan in detail.servicePlans)
-                {
-                    if (plan.servicePlanName == licenseName & plan.provisioningStatus == "Success" & plan.appliesTo == "User")
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
     }
 }

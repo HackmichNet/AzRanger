@@ -7,7 +7,7 @@ namespace AzRanger.AzScanner
     public static class DNSCollector
     {
         internal static Logger logger = LogManager.GetCurrentClassLogger();
-        public static bool hasSPF(String domains)
+        public static bool HasSPF(String domains)
         {
             var lookup = new LookupClient();
             try
@@ -30,7 +30,7 @@ namespace AzRanger.AzScanner
             return false;
         }
 
-        public static bool hasDMARC(String domains)
+        public static bool HasDMARC(String domains)
         {
             var lookup = new LookupClient();
             try

@@ -119,7 +119,7 @@ namespace AzRanger.AzScanner
 
                 while (tasks.Any())
                 {
-                    Task<StrongAuthenticationDetail> finishedTask = null;
+                    Task<StrongAuthenticationDetail> finishedTask;
                     try
                     {
                         finishedTask = await Task.WhenAny(tasks);
@@ -326,7 +326,7 @@ namespace AzRanger.AzScanner
         public async Task<Dictionary<Guid, Application>> GetAllApplications()
         {
             Dictionary<Guid, Application> result = new Dictionary<Guid, Application>();
-            List<Application> allApps = await GetAllOf<Application>(MSGraphCollector.Applications, "?$select=id,displayName,appId,passwordCredentials,keyCredentials,publisherDomain,signInAudience&$expand=owners($select=id)");
+            List<Application> allApps = await GetAllOf<Application>(MSGraphCollector.Applications, "?$select=id,displayName,appId,passwordCredentials,keyCredentials,publisherDomain,signInAudience,web,spa&$expand=owners($select=id)");
 
             foreach (Application app in allApps)
             {

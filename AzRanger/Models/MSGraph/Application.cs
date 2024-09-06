@@ -16,6 +16,10 @@ namespace AzRanger.Models.MSGraph
         public Passwordcredential[] passwordCredentials { get; set; }
         public KeyCredentials[] keyCredentials { get; set; }
         public IDTypeResponse[] owners { get; set; }
+        public ApplicationWeb web { get; set; }
+        public ApplicationSpa spa { get; set; }
+
+        // Custom Data
         public List<AzurePrincipal> users { get; set; }
         public List<AzurePrincipal> UserAbleToAddCreds = new List<AzurePrincipal>();
 
@@ -68,4 +72,34 @@ namespace AzRanger.Models.MSGraph
             return new AffectedItem(this.id.ToString(), this.displayName);
         }
     }
+}
+
+
+public class ApplicationWeb
+{
+    public object homePageUrl { get; set; }
+    public object logoutUrl { get; set; }
+    public string[] redirectUris { get; set; }
+    public ApplicationWebImplicitgrantsettings implicitGrantSettings { get; set; }
+    public ApplicationWebRedirecturisetting[] redirectUriSettings { get; set; }
+
+    // Custom 
+    public bool allRedirectUrisAreRegistered = false;
+}
+
+public class ApplicationWebImplicitgrantsettings
+{
+    public bool enableAccessTokenIssuance { get; set; }
+    public bool enableIdTokenIssuance { get; set; }
+}
+
+public class ApplicationWebRedirecturisetting
+{
+    public string uri { get; set; }
+    public object index { get; set; }
+}
+
+public class ApplicationSpa
+{
+    public string[] redirectUris { get; set; }
 }
