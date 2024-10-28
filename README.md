@@ -39,8 +39,8 @@ Thank you for your work!
   --version            Display version information.
 ```
 
-When you run it without --username and --password, then an interactive login will be performed.
+When you run it without --username and --password, then an interactive login will be performed. It might happen, that multiple authorizations happen, the reason ist, that AzRanger uses different client ids. 
 
 ## Prerequisites
 
-The user should have the Role "Global Reader" or "Global Admin" assigned.
+The user should have the Role "Global Reader" or "Global Admin" assigned. If you want to audit SharePoint, then the role "SharePoint Admin" is required. Sorry there is no reader. 
