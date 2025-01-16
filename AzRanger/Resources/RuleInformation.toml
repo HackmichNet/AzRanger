@@ -378,6 +378,9 @@ risk = "The Sender Policy Framework can prevent that someone impersonates your d
 solution = "You must set the SPF records at your DNS provider's portal."
 scope = "EXO"
 maturity = 1
+CISM365Section = "2.1.8"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [EXOCheckTransportRules]
 score = 5
@@ -407,6 +410,9 @@ solution = "Go to the link in the reference and ensure that in the policy with t
 scope = "EXO"
 maturity = 0
 portal = "https://security.microsoft.com/antimalwarev2"
+CISM365Section = "2.1.2"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [EXOMailTipps]
 score = 1
@@ -435,7 +441,7 @@ solution = "Connect to Exchange Online using `Connect-ExchangeOnline` CMDLET and
 scope = "EXO"
 maturity = 1
 
-[EXOSpamPolicy]
+[EXOSpamNotifyAdmins]
 score = 1
 short = "Exchange Online Spam policy does not notify admins if a mail is blocked"
 risk = "The increases the reaction time in case a user's account starts to send malicious mails."
@@ -443,6 +449,9 @@ solution = "Go to the Security Center and change or add the needed Anti-Spam Pol
 scope = "EXO"
 maturity = 1
 portal = "https://security.microsoft.com/antispam"
+CISM365Section = "2.1.6"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [GroupAllowsSelfService]
 score = 2
@@ -501,6 +510,9 @@ solution = "Go to the Portal URL and mark *Add internal phishing protection*."
 scope = "AAD"
 maturity = 1
 portal = "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/OfficeForms"
+CISM365Section = "1.3.5"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [OfficeSwaySettings]
 score = 3
@@ -999,15 +1011,18 @@ maturity = 1
 portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
 service = "KeyVault"
 
-[AzPasswordPolicy]
+[EntraIDPasswordPolicy]
 score = 5
-short = "Passwords can expire"
+short = "Entra passwords can expire"
 risk = "Users tend to use weak passwords, when they have to change password to often."
 link = "https://pages.nist.gov/800-63-3/sp800-63b.html"
 solution = "Go to [https://admin.microsoft.com/#/Settings/SecurityPrivacy/:/Settings/L1/PasswordPolicy](https://admin.microsoft.com/#/Settings/SecurityPrivacy/:/Settings/L1/PasswordPolicy) and mark the box for *Set passwords to never expire (recommended)*"
 scope = "AAD"
 maturity = 1
 portal = "https://admin.microsoft.com/#/Settings/SecurityPrivacy/:/Settings/L1/PasswordPolicy"
+CISM365Section = "1.3.1"
+CISM365Level = "L1"
+CISM365Version = "4.0"
 
 [AzSQLAuditingEnabled]
 score = 1
@@ -1068,6 +1083,9 @@ risk = "This increases the risk, that an attacker can impersonate your domain."
 solution = "Configure DKIM for all your domains."
 scope = "EXO"
 maturity = 1
+CISM365Section = "2.1.9"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [EXODMARC]
 score = 5
@@ -1076,6 +1094,9 @@ risk = "This increases the risk, that an attacker can impersonate your domain."
 solution = "Enable DMARC for all your domains."
 scope = "EXO"
 maturity = 1
+CISM365Section = "2.1.10"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [EXOMailboxAudit]
 score = 6
@@ -1105,6 +1126,9 @@ solution = "See reference."
 scope = "EXO"
 maturity = 1
 portal = "https://security.microsoft.com/antimalwarev2"
+CISM365Section = "2.1.3"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [EXOWhitelistBypass]
 score = 3
@@ -1152,6 +1176,9 @@ solution = "Go to the Portal URL and uncheck *Let users access the Office Store*
 scope = "AAD"
 maturity = 1
 portal = "https://admin.microsoft.com/#/Settings/Services/:/Settings/L1/Store"
+CISM365Section = "1.3.4"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [OfficeCalenderSharing]
 score = 4
@@ -1228,6 +1255,9 @@ solution = "Try to have only between two and four global admins. The most of the
 scope = "AAD"
 maturity = 1
 portal = "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RolesAndAdministrators"
+CISM365Section = "1.1.3"
+CISM365Level = "L1"
+CISM365Version = "4.0"
 
 [UserMFAFatigueProtection]
 score = 7
@@ -1401,6 +1431,9 @@ solution = """
 scope = "EXO"
 maturity = 1
 portal = "https://admin.microsoft.com/#/SharedMailbox"
+CISM365Section = "1.2.2"
+CISM365Level = "L1"
+CISM365Version = "4.0"
 
 [EXOOrganizationalMailboxAudit]
 score = 3
@@ -1439,3 +1472,14 @@ risk = "This eases phishing attacks, as an attacker only needs to register the u
 solution = "If you don't need the app anymore delete it. Otherwise configure the RedirectUrl to a proper value."
 scope = "AAD"
 maturity = 1
+
+[UserAdminsCloudOnly]
+score = 8
+short = "Some administrative users are synced to on-prem AD"
+risk = "This increases the risk, if the on-prem AD is compromised, that an attacker can compromise Entra too."
+solution = "Remove the user from the administrative group and create a cloud-only user"
+scope = "AAD"
+maturity = 1
+CISM365Section = "1.1.1"
+CISM365Level = "L1"
+CISM365version = "4.0"

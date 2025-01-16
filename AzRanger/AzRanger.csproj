@@ -325,6 +325,7 @@
     <Compile Include="Checks\Rules\EXOOrganizationalMailboxAudit.cs" />
     <Compile Include="Checks\Rules\EXOExternalSenderIdentified.cs" />
     <Compile Include="Checks\Rules\EXOSharedMailboxNoLogin.cs" />
+    <Compile Include="Checks\Rules\UserAdminsCloudOnly.cs" />
     <Compile Include="Checks\Rules\UserWithoutCAPolicy.cs" />
     <Compile Include="Checks\TomlInfoWrapper.cs" />
     <Compile Include="Checks\Rules\ADPasswordHashSyncEnabled.cs" />
@@ -386,7 +387,7 @@
     <Compile Include="Checks\Rules\AzKeyVLogging.cs" />
     <Compile Include="Checks\Rules\AzKeyVSecretExpiration.cs" />
     <Compile Include="Checks\Rules\AzMgmtGroupCreation.cs" />
-    <Compile Include="Checks\Rules\AzPasswordPolicy.cs" />
+    <Compile Include="Checks\Rules\EntraIDPasswordPolicy.cs" />
     <Compile Include="Checks\Rules\AzRestrictUserAccessGroupFeature.cs" />
     <Compile Include="Checks\Rules\AzSecurityDefaultsO365.cs" />
     <Compile Include="Checks\Rules\AzSQLServerInboundTraffic.cs" />
@@ -416,7 +417,7 @@
     <Compile Include="Checks\Rules\EXOOutlookAddins.cs" />
     <Compile Include="Checks\Rules\M365WebStorageProvider.cs" />
     <Compile Include="Checks\Rules\EXOOwaExternalStorageProvider.cs" />
-    <Compile Include="Checks\Rules\EXOSpamPolicy.cs" />
+    <Compile Include="Checks\Rules\EXOSpamNotifyAdmins.cs" />
     <Compile Include="Checks\Rules\EXOWhitelistBypass.cs" />
     <Compile Include="Checks\Rules\GroupAllowsSelfService.cs" />
     <Compile Include="Checks\Rules\GroupAllowUserToCreateSecGroups.cs" />

@@ -2,7 +2,7 @@
 
 namespace AzRanger.Checks.Rules
 {
-    class AzPasswordPolicy : BaseCheck
+    class EntraIDPasswordPolicy : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {

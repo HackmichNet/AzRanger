@@ -22,12 +22,6 @@ title = "<EMPTY>"
 level = "L2"
 version = "2.0"
 
-[AzPasswordPolicy]
-section = "1.4"
-title = "<EMPTY>"
-level = "L1"
-version = "2.0"
-
 [AzSecurityDefaultsO365]
 section = "1.1.1"
 title = "<EMPTY>"
@@ -52,12 +46,6 @@ title = "<EMPTY>"
 level = "L1"
 version = "2.0"
 
-[EXOCheckSPF]
-section = "4.8"
-title = "<EMPTY>"
-level = "L1"
-version = "2.0"
-
 [EXOCheckTransportRules]
 section = "4.3"
 title = "<EMPTY>"
@@ -69,24 +57,6 @@ section = "4.3"
 title = "<EMPTY>"
 level = "L1"
 version = "1.5-3"
-
-[EXOCommonAttachmentFilter]
-section = "4.1"
-title = "<EMPTY>"
-level = "L1"
-version = "2.0"
-
-[EXODKIM]
-section = "4.7"
-title = "<EMPTY>"
-level = "L1"
-version = "2.0"
-
-[EXODMARC]
-section = "4.9"
-title = "<EMPTY>"
-level = "L1"
-version = "2.0"
 
 [EXOMailboxAudit]
 section = "5.3"
@@ -106,12 +76,6 @@ title = "<EMPTY>"
 level = "L1"
 version = "2.0"
 
-[EXONotifcationUsersSendingMalware]
-section = "4.10"
-title = "<EMPTY>"
-level = "L1"
-version = "2.0"
-
 [EXOOutlookAddins]
 section = "2.8"
 title = "<EMPTY>"
@@ -122,12 +86,6 @@ version = "2.0"
 section = "6.5"
 title = "<EMPTY>"
 level = "L2"
-version = "2.0"
-
-[EXOSpamPolicy]
-section = "4.2"
-title = "<EMPTY>"
-level = "L1"
 version = "2.0"
 
 [EXOWhitelistBypass]
@@ -214,12 +172,6 @@ title = "Ensure that mobile device encryption is enabled to prevent unauthorized
 level = "L1"
 version = "1.4"
 
-[OfficeAddIns]
-section = "2.9"
-title = "<EMPTY>"
-level = "L1"
-version = "2.0"
-
 [OfficeCalenderSharing]
 section = "2.3"
 title = "<EMPTY>"
@@ -234,12 +186,6 @@ version = "2.0"
 
 [OfficeDLPPolicies]
 section = "3.4"
-title = "<EMPTY>"
-level = "L1"
-version = "2.0"
-
-[OfficeFormsPhishingProtection]
-section = "2.10"
 title = "<EMPTY>"
 level = "L1"
 version = "2.0"
@@ -334,12 +280,6 @@ title = "<EMPTY>"
 level = "L2"
 version = "2.0"
 
-[UserMax4GlobalAdmins]
-section = "1.1.7"
-title = "<EMPTY>"
-level = "L1"
-version = "2.0"
-
 [UserMFAFatigueProtection]
 section = "1.1.5"
 title = "<EMPTY>"
@@ -369,12 +309,6 @@ section = "1.1.20"
 title = "<EMPTY>"
 level = "L1"
 version = "2.0"
-
-[EXOSharedMailboxNoLogin]
-section = "1.2.2"
-title = "<EMPTY>"
-level = "L1"
-version = "3.0"
 
 [EXOOrganizationalMailboxAudit]
 section = "6.1.1"

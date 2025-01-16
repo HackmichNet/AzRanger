@@ -3,7 +3,7 @@ using AzRanger.Models.ExchangeOnline;
 
 namespace AzRanger.Checks.Rules
 {
-    class EXOSpamPolicy : BaseCheck
+    class s : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
