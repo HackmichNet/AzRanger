@@ -28,6 +28,7 @@ namespace AzRanger.AzScanner
         private const String OwaMailboxPolicy = "Get-OwaMailboxPolicy";
         private const String MailboxAuditBypassAssociation = "Get-MailboxAuditBypassAssociation";
         private const String ExternalInOutlook = "Get-ExternalInOutlook";
+        private const String HostedConnectionFilterPolicy = "Get-HostedConnectionFilterPolicy";
         private String EndPoint;
 
         public ExchangeOnlineCollector(IAuthenticator authenticator, String tenantId, String proxy)
