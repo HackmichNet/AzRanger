@@ -21,11 +21,21 @@ namespace AzRanger.Utilities.EnrichmentEngine
                 {
                     foreach (string redirectUri in application.web.redirectUris)
                     {
-                        Uri uri = new Uri(redirectUri);
-                        if (uri.Host.Equals("localhost"))
+                        Uri uri;
+                        try {
+                            uri = new Uri(redirectUri);
+                            if (uri.Host.Equals("localhost"))
+                            {
+                                continue;
+                            }
+                        }
+                        catch
                         {
+                            logger.Debug("CheckIfRedirectUriExist.enrich: Creating record {0} failed.", redirectUri);
+                            application.web.allRedirectUrisAreRegistered = false;
                             continue;
                         }
+
                         var lookup = new LookupClient();
                         try
                         {
