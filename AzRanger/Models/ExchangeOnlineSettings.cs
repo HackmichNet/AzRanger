@@ -22,7 +22,9 @@ namespace AzRanger.Models
         public List<EXOUser> EXOUsers { get; set; }
         public OwaMailboxPolicy OwaMailboxPolicy { get; set; }
         public List<MailboxAuditBypassAssociation> MailboxAuditBypassAssociations { get; set; }
-        public List<ExternalInOutlook> ExternalInOutlooks { get; set; } 
+        public List<ExternalInOutlook> ExternalInOutlooks { get; set; }
+        public List<HostedConnectionFilterPolicy> HostedConnectionFilterPolicy { get; set; }
+        public List<HostedContentFilterPolicy> HostedContentFilterPolicies { get; set; }
 
     }
 }

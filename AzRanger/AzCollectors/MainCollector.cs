@@ -521,7 +521,9 @@ namespace AzRanger.AzScanner
                     ExchangeOnlineScanner.GetEXOUsers(),
                     ExchangeOnlineScanner.GetOwaMailboxPolicy(),
                     ExchangeOnlineScanner.GetMailboxAuditBypassAssociations(),
-                    ExchangeOnlineScanner.GetExternalInOutlooks()
+                    ExchangeOnlineScanner.GetExternalInOutlooks(),
+                    ExchangeOnlineScanner.GetHostedConnectionFilterPolicy(),
+                    ExchangeOnlineScanner.GetHostedContentFilterPolicy()
                 };
 
                 while (exchangeTask.Any())
@@ -589,8 +591,14 @@ namespace AzRanger.AzScanner
                         case Task<List<MailboxAuditBypassAssociation>> getMailboxAuditBypassAssociationTask:
                             Result.ExchangeOnlineSettings.MailboxAuditBypassAssociations = await getMailboxAuditBypassAssociationTask;
                             break;
-                        case Task<List<ExternalInOutlook>> GetExternalInOutlooksTask:
-                            Result.ExchangeOnlineSettings.ExternalInOutlooks = await GetExternalInOutlooksTask;
+                        case Task<List<ExternalInOutlook>> getExternalInOutlooksTask:
+                            Result.ExchangeOnlineSettings.ExternalInOutlooks = await getExternalInOutlooksTask;
+                            break;
+                        case Task<List<HostedConnectionFilterPolicy>> getHostedConnectionFilterPolicy:
+                            Result.ExchangeOnlineSettings.HostedConnectionFilterPolicy = await getHostedConnectionFilterPolicy;
+                            break;
+                        case Task<List<HostedContentFilterPolicy>> getHostedContentFilterPolicy:
+                            Result.ExchangeOnlineSettings.HostedContentFilterPolicies = await getHostedContentFilterPolicy;
                             break;
                         default:
                             Console.WriteLine("Scanner.ScanTennant: Hit default in exchangeTasks.");

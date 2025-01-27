@@ -161,6 +161,9 @@ solution = "Disable Security Defaults and use more advance security features."
 scope = "AAD"
 maturity = 1
 portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/TenantOverview.ReactView"
+CISM365Section = "5.1.1.1"
+CISM365Level = "L1"
+CISM365Version = "4.0"
 
 [AzSQLAuditingRetention]
 score = 1
@@ -339,6 +342,9 @@ solution = "Go to Microsoft PureView and select *Audit*. Afterwards click *Start
 scope = "EXO"
 maturity = 1
 portal = "https://compliance.microsoft.com/auditlogsearch"
+CISM365Section = "3.1.1"
+CISM365Level = "L1"
+CISM365Version = "4.0"
 
 [EXOBasicAuth]
 score = 5
@@ -490,6 +496,9 @@ solution = "Go to the Portal URL and set the DLP label policies according to you
 scope = "AAD"
 maturity = 0
 portal = "https://compliance.microsoft.com/informationprotection/labelpolicies"
+CISM365Section = "3.3.1"
+CISM365Level = "L1"
+CISM365Version = "4.0"
 
 [OfficeDLPPolicies]
 score = 0
@@ -500,6 +509,9 @@ solution = "Configure DLP policies according to your needs."
 scope = "AAD"
 maturity = 0
 portal = "https://compliance.microsoft.com/datalossprevention?viewid=policies"
+CISM365Section = "3.2.1"
+CISM365Level = "L1"
+CISM365Version = "4.0"
 
 [OfficeFormsPhishingProtection]
 score = 2
@@ -1481,5 +1493,62 @@ solution = "Remove the user from the administrative group and create a cloud-onl
 scope = "AAD"
 maturity = 1
 CISM365Section = "1.1.1"
+CISM365Level = "L1"
+CISM365version = "4.0"
+
+[EXOConnectionFilterIPAllowList]
+score = 5
+short = "Connetion Filter IP allow list is noch empty"
+risk = "The IP allow list defines which sender can bypass E-Mail scanning. This increases the risk of becoming a victim of malicious mails."
+solution = """
+1.	Go to Microsoft 365 Defender https://security.microsoft.com.
+2.	Click to expand Email & collaboration select Policies & rules -> Threat policies.
+3.	In Policies select Anti-spam.
+4.	Click on the Connection filter policy (Default).
+5.	Click Edit connection filter policy.
+6.	Remove any IP entries from Always allow messages from the following IP addresses or address range:.
+"""
+scope = "EXO"
+maturity = 1
+CISM365Section = "2.1.12"
+CISM365Level = "L1"
+CISM365version = "4.0"
+
+[EXOConnectionFilterIPSafeList]
+score = 5
+short = "Connetion Filter Safe List is enabled"
+risk = "The IP safe list defines which sender can bypass E-Mail scanning. This increases the risk of becoming a victim of malicious mails. The admins have no insights which mail servers are trusted."
+solution = """
+1.	Go to Microsoft 365 Defender https://security.microsoft.com.
+2.	Click to expand Email & collaboration select Policies & rules -> Threat policies.
+3.	In Policies select Anti-spam.
+4.	Click on the Connection filter policy (Default).
+5.	Click Edit connection filter policy.
+6.	Uncheck Turn on safe list.
+"""
+scope = "EXO"
+maturity = 1
+CISM365Section = "2.1.13"
+CISM365Level = "L1"
+CISM365version = "4.0"
+
+[EXOInboundAntiSpamAllowDomains]
+score = 5
+short = "Inbound anti-spam policy is not empty"
+risk = "Mails send from the specified domains can bypass the Anti-Spam filter. This increases the risk for the users."
+solution = """
+1.	Go to Microsoft 365 Defender https://security.microsoft.com.
+2.	Expand Email & collaboration select Policies & rules> Threat policies.
+3.	Under Policies select Anti-spam.
+4.	Open each if the compliance inbound anti-spam policy.
+5.	Click Edit allowed and blocked senders and domains.
+6.	Select Allow domains.
+7.	Delete each domain from the list.
+8.	Click Done and Save.
+9.	Repeat as needed.
+"""
+scope = "EXO"
+maturity = 1
+CISM365Section = "2.1.14"
 CISM365Level = "L1"
 CISM365version = "4.0"

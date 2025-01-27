@@ -321,6 +321,9 @@
     <Compile Include="Checks\RuleInfo.cs" />
     <Compile Include="Checks\RuleInfoData.cs" />
     <Compile Include="Checks\Rules\AppsWithNonExistendRedirectUrl.cs" />
+    <Compile Include="Checks\Rules\EXOInboundAntiSpamAllowDomains.cs" />
+    <Compile Include="Checks\Rules\EXOConnectionFilterIPSafeList.cs" />
+    <Compile Include="Checks\Rules\EXOConnectionFilterIPAllowList.cs" />
     <Compile Include="Checks\Rules\EXOAuditBypassEnabled.cs" />
     <Compile Include="Checks\Rules\EXOOrganizationalMailboxAudit.cs" />
     <Compile Include="Checks\Rules\EXOExternalSenderIdentified.cs" />
@@ -519,6 +522,8 @@
     <Compile Include="Models\ExchangeOnline\DkimSigningConfig.cs" />
     <Compile Include="Models\ExchangeOnline\EXOUser.cs" />
     <Compile Include="Models\ExchangeOnline\ExternalInOutlook.cs" />
+    <Compile Include="Models\ExchangeOnline\HostedConnectionFilterPolicy.cs" />
+    <Compile Include="Models\ExchangeOnline\HostedContentFilterPolicy.cs" />
     <Compile Include="Models\ExchangeOnline\HostedOutboundSpamFilterPolicy.cs" />
     <Compile Include="Models\ExchangeOnline\Mailbox.cs" />
     <Compile Include="Models\ExchangeOnline\MailboxAuditBypassAssociation.cs" />

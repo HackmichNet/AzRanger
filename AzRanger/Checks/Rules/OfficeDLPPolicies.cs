@@ -5,7 +5,7 @@ namespace AzRanger.Checks.Rules
 {
     class OfficeDLPPolicies : BaseCheck
     {
-        // TODO: Maybe we can check if they makes sense
+        // TODO: Maybe we can check if we can do better
         public override CheckResult Audit(Tenant tenant)
         {
             if (tenant.TenantSettings.OfficeDLPPolicies != null)

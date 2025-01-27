@@ -22,20 +22,8 @@ title = "<EMPTY>"
 level = "L2"
 version = "2.0"
 
-[AzSecurityDefaultsO365]
-section = "1.1.1"
-title = "<EMPTY>"
-level = "L1"
-version = "2.0"
-
 [CABlockLegacyAuth]
 section = "1.1.6"
-title = "<EMPTY>"
-level = "L1"
-version = "2.0"
-
-[EXOAdminAuditLogConfig]
-section = "5.2"
 title = "<EMPTY>"
 level = "L1"
 version = "2.0"
@@ -176,18 +164,6 @@ version = "1.4"
 section = "2.3"
 title = "<EMPTY>"
 level = "L2"
-version = "2.0"
-
-[OfficeDLPLabels]
-section = "3.2"
-title = "<EMPTY>"
-level = "L2"
-version = "2.0"
-
-[OfficeDLPPolicies]
-section = "3.4"
-title = "<EMPTY>"
-level = "L1"
 version = "2.0"
 
 [OfficeSwaySettings]

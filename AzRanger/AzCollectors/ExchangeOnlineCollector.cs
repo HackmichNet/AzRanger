@@ -29,6 +29,7 @@ namespace AzRanger.AzScanner
         private const String MailboxAuditBypassAssociation = "Get-MailboxAuditBypassAssociation";
         private const String ExternalInOutlook = "Get-ExternalInOutlook";
         private const String HostedConnectionFilterPolicy = "Get-HostedConnectionFilterPolicy";
+        private const String HostedContentFilterPolicy = "Get-HostedContentFilterPolicy";
         private String EndPoint;
 
         public ExchangeOnlineCollector(IAuthenticator authenticator, String tenantId, String proxy)
@@ -172,6 +173,18 @@ namespace AzRanger.AzScanner
         {
             return GetAllOf<ExternalInOutlook>(ExchangeOnlineCollector.ExternalInOutlook);
         }
+
+        public Task<List<HostedConnectionFilterPolicy>> GetHostedConnectionFilterPolicy()
+        {
+            List<Tuple<String, String>> parameters = new List<Tuple<String, String>>();
+            parameters.Add(new Tuple<String, String>("Identity", "Default"));
+            return GetAllOf<HostedConnectionFilterPolicy>(ExchangeOnlineCollector.HostedConnectionFilterPolicy, parameters);
+        }
+        public Task<List<ExternalInOutlook>> GetHostedContentFilterPolicy()
+        {
+            return GetAllOf<HostedContentFilterPolicy>(ExchangeOnlineCollector.HostedContentFilterPolicy);
+        }
+
 
         internal async Task<List<T>> GetAllOf<T>(string command, List<Tuple<string, string>> parameters = null)
         {
