@@ -633,7 +633,7 @@ score = 2
 short = "User can create their own tenant"
 risk = "User can create their own tenants."
 link = "https://twitter.com/JeffreyAppel7/status/1593219049215127555?s=20&t=LH-3XsLy4td6QumFXe9AnA"
-solution = "Go to the *User Settings* in the Entra Admin Portal and set *Restrict non-admin users from creating tenants* to *No*."
+solution = "Go to the *User Settings* in the Entra Admin Portal and set *Restrict non-admin users from creating tenants* to *Yes*."
 scope = "AAD"
 maturity = 1
 portal = "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings"

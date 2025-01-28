@@ -417,11 +417,13 @@ namespace AzRanger.AzScanner
         {
             List<Group> allGroups = await GetAllOf<Group>(GroupsBeta, "?$select=id,displayName,securityEnabled,Visibility");
             Dictionary<Guid, Group> Result = new Dictionary<Guid, Group>();
+            List<Task> getGroupMemberTasks = new List<Task>();
             foreach (Group group in allGroups)
             {
-                group.members = await GetAllGroupMemberTransitiv(group.id);
+                getGroupMemberTasks.Add(GetAllGroupMemberTransitivNonBlocking(group.id, group.members));
                 Result.Add(group.id, group);
             }
+            await Task.WhenAll(getGroupMemberTasks);
             return Result;
         }
 
@@ -451,6 +453,33 @@ namespace AzRanger.AzScanner
                 }
             }
             return result;
+        }
+
+        private async Task GetAllGroupMemberTransitivNonBlocking(Guid groupId, List<AzurePrincipal> members)
+        {
+            List<IDTypeResponse> groupMember = await GetAllOf<IDTypeResponse>(string.Format(GroupMemberTransitiv, groupId.ToString()), "?$select=id");
+            List<AzurePrincipal> result = new List<AzurePrincipal>();
+
+            foreach (IDTypeResponse principal in groupMember)
+            {
+                if (principal.odatatype == "#microsoft.graph.user")
+                {
+                    AzurePrincipal p = new AzurePrincipal(principal.id, AzurePrincipalType.User);
+                    if (!result.Contains(p))
+                    {
+                        members.Add(p);
+                    }
+                }
+                if (principal.odatatype == "#microsoft.graph.servicePrincipal")
+                {
+                    AzurePrincipal p = new AzurePrincipal(principal.id, AzurePrincipalType.ServicePrincipal);
+                    if (!members.Contains(p))
+                    {
+                        members.Add(p);
+                    }
+                }
+            }
+            //members = result;
         }
 
         internal Task<AuthenticationMethods> GetAuthenticationMethods(Guid id)
