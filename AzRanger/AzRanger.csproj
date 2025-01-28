@@ -555,6 +555,7 @@
     <Compile Include="Models\MSGraph\Application.cs" />
     <Compile Include="Models\MSGraph\Approleassignment.cs" />
     <Compile Include="Models\MSGraph\AppRole.cs" />
+    <Compile Include="Models\MSGraph\AuthenticationMethods.cs" />
     <Compile Include="Models\MSGraph\AuthenticationMethodsPolicy.cs" />
     <Compile Include="Models\MSGraph\AuthorizationPolicy.cs" />
     <Compile Include="Models\MSGraph\ConditionalAccessPolicy.cs" />

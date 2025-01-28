@@ -77,6 +77,7 @@ namespace AzRanger.AzScanner
             bool isGlobalReader = false;
             bool isSharePointAdmin = false;
             bool scanAzureOnly = false;
+            Task redirectionTask = null;
 
             AdminCenterCollector = new AdminCenterCollector(AADPowerShellAuthenticator, Proxy);
             MSGraphCollector = new MSGraphCollector(AADPowerShellAuthenticator, TenantId, Proxy);
@@ -219,10 +220,19 @@ namespace AzRanger.AzScanner
                 }
                 Task<Dictionary<Guid, Application>> getAllApplications = MSGraphCollector.GetAllApplications();
                 Result.Applications = await getAllApplications;
+                
                 if (Result.Applications != null)
                 {
+
                     Console.WriteLine("[+] You have {0} applications in your tenant", Result.Applications.Count);
-                    CheckIfRedirectUriExist.Enrich(Result);
+                    try
+                    {
+                        redirectionTask = CheckIfRedirectUriExist.Enrich(Result);
+                    }
+                    catch (Exception ex) {
+                        logger.Warn("[-]MainCollector.CheckIfRedirectUriExist.Enrich failed.");
+                        logger.Debug(ex.Message);
+                    }
                 }
                 Task<Dictionary<Guid, ServicePrincipal>> getAllServicePrincipals = MSGraphCollector.GetAllServicePrincipals();
                 Result.ServicePrincipals = await getAllServicePrincipals;
@@ -251,7 +261,6 @@ namespace AzRanger.AzScanner
                         }
                     }
                     // If not Premium P2 ist much easier
-                    // TODO: Add to enrichment engine
                     else
                     {
                         foreach (DirectoryRole role in Result.DirectoryRoles.Values)
@@ -596,7 +605,6 @@ namespace AzRanger.AzScanner
                             Console.WriteLine("Scanner.ScanTennant: Hit default in exchangeTasks.");
                             break;
                     }
-
                     exchangeTask.Remove(result);
                 }
 
@@ -665,8 +673,10 @@ namespace AzRanger.AzScanner
                 await AssignEligibleUserToRole.Enrich(Result, MSGraphCollector);
                 AssignUserCanAddCreds.Enrich(Result);
             }
-            
-
+            if (redirectionTask != null)
+            {
+                await redirectionTask;
+            }
             Console.WriteLine("[+] Finished collecting information.");
             return Result;
         }
