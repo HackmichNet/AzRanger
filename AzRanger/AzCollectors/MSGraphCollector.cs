@@ -41,7 +41,7 @@ namespace AzRanger.AzScanner
         public const String AuthenticationMethodsPolicy = "/beta/policies/authenticationmethodspolicy";
         public const String OAuth2PermissionGrants = "/beta/oauth2PermissionGrants";
         //https://learn.microsoft.com/en-us/graph/api/authentication-list-methods?view=graph-rest-1.0&tabs=http
-        public const String AuthenticationMethods = "/{0}/authentication/methods";
+        public const String AuthenticationMethods = "/v1.0/users/{0}/authentication/methods";
 
         public MSGraphCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
@@ -99,6 +99,41 @@ namespace AzRanger.AzScanner
                 resultingUsers.Add(user.id, user);
             }
 
+            /*List<Task<AuthenticationMethods>> tasks = new List<Task<AuthenticationMethods>>();
+
+            foreach (User user in resultingUsers.Values)
+            {
+                tasks.Add(GetAuthenticationMethods(user.id));
+            }
+
+            while (tasks.Any())
+            {
+                Task<AuthenticationMethods> finishedTask;
+                try
+                {
+                    finishedTask = await Task.WhenAny(tasks);
+                }
+                catch (Exception ex)
+                {
+                    logger.Warn("[-] An error occurred. Don't panic...");
+                    logger.Debug("MSGraphScanner.GetAllUser.StrongAuth failed.");
+                    logger.Debug(ex.Message);
+                    continue;
+                }
+                AuthenticationMethods methods = await finishedTask;
+                try
+                {
+                    String tmp = methods.odatacontext.Split('\'')[1];
+                    String userId = tmp.Split('\'')[0];
+                    resultingUsers[new Guid(userId)].authenticationMethods = methods;
+                }
+                catch
+                {
+                    logger.Warn("[-] An error occurred. Don't panic...");
+                    logger.Debug("MSGraphScanner.GetAllUser.StrongAuth userid parsing failed.");
+                }
+            }*/
+            
             List<Task<StrongAuthenticationDetail>> tasks = new List<Task<StrongAuthenticationDetail>>();
 
             // What shitty code.... homage an ML =) 
@@ -418,9 +453,9 @@ namespace AzRanger.AzScanner
             return result;
         }
 
-        internal Task<AuthenticationMethodsPolicy> GetAuthenticationMethodsPolicy()
+        internal Task<AuthenticationMethods> GetAuthenticationMethods(Guid id)
         {
-            return Get<AuthenticationMethodsPolicy>(AuthenticationMethodsPolicy);
+            return Get<AuthenticationMethods>(string.Format(AuthenticationMethods, id.ToString()));
 
         }
 
@@ -434,6 +469,9 @@ namespace AzRanger.AzScanner
             return GetAllOf<DirectoryRoleAssignment>(String.Format(DirectoryRoleAssignmentsEligible, tenantId), String.Format("$Filter=roleDefinitionId+eq+'{0}'&$expand=principal,directoryScope", roleId));
         }
 
-
+        internal Task<AuthenticationMethodsPolicy> GetAuthenticationMethodsPolicy()
+        {
+            return Get<AuthenticationMethodsPolicy>(AuthenticationMethodsPolicy);
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace AzRanger.Models.MSGraph
         public object onPremisesSyncEnabled { get; set; }
         public StrongAuthenticationDetailDetails strongAuthenticationDetail { get; set; }
         public List<Guid> assignedCAPolicies { get; set; }
+        //public AuthenticationMethods authenticationMethods { get; set; }    
 
         public override string ToString()
         {
