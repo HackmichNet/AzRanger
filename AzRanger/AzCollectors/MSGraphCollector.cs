@@ -42,6 +42,8 @@ namespace AzRanger.AzScanner
         public const String OAuth2PermissionGrants = "/beta/oauth2PermissionGrants";
         //https://learn.microsoft.com/en-us/graph/api/authentication-list-methods?view=graph-rest-1.0&tabs=http
         public const String AuthenticationMethods = "/v1.0/users/{0}/authentication/methods";
+        public const String OrganizationSettings = "/v1.0/organization";
+        public const String UserRegistrationDetails = "/v1.0/reports/authenticationMethods/userRegistrationDetails";
 
         public MSGraphCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
@@ -110,6 +112,10 @@ namespace AzRanger.AzScanner
             return resultingUsers;
         }
 
+        private Task<List<UserRegistrationDetail>> GetUserRegistrationDetail()
+        {
+            return GetAllOf<UserRegistrationDetail>(UserRegistrationDetails);
+        }
 
         private bool DoesAllUserHaveStrongAuthDetails(List<User> UserList)
         {
@@ -413,6 +419,11 @@ namespace AzRanger.AzScanner
         internal Task<List<DirectoryRoleAssignment>> GetDirectoryRoleAssignmentsEligible(String tenantId, String roleId)
         {
             return GetAllOf<DirectoryRoleAssignment>(String.Format(DirectoryRoleAssignmentsEligible, tenantId), String.Format("$Filter=roleDefinitionId+eq+'{0}'&$expand=principal,directoryScope", roleId));
+        }
+
+        internal Task<List<OrganizationSettings>> GetOrganizationSettings()
+        {
+            return GetAllOf<OrganizationSettings>(OrganizationSettings);
         }
 
         internal Task<AuthenticationMethodsPolicy> GetAuthenticationMethodsPolicy()
