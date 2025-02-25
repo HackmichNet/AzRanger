@@ -600,6 +600,7 @@
     <Compile Include="Models\MSGraph\ServicePrincipal.cs" />
     <Compile Include="Models\MSGraph\Signinactivity.cs" />
     <Compile Include="Models\MSGraph\User.cs" />
+    <Compile Include="Models\MSGraph\UserRegistrationDetail.cs" />
     <Compile Include="Models\PasswordReset\AdminPasswordResetPolicy.cs" />
     <Compile Include="Models\Provision\DirSyncFeatures.cs" />
     <Compile Include="Models\Provision\GetCompanyDirSyncFeaturesResponse.cs" />

@@ -42,8 +42,6 @@ namespace AzRanger.AzScanner
         public const String OAuth2PermissionGrants = "/beta/oauth2PermissionGrants";
         //https://learn.microsoft.com/en-us/graph/api/authentication-list-methods?view=graph-rest-1.0&tabs=http
         public const String AuthenticationMethods = "/v1.0/users/{0}/authentication/methods";
-        
-        public const String OrganizationSettings = "/v1.0/organization";
 
         public MSGraphCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
@@ -101,96 +99,13 @@ namespace AzRanger.AzScanner
                 resultingUsers.Add(user.id, user);
             }
 
-            /*List<Task<AuthenticationMethods>> tasks = new List<Task<AuthenticationMethods>>();
-
-            foreach (User user in resultingUsers.Values)
+            List<UserRegistrationDetail> userRegistrationDetails = await GetUserRegistrationDetail();
+            foreach (UserRegistrationDetail detail in userRegistrationDetails)
             {
-                tasks.Add(GetAuthenticationMethods(user.id));
-            }
-
-            while (tasks.Any())
-            {
-                Task<AuthenticationMethods> finishedTask;
-                try
+                if (resultingUsers.ContainsKey(Guid.Parse(detail.id)))
                 {
-                    finishedTask = await Task.WhenAny(tasks);
+                    resultingUsers[Guid.Parse(detail.id)].isMFAEnabled = detail.isMfaCapable;
                 }
-                catch (Exception ex)
-                {
-                    logger.Warn("[-] An error occurred. Don't panic...");
-                    logger.Debug("MSGraphScanner.GetAllUser.StrongAuth failed.");
-                    logger.Debug(ex.Message);
-                    continue;
-                }
-                AuthenticationMethods methods = await finishedTask;
-                try
-                {
-                    String tmp = methods.odatacontext.Split('\'')[1];
-                    String userId = tmp.Split('\'')[0];
-                    resultingUsers[new Guid(userId)].authenticationMethods = methods;
-                }
-                catch
-                {
-                    logger.Warn("[-] An error occurred. Don't panic...");
-                    logger.Debug("MSGraphScanner.GetAllUser.StrongAuth userid parsing failed.");
-                }
-            }*/
-            
-            List<Task<StrongAuthenticationDetail>> tasks = new List<Task<StrongAuthenticationDetail>>();
-
-            // What shitty code.... homage an ML =) 
-            int counter = 0;
-            while (!DoesAllUserHaveStrongAuthDetails(resultingUsers.Values.ToList()))
-            {
-                if (counter >= 5)
-                {
-                    return resultingUsers;
-                }
-                foreach (User user in resultingUsers.Values.ToList())
-                {
-                    if (user.strongAuthenticationDetail == null)
-                    {
-                        tasks.Add(graphWinCollector.GetStrongAuthenticationDetail(user.id));
-                    }
-                }
-
-                while (tasks.Any())
-                {
-                    Task<StrongAuthenticationDetail> finishedTask;
-                    try
-                    {
-                        finishedTask = await Task.WhenAny(tasks);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.Warn("[-] An error occurred. Don't panic...");
-                        logger.Debug("MSGraphScanner.GetAllUser.StrongAuth failed.");
-                        logger.Debug(ex.Message);
-                        continue;
-                    }
-
-                    StrongAuthenticationDetail strongAuthTaskResult = await finishedTask;
-                    // Sometimes a task dies and I don't know why -.- 
-                    if (strongAuthTaskResult != null)
-                    {
-                        if (strongAuthTaskResult.strongAuthenticationDetail != null)
-                        {
-                            resultingUsers[strongAuthTaskResult.objectId].strongAuthenticationDetail = strongAuthTaskResult.strongAuthenticationDetail;
-
-                            if (strongAuthTaskResult.strongAuthenticationDetail.methods != null && strongAuthTaskResult.strongAuthenticationDetail.methods.Length > 0)
-                            {
-                                resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = true;
-                            }
-                            else
-                            {
-                                resultingUsers[strongAuthTaskResult.objectId].isMFAEnabled = false;
-                            }
-
-                        }
-                    }
-                    tasks.Remove(finishedTask);
-                }
-                counter += 1;
             }
             return resultingUsers;
         }
@@ -504,9 +419,5 @@ namespace AzRanger.AzScanner
         {
             return Get<AuthenticationMethodsPolicy>(AuthenticationMethodsPolicy);
         }
-        internal Task<List<OrganizationSettings>> GetOrganizationSettings() {
-            return GetAllOf<OrganizationSettings>(OrganizationSettings);
-        }
-
     }
 }
