@@ -42,6 +42,7 @@ namespace AzRanger.AzScanner
         public const String OAuth2PermissionGrants = "/beta/oauth2PermissionGrants";
         //https://learn.microsoft.com/en-us/graph/api/authentication-list-methods?view=graph-rest-1.0&tabs=http
         public const String AuthenticationMethods = "/v1.0/users/{0}/authentication/methods";
+        
         public const String OrganizationSettings = "/v1.0/organization";
 
         public MSGraphCollector(IAuthenticator authenticator, String tenantId, String proxy)
