@@ -2,11 +2,11 @@
 
 namespace AzRanger.Checks.Rules
 {
-    class TeamsExternalCommunicationInbound : BaseCheck
+    class SPOOndriveSharingExpires : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if (tenant.TeamsSettings.TenantFederationSettings.AllowTeamsConsumerInbound == false)
+            if (tenant.SharePointInformation.SharePointInternalInfos.ExternalUserExpirationRequired && tenant.SharePointInformation.SharePointInternalInfos.ExternalUserExpireInDays <= 30)
             {
                 return CheckResult.NoFinding;
             }

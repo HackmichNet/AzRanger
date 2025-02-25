@@ -2,11 +2,11 @@
 
 namespace AzRanger.Checks.Rules
 {
-    class TeamsExternalCommunicationInbound : BaseCheck
+    class TeamsExternalCommunicationWithConsumer : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if (tenant.TeamsSettings.TenantFederationSettings.AllowTeamsConsumerInbound == false)
+            if (tenant.TeamsSettings.TenantFederationSettings.AllowTeamsConsumer == false)
             {
                 return CheckResult.NoFinding;
             }

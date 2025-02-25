@@ -2,11 +2,11 @@
 
 namespace AzRanger.Checks.Rules
 {
-    class TeamsExternalCommunicationInbound : BaseCheck
+    class SPODefaultLinkPermissions : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if (tenant.TeamsSettings.TenantFederationSettings.AllowTeamsConsumerInbound == false)
+           if (tenant.SharePointInformation.SharePointInternalInfos.DefaultLinkPermission == 1)
             {
                 return CheckResult.NoFinding;
             }

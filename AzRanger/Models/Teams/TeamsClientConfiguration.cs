@@ -21,11 +21,6 @@
         public string Identity { get; set; }
     }
 
-
-
-
-
-
     public class Teamsclientconfiguration
     {
         public string xmlns { get; set; }

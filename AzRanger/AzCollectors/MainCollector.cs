@@ -451,8 +451,9 @@ namespace AzRanger.AzScanner
 
                 Task<TeamsClientConfiguration> getTeamsClientConfigurationTask = TeamsCollector.GetTeamsClientConfiguration();
                 Task<TenantFederationSettings> getTenantFederationSettingsTask = TeamsCollector.GetTenantFederationSettings();
+                Task<TeamsMeetingPolicy> getTeamsMeetingPolicyTask = TeamsCollector.GetTeamsMeetingPolicy();
 
-                List<Task> teamsTasks = new List<Task> { getTeamsClientConfigurationTask, getTenantFederationSettingsTask };
+                List<Task> teamsTasks = new List<Task> { getTeamsClientConfigurationTask, getTenantFederationSettingsTask, getTeamsMeetingPolicyTask };
 
                 while (teamsTasks.Any())
                 {
@@ -477,10 +478,12 @@ namespace AzRanger.AzScanner
                     {
                         settings.TenantFederationSettings = await getTenantFederationSettingsTask;
                     }
+                    if (result == getTeamsMeetingPolicyTask) {
+                        settings.TeamsMeetingPolicy = await getTeamsMeetingPolicyTask;
+                    }
                     teamsTasks.Remove(result);
                 }
                 Result.TeamsSettings = settings;
-
             }
 
             if (scopes.Contains(ScopeEnum.SPO))
@@ -537,7 +540,8 @@ namespace AzRanger.AzScanner
                     ExchangeOnlineScanner.GetMailboxAuditBypassAssociations(),
                     ExchangeOnlineScanner.GetExternalInOutlooks(),
                     ExchangeOnlineScanner.GetHostedConnectionFilterPolicy(),
-                    ExchangeOnlineScanner.GetHostedContentFilterPolicy()
+                    ExchangeOnlineScanner.GetHostedContentFilterPolicy(),
+                    ExchangeOnlineScanner.GetTransportConfig()
                 };
 
                 while (exchangeTask.Any())
@@ -613,6 +617,9 @@ namespace AzRanger.AzScanner
                             break;
                         case Task<List<HostedContentFilterPolicy>> getHostedContentFilterPolicy:
                             Result.ExchangeOnlineSettings.HostedContentFilterPolicies = await getHostedContentFilterPolicy;
+                            break;
+                        case Task<List<TransportConfig>> getTransportConfig:
+                            Result.ExchangeOnlineSettings.TransportConfig = await getTransportConfig;
                             break;
                         default:
                             Console.WriteLine("Scanner.ScanTennant: Hit default in exchangeTasks.");

@@ -2,11 +2,11 @@
 
 namespace AzRanger.Checks.Rules
 {
-    class TeamsExternalCommunicationInbound : BaseCheck
+    class TeamsBypassLobbyDialIn : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if (tenant.TeamsSettings.TenantFederationSettings.AllowTeamsConsumerInbound == false)
+            if(tenant.TeamsSettings.TeamsMeetingPolicy.AllowPSTNUsersToBypassLobby == false)
             {
                 return CheckResult.NoFinding;
             }

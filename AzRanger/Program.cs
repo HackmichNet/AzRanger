@@ -179,9 +179,7 @@ namespace AzRanger
             if (opts.Mode == AzRangerModes.Audit | opts.Mode == AzRangerModes.DumpAll)
             {
                 var watch = System.Diagnostics.Stopwatch.StartNew();
-
-                Task<Tenant> scanTask = scanner.ScanTenant(scopes);
-                Tenant tenant = await scanTask;
+                Tenant tenant = await scanner.ScanTenant(scopes);
                 watch.Stop();
                 Console.WriteLine($"[+] Scan Time: {watch.ElapsedMilliseconds} ms");
                 if (tenant == null)

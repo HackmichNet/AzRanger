@@ -45,6 +45,9 @@ namespace AzRanger.Checks
         public ServiceEnum Service { get; private set; }
         // Value between 0 and 10
         public int RiskScore { get; private set; }
+        public String CISM365Section { get; private set; }
+        public String CISM365Level { get; private set; }
+        public String CISM365version { get; private set; }
 
         public static bool TryGet(string identifier, out RuleInfo ruleInfo)
         {
@@ -71,6 +74,9 @@ namespace AzRanger.Checks
             ruleInfo.ShortName = identifier;
             ruleInfo.Service = ServiceEnum.None;
             ruleInfo.PortalUrl = section.GetStringOrNull("portal");
+            ruleInfo.CISM365Section = section.GetStringOrNull("cism365section");
+            ruleInfo.CISM365Level = section.GetStringOrNull("cism365level");
+            ruleInfo.CISM365version = section.GetStringOrNull("cism365version");
 
             var serviceString = section.GetStringOrNull("service");
             if (serviceString != null)

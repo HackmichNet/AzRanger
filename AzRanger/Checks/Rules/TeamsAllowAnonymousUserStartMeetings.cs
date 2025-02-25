@@ -2,11 +2,11 @@
 
 namespace AzRanger.Checks.Rules
 {
-    class TeamsExternalCommunicationInbound : BaseCheck
+    class TeamsAllowAnonymousUserStartMeetings : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if (tenant.TeamsSettings.TenantFederationSettings.AllowTeamsConsumerInbound == false)
+            if(tenant.TeamsSettings.TeamsMeetingPolicy.AllowAnonymousUsersToStartMeeting == false)
             {
                 return CheckResult.NoFinding;
             }

@@ -39,18 +39,14 @@ namespace AzRanger.Output
                 item.Service = ruleInfo.Service.ToString();
                 item.Scope = ruleInfo.Scope.ToString();
                 item.MaturityLevel = ruleInfo.MaturityLevel.ToString();
+                if(ruleInfo.CISM365Level != null && ruleInfo.CISM365Section != null && ruleInfo.CISM365version != null)
+                {
+                    item.Version = ruleInfo.CISM365version;
+                    item.Section = ruleInfo.CISM365Section;
+                    item.Level = ruleInfo.CISM365Level.ToString();
+                    item.CISDocument = "CIS M365";
+                }
             }
-
-
-
-            if (CISM365Info.TryGet(check.GetType().Name, out CISM365Info info))
-            {
-                item.Version = info.Version;
-                item.Section = info.Section;
-                item.Level = info.Level.ToString();
-                item.CISDocument = "CIS M365";
-            }
-
             if (CISAzInfo.TryGet(check.GetType().Name, out CISAzInfo azInfo))
             {
                 item.Version = azInfo.Version;

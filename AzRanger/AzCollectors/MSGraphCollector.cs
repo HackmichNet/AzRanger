@@ -111,23 +111,6 @@ namespace AzRanger.AzScanner
             }
             return resultingUsers;
         }
-
-        private Task<List<UserRegistrationDetail>> GetUserRegistrationDetail()
-        {
-            return GetAllOf<UserRegistrationDetail>(UserRegistrationDetails);
-        }
-
-        private bool DoesAllUserHaveStrongAuthDetails(List<User> UserList)
-        {
-            foreach (User user in UserList)
-            {
-                if (user.strongAuthenticationDetail == null)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
         public async Task<Dictionary<Guid, User>> GetAllGuests(bool hasP1Licnse)
         {
             List<User> allUsers;
@@ -429,6 +412,11 @@ namespace AzRanger.AzScanner
         internal Task<AuthenticationMethodsPolicy> GetAuthenticationMethodsPolicy()
         {
             return Get<AuthenticationMethodsPolicy>(AuthenticationMethodsPolicy);
+        }
+
+        private Task<List<UserRegistrationDetail>> GetUserRegistrationDetail()
+        {
+            return GetAllOf<UserRegistrationDetail>(UserRegistrationDetails);
         }
     }
 }

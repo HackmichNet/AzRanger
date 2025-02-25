@@ -50,8 +50,13 @@ namespace AzRanger.Models.SharePoint
         public object[] ContentTypeSyncSiteTemplatesList { get; set; }
         public string CustomizedExternalSharingServiceUrl { get; set; }
         public object DefaultContentCenterSite { get; set; }
+        // 1 = View
+        // 2 = Edit
         public int DefaultLinkPermission { get; set; }
         public string DefaultODBMode { get; set; }
+        // 1 = Specific People
+        // 2 = Only People in your organization
+        // 3 = Anyone with the link
         public int DefaultSharingLinkType { get; set; }
         public bool DisableAddToOneDrive { get; set; }
         public bool DisableBackToClassic { get; set; }

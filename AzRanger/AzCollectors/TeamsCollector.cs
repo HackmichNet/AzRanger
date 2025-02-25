@@ -8,6 +8,7 @@ namespace AzRanger.AzScanner
     {
         private const String TeamsClientConfiguration = "/Skype.Policy/configurations/TeamsClientConfiguration";
         private const String TenantFederationSettings = "/Skype.Policy/configurations/TenantFederationSettings/configuration/global";
+        private const String TeamsMeetingPolicy = "/Skype.Policy/configurations/TeamsMeetingPolicy/configuration/Global";
 
         public TeamsCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
@@ -26,6 +27,11 @@ namespace AzRanger.AzScanner
         public Task<TenantFederationSettings> GetTenantFederationSettings()
         {
             return Get<TenantFederationSettings>(TenantFederationSettings);
+        }
+
+        public Task<TeamsMeetingPolicy> GetTeamsMeetingPolicy()
+        {
+            return Get<TeamsMeetingPolicy>(TeamsMeetingPolicy);
         }
 
         internal override String ManipulateResponse(String response, string endPoint)

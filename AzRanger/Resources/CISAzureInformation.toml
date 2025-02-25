@@ -88,12 +88,6 @@ title = "<EMPTY>"
 level = "L1"
 version = "2.0"
 
-[AzGuestInvite]
-section = "1.16"
-title = "<EMPTY>"
-level = "L2"
-version = "2.0"
-
 [AzKeyVKeyExpirationNonRBAC]
 section = "8.2"
 title = "<EMPTY>"

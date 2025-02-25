@@ -2,7 +2,7 @@
 
 namespace AzRanger.Checks.Rules
 {
-    class SPOExpireExternalLinks : BaseCheck
+    class SPOExpireExternalLinksAnynomous : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {

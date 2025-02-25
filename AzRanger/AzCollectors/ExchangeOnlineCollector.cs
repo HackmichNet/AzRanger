@@ -30,6 +30,7 @@ namespace AzRanger.AzScanner
         private const String ExternalInOutlook = "Get-ExternalInOutlook";
         private const String HostedConnectionFilterPolicy = "Get-HostedConnectionFilterPolicy";
         private const String HostedContentFilterPolicy = "Get-HostedContentFilterPolicy";
+        private const String TransportConfig = "Get-TransportConfig";
         private String EndPoint;
 
         public ExchangeOnlineCollector(IAuthenticator authenticator, String tenantId, String proxy)
@@ -183,6 +184,11 @@ namespace AzRanger.AzScanner
         public Task<List<HostedContentFilterPolicy>> GetHostedContentFilterPolicy()
         {
             return GetAllOf<HostedContentFilterPolicy>(ExchangeOnlineCollector.HostedContentFilterPolicy);
+        }
+
+        public Task<List<TransportConfig>> GetTransportConfig()
+        {
+            return GetAllOf<TransportConfig>(ExchangeOnlineCollector.TransportConfig);
         }
 
 

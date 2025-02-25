@@ -6,5 +6,6 @@ namespace AzRanger.Models
     {
         public TeamsClientConfiguration TeamsClientConfiguration { get; set; }
         public TenantFederationSettings TenantFederationSettings { get; set; }
+        public TeamsMeetingPolicy TeamsMeetingPolicy { get; set; }
     }
 }

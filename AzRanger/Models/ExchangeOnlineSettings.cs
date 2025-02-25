@@ -25,6 +25,7 @@ namespace AzRanger.Models
         public List<ExternalInOutlook> ExternalInOutlooks { get; set; }
         public List<HostedConnectionFilterPolicy> HostedConnectionFilterPolicy { get; set; }
         public List<HostedContentFilterPolicy> HostedContentFilterPolicies { get; set; }
+        public List<TransportConfig> TransportConfig { get; set; }
 
     }
 }

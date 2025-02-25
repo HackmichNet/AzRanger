@@ -328,6 +328,13 @@
     <Compile Include="Checks\Rules\EXOOrganizationalMailboxAudit.cs" />
     <Compile Include="Checks\Rules\EXOExternalSenderIdentified.cs" />
     <Compile Include="Checks\Rules\EXOSharedMailboxNoLogin.cs" />
+    <Compile Include="Checks\Rules\SPODefaultLinkPermissions.cs" />
+    <Compile Include="Checks\Rules\SPOVerificationCode.cs" />
+    <Compile Include="Checks\Rules\SPOOndriveSharingExpires.cs" />
+    <Compile Include="Checks\Rules\SPODefaultLinkSharingType.cs" />
+    <Compile Include="Checks\Rules\TeamsBypassLobbyDialIn.cs" />
+    <Compile Include="Checks\Rules\TeamsBypassLobby.cs" />
+    <Compile Include="Checks\Rules\TeamsAllowAnonymousUserStartMeetings.cs" />
     <Compile Include="Checks\Rules\UserAdminsCloudOnly.cs" />
     <Compile Include="Checks\Rules\UserWeakAuthenticationEnabled.cs" />
     <Compile Include="Checks\Rules\UserPerUserMFA.cs" />
@@ -446,7 +453,7 @@
     <Compile Include="Checks\Rules\OfficeDLPPolicies.cs" />
     <Compile Include="Checks\Rules\OfficeFormsPhishingProtection.cs" />
     <Compile Include="Checks\Rules\OfficeSwaySettings.cs" />
-    <Compile Include="Checks\Rules\SPOExpireExternalLinks.cs" />
+    <Compile Include="Checks\Rules\SPOExpireExternalLinksAnynomous.cs" />
     <Compile Include="Checks\Rules\SPOGuestSharing.cs" />
     <Compile Include="Checks\Rules\SPOEntraB2BEnabled.cs" />
     <Compile Include="Checks\Rules\SPOLegacyAuth.cs" />
@@ -455,7 +462,7 @@
     <Compile Include="Checks\Rules\SPOSharing.cs" />
     <Compile Include="Checks\Rules\TeamsExternalCommunication.cs" />
     <Compile Include="Checks\Rules\TeamsExternalCommunicationSkype.cs" />
-    <Compile Include="Checks\Rules\TeamsExternalCommunicationTeams.cs" />
+    <Compile Include="Checks\Rules\TeamsExternalCommunicationWithConsumer.cs" />
     <Compile Include="Checks\Rules\TeamsExternalCommunicationFederated.cs" />
     <Compile Include="Checks\Rules\TeamsExternalCommunicationTeamsInbound.cs" />
     <Compile Include="Checks\Rules\TeamsExternalSharingProvider.cs" />
@@ -535,6 +542,7 @@
     <Compile Include="Models\ExchangeOnline\OwaMailboxPolicy.cs" />
     <Compile Include="Models\ExchangeOnline\RemoteDomain.cs" />
     <Compile Include="Models\ExchangeOnline\RoleAssignmentPolicy.cs" />
+    <Compile Include="Models\ExchangeOnline\TransportConfig.cs" />
     <Compile Include="Models\ExchangeOnline\TransportRule.cs" />
     <Compile Include="Models\Generic\AzurePrincipal.cs" />
     <Compile Include="Models\Generic\AzurePrincipalType.cs" />
@@ -612,6 +620,7 @@
     <Compile Include="Models\TeamsSettings.cs" />
     <Compile Include="Models\Teams\TeamsClientConfiguration.cs" />
     <Compile Include="Models\Teams\TeamsGernerics.cs" />
+    <Compile Include="Models\Teams\TeamsMeetingPolicy.cs" />
     <Compile Include="Models\Teams\TenantFederationSettings.cs" />
     <Compile Include="Models\Tenant.cs" />
     <Compile Include="Models\WinGraph\Phoneappdetail.cs" />
