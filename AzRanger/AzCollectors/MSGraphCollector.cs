@@ -42,6 +42,7 @@ namespace AzRanger.AzScanner
         public const String OAuth2PermissionGrants = "/beta/oauth2PermissionGrants";
         //https://learn.microsoft.com/en-us/graph/api/authentication-list-methods?view=graph-rest-1.0&tabs=http
         public const String AuthenticationMethods = "/v1.0/users/{0}/authentication/methods";
+        public const String OrganizationSettings = "/v1.0/organization";
 
         public MSGraphCollector(IAuthenticator authenticator, String tenantId, String proxy)
         {
@@ -82,11 +83,11 @@ namespace AzRanger.AzScanner
             List<User> allUsers;
             if (hasP1License)
             {
-                allUsers = await GetAllOf<User>(MSGraphCollector.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,signInActivity,onPremisesSyncEnabled");
+                allUsers = await GetAllOf<User>(MSGraphCollector.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,signInActivity,onPremisesSyncEnabled,perUserMfaState");
             }
             else
             {
-                allUsers = await GetAllOf<User>(MSGraphCollector.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,onPremisesSyncEnabled");
+                allUsers = await GetAllOf<User>(MSGraphCollector.UsersBeta, "?$Filter=UserType eq 'Member'&$select=id,userPrincipalName,displayName,userType,CreatedDateTime,AccountEnabled,onPremisesSyncEnabled,perUserMfaState");
             }
             if (allUsers == null)
             {
@@ -502,5 +503,9 @@ namespace AzRanger.AzScanner
         {
             return Get<AuthenticationMethodsPolicy>(AuthenticationMethodsPolicy);
         }
+        internal Task<List<OrganizationSettings>> GetOrganizationSettings() {
+            return GetAllOf<OrganizationSettings>(OrganizationSettings);
+        }
+
     }
 }

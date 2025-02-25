@@ -2,12 +2,11 @@
 
 namespace AzRanger.Checks.Rules
 {
-
     class ADPasswordHashSyncEnabled : BaseCheck
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if (tenant.TenantSettings.ADConnectStatus.passwordHashSyncEnabled == true)
+            if (tenant.OrganizationSettings.onPremisesSyncEnabled == true)
             {
                 return CheckResult.NoFinding;
             }

@@ -6,6 +6,9 @@ solution = "You have to enable Password hash sync on the server where you have i
 scope = "AAD"
 maturity = 1
 portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/DirectoriesADConnectBlade"
+CISM365Section = "5.1.8.1"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [ADPasswordProtection]
 score = 3
@@ -15,6 +18,21 @@ solution = "To enabled Entra ID Directory Password protection go to [https://ent
 scope = "AAD"
 maturity = 1
 portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection"
+CISM365Section = "5.2.3.3"
+CISM365Level = "L1"
+CISM365version = "4.0"
+
+[UserWeakAuthenticationEnabled]
+score = 3
+short = "Some Weak authentication mechanism are enabled"
+risk = "Weak authentication mechanism increases the risk that a user is successfully compromised by a threat actor."
+solution = "To disable weak authentication mechanism go to [https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/AdminAuthMethods/fromNav/Identity](https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/AdminAuthMethods/fromNav/Identity) and disable *SMS*, *Email OTP* and *Voice call*."
+scope = "AAD"
+maturity = 1
+portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/AdminAuthMethods/fromNav/Identity"
+CISM365Section = "5.2.3.5"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [AppsAsGlobalAdmin]
 score = 9
@@ -103,6 +121,9 @@ solution = "Go to *External Identities -> External collaboration settings* and s
 scope = "AAD"
 maturity = 1
 portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AllowlistPolicyBlade"
+CISM365Section = "5.1.6.2"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [AzPSQLLogCheckpoints]
 score = 1
@@ -637,6 +658,9 @@ solution = "Go to the *User Settings* in the Entra Admin Portal and set *Restric
 scope = "AAD"
 maturity = 1
 portal = "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings"
+CISM365Section = "5.1.2.3"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [UserAllUserHaveMFA]
 score = 7
@@ -646,6 +670,26 @@ link = "https://learn.microsoft.com/en-us/azure/active-directory/conditional-acc
 solution = "Think about to implement MFA for all your users."
 scope = "AAD"
 maturity = 0
+CISM365Section = "5.2.2.2"
+CISM365Level = "L1"
+CISM365version = "4.0"
+
+[UserPerUserMFA]
+score = 3
+short = "Some user have 'Per-user MFA' enabled"
+risk = "Per-User MFA can cause some undesirable user authentication strates in combination with Conditional Access or other security settings."
+solution = """
+1.	Go to Microsoft Entra admin center https://entra.microsoft.com/.
+2.	Click on Identity > Users select All users.
+3.	Click on Per-user MFA on the top row.
+4.	Click the empty box next to Display Name to select all accounts.
+5.	On the far right under quick steps click Disable.
+"""
+scope = "AAD"
+maturity = 0
+CISM365Section = "5.1.2.1"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [UserBitLockerSelfService]
 score = 8
@@ -1230,7 +1274,7 @@ portal = "https://<YOUR-DOMAIN>-admin.sharepoint.com/_layouts/15/online/AdminHom
 
 [UserAdminConsent]
 score = 1
-short = "Admin Consent workflow is not enabled in your organization"
+short = "Admin consent workflow is not enabled in your organization"
 risk = "No direct risk at all."
 link = "https://learn.microsoft.com/en-us/azure/active-directory/manage-apps/configure-admin-consent-workflow"
 long = "Not allowing your users to use other applications with their credential, can lead to a lot of angry calls. However, your admins should check each request carefully."
@@ -1238,6 +1282,9 @@ solution = "Go to the Portal Url and set *Users can request admin consent to app
 scope = "AAD"
 maturity = 1
 portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConsentPoliciesMenuBlade/~/AdminConsentSettings"
+CISM365Section = "5.1.5.2"
+CISM365Level = "L1"
+CISM365Version = "4.0"
 
 [UserAllAdminsHaveMFA]
 score = 10
@@ -1248,6 +1295,9 @@ solution = "No discussion here. Force them to use MFA!"
 scope = "AAD"
 maturity = 1
 service = "null"
+CISM365Section = "5.2.2.1"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [UserConsent]
 score = 10
@@ -1280,6 +1330,9 @@ solution = "Go to the reference link. Then click on *Microsoft Authenticator* an
 scope = "AAD"
 maturity = 1
 portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/AdminAuthMethods"
+CISM365Section = "5.2.3.1"
+CISM365Level = "L1"
+CISM365Version = "4.0"
 
 [UserPasswordBadPasswordList]
 score = 4
@@ -1295,6 +1348,9 @@ solution = """
 scope = "AAD"
 maturity = 1
 portal = "https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/PasswordProtection"
+CISM365Section = "5.2.3.2"
+CISM365Level = "L1"
+CISM365Version = "4.0"
 
 [UserPasswordResetRequires2Methods]
 score = 1
@@ -1343,6 +1399,9 @@ solution = """
 scope = "AAD"
 maturity = 1
 portal = "https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/UserSettings/menuId/UserSettings"
+CISM365Section = "5.1.2.4"
+CISM365Level = "L1"
+CISM365version = "4.0"
 
 [TeamsExternalSharingProvider]
 short = "Teams allows to use Box, DropBox, GoogleDrive, CitrixFiles or Egnyte as cloud storage provider"

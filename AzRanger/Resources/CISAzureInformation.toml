@@ -94,12 +94,6 @@ title = "<EMPTY>"
 level = "L2"
 version = "2.0"
 
-[AzGuestRestrictions]
-section = "1.15"
-title = "<EMPTY>"
-level = "L2"
-version = "2.0"
-
 [AzKeyVKeyExpirationNonRBAC]
 section = "8.2"
 title = "<EMPTY>"

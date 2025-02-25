@@ -94,9 +94,9 @@ namespace AzRanger.AzScanner
                 scanAzureOnly = true;
             }
 
+            Result.TenantSettings = new M365Settings();
             if (!scanAzureOnly)
             {
-                Result.TenantSettings = new M365Settings();
                 if (this.AADPowerShellAuthenticator.GetType() == typeof(UserAuthenticator))
                 {
                     Result.DirectoryRoles = await MSGraphCollector.GetAllDirectoryRoles();
@@ -328,7 +328,8 @@ namespace AzRanger.AzScanner
                     AdminCenterCollector.GetDirsyncManagement(),
                     AdminCenterCollector.GetOfficeonline(),
                     ComplianceCenterScanner.GetDLPPolicies(),
-                    ComplianceCenterScanner.GetDLPLabels()
+                    ComplianceCenterScanner.GetDLPLabels(),
+                    MSGraphCollector.GetOrganizationSettings()
                 };
 
                 while (officeTasks.Any())
@@ -432,6 +433,10 @@ namespace AzRanger.AzScanner
                             break;
                         case Task<OnPremisesPasswordResetPolicy> getOnPremisesPasswordResetPolicyTask:
                             Result.TenantSettings.OnPremisesPasswordResetPolicy = await getOnPremisesPasswordResetPolicyTask;
+                            break;
+                        case Task<List<OrganizationSettings>> getOrganizationSettingsTask:
+                            List<OrganizationSettings> settings = await getOrganizationSettingsTask;
+                            Result.OrganizationSettings = settings[0];
                             break;
                         default:
                             Console.WriteLine("Scanner.ScanTennant: OfficeTask Default. This should not happen");

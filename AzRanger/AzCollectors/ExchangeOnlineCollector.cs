@@ -180,7 +180,7 @@ namespace AzRanger.AzScanner
             parameters.Add(new Tuple<String, String>("Identity", "Default"));
             return GetAllOf<HostedConnectionFilterPolicy>(ExchangeOnlineCollector.HostedConnectionFilterPolicy, parameters);
         }
-        public Task<List<ExternalInOutlook>> GetHostedContentFilterPolicy()
+        public Task<List<HostedContentFilterPolicy>> GetHostedContentFilterPolicy()
         {
             return GetAllOf<HostedContentFilterPolicy>(ExchangeOnlineCollector.HostedContentFilterPolicy);
         }

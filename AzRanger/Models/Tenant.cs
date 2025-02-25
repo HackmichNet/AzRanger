@@ -30,5 +30,6 @@ namespace AzRanger.Models
         public MDMSettings MDMSettings { get; set; }
         public ManagementGroupSettings ManagementGroupSettings { get; set; }
         public SubscriptionPolicy SubscriptionPolicy { get; set; }
+        public OrganizationSettings OrganizationSettings { get; set; }  
     }
 }

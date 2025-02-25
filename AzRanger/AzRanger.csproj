@@ -329,6 +329,8 @@
     <Compile Include="Checks\Rules\EXOExternalSenderIdentified.cs" />
     <Compile Include="Checks\Rules\EXOSharedMailboxNoLogin.cs" />
     <Compile Include="Checks\Rules\UserAdminsCloudOnly.cs" />
+    <Compile Include="Checks\Rules\UserWeakAuthenticationEnabled.cs" />
+    <Compile Include="Checks\Rules\UserPerUserMFA.cs" />
     <Compile Include="Checks\Rules\UserWithoutCAPolicy.cs" />
     <Compile Include="Checks\TomlInfoWrapper.cs" />
     <Compile Include="Checks\Rules\ADPasswordHashSyncEnabled.cs" />
@@ -591,6 +593,7 @@
     <Compile Include="Models\MSGraph\MDM\MobileDeviceConfigurations.cs" />
     <Compile Include="Models\MSGraph\Oauth2PermissionGrants.cs" />
     <Compile Include="Models\MSGraph\Oauth2permissionscopes.cs" />
+    <Compile Include="Models\MSGraph\OrganizationSettings.cs" />
     <Compile Include="Models\MSGraph\Passwordcredential.cs" />
     <Compile Include="Models\MSGraph\ScopedRoleMember.cs" />
     <Compile Include="Models\MSGraph\ServiceConfigurationRecords.cs" />

@@ -4,31 +4,40 @@ using NLog;
 
 namespace AzRanger.Checks.Rules
 {
-    class UserMFAFatigueProtection : BaseCheck
+    class UserWeakAuthenticationEnabled : BaseCheck
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         public override CheckResult Audit(Tenant tenant)
         {
             if (tenant.TenantSettings.AuthenticationMethodsPolicy == null)
             {
-                logger.Error("Check.UserMFAFatigueProtection: No AuthenticationMethodsPolicy found. Possibly insufficient privileges");
+                logger.Error("Check.UserWeakAuthenticationDisabled: No AuthenticationMethodsPolicy found. Possibly insufficient privileges");
                 return CheckResult.Error;
             }
 
             foreach (Authenticationmethodconfiguration method in tenant.TenantSettings.AuthenticationMethodsPolicy.authenticationMethodConfigurations)
             {
-                if (method.id.Equals("MicrosoftAuthenticator"))
+                if (method.id.ToLower().Equals("sms"))
                 {
-                    if (!method.featureSettings.numberMatchingRequiredState.state.ToLower().Equals("enabled"))
+                    if (method.state.ToLower().Equals("enabled"))
                     {
+                        SetReason($"SMS authentication is enabled");
                         return CheckResult.Finding;
                     }
-                    if (!method.featureSettings.displayLocationInformationRequiredState.state.ToLower().Equals("enabled"))
+                }
+                if(method.id.ToLower().Equals("voice"))
+                {
+                    if (method.state.ToLower().Equals("enabled"))
                     {
+                        SetReason($"Phone call authentication is enabled");
                         return CheckResult.Finding;
                     }
-                    if (!method.featureSettings.displayAppInformationRequiredState.state.ToLower().Equals("enabled"))
+                }
+                if (method.id.ToLower().Equals("email"))
+                {
+                    if (method.state.ToLower().Equals("enabled"))
                     {
+                        SetReason($"Email authentication is enabled");
                         return CheckResult.Finding;
                     }
                 }

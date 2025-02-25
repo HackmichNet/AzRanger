@@ -14,6 +14,7 @@ namespace AzRanger.Models.MSGraph
         public DateTime? createdDateTime { get; set; }
         public bool accountEnabled { get; set; }
         public Signinactivity signInActivity { get; set; }
+        public String perUserMfaState { get; set; }
 
         // MFA is registered
         public bool isMFAEnabled = false;
