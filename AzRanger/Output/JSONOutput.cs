@@ -11,14 +11,14 @@ namespace AzRanger.Output
     {
         public static void Print(Auditor auditor, string outPath)
         {
-            if (outPath == null | outPath.Length == 0)
+            if (string.IsNullOrEmpty(outPath))
             {
                 outPath = ".";
             }
             string outFile = Path.Combine(outPath, "report.json");
             using (StreamWriter file = File.CreateText(outFile))
             {
-                var json = createJSON(auditor);
+                var json = CreateJSON(auditor);
                 file.Write(json);
             }
         }
@@ -57,7 +57,7 @@ namespace AzRanger.Output
             return item;
         }
 
-        internal static ResultJSONList createJSON(Auditor auditor)
+        internal static ResultJSONList CreateJSON(Auditor auditor)
         {
             List<ResultJSONItem> FindingList = new List<ResultJSONItem>();
 

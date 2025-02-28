@@ -26,8 +26,9 @@ namespace AzRanger.AzScanner
         private const String SubscriptionPolicy = "/providers/Microsoft.Subscription/policies/default?api-version=2021-01-01-privatepreview";
         private const String AuditingSettings = "{0}/auditingSettings/default?api-version=2021-11-01-preview";
         private const String SQLAdministrators = "{0}/administrators?api-version=2019-06-01-preview";
-        private const String SQLDatabases = "{0}/databases/?api-version=2022-02-01-preview";
-        private const String TransparentDataEncryption = "{0}/transparentDataEncryption/current?api-version=2020-11-01-preview";
+        private const String SQLDatabases = "{0}/databases/?api-version=2023-02-01-preview";
+        private const String SQLDatabaseTransparentDataEncryption = "{0}/transparentDataEncryption/current?api-version=2020-11-01-preview";
+        private const String SQLDatabaseAuditing = "{0}/auditingSettings/Default?api-version=2021-11-01-preview";
         private const String PostgreSQL = "/subscriptions/{0}/providers/Microsoft.DBforPostgreSQL/flexibleServers/?api-version=2022-03-08-preview";
         private const String PostgreSQLParamters = "{0}/configurations?api-version=2021-06-01";
         private const String PolicyAssignment = "/subscriptions/{0}/providers/Microsoft.Authorization/policyAssignments?api-version=2019-09-01";
@@ -157,7 +158,8 @@ namespace AzRanger.AzScanner
                 server.SQLDatabases = await GetAllOf<SQLDatabase>(String.Format(SQLDatabases, server.id));
                 foreach (SQLDatabase database in server.SQLDatabases)
                 {
-                    database.transparentDataEncryption = (SQLDatabaseTransparentDataEncryption)(await Get<SQLDatabaseTransparentDataEncryption>(String.Format(TransparentDataEncryption, database.id)));
+                    database.transparentDataEncryption = (SQLDatabaseTransparentDataEncryption)(await Get<SQLDatabaseTransparentDataEncryption>(String.Format(SQLDatabaseTransparentDataEncryption, database.id)));
+                    database.auditingSettings = (SQLDatabaseAuditingSettings)(await Get<SQLDatabaseAuditingSettings>(String.Format(SQLDatabaseAuditing, database.id)));
                 }
             }
             return Result;

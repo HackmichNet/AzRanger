@@ -296,6 +296,8 @@
     <Compile Include="AzCollectors\AdminCenterCollector.cs" />
     <Compile Include="AzCollectors\AppAuthenticator.cs" />
     <Compile Include="AzCollectors\PasswordResetCollector.cs" />
+    <Compile Include="Checks\Rules\AzSQLDatabaseAuditRetention.cs" />
+    <Compile Include="Models\AzMgmt\SQLDatabaseAuditingSettings.cs" />
     <Compile Include="AzCollectors\UserAuthenticator.cs" />
     <Compile Include="AzCollectors\AzMgmtCollector.cs" />
     <Compile Include="AzCollectors\ComplianceCenterCollector.cs" />
@@ -315,12 +317,11 @@
     <Compile Include="Checks\Auditor.cs" />
     <Compile Include="Checks\BaseCheck.cs" />
     <Compile Include="Checks\CISAzInfo.cs" />
-    <Compile Include="Checks\CISAzInfoData.cs" />
     <Compile Include="Checks\CISM365Info.cs" />
-    <Compile Include="Checks\CISM365InfoData.cs" />
     <Compile Include="Checks\RuleInfo.cs" />
     <Compile Include="Checks\RuleInfoData.cs" />
     <Compile Include="Checks\Rules\AppsWithNonExistendRedirectUrl.cs" />
+    <Compile Include="Checks\Rules\AzSQLDatabaseEncryption.cs" />
     <Compile Include="Checks\Rules\EXOInboundAntiSpamAllowDomains.cs" />
     <Compile Include="Checks\Rules\EXOConnectionFilterIPSafeList.cs" />
     <Compile Include="Checks\Rules\EXOConnectionFilterIPAllowList.cs" />
@@ -659,8 +660,6 @@
     <None Include="bin\Debug\09042024_AZRangerReport\ReportTemplate.zip" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
-    <None Include="Resources\CISAzureInformation.toml" />
-    <None Include="Resources\CISM365Information.toml" />
     <None Include="Resources\ReportTemplate.zip" />
     <None Include="Resources\RuleInformation.toml" />
   </ItemGroup>

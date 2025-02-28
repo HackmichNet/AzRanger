@@ -14,6 +14,7 @@ namespace AzRanger.Models.AzMgmt
         public string name { get; set; }
         public string type { get; set; }
         public SQLDatabaseTransparentDataEncryption transparentDataEncryption { get; set; }
+        public SQLDatabaseAuditingSettings auditingSettings { get; internal set; }
 
         public string PrintConsole()
         {

@@ -17,7 +17,7 @@ namespace AzRanger.Checks
                 return false;
             }
 
-            var section = CISAzInfoData.GetSectionOrNull(identifier);
+            var section = RuleInfoData.GetSectionOrNull(identifier);
             if (section == null)
             {
                 info = null;

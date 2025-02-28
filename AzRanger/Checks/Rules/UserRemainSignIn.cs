@@ -1,5 +1,6 @@
 ﻿using AzRanger.Models;
 using AzRanger.Models.MainIAM;
+using System;
 
 namespace AzRanger.Checks.Rules
 {
@@ -9,7 +10,7 @@ namespace AzRanger.Checks.Rules
         {
             foreach (LoginTenantBranding branding in tenant.TenantSettings.LoginTenantBrandings)
             {
-                if (branding.isConfigured && branding.hideKeepMeSignedIn != null && (bool)branding.hideKeepMeSignedIn == false)
+                if (branding.isConfigured && branding.hideKeepMeSignedIn != null && Convert.ToBoolean(branding.hideKeepMeSignedIn) == false)
                 {
                     return CheckResult.Finding;
                 }

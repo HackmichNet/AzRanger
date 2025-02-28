@@ -48,6 +48,9 @@ namespace AzRanger.Checks
         public String CISM365Section { get; private set; }
         public String CISM365Level { get; private set; }
         public String CISM365version { get; private set; }
+        public String CISMAZSection { get; private set; }
+        public String CISMAZLevel { get; private set; }
+        public String CISMAZversion { get; private set; }
 
         public static bool TryGet(string identifier, out RuleInfo ruleInfo)
         {

@@ -71,7 +71,7 @@ namespace AzRanger.Output
             }
 
             JSONDumper.WriteToFile(tenant, Path.Combine(outPath, "js/data.js"), "var tenantData = ");
-            JSONDumper.WriteToFile(JSONOutput.createJSON(auditor), Path.Combine(outPath, "js/report.js"), "var reportData = ");
+            JSONDumper.WriteToFile(JSONOutput.CreateJSON(auditor), Path.Combine(outPath, "js/report.js"), "var reportData = ");
         }
     }
 }

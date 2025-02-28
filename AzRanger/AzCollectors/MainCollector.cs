@@ -639,34 +639,10 @@ namespace AzRanger.AzScanner
             {
                 Result.ManagementGroups = await AzMgmtCollector.GetAllManagementGroups();
                 Result.ManagementGroupSettings = await AzMgmtCollector.GetManagementGroupSettings();
-                Result.Subscriptions = await AzMgmtCollector.GetAllSubscriptions();
                 Result.SubscriptionPolicy = await AzMgmtCollector.GetSubscriptionPolicy();
-                foreach (Subscription sub in Result.Subscriptions.Values)
-                {
-                    sub.Resources.StorageAccounts = await AzMgmtCollector.GetStorageAccounts(sub.subscriptionId);
-                    sub.Resources.KeyVaults = await AzMgmtCollector.GetKeyVaults(sub.subscriptionId);
-                    if (sub.Resources.KeyVaults != null)
-                    {
-                        foreach (KeyVault vault in sub.Resources.KeyVaults)
-                        {
-                            KeyVaultCollector vaultScanner = new KeyVaultCollector(AADPowerShellAuthenticator, vault.properties.vaultUri, TenantId, Proxy);
-                            if (vaultScanner != null)
-                            {
-                                vault.Keys = await vaultScanner.GetKeyVaultKeys();
-                                vault.Secrets = await vaultScanner.GetKeyVaultSecrets();
-                            }
-                        }
-                    }
-                    sub.Resources.ActivityLogAlerts = await AzMgmtCollector.GetActivityLogAlerts(sub.subscriptionId);
-                    sub.Resources.NetworkSecurityGroups = await AzMgmtCollector.GetNetworkSecurityGroups(sub.subscriptionId);
-                    sub.Resources.SQLServers = await AzMgmtCollector.GetSQLServers(sub.subscriptionId);
-                    sub.AutoProvisioningSettings = await AzMgmtCollector.GetProvisioningSettings(sub.subscriptionId);
-                    sub.SecurityCenterBuiltIn = await AzMgmtCollector.GetSecurityCenterBuiltIn(sub.subscriptionId);
-                    sub.SecurityContact = await AzMgmtCollector.GetSecurityContacts(sub.subscriptionId);
-                    sub.Resources.VirtualMachines = await AzMgmtCollector.GetVirtualMachines(sub.subscriptionId);
-                    sub.Resources.PostgreSQLs = await AzMgmtCollector.GetPostgreSQLFlexibleServers(sub.subscriptionId);
-                    sub.PolicyAssignment = await AzMgmtCollector.GetPolicyAssignment(sub.subscriptionId);
-                }
+                Result.Subscriptions = await AzMgmtCollector.GetAllSubscriptions();
+                Task scanSubscriptionTask = ScanSubscriptions(Result);
+                await scanSubscriptionTask;
             }
 
             // Ignore infos not available
@@ -699,6 +675,54 @@ namespace AzRanger.AzScanner
             }
             Console.WriteLine("[+] Finished collecting information.");
             return Result;
+        }
+
+        private async Task ScanSubscriptions(Tenant Result)
+        {
+            var tasks = Result.Subscriptions.Values.Select(async sub =>
+            {
+                var storageAccountsTask = AzMgmtCollector.GetStorageAccounts(sub.subscriptionId);
+                var keyVaultsTask = AzMgmtCollector.GetKeyVaults(sub.subscriptionId);
+                var activityLogAlertsTask = AzMgmtCollector.GetActivityLogAlerts(sub.subscriptionId);
+                var networkSecurityGroupsTask = AzMgmtCollector.GetNetworkSecurityGroups(sub.subscriptionId);
+                var sqlServersTask = AzMgmtCollector.GetSQLServers(sub.subscriptionId);
+                var autoProvisioningSettingsTask = AzMgmtCollector.GetProvisioningSettings(sub.subscriptionId);
+                var securityCenterBuiltInTask = AzMgmtCollector.GetSecurityCenterBuiltIn(sub.subscriptionId);
+                var securityContactsTask = AzMgmtCollector.GetSecurityContacts(sub.subscriptionId);
+                var virtualMachinesTask = AzMgmtCollector.GetVirtualMachines(sub.subscriptionId);
+                var postgreSQLsTask = AzMgmtCollector.GetPostgreSQLFlexibleServers(sub.subscriptionId);
+                var policyAssignmentTask = AzMgmtCollector.GetPolicyAssignment(sub.subscriptionId);
+
+                sub.Resources.StorageAccounts = await storageAccountsTask;
+                sub.Resources.KeyVaults = await keyVaultsTask;
+                sub.Resources.ActivityLogAlerts = await activityLogAlertsTask;
+                sub.Resources.NetworkSecurityGroups = await networkSecurityGroupsTask;
+                sub.Resources.SQLServers = await sqlServersTask;
+                sub.AutoProvisioningSettings = await autoProvisioningSettingsTask;
+                sub.SecurityCenterBuiltIn = await securityCenterBuiltInTask;
+                sub.SecurityContact = await securityContactsTask;
+                sub.Resources.VirtualMachines = await virtualMachinesTask;
+                sub.Resources.PostgreSQLs = await postgreSQLsTask;
+                sub.PolicyAssignment = await policyAssignmentTask;
+
+                if (sub.Resources.KeyVaults != null)
+                {
+                    var keyVaultTasks = sub.Resources.KeyVaults.Select(async vault =>
+                    {
+                        KeyVaultCollector vaultScanner = new KeyVaultCollector(AADPowerShellAuthenticator, vault.properties.vaultUri, TenantId, Proxy);
+                        if (vaultScanner != null)
+                        {
+                            var keysTask = vaultScanner.GetKeyVaultKeys();
+                            var secretsTask = vaultScanner.GetKeyVaultSecrets();
+                            vault.Keys = await keysTask;
+                            vault.Secrets = await secretsTask;
+                        }
+                    });
+                    await Task.WhenAll(keyVaultTasks);
+                }
+            });
+
+            await Task.WhenAll(tasks);
         }
     }
 }

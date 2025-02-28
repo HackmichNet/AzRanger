@@ -5,6 +5,7 @@ using AzRanger.Models.WinGraph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AzRanger.AzScanner
@@ -322,15 +323,20 @@ namespace AzRanger.AzScanner
         internal async Task<Dictionary<Guid, Group>> GetAllGroups()
         {
             List<Group> allGroups = await GetAllOf<Group>(GroupsBeta, "?$select=id,displayName,securityEnabled,Visibility");
-            Dictionary<Guid, Group> Result = new Dictionary<Guid, Group>();
+            Dictionary<Guid, Group> result = new Dictionary<Guid, Group>();
             List<Task> getGroupMemberTasks = new List<Task>();
+            // To avoid too many parallel requests
+            var semaphore = new SemaphoreSlim(500);
             foreach (Group group in allGroups)
             {
-                getGroupMemberTasks.Add(GetAllGroupMemberTransitivNonBlocking(group.id, group.members));
-                Result.Add(group.id, group);
+                await semaphore.WaitAsync();
+                result.Add(group.id, group);
+                var task = GetAllGroupMemberTransitivNonBlocking(group.id, group.members).ContinueWith(t => semaphore.Release());
+                getGroupMemberTasks.Add(task);
+                
             }
             await Task.WhenAll(getGroupMemberTasks);
-            return Result;
+            return result;
         }
 
         // Transitive, gives only the users or principals back, does not include other groups
@@ -385,7 +391,6 @@ namespace AzRanger.AzScanner
                     }
                 }
             }
-            //members = result;
         }
 
         internal Task<AuthenticationMethods> GetAuthenticationMethods(Guid id)
