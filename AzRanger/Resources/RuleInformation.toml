@@ -36,6 +36,7 @@ CISM365version = "4.0"
 
 [AppsAsGlobalAdmin]
 score = 9
+maturity = 1
 short = "Service principals which are member of the Roles \"Global Admin\" or \"Privileged Authentication Administrator\""
 risk = "A user with *owner* rights to the service principal or with the role *Application administrator* or *Cloud application administrator* can use this configuration to elevate its privileges."
 link = "https://posts.specterops.io/azure-privilege-escalation-via-service-principal-abuse-210ae2be2a5"
@@ -374,7 +375,7 @@ scope = "Azure"
 maturity = 1
 portal = "https://portal.azure.com/#view/Microsoft_Azure_Security/SecurityMenuBlade/~/EnvironmentSettings"
 
-[DfCEAdditionalMailAlertSeverity]
+[DfCEEMailAlertSeverity]
 score = 0
 short = "Email Security Alerts for a subscription are not configured correctly"
 risk = "Your security team and subscription owners might receive to much Mails regarding security issues."
@@ -730,6 +731,7 @@ CISM365version = "4.0"
 
 [TeamsExternalCommunication]
 scope = "Teams"
+score = 1
 maturity = 1
 portal = "https://admin.teams.microsoft.com/company-wide-settings/external-communications"
 
@@ -1041,6 +1043,7 @@ service = "KeyVault"
 [AzKeyVSecretExpirationNonRBAC]
 scope = "Azure"
 maturity = 1
+score = 1
 portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
 service = "KeyVault"
 CISAZSection = "3.3.4"
@@ -1050,6 +1053,7 @@ CISAZVersion = "3.0"
 [AzKeyVSecretExpirationRBAC]
 scope = "Azure"
 maturity = 1
+score = 1
 portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
 service = "KeyVault"
 CISAZSection = "3.3.3"
@@ -1705,6 +1709,7 @@ CISM365version = "4.0"
 [AzKeyVKeyExpirationNonRBAC]
 scope = "Azure"
 maturity = 1
+score = 1
 portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
 service = "KeyVault"
 CISSAZSection = "3.3.2"
@@ -1714,6 +1719,7 @@ CISSAZVersion = "3.0"
 [AzKeyVKeyExpirationRBAC]
 scope = "Azure"
 maturity = 1
+score = 1
 portal = "https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.KeyVault%2Fvaults"
 service = "KeyVault"
 CISSAZSection = "3.3.1"

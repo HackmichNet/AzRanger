@@ -30,6 +30,7 @@ namespace AzRanger.Checks
         public void Init(List<ScopeEnum> scopes)
         {
             string RuleNamepace = "AzRanger.Checks.Rules";
+            string checkName = null;
             foreach (var t in Assembly.GetExecutingAssembly().GetTypes())
             {
                 if (t.IsClass && t.Namespace == RuleNamepace && t.IsSubclassOf(typeof(BaseCheck)))
@@ -37,6 +38,7 @@ namespace AzRanger.Checks
                     try
                     {
                         BaseCheck check = GetInstance(t);
+                        checkName = check.GetType().Name;
                         if (RuleInfo.TryGet(check.GetType().Name, out RuleInfo info))
                         {
                             if (scopes.Contains(info.Scope))
@@ -47,14 +49,14 @@ namespace AzRanger.Checks
                         }
                         else
                         {
-                            logger.Error($"[-] Auditor.Init: No RuleMeta defined for {check.GetType().Name}");
+                            logger.Error($"[-] Auditor.Init: No RuleMeta defined for {checkName}");
                             continue;
 
                         }
                     }
                     catch (Exception e)
                     {
-                        logger.Error($"[-] Auditor.Init: CreateClass failed for {t.GetType().Name}!");
+                        logger.Error($"[-] Auditor.Init: CreateClass failed for {checkName}!");
                         logger.Error($"[-] {e.Message}");
                         continue;
                     }

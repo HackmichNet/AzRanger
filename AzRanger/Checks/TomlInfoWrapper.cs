@@ -19,7 +19,7 @@ namespace AzRanger.Checks
 
         public int GetIntOrThrow(string key)
         {
-            return int.Parse(this.GetStringOrThrow(key));
+            return int.Parse(this.GetStringOrNull(key));
         }
 
         public string GetStringOrNull(string key)

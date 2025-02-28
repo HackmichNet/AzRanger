@@ -48,9 +48,9 @@ namespace AzRanger.Checks
         public String CISM365Section { get; private set; }
         public String CISM365Level { get; private set; }
         public String CISM365version { get; private set; }
-        public String CISMAZSection { get; private set; }
-        public String CISMAZLevel { get; private set; }
-        public String CISMAZversion { get; private set; }
+        public String CISAZSection { get; private set; }
+        public String CISAZLevel { get; private set; }
+        public String CISAZversion { get; private set; }
 
         public static bool TryGet(string identifier, out RuleInfo ruleInfo)
         {
@@ -69,8 +69,8 @@ namespace AzRanger.Checks
 
             ruleInfo = new RuleInfo();
             ruleInfo.RiskScore = section.GetIntOrThrow("score");
-            ruleInfo.ShortDescription = section.GetStringOrThrow("short");
-            ruleInfo.Risk = MarkdownRenderer.Render(section.GetStringOrThrow("risk"));
+            ruleInfo.ShortDescription = section.GetStringOrNull("short");
+            ruleInfo.Risk = MarkdownRenderer.Render(section.GetStringOrNull("risk"));
             ruleInfo.ReferenceLink = section.GetStringOrNull("link");
             ruleInfo.LongDescription = MarkdownRenderer.Render(section.GetStringOrNull("long"));
             ruleInfo.Solution = MarkdownRenderer.Render(section.GetStringOrNull("solution"));
@@ -80,6 +80,9 @@ namespace AzRanger.Checks
             ruleInfo.CISM365Section = section.GetStringOrNull("cism365section");
             ruleInfo.CISM365Level = section.GetStringOrNull("cism365level");
             ruleInfo.CISM365version = section.GetStringOrNull("cism365version");
+            ruleInfo.CISAZLevel = section.GetStringOrNull("cisazlevel");
+            ruleInfo.CISAZSection = section.GetStringOrNull("cisazsection");
+            ruleInfo.CISAZLevel = section.GetStringOrNull("cisazlevel");
 
             var serviceString = section.GetStringOrNull("service");
             if (serviceString != null)
@@ -90,7 +93,7 @@ namespace AzRanger.Checks
                 }
             }
 
-            if (!Enum.TryParse(section.GetStringOrThrow("scope"), out ScopeEnum scope))
+            if (!Enum.TryParse(section.GetStringOrNull("scope"), out ScopeEnum scope))
             {
                 ruleInfo = null;
                 return false;

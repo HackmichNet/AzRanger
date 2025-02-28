@@ -6,7 +6,7 @@ namespace AzRanger.Checks.Rules
     {
         public override CheckResult Audit(Tenant tenant)
         {
-            if (tenant.TenantSettings.Officeonline.Enabled == false)
+            if (tenant.TenantSettings.Officeonline != null && tenant.TenantSettings.Officeonline.Enabled == false)
             {
                 return CheckResult.NoFinding;
             }

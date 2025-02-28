@@ -30,10 +30,10 @@ namespace AzRanger.Checks
             }
 
             info = new CISM365Info();
-            info.Section = section.GetStringOrThrow("CISM365Section");
-            info.Version = section.GetStringOrThrow("CISM365Level");
+            info.Section = section.GetStringOrNull("CISM365Section");
+            info.Version = section.GetStringOrNull("CISM365Level");
 
-            if (!Enum.TryParse(section.GetStringOrThrow("CISM365version"), out CISLevel level))
+            if (!Enum.TryParse(section.GetStringOrNull("CISM365version"), out CISLevel level))
             {
                 info = null;
                 return false;

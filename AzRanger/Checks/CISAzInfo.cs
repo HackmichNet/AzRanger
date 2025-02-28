@@ -4,7 +4,6 @@ namespace AzRanger.Checks
 {
     internal class CISAzInfo
     {
-        public string Title { get; private set; }
         public string Section { get; private set; }
         public CISLevel Level { get; private set; }
         public string Version { get; private set; }
@@ -25,11 +24,10 @@ namespace AzRanger.Checks
             }
 
             info = new CISAzInfo();
-            info.Title = section.GetStringOrThrow("title");
-            info.Section = section.GetStringOrThrow("section");
-            info.Version = section.GetStringOrThrow("version");
+            info.Section = section.GetStringOrNull("CISAZSection");
+            info.Version = section.GetStringOrNull("CISAZVersion");
 
-            if (!Enum.TryParse(section.GetStringOrThrow("level"), out CISLevel level))
+            if (!Enum.TryParse(section.GetStringOrNull("CISAZLevel"), out CISLevel level))
             {
                 info = null;
                 return false;
