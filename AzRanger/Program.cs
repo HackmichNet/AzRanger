@@ -48,8 +48,8 @@ namespace AzRanger
             var helpText = HelpText.AutoBuild(parserResult, h =>
             {
                 h.AdditionalNewLineAfterOption = false;
-                h.Heading = "AzRanger 0.1.0"; //change header
-                h.Copyright = "@HackmichNet";
+                h.Heading = "AzRanger 0.1.1"; //change header
+                h.Copyright = "Made with love by @HackmichNet";
                 return HelpText.DefaultParsingErrorsHandler(parserResult, h);
             }, e => e);
             Console.WriteLine(helpText);
