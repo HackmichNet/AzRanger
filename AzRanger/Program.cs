@@ -10,6 +10,7 @@ using NLog.Config;
 using NLog.Targets;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AzRanger
@@ -116,16 +117,24 @@ namespace AzRanger
             }
 
             List<ScopeEnum> scopes = new List<ScopeEnum>();
-            foreach (ScopeEnum scope in opts.Scope)
+            if (opts.Scope != null)
             {
-                scopes.Add(scope);
-            }
-
-            if (scopes.Count == 0)
-            {
-                scopes = new List<ScopeEnum>() {
-            ScopeEnum.Azure, ScopeEnum.SPO, ScopeEnum.EXO, ScopeEnum.Teams, ScopeEnum.AAD
-            };
+                foreach (ScopeEnum scope in opts.Scope)
+                {
+                    scopes.Add(scope);
+                }
+                if (scopes.Count == 0)
+                {
+                    scopes = new List<ScopeEnum>() {
+                        ScopeEnum.Azure, ScopeEnum.SPO, ScopeEnum.EXO, ScopeEnum.Teams, ScopeEnum.AAD
+                    };
+                }
+                else if (scopes.Count == 1 & scopes[0].Equals(ScopeEnum.M365))
+                {
+                    scopes = new List<ScopeEnum>() {
+                        ScopeEnum.SPO, ScopeEnum.EXO, ScopeEnum.Teams, ScopeEnum.AAD
+                    };
+                }
             }
 
             Console.WriteLine("[+] AzRanger started.");

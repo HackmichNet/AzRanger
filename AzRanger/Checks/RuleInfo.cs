@@ -10,7 +10,8 @@ namespace AzRanger.Checks
         MDM,
         EXO,
         SPO,
-        Teams
+        Teams,
+        M365
     }
 
     public enum ServiceEnum

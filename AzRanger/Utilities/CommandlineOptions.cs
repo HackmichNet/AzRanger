@@ -40,7 +40,7 @@ namespace AzRanger.Utilities
         [Option(Required = false, HelpText = "Only for audit. Specify 'console', 'html' or 'json'.", Default = AzRangerOutput.HTML)]
         public AzRangerOutput Output { get; set; }
 
-        [Option(Required = false, HelpText = "Set ScopeEnum AAD, Teams, SharePoint(SPO), ExchangeOnline(EXO) or Azure. If not set all scopes will be used.", Separator = ',')]
+        [Option(Required = false, HelpText = "Set ScopeEnum AAD, Teams, SharePoint(SPO), ExchangeOnline(EXO), Azure or M365, which includes AAD, Teams, SPO and EXO. If not set all scopes will be used.", Separator = ',')]
         public IEnumerable<ScopeEnum> Scope { get; set; }
         [Option(Default = false, Required = false, HelpText = "Batch mode. Use for automatic runs.")]
         public bool Batch { get; set; }
